@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #EEEEEE;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="com.mycompany.snp.SalesController">
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
    <children>
       <AnchorPane prefHeight="39.0" prefWidth="1020.0" style="-fx-background-color: #3F51B5;">
          <children>
@@ -18,43 +15,67 @@
                   <Font name="Arial" size="20.0" />
                </font>
             </Label>
-            <JFXHamburger layoutX="14.0" layoutY="12.0" stylesheets="@../styles/Styles.css" />
+            <JFXHamburger fx:id="SalesHam" layoutX="14.0" layoutY="12.0" stylesheets="@../styles/Styles.css" />
          </children>
       </AnchorPane>
-      <VBox layoutX="278.0" layoutY="117.0" prefHeight="486.0" prefWidth="184.0" style="-fx-spacing: 25;">
+      <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
+      <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1014.0">
          <children>
-            <JFXButton buttonType="RAISED" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="New Enquiry">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="Existing Enquiry">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="70.0" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="Quotation">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="55.0" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="New Purchase Order">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="100.0" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="Existing Purchase Order">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="250.0" prefHeight="35.0" prefWidth="184.0" style="-fx-background-color: #ffffff;" text="Invoice">
-               <font>
-                  <Font name="Arial" size="14.0" />
-               </font>
-            </JFXButton>
+            <AnchorPane fx:id="oldEqPane" disable="true" layoutX="-2.0" layoutY="1.0" prefHeight="678.0" prefWidth="1014.0" visible="false">
+               <children>
+                  <Label layoutX="403.0" layoutY="177.0" prefHeight="149.0" prefWidth="377.0" text="Old Enquiry">
+                     <font>
+                        <Font size="49.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="QoutPane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1020.0" visible="false">
+               <children>
+                  <Label layoutX="493.0" layoutY="272.0" prefHeight="140.0" prefWidth="262.0" text="Quotation">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1020.0" visible="false">
+               <children>
+                  <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Old PO">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1020.0" visible="false">
+               <children>
+                  <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Invoice">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="newPOPane" disable="true" layoutX="-7.0" prefHeight="699.0" prefWidth="1020.0" visible="false">
+               <children>
+                  <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="NEw PO">
+                     <font>
+                        <Font size="48.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="newEqPane" layoutX="-4.0" prefHeight="699.0" prefWidth="1014.0">
+               <children>
+                  <Label layoutX="403.0" layoutY="177.0" prefHeight="149.0" prefWidth="377.0" text="NEw Enquiry">
+                     <font>
+                        <Font size="49.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
-      </VBox>
-      <JFXDrawer layoutX="-2.0" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" />
+      </AnchorPane>
    </children>
 </AnchorPane>
