@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1020.0" style="-fx-background-color: #EEEEEE;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
+<AnchorPane id="AnchorPane" prefHeight="742.0" prefWidth="1191.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
    <children>
-      <AnchorPane prefHeight="39.0" prefWidth="1020.0" style="-fx-background-color: #3F51B5;">
+      <AnchorPane prefHeight="43.0" prefWidth="1200.0" style="-fx-background-color: #3F51B5;">
          <children>
             <Label layoutX="61.0" prefHeight="43.0" prefWidth="94.0" text="Sales" textFill="WHITE">
                <font>
@@ -21,7 +29,7 @@
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
       <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1014.0">
          <children>
-            <AnchorPane fx:id="oldEqPane" disable="true" layoutX="-2.0" layoutY="1.0" prefHeight="678.0" prefWidth="1014.0" visible="false">
+            <AnchorPane fx:id="oldEqPane" disable="true" layoutX="-7.0" layoutY="1.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="403.0" layoutY="177.0" prefHeight="149.0" prefWidth="377.0" text="Old Enquiry">
                      <font>
@@ -30,7 +38,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="QoutPane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1020.0" visible="false">
+            <AnchorPane fx:id="QoutPane" disable="true" layoutX="-7.0" layoutY="1.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="493.0" layoutY="272.0" prefHeight="140.0" prefWidth="262.0" text="Quotation">
                      <font>
@@ -39,7 +47,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1020.0" visible="false">
+            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Old PO">
                      <font>
@@ -48,7 +56,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1020.0" visible="false">
+            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Invoice">
                      <font>
@@ -57,7 +65,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="newPOPane" disable="true" layoutX="-7.0" prefHeight="699.0" prefWidth="1020.0" visible="false">
+            <AnchorPane fx:id="newPOPane" disable="true" layoutX="-7.0" prefHeight="699.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="NEw PO">
                      <font>
@@ -66,15 +74,78 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="newEqPane" layoutX="-4.0" prefHeight="699.0" prefWidth="1014.0">
-               <children>
-                  <Label layoutX="403.0" layoutY="177.0" prefHeight="149.0" prefWidth="377.0" text="NEw Enquiry">
-                     <font>
-                        <Font size="49.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
+            <ScrollPane fx:id="newEqPane" layoutX="-7.0" layoutY="1.0" pannable="true" vvalue="1.0">
+               <content>
+                  <AnchorPane prefHeight="699.0" prefWidth="1200.0">
+                     <children>
+                        <Separator layoutX="1.0" layoutY="535.0" prefHeight="20.0" prefWidth="1200.0" />
+                        <Label layoutX="25.0" layoutY="14.0" prefHeight="20.0" prefWidth="121.0" text="New Enquiry">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <effect>
+                              <Bloom />
+                           </effect>
+                        </Label>
+                        <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="25.0" layoutY="58.0" prefHeight="27.0" prefWidth="237.0" promptText="Date of Enquiry Received" />
+                        <JFXTextField fx:id="ENo" labelFloat="true" layoutX="25.0" layoutY="124.0" prefHeight="27.0" prefWidth="237.0" promptText="Enquiry Number">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="cmp" layoutX="25.0" layoutY="196.0" prefHeight="27.0" prefWidth="237.0" promptText="Company" />
+                        <JFXTextArea fx:id="EDes" labelFloat="true" layoutX="25.0" layoutY="263.0" prefHeight="174.0" prefWidth="671.0" promptText="Description">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextArea>
+                        <JFXTextField fx:id="CName" labelFloat="true" layoutX="830.0" layoutY="58.0" prefHeight="27.0" prefWidth="237.0" promptText="Customer Name">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="CPhone" labelFloat="true" layoutX="830.0" layoutY="124.0" prefHeight="27.0" prefWidth="237.0" promptText="Phone Number">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="Cmail" labelFloat="true" layoutX="830.0" layoutY="196.0" prefHeight="27.0" prefWidth="237.0" promptText="Email">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextArea fx:id="Cadd" labelFloat="true" layoutX="836.0" layoutY="263.0" prefHeight="174.0" prefWidth="252.0" promptText="Address">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextArea>
+                        <Label layoutX="25.0" layoutY="555.0" prefHeight="23.0" prefWidth="143.0" text="New Quotation">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                           <effect>
+                              <Bloom />
+                           </effect>
+                        </Label>
+                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1058.0" layoutY="498.0" onMouseClicked="#saveNewEnq" text="Label">
+                           <graphic>
+                              <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
+                           </graphic>
+                        </Label>
+                        <JFXTextField fx:id="Qno" editable="false" labelFloat="true" layoutX="25.0" layoutY="608.0" prefHeight="27.0" prefWidth="237.0" promptText="Quotation Number">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="Qby" labelFloat="true" layoutX="318.0" layoutY="608.0" prefHeight="27.0" prefWidth="237.0" promptText="Quoted By">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </JFXTextField>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
          </children>
       </AnchorPane>
    </children>

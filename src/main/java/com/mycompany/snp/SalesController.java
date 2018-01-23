@@ -5,8 +5,12 @@
  */
 package com.mycompany.snp;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -50,7 +55,27 @@ public class SalesController implements Initializable {
     private AnchorPane newPOPane;
 
     @FXML
-    private AnchorPane newEqPane;
+    private ScrollPane newEqPane;
+    @FXML
+    private JFXDatePicker Edate;
+    @FXML
+    private JFXTextField ENo;
+    @FXML
+    private JFXComboBox<String> cmp;
+    @FXML
+    private JFXTextArea EDes;
+    @FXML
+    private JFXTextField CName;
+    @FXML
+    private JFXTextField CPhone;
+    @FXML
+    private JFXTextField Cmail;
+    @FXML
+    private JFXTextArea Cadd;
+    @FXML
+    private JFXTextField Qno;
+    @FXML
+    private JFXTextField Qby;
 
 
     /**
@@ -74,7 +99,9 @@ public class SalesController implements Initializable {
         newPOPane.setVisible(false);
         newEqPane.setDisable(false);
         newEqPane.setVisible(true);
-                            
+        
+        cmp.getItems().add("Awin");
+        cmp.getItems().add("Steels");
             
         try{
         VBox box = FXMLLoader.load(getClass().getResource("/fxml/SalesDrawer.fxml"));
@@ -227,6 +254,12 @@ public void threadtock() {
 
       timer.schedule(delayedThreadStartTask, 500);//0.5 second
   }
+
+    @FXML
+    private void saveNewEnq(MouseEvent event) {
+        //store data entered into the database
+        
+    }
     
 }            
             

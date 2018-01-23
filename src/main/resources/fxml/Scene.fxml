@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="514.0" style="-fx-background-color: #EEEEEE;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="com.mycompany.snp.FXMLController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="514.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.FXMLController">
    <children>
       <JFXTextField fx:id="username" focusColor="#3f51b5" labelFloat="true" layoutX="133.0" layoutY="138.0" prefHeight="27.0" prefWidth="237.0" promptText="Username">
          <font>
@@ -31,7 +31,7 @@
          </font>
       </JFXPasswordField>
       <JFXComboBox fx:id="cate" focusColor="#3f51b5" labelFloat="true" layoutX="133.0" layoutY="279.0" prefHeight="27.0" prefWidth="237.0" promptText="Category" stylesheets="@../styles/Styles.css" />
-      <JFXButton fx:id="LoginButton" contentDisplay="GRAPHIC_ONLY" layoutX="220.0" layoutY="347.0" onMouseClicked="#LoginButtonHit" ripplerFill="#3e52b200" style="-fx-border-radius: 2;">
+      <JFXButton fx:id="LoginButton" contentDisplay="GRAPHIC_ONLY" layoutX="220.0" layoutY="347.0" onMouseClicked="#LoginButtonHit" ripplerFill="#3e52b200" style="-fx-border-radius: 2; -fx-background-color: #ffffff;">
          <graphic>
             <MaterialDesignIconView fill="#3f51b5" glyphName="ARROW_RIGHT_BOLD_CIRCLE_OUTLINE" onMouseClicked="#LoginButtonHit" size="45" />
          </graphic>
