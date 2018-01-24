@@ -76,9 +76,8 @@
             </AnchorPane>
             <ScrollPane fx:id="newEqPane" layoutX="-7.0" layoutY="1.0" pannable="true" vvalue="1.0">
                <content>
-                  <AnchorPane prefHeight="699.0" prefWidth="1200.0">
+                  <AnchorPane prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
-                        <Separator layoutX="1.0" layoutY="535.0" prefHeight="20.0" prefWidth="1200.0" />
                         <Label layoutX="25.0" layoutY="14.0" prefHeight="20.0" prefWidth="121.0" text="New Enquiry">
                            <font>
                               <Font name="Arial" size="20.0" />
@@ -88,13 +87,13 @@
                            </effect>
                         </Label>
                         <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="25.0" layoutY="58.0" prefHeight="27.0" prefWidth="237.0" promptText="Date of Enquiry Received" />
-                        <JFXTextField fx:id="ENo" labelFloat="true" layoutX="25.0" layoutY="124.0" prefHeight="27.0" prefWidth="237.0" promptText="Enquiry Number">
+                        <JFXTextField fx:id="ENo" labelFloat="true" layoutX="25.0" layoutY="151.0" prefHeight="27.0" prefWidth="237.0" promptText="Enquiry Number">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-                        <JFXComboBox fx:id="cmp" layoutX="25.0" layoutY="196.0" prefHeight="27.0" prefWidth="237.0" promptText="Company" />
-                        <JFXTextArea fx:id="EDes" labelFloat="true" layoutX="25.0" layoutY="263.0" prefHeight="174.0" prefWidth="671.0" promptText="Description">
+                        <JFXComboBox fx:id="cmp" layoutX="25.0" layoutY="236.0" prefHeight="27.0" prefWidth="237.0" promptText="Company" />
+                        <JFXTextArea fx:id="EDes" labelFloat="true" layoutX="25.0" layoutY="350.0" prefHeight="174.0" prefWidth="671.0" promptText="Description">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
@@ -104,44 +103,27 @@
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="CPhone" labelFloat="true" layoutX="830.0" layoutY="124.0" prefHeight="27.0" prefWidth="237.0" promptText="Phone Number">
+                        <JFXTextField fx:id="CPhone" labelFloat="true" layoutX="830.0" layoutY="151.0" prefHeight="27.0" prefWidth="237.0" promptText="Phone Number">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="Cmail" labelFloat="true" layoutX="830.0" layoutY="196.0" prefHeight="27.0" prefWidth="237.0" promptText="Email">
+                        <JFXTextField fx:id="Cmail" labelFloat="true" layoutX="830.0" layoutY="236.0" prefHeight="27.0" prefWidth="237.0" promptText="Email">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-                        <JFXTextArea fx:id="Cadd" labelFloat="true" layoutX="836.0" layoutY="263.0" prefHeight="174.0" prefWidth="252.0" promptText="Address">
+                        <JFXTextArea fx:id="Cadd" labelFloat="true" layoutX="830.0" layoutY="350.0" prefHeight="174.0" prefWidth="252.0" promptText="Address">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextArea>
-                        <Label layoutX="25.0" layoutY="555.0" prefHeight="23.0" prefWidth="143.0" text="New Quotation">
-                           <font>
-                              <Font name="Arial" size="20.0" />
-                           </font>
-                           <effect>
-                              <Bloom />
-                           </effect>
-                        </Label>
-                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1058.0" layoutY="498.0" onMouseClicked="#saveNewEnq" text="Label">
+                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1052.0" layoutY="595.0" onMouseClicked="#saveNewEnq" text="Label">
                            <graphic>
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
                            </graphic>
                         </Label>
-                        <JFXTextField fx:id="Qno" editable="false" labelFloat="true" layoutX="25.0" layoutY="608.0" prefHeight="27.0" prefWidth="237.0" promptText="Quotation Number">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </JFXTextField>
-                        <JFXTextField fx:id="Qby" labelFloat="true" layoutX="318.0" layoutY="608.0" prefHeight="27.0" prefWidth="237.0" promptText="Quoted By">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </JFXTextField>
+                        <Separator layoutX="760.0" layoutY="43.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="0.0" />
                      </children>
                   </AnchorPane>
                </content>
