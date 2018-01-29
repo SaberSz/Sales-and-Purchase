@@ -62,10 +62,10 @@ public class Person {
         this.remark = remark;
     }
     
-    public void settotal(JFXTextArea fName) {
+    public void setTotal(JFXTextArea fName) {
             this.total = fName;
         }
-     public JFXTextArea gettotal() {
+     public JFXTextArea getTotal() {
             return total;
         }
 

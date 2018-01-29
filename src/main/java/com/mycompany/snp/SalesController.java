@@ -443,7 +443,6 @@ public class SalesController implements Initializable {
         //to get the data from the table
         
         
-        //There's a bug in the Total column of the Tbale. I will rectify it asap. Posted on StackOverFlow.
         
         
          ObservableList<Person> trc;
@@ -455,8 +454,8 @@ public class SalesController implements Initializable {
         System.out.print(p.getFirstName().getText()+"\t");
         System.out.print(p.getLastName().getText()+"\t");
         System.out.print(p.getEmail().getText()+"\t");
-        System.out.println(p.getRemark().getText()+"\t");
-        System.out.println(p.gettotal().getText()+"\t");
+        System.out.print(p.getRemark().getText()+"\t");
+        System.out.println(p.getTotal().getText()+"\t");
       }
         i++;
       }
