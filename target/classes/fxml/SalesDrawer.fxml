@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.octicons.OctIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="678.0" prefWidth="210.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesDrawerController">
+   <children>
+      <AnchorPane prefHeight="680.0" prefWidth="192.0">
+         <children>
+            <AnchorPane prefHeight="179.0" prefWidth="211.0" style="-fx-background-color: #3F51B5;">
+               <children>
+                  <Label layoutX="50.0" layoutY="27.0" prefHeight="25.0" prefWidth="34.0">
+                     <graphic>
+                        <OctIconView fill="WHITE" glyphName="BRIEFCASE" size="125" />
+                     </graphic>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <VBox layoutY="178.0" prefHeight="499.0" prefWidth="210.0" style="-fx-spacing: 30;">
+               <children>
+                  <JFXButton buttonType="RAISED" onMouseClicked="#newEnqHit" prefHeight="35.0" prefWidth="219.0" style="-fx-background-color: #ffffff;" text="New Enquiry">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onMouseClicked="#oldEnqHit" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: #ffffff;" text="Existing Enquiry">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="70.0" onMouseClicked="#QoutHit" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: #ffffff;" text="Quotation">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="55.0" onMouseClicked="#newPOHit" prefHeight="35.0" prefWidth="240.0" style="-fx-background-color: #ffffff;" text="New Purchase Order">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="100.0" onMouseClicked="#oldPOHit" prefHeight="35.0" prefWidth="229.0" style="-fx-background-color: #ffffff;" text="Existing Purchase Order">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="250.0" onMouseClicked="#InvoiceHit" prefHeight="35.0" prefWidth="239.0" style="-fx-background-color: #ffffff;" text="Invoice">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

@@ -21,11 +21,16 @@ import java.util.ResourceBundle;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -75,6 +80,10 @@ public class SalesController implements Initializable {
     private JFXTextField Cmail;
     @FXML
     private JFXTextArea Cadd;
+    @FXML
+    private JFXTextField Qno;
+    @FXML
+    private TableView<Person> table1;
 
 
     /**
@@ -124,6 +133,7 @@ public class SalesController implements Initializable {
             SalesDraw.open();
         } 
         });
+        newEnquiryPane_PriceBoxFill();
         threadtock();
     }
 
@@ -252,6 +262,68 @@ public class SalesController implements Initializable {
 
       timer.schedule(delayedThreadStartTask, 500);//0.5 second
   }
+ 
+ //columns for table1
+ TableColumn indexCol = new TableColumn("S. No.");
+ TableColumn desCol = new TableColumn("Description");
+ TableColumn quantityCol = new TableColumn("Quantity"); 
+ TableColumn unitCol = new TableColumn("Unit/(SGD)"); 
+ TableColumn totalCol = new TableColumn("Total (SGD)"); 
+ 
+ void newEnquiryPane_PriceBoxFill(){
+      indexCol.setSortable(false);
+     desCol.setSortable(false);
+     quantityCol.setSortable(false);
+     unitCol.setSortable(false);
+     totalCol.setSortable(false);
+     indexCol.setPrefWidth(50);
+        
+        
+           
+       
+    table1.getColumns().addAll(indexCol, desCol, quantityCol, unitCol ,totalCol);
+    ObservableList<Person> data;    
+    data = FXCollections.observableArrayList(
+    new Person("1", "", "","", ""),
+    new Person("2", "", "","", ""),
+    new Person("3", "", "","", ""),
+    new Person("4", "", "","", ""),
+    new Person("5", "", "","", ""),
+    new Person("6", "", "","", ""),
+    new Person("7", "", "","", ""),
+    new Person("7", "", "","", ""),
+    new Person("8", "", "","", ""),
+    new Person("9", "", "","", ""),
+    new Person("10", "", "","", ""),
+    new Person("11", "", "","", ""),
+    new Person("12", "", "","", ""),
+    new Person("13", "", "","", ""),
+    new Person("14", "", "","", ""),
+    new Person("15", "", "","", ""),
+    new Person("16", "", "","", ""),
+    new Person("17", "", "","", ""),
+    new Person("18", "", "","", ""),
+    new Person("19", "", "","", ""),
+    new Person("20", "", "","", "")
+    );
+    
+    indexCol.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("firstName")
+    );
+    desCol.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("lastName")
+    );
+     quantityCol.setCellValueFactory(     
+             new PropertyValueFactory<Person,String>("email")
+    );             
+    
+    unitCol.setCellValueFactory(
+             new PropertyValueFactory<Person,String>("remark")
+    );  
+    totalCol.setCellValueFactory(new PropertyValueFactory<Person,String>("total"));       
+     
+    table1.setItems(data);                         
+ }
 
  static String cid; //for Customer Id
  static String eno; //for enquiry number
@@ -360,8 +432,43 @@ public class SalesController implements Initializable {
         
         
     }
+
+    @FXML
+    private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
+        //also note that as soon as the enquiry is detials are saved. A quotation number should be generated. The person can then either
+        //enter the details there itself or can just hit the save button to save as a draft(quotaion). 
+        //When the enquiry details are saved aert the user to note the quotation number
+        //We will not require any combo box for selections here. 
+        //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
+        //to get the data from the table
+        
+        
+        //There's a bug in the Total column of the Tbale. I will rectify it asap. Posted on StackOverFlow.
+        
+        
+         ObservableList<Person> trc;
+      trc =FXCollections.observableArrayList(table1.getItems());
+      int i=0;
+      while(i<20){
+      Person p= trc.get(i);
+      if(p.getLastName().getText().equalsIgnoreCase("")){break;}else{
+        System.out.print(p.getFirstName().getText()+"\t");
+        System.out.print(p.getLastName().getText()+"\t");
+        System.out.print(p.getEmail().getText()+"\t");
+        System.out.println(p.getRemark().getText()+"\t");
+        System.out.println(p.gettotal().getText()+"\t");
+      }
+        i++;
+      }
+    }
     
-}            
+    
+   
+    
+    
+    
+}
+
             
             
             
