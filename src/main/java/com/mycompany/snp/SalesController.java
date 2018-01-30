@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -442,6 +443,8 @@ public class SalesController implements Initializable {
         //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
         //to get the data from the table
         
+        String dg;//stores value of sequence number
+        
         
         
         
@@ -459,6 +462,56 @@ public class SalesController implements Initializable {
       }
         i++;
       }
+      
+      
+       String compname=cmp.getValue();
+       if(compname.equalsIgnoreCase("Awin")){
+           compname="AE";
+       }else{
+           compname="SC";
+       }
+       String date= String.valueOf(Edate.getValue());
+       date=date.substring(2,5);
+       System.out.println(date);
+      compname=date+compname;
+      compname=compname+"-QT-";
+      
+       System.out.println(compname);
+    //  String price=pr.getText();
+      String descr=EDes.getText();
+      try{             // this is the auto quote gen thing 
+          CallableStatement cs;
+       String sql008= "{ call quotelastdigitautogen(?)}";
+       cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
+       cs.registerOutParameter(1,java.sql.Types.INTEGER);
+       cs.executeQuery();
+        int dig=cs.getInt(1);
+        if(dig<10){
+         dg=String.valueOf(dig);dg="00"+dg;
+        }
+        else if(dig>=10 && dig<100)
+        {
+             dg=String.valueOf(dig);dg="0"+dg;
+        }  
+        else{
+             dg=String.valueOf(dig);
+        }
+       //18-AE or SC - QT - 001 
+       compname=compname+dg;
+       Qno.setText(compname);
+       System.out.println(compname);
+   
+        
+      } catch (SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+    
+      
+      
+      
+      
     }
     
     

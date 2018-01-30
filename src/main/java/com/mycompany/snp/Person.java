@@ -33,21 +33,21 @@ public class Person {
     }
  
     public JFXTextArea getFirstName() {
-        return firstName;
+        return firstName;//gives you he index value
     }
     public void setFirstName(JFXTextArea fName) {
         this.firstName = fName;
     }
         
     public JFXTextArea getLastName() {
-        return lastName;
+        return lastName;//returns des
     }
     public void setLastName(JFXTextArea fName) {
         this.lastName =  fName;
     }
     
     public JFXTextArea getEmail() {
-        return email;
+        return email;//Quantity value
     }
     public void setEmail(JFXTextArea fName) {
         this.email = fName;
@@ -55,7 +55,7 @@ public class Person {
     
 
  public JFXTextArea getRemark() {
-        return remark;
+        return remark;//gets unit value
     }
  
     public void setRemark(JFXTextArea remark) {
@@ -66,7 +66,7 @@ public class Person {
             this.total = fName;
         }
      public JFXTextArea getTotal() {
-            return total;
+            return total;//gets total value
         }
 
 }

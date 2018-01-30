@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class FXMLController implements Initializable {
 
@@ -41,7 +42,8 @@ public class FXMLController implements Initializable {
          cate.getItems().add("Sales");
          cate.getItems().add("Production");
     } 
-
+private double xa=0;
+    private double ya=0;
     @FXML
     private void LoginButtonHit(MouseEvent event) {
         if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin"))
@@ -57,9 +59,28 @@ public class FXMLController implements Initializable {
                     stage=(Stage)LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Sales.fxml"));
-                    Scene scene = new Scene(root);
-                    stage.setScene(scene);
-                    stage.show();
+                    
+                    
+                    //stage.initStyle(StageStyle.UNDECORATED);//waits    ok//shall i //saves plz autosave/ NOt needed actually
+        BorderPane root1 =new BorderPane(root);
+        root1.setOnMousePressed((MouseEvent even) ->{
+        xa=even.getSceneX();//copy and paste down NICE YOU GETS MESSAGE FROM NETBEANS TEAM thenks
+          ya=even.getSceneY();
+        });
+        root1.setOnMouseDragged((MouseEvent even) ->{
+            stage.setX(even.getScreenX() - xa);//copy
+            stage.setY(even.getScreenY() - ya);
+        xa=event.getSceneX();//copy and paste down
+          ya=event.getSceneY();//yakkappa??????
+        });
+        
+        Scene s =new Scene(root1);
+                    
+                    
+                    
+                    //Scene scene = new Scene(root);
+                    stage.setScene(s);
+                    stage.show();//saves
             }
             else if(category.equals("Production"))
             {
@@ -74,6 +95,7 @@ public class FXMLController implements Initializable {
             catch(Exception e)
             {
                 Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
+                Utilities.AlertBox.showErrorMessage(e);
             }
         }
         else
