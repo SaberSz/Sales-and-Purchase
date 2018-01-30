@@ -414,9 +414,9 @@ public class SalesController implements Initializable {
                             stmt.setString(4,EDes.getText().trim());
                             stmt.setString(5,cid);
                             stmt.executeUpdate();
-
+                            Utilities.AlertBox.notificationInfo("Success","New enquiry details saved");
                         }
-                        Utilities.AlertBox.notificationInfo("Success","New enquiry details saved");
+                        
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
