@@ -22,12 +22,7 @@
             </AnchorPane>
             <VBox layoutY="178.0" prefHeight="499.0" prefWidth="210.0" style="-fx-spacing: 30;">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#newEnqHit" prefHeight="35.0" prefWidth="219.0" style="-fx-background-color: #ffffff;" text="New Enquiry">
-                     <font>
-                        <Font name="Arial" size="14.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="10.0" onMouseClicked="#oldEnqHit" prefHeight="35.0" prefWidth="216.0" style="-fx-background-color: #ffffff;" text="Existing Enquiry">
+                  <JFXButton buttonType="RAISED" onMouseClicked="#newEnqHit" prefHeight="35.0" prefWidth="219.0" style="-fx-background-color: #ffffff;" text="Enquiry">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>

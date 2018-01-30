@@ -32,11 +32,6 @@ public class SalesDrawerController implements Initializable {
     }
 
     @FXML
-    private void oldEnqHit(MouseEvent event) {
-        SalesController.SD[1]=true;
-    }
-
-    @FXML
     private void QoutHit(MouseEvent event) {
         SalesController.SD[2]=true;
     }

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="750.0" prefWidth="1189.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
+<AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
    <children>
       <AnchorPane prefHeight="43.0" prefWidth="1200.0" style="-fx-background-color: #3F51B5;">
          <children>
@@ -31,25 +31,110 @@
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
       <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1014.0">
          <children>
-            <AnchorPane fx:id="oldEqPane" disable="true" layoutX="-7.0" layoutY="1.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
-               <children>
-                  <Label layoutX="403.0" layoutY="177.0" prefHeight="149.0" prefWidth="377.0" text="Old Enquiry">
-                     <font>
-                        <Font size="49.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="QoutPane" disable="true" layoutX="-7.0" layoutY="1.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
-               <children>
-                  <Label layoutX="493.0" layoutY="272.0" prefHeight="140.0" prefWidth="262.0" text="Quotation">
-                     <font>
-                        <Font size="26.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1200.0" visible="false">
+            <ScrollPane fx:id="QoutPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0" vvalue="1.0">
+               <content>
+                  <AnchorPane prefHeight="678.0" prefWidth="1200.0">
+                     <children>
+                        <JFXComboBox fx:id="QnoBox" focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="21.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
+                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="288.0" layoutY="22.0" onMouseClicked="#Fill_details_of_existing_Qno_and_Eno" prefHeight="26.0" prefWidth="19.0" text="Label">
+                           <graphic>
+                              <MaterialDesignIconView glyphName="CHECK" size="25" />
+                           </graphic>
+                        </Label>
+                        <AnchorPane fx:id="ContentQNoPane" layoutX="20.0" layoutY="76.0" prefHeight="1509.0" prefWidth="1155.0">
+                           <children>
+                              <Label layoutX="362.0" layoutY="23.0" prefHeight="31.0" prefWidth="455.0" text="Quotation Remember to set Gaussain Blur">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="12.0" prefHeight="23.0" prefWidth="158.0" text="Enquiry Details">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <effect>
+                                    <Bloom />
+                                 </effect>
+                              </Label>
+                              <JFXDatePicker fx:id="Edate1" defaultColor="#3f51b5" editable="false" layoutX="14.0" layoutY="76.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
+                              <JFXTextField fx:id="ENo1" editable="false" labelFloat="true" layoutX="15.0" layoutY="139.0" prefHeight="27.0" prefWidth="236.0" promptText="Enquiry Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextArea fx:id="EDes1" editable="false" labelFloat="true" layoutX="15.0" layoutY="303.0" prefHeight="174.0" prefWidth="671.0" promptText="Description">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextArea>
+                              <JFXTextField fx:id="CName1" editable="false" labelFloat="true" layoutX="817.0" layoutY="76.0" prefHeight="27.0" prefWidth="237.0" promptText="Customer Name">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="CPhone1" editable="false" labelFloat="true" layoutX="817.0" layoutY="139.0" prefHeight="27.0" prefWidth="237.0" promptText="Phone Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="Cmail1" editable="false" labelFloat="true" layoutX="817.0" layoutY="210.0" prefHeight="27.0" prefWidth="237.0" promptText="Email">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextArea fx:id="Cadd1" editable="false" labelFloat="true" layoutX="817.0" layoutY="303.0" prefHeight="174.0" prefWidth="252.0" promptText="Address">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextArea>
+                              <Separator layoutX="771.0" layoutY="103.0" orientation="VERTICAL" prefHeight="335.0" prefWidth="5.0" />
+                              <JFXTextField fx:id="ECom1" editable="false" labelFloat="true" layoutX="15.0" layoutY="210.0" prefHeight="27.0" prefWidth="236.0" promptText="Company">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <Label layoutX="14.0" layoutY="551.0" prefHeight="23.0" prefWidth="146.0" text="New Quotation">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                                 <effect>
+                                    <Bloom />
+                                 </effect>
+                              </Label>
+                              <Separator layoutX="129.0" layoutY="519.0" prefHeight="8.0" prefWidth="793.0" />
+                              <JFXTextField fx:id="Qno1" editable="false" layoutX="15.0" layoutY="606.0" prefHeight="27.0" prefWidth="236.0" promptText="Quotation Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <TableView fx:id="table11" layoutX="14.0" layoutY="650.0" prefHeight="781.0" prefWidth="1125.0" style="-fx-background-color: #ffffff;" />
+                              <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1030.0" layoutY="600.0" onMouseClicked="#Edit_Quotation_in_QuotationPane" text="Edit">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1030.0" layoutY="1442.0" onMouseClicked="#Save_Quotation_in_QuotationPane" text="Save">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1091.0" layoutY="1442.0" onMouseClicked="#Generate_Quotation_in_QuotationPane" text="Genreate PDF">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="FILE_PDF" onMouseClicked="#Save_Quotation_in_QuotationPane" size="30" />
+                                 </graphic>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1091.0" layoutY="600.0" onMouseClicked="#Revise_Quotation_in_QuotationPane" text="Revise">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="CACHED" size="30" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Old PO">
                      <font>
@@ -58,7 +143,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="679.0" prefWidth="1200.0" visible="false">
+            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Invoice">
                      <font>
@@ -67,7 +152,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="newPOPane" disable="true" layoutX="-7.0" prefHeight="699.0" prefWidth="1200.0" visible="false">
+            <AnchorPane fx:id="newPOPane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <children>
                   <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="NEw PO">
                      <font>
@@ -76,9 +161,9 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="newEqPane" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="706.0" prefWidth="1200.0" vbarPolicy="ALWAYS">
+            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0">
                <content>
-                  <AnchorPane prefHeight="704.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
+                  <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <Label layoutX="25.0" layoutY="14.0" prefHeight="20.0" prefWidth="121.0" text="New Enquiry">
                            <font>

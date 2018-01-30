@@ -47,11 +47,9 @@ public class SalesController implements Initializable {
     private JFXHamburger SalesHam;
     @FXML
     private JFXDrawer SalesDraw;
-    @FXML
-    private AnchorPane oldEqPane;
 
     @FXML
-    private AnchorPane QoutPane;
+    private ScrollPane QoutPane;
 
     @FXML
     private AnchorPane oldPOPane;
@@ -84,6 +82,30 @@ public class SalesController implements Initializable {
     private JFXTextField Qno;
     @FXML
     private TableView<Person> table1;
+    @FXML
+    private JFXComboBox<String> QnoBox;
+    @FXML
+    private JFXDatePicker Edate1;
+    @FXML
+    private JFXTextField ENo1;
+    @FXML
+    private JFXTextArea EDes1;
+    @FXML
+    private JFXTextField CName1;
+    @FXML
+    private JFXTextField CPhone1;
+    @FXML
+    private JFXTextField Cmail1;
+    @FXML
+    private JFXTextArea Cadd1;
+    @FXML
+    private JFXTextField ECom1;
+    @FXML
+    private JFXTextField Qno1;
+    @FXML
+    private TableView<Person> table11;
+    @FXML
+    private AnchorPane ContentQNoPane;
 
 
     /**
@@ -94,9 +116,6 @@ public class SalesController implements Initializable {
         SalesDraw.setDisable(false);
         SalesDraw.setVisible(true);
         SalesDraw.toBack();
-        
-        oldEqPane.setDisable(true);
-        oldEqPane.setVisible(false);
         QoutPane.setDisable(true);
         QoutPane.setVisible(false);
         oldPOPane.setDisable(true);
@@ -146,8 +165,7 @@ public class SalesController implements Initializable {
               if(tock){
                       if(SD[0])
                           {
-                                oldEqPane.setDisable(true);
-                                oldEqPane.setVisible(false);
+                               
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(true);
@@ -161,25 +179,9 @@ public class SalesController implements Initializable {
 
                            SD[0]=false;
                           }
-                      else if(SD[1]){
-                          oldEqPane.setDisable(false);
-                                oldEqPane.setVisible(true);
-                                QoutPane.setDisable(true);
-                                QoutPane.setVisible(false);
-                                oldPOPane.setDisable(true);
-                                oldPOPane.setVisible(false);
-                                InvoicePane.setDisable(true);
-                                InvoicePane.setVisible(false);
-                                newPOPane.setDisable(true);
-                                newPOPane.setVisible(false);
-                                newEqPane.setDisable(true);
-                                newEqPane.setVisible(false); 
-                          SD[1]=false;
-                          }
                         else if(SD[2])
                         {
-                            oldEqPane.setDisable(true);
-                                oldEqPane.setVisible(false);
+                            
                                 QoutPane.setDisable(false);
                                 QoutPane.setVisible(true);
                                 oldPOPane.setDisable(true);
@@ -194,8 +196,7 @@ public class SalesController implements Initializable {
                         }
                         else if(SD[3])
                         {
-                            oldEqPane.setDisable(true);
-                                oldEqPane.setVisible(false);
+                            
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(true);
@@ -210,8 +211,7 @@ public class SalesController implements Initializable {
                         } 
                         else if(SD[4])
                         {
-                            oldEqPane.setDisable(true);
-                                oldEqPane.setVisible(false);
+                            
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(false);
@@ -226,8 +226,7 @@ public class SalesController implements Initializable {
                         }
                       else if(SD[5])
                         {
-                            oldEqPane.setDisable(true);
-                                oldEqPane.setVisible(false);
+                            
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(true);
@@ -459,6 +458,26 @@ public class SalesController implements Initializable {
       }
         i++;
       }
+    }
+
+    @FXML
+    private void Fill_details_of_existing_Qno_and_Eno(MouseEvent event) {
+    }
+
+    @FXML
+    private void Edit_Quotation_in_QuotationPane(MouseEvent event) {
+    }
+
+    @FXML
+    private void Save_Quotation_in_QuotationPane(MouseEvent event) {
+    }
+
+    @FXML
+    private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
+    }
+
+    @FXML
+    private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
     }
     
     
