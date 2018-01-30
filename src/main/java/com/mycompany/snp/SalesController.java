@@ -18,7 +18,9 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ResourceBundle;
+import java.util.StringTokenizer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -332,7 +334,10 @@ public class SalesController implements Initializable {
     @FXML
     private void saveNewEnq(MouseEvent event) {
         //store new enquiry data entered into the database
-      
+           String dg;//stores value of sequence number
+           String mx;
+           String mx1;
+           int[] mxval=new int[100000];//array required for sorting result set
         try{
             if(Edate.getValue().toString().isEmpty()|| ENo.getText().trim().isEmpty() || cmp.getValue().isEmpty() || EDes.getText().trim().isEmpty() 
                     || CName.getText().trim().isEmpty() ||CPhone.getText().trim().isEmpty() || Cmail.getText().trim().isEmpty() ||Cadd.getText().trim().isEmpty())
@@ -431,39 +436,6 @@ public class SalesController implements Initializable {
           Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
         }
         
-        
-    }
-
-    @FXML
-    private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
-        //also note that as soon as the enquiry is detials are saved. A quotation number should be generated. The person can then either
-        //enter the details there itself or can just hit the save button to save as a draft(quotaion). 
-        //When the enquiry details are saved aert the user to note the quotation number
-        //We will not require any combo box for selections here. 
-        //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
-        //to get the data from the table
-        
-        String dg;//stores value of sequence number
-        
-        
-        
-        
-         ObservableList<Person> trc;
-      trc =FXCollections.observableArrayList(table1.getItems());
-      int i=0;
-      while(i<20){
-      Person p= trc.get(i);
-      if(p.getLastName().getText().equalsIgnoreCase("")){break;}else{
-        System.out.print(p.getFirstName().getText()+"\t");
-        System.out.print(p.getLastName().getText()+"\t");
-        System.out.print(p.getEmail().getText()+"\t");
-        System.out.print(p.getRemark().getText()+"\t");
-        System.out.println(p.getTotal().getText()+"\t");
-      }
-        i++;
-      }
-      
-      
        String compname=cmp.getValue();
        if(compname.equalsIgnoreCase("Awin")){
            compname="AE";
@@ -479,11 +451,43 @@ public class SalesController implements Initializable {
        System.out.println(compname);
     //  String price=pr.getText();
       String descr=EDes.getText();
-      try{             // this is the auto quote gen thing 
-          CallableStatement cs;
-       String sql008= "{ call quotelastdigitautogen(?)}";
+      Statement st;
+     
+     try{       
+ String suql = "SELECT Qno FROM `qoutation` WHERE 1";
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           ResultSet rs=st.executeQuery(suql);
+                           int i=0,j=0;
+                           while(rs.next()){
+                    
+                           mx=rs.getString("Qno");
+                 
+                           mx1=mx.substring(10,12);
+                                System.out.println("mx1 val:"+mx1);
+                           mxval[i]=Integer.parseInt(mx1);
+                           i++;      
+                           }
+                           int temp;
+                           //bubble sorted the array and picked the last element to obtain the max value
+                     for(int x=0;x<i-1;x++){
+                          for(int y=0;y<=i-x-1;y++){
+                              if(mxval[y]>mxval[y+1]){
+                                  temp=mxval[y];
+                                  mxval[y]=mxval[y+1];
+                                  mxval[y+1]=temp;
+                              }
+                                  
+                          }
+                      }
+                    temp=mxval[i];
+                    System.out.println("temp="+temp);
+                           
+// this is the auto quote gen thing 
+         CallableStatement cs;
+       String sql008= "{ call quotelastdigitautogen(?,?)}";
        cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
        cs.registerOutParameter(1,java.sql.Types.INTEGER);
+       cs.setInt(2,temp);
        cs.executeQuery();
         int dig=cs.getInt(1);
         if(dig<10){
@@ -496,11 +500,11 @@ public class SalesController implements Initializable {
         else{
              dg=String.valueOf(dig);
         }
-       //18-AE or SC - QT - 001 
+       //18-AE or SC - QT - 001
        compname=compname+dg;
        Qno.setText(compname);
        System.out.println(compname);
-   
+    Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
         
       } catch (SQLException exe){
                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
@@ -508,6 +512,81 @@ public class SalesController implements Initializable {
                     Utilities.AlertBox.showErrorMessage(exe);
       }
     
+         PreparedStatement stmt;
+        try{
+   
+     String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                            stmt.setString(1,compname);
+                            stmt.executeUpdate();
+      }catch (SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+    
+
+    
+      
+
+      
+      try{
+      
+     String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setString(1,eno);
+                            stmt.setString(2,compname);
+                            stmt.executeUpdate();
+      }
+      catch(SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+}
+
+
+    @FXML
+    private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
+        //also note that as soon as the enquiry is detials are saved. A quotation number should be generated. The person can then either
+        //enter the details there itself or can just hit the save button to save as a draft(quotaion). 
+        //When the enquiry details are saved aert the user to note the quotation number
+        //We will not require any combo box for selections here. 
+        //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
+        //to get the data from the table
+        String str=" ";
+        StringTokenizer st=new StringTokenizer(str," ");
+       String ch,ch1,ch2,ch3;
+       
+         ObservableList<Person> trc;
+      trc =FXCollections.observableArrayList(table1.getItems());
+      int i=0;
+      while(i<20){
+      Person p= trc.get(i);
+      if(p.getLastName().getText().equalsIgnoreCase("")){
+          break;
+      }else{
+        
+          
+        str=p.getFirstName().getText()+" ";
+        str=str+p.getLastName().getText()+" ";
+  
+        str=str+p.getEmail().getText()+" ";
+        str=str+p.getRemark().getText()+" ";
+        str=str+p.getTotal().getText()+" ";
+        System.out.println("str contents:"+str);
+        int count=0;
+        while(count!=4){
+            do{
+                ch=st.toString();
+                System.out.print("ch value:"+ch);
+            }while(st.hasMoreTokens());
+        }
+        
+      }
+        i++;
+      }
+      
       
       
       
