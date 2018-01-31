@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -31,6 +32,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -106,6 +109,8 @@ public class SalesController implements Initializable {
     private TableView<Person> table11;
     @FXML
     private AnchorPane ContentQNoPane;
+    @FXML
+    private TableView<Person2> table12;
 
 
     /**
@@ -152,7 +157,9 @@ public class SalesController implements Initializable {
             SalesDraw.open();
         } 
         });
-        newEnquiryPane_PriceBoxFill();
+       // newEnquiryPane_PriceBoxFill();
+        table1.setEffect(new GaussianBlur(20));
+        table12.setEffect(new GaussianBlur(20));
         threadtock();
     }
 
@@ -269,7 +276,8 @@ public class SalesController implements Initializable {
  TableColumn unitCol = new TableColumn("Unit/(SGD)"); 
  TableColumn totalCol = new TableColumn("Total (SGD)"); 
  
- void newEnquiryPane_PriceBoxFill(){
+ 
+ void newEnquiryPane_PriceBoxFill_Awin(){
       indexCol.setSortable(false);
      desCol.setSortable(false);
      quantityCol.setSortable(false);
@@ -323,10 +331,76 @@ public class SalesController implements Initializable {
      
     table1.setItems(data);                         
  }
+ 
+ 
+ TableColumn SNCol = new TableColumn("S.N");
+ TableColumn PosCol = new TableColumn("Position");
+ TableColumn NRCol = new TableColumn("Normal Rate/HR(S$) (Mon to Fri 8am to 5pm)"); 
+ TableColumn BeyondCol = new TableColumn("Beyond Normal Hours and Saturdays (S$)"); 
+ TableColumn HolidayCol = new TableColumn("Sundays and Public Holidays (S$)"); 
+ TableColumn remarkCol = new TableColumn("Remarks"); 
+ 
+ void newEnquiryPane_PriceBoxFill_Steels(){
+      SNCol.setSortable(false);
+     PosCol.setSortable(false);
+     NRCol.setSortable(false);
+     BeyondCol.setSortable(false);
+     HolidayCol.setSortable(false);
+     remarkCol.setSortable(false);
+     SNCol.setPrefWidth(50);
+        
+        
+           
+       
+    table12.getColumns().addAll(SNCol, PosCol, NRCol, BeyondCol ,HolidayCol,remarkCol);
+    ObservableList<Person2> data;    
+    data = FXCollections.observableArrayList(
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "",""),
+    new Person2("", "", "","", "","")
+    );
+    
+    SNCol.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("SN")
+    );
+    PosCol.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("Position")
+    );
+     NRCol.setCellValueFactory(     
+             new PropertyValueFactory<Person,String>("NormalRate")
+    );             
+    
+    BeyondCol.setCellValueFactory(
+             new PropertyValueFactory<Person,String>("BeyondNormalHours")
+    );  
+    HolidayCol.setCellValueFactory(new PropertyValueFactory<Person,String>("Holidays")); 
+    
+    remarkCol.setCellValueFactory(new PropertyValueFactory<Person,String>("Remarks")); 
+     
+    table12.setItems(data);                         
+ }
 
  static String cid; //for Customer Id
  static String eno; //for enquiry number
-
+ static String cmpname;
     @FXML
     private void saveNewEnq(MouseEvent event) {
         //store new enquiry data entered into the database
@@ -414,6 +488,29 @@ public class SalesController implements Initializable {
                             stmt.setString(5,cid);
                             stmt.executeUpdate();
                             Utilities.AlertBox.notificationInfo("Success","New enquiry details saved");
+                            cmpname=cmp.getValue();
+                            
+                            if(cmpname.equals("Awin"))
+                            {
+                                table12.setDisable(true);
+                                table12.setVisible(false);
+                                table1.setDisable(false);
+                                table1.setVisible(true);
+                                table1.getItems().clear();
+                                newEnquiryPane_PriceBoxFill_Awin();
+                                table1.setEffect(new ColorAdjust());
+                            }
+                            else
+                            {
+                                table1.setDisable(true);
+                                table1.setVisible(false);
+                                table12.setDisable(false);
+                                table12.setVisible(true);
+                                table12.getItems().clear();
+                                newEnquiryPane_PriceBoxFill_Steels();
+                                table12.setEffect(new ColorAdjust());
+                            }
+                            
                         }
                         
                     
@@ -479,9 +576,23 @@ public class SalesController implements Initializable {
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
     }
+
+    @FXML
+    private void New_Enquiry_Pane_Clear_Components(MouseEvent event) {      
+        ENo.clear();
+        Edate.valueProperty().set(null);
+        cmp.valueProperty().set(null);
+        EDes.clear();
+        CName.clear();
+        CPhone.clear();
+        Cmail.clear();
+        Cadd.clear();
+        Qno.clear();
+        table1.setEffect(new GaussianBlur(20));
+        table12.setEffect(new GaussianBlur(20));
+     }
     
-    
-   
+
     
     
     

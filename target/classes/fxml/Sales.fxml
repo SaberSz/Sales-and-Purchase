@@ -165,15 +165,7 @@
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
-                        <Label layoutX="25.0" layoutY="14.0" prefHeight="20.0" prefWidth="121.0" text="New Enquiry">
-                           <font>
-                              <Font name="Arial" size="20.0" />
-                           </font>
-                           <effect>
-                              <Bloom />
-                           </effect>
-                        </Label>
-                        <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="25.0" layoutY="58.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
+                        <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="24.0" layoutY="72.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
                         <JFXTextField fx:id="ENo" labelFloat="true" layoutX="25.0" layoutY="151.0" prefHeight="27.0" prefWidth="236.0" promptText="Enquiry Number">
                            <font>
                               <Font name="Arial" size="13.0" />
@@ -185,7 +177,7 @@
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextArea>
-                        <JFXTextField fx:id="CName" labelFloat="true" layoutX="830.0" layoutY="58.0" prefHeight="27.0" prefWidth="237.0" promptText="Customer Name">
+                        <JFXTextField fx:id="CName" labelFloat="true" layoutX="830.0" layoutY="72.0" prefHeight="27.0" prefWidth="237.0" promptText="Customer Name">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
@@ -230,6 +222,12 @@
                            <graphic>
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
                            </graphic>
+                        </JFXButton>
+                        <TableView fx:id="table12" editable="true" layoutX="24.0" layoutY="776.0" prefHeight="851.0" prefWidth="1134.0" style="-fx-background-color: #ffffff;" />
+                        <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="14.0" onMouseClicked="#New_Enquiry_Pane_Clear_Components" prefHeight="30.0" prefWidth="167.0" style="-fx-background-color: #ffffff;" text="New Enquiry">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
                         </JFXButton>
                      </children>
                   </AnchorPane>
