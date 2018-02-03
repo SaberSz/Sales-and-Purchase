@@ -161,7 +161,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0">
+            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" vvalue="0.31">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
