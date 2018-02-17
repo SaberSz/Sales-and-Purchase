@@ -571,7 +571,7 @@ public class SalesController implements Initializable {
         else
         {
             //Generate the Steels Quotation Table 
-            newEnquiryPane_PriceBoxFill_Steels();
+            newEnquiryPane_PriceBoxFill_Steels(table12);
             
         }
     }
