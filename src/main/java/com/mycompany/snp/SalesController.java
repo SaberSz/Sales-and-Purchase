@@ -559,6 +559,20 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Fill_details_of_existing_Qno_and_Eno(MouseEvent event) {
+        //retrieve the details of enquiry using the quotation number.
+        
+        if(ECom1.getText().equals("Awin"))
+        {
+           //Generate the Awin Quotation Table 
+            newEnquiryPane_PriceBoxFill_Awin();
+            
+        }
+        else
+        {
+            //Generate the Steels Quotation Table 
+            newEnquiryPane_PriceBoxFill_Steels();
+            
+        }
     }
 
     @FXML

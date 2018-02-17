@@ -31,14 +31,14 @@
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
       <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1014.0">
          <children>
-            <ScrollPane fx:id="QoutPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0" vvalue="1.0">
+            <ScrollPane fx:id="QoutPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
                         <JFXComboBox fx:id="QnoBox" focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="21.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
                         <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="288.0" layoutY="22.0" onMouseClicked="#Fill_details_of_existing_Qno_and_Eno" prefHeight="26.0" prefWidth="19.0" text="Label">
                            <graphic>
-                              <MaterialDesignIconView glyphName="CHECK" size="25" />
+                              <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="25" />
                            </graphic>
                         </Label>
                         <AnchorPane fx:id="ContentQNoPane" layoutX="20.0" layoutY="76.0" prefHeight="1509.0" prefWidth="1155.0">
@@ -161,7 +161,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" vvalue="0.31">
+            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
