@@ -14,9 +14,11 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
@@ -405,7 +407,10 @@ public class SalesController implements Initializable {
     @FXML
     private void saveNewEnq(MouseEvent event) {
         //store new enquiry data entered into the database
-      
+           String dg;
+           String mx;
+           String mx1;
+           int[] mxval=new int[100000];
         try{
             if(Edate.getValue().toString().isEmpty()|| ENo.getText().trim().isEmpty() || cmp.getValue().isEmpty() || EDes.getText().trim().isEmpty() 
                     || CName.getText().trim().isEmpty() ||CPhone.getText().trim().isEmpty() || Cmail.getText().trim().isEmpty() ||Cadd.getText().trim().isEmpty())
@@ -526,9 +531,118 @@ public class SalesController implements Initializable {
         catch(NullPointerException e){
           Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
         }
+          String compname=cmp.getValue();
+       if(compname.equalsIgnoreCase("Awin")){
+           compname="AE";
+       }else{
+           compname="SC";
+       }
+       String date= String.valueOf(Edate.getValue());
+       date=date.substring(2,5);
+       System.out.println(date);
+      compname=date+compname;
+      compname=compname+"-QT-";
+      
+       System.out.println(compname);
+    //  String price=pr.getText();
+      String descr=EDes.getText();
+       Statement st;
+     
+     try{       
+ String suql = "SELECT Qno FROM `qoutation` WHERE 1";
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           ResultSet rs=st.executeQuery(suql);
+                           int i=0,j=0;
+                           while(rs.next()){
+                    
+                           mx=rs.getString("Qno");
+                 
+                           mx1=mx.substring(10,12);
+                                System.out.println("mx1 val:"+mx1);
+                           mxval[i]=Integer.parseInt(mx1);
+                           i++;      
+                           }
+                           int temp;
+                           //bubble sorted the array and picked the last element to obtain the max value
+                     for(int x=0;x<i-1;x++){
+                          for(int y=0;y<=i-x-1;y++){
+                              if(mxval[y]>mxval[y+1]){
+                                  temp=mxval[y];
+                                  mxval[y]=mxval[y+1];
+                                  mxval[y+1]=temp;
+                              }
+                                  
+                          }
+                      }
+                    temp=mxval[i];
+                    System.out.println("temp="+temp);
+                           
+// this is the auto quote gen thing 
+         CallableStatement cs;
+       String sql008= "{ call quotelastdigitautogen(?,?)}";
+       cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
+       cs.registerOutParameter(1,java.sql.Types.INTEGER);
+       cs.setInt(2,temp);
+       cs.executeQuery();
+        int dig=cs.getInt(1);
+        if(dig<10){
+         dg=String.valueOf(dig);dg="00"+dg;
+        }
+        else if(dig>=10 && dig<100)
+        {
+             dg=String.valueOf(dig);dg="0"+dg;
+        }  
+        else{
+             dg=String.valueOf(dig);
+        }
+       //18-AE or SC - QT - 001
+       compname=compname+dg;
+       Qno.setText(compname);
+       System.out.println(compname);
+    Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
         
+      } catch (SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+    
+         PreparedStatement stmt;
+        try{
+   
+     String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                            stmt.setString(1,compname);
+                            stmt.executeUpdate();
+      }catch (SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+    
+
+    
+      
+
+      
+      try{
+      
+     String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setString(1,eno);
+                            stmt.setString(2,compname);
+                            stmt.executeUpdate();
+      }
+      catch(SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+}
+
+
         
-    }
+    
 
     @FXML
     private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
@@ -540,19 +654,48 @@ public class SalesController implements Initializable {
         //to get the data from the table
         
         
-        
+        PreparedStatement stmt;
         
          ObservableList<Person> trc;
       trc =FXCollections.observableArrayList(table1.getItems());
       int i=0;
       while(i<20){
       Person p= trc.get(i);
-      if(p.getLastName().getText().equalsIgnoreCase("")){break;}else{
-        System.out.print(p.getFirstName().getText()+"\t");
+      if(p.getLastName().getText().equalsIgnoreCase("")){
+          break;
+      }
+      else{
+       /* System.out.print(p.getFirstName().getText()+"\t");
         System.out.print(p.getLastName().getText()+"\t");
         System.out.print(p.getEmail().getText()+"\t");
         System.out.print(p.getRemark().getText()+"\t");
         System.out.println(p.getTotal().getText()+"\t");
+          */
+        String d=p.getLastName().getText();
+        int q = Integer.parseInt(p.getEmail().getText());
+        int r=Integer.parseInt(p.getRemark().getText());
+        long s=Long.parseLong(p.getTotal().getText());
+        String qo=Qno.getText();
+        System.out.println("the quotation no is "+qo);
+        int no=i;
+      try{
+      
+     String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setInt(1,no);
+                            stmt.setString(2,d);
+                            stmt.setInt(3,q);
+                            stmt.setInt(4,r);
+                            stmt.setLong(5,s);
+                            stmt.setString(6,qo);
+                            stmt.executeUpdate();
+      }
+      catch(SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
+        
       }
         i++;
       }
@@ -571,7 +714,7 @@ public class SalesController implements Initializable {
         else
         {
             //Generate the Steels Quotation Table 
-            newEnquiryPane_PriceBoxFill_Steels();
+           // newEnquiryPane_PriceBoxFill_Steels(tabl);
             
         }
     }
