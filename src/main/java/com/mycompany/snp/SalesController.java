@@ -277,7 +277,7 @@ public class SalesController implements Initializable {
  TableColumn totalCol = new TableColumn("Total (SGD)"); 
  
  
- void newEnquiryPane_PriceBoxFill_Awin(){
+  void newEnquiryPane_PriceBoxFill_Awin(TableView<Person> tables){
       indexCol.setSortable(false);
      desCol.setSortable(false);
      quantityCol.setSortable(false);
@@ -288,7 +288,7 @@ public class SalesController implements Initializable {
         
            
        
-    table1.getColumns().addAll(indexCol, desCol, quantityCol, unitCol ,totalCol);
+    tables.getColumns().addAll(indexCol, desCol, quantityCol, unitCol ,totalCol);
     ObservableList<Person> data;    
     data = FXCollections.observableArrayList(
     new Person("1", "", "","", ""),
@@ -329,7 +329,8 @@ public class SalesController implements Initializable {
     );  
     totalCol.setCellValueFactory(new PropertyValueFactory<Person,String>("total"));       
      
-    table1.setItems(data);                         
+    tables.setItems(data);
+    //return tables;
  }
  
  
@@ -340,7 +341,7 @@ public class SalesController implements Initializable {
  TableColumn HolidayCol = new TableColumn("Sundays and Public Holidays (S$)"); 
  TableColumn remarkCol = new TableColumn("Remarks"); 
  
- void newEnquiryPane_PriceBoxFill_Steels(){
+ void newEnquiryPane_PriceBoxFill_Steels(TableView<Person2> tables){
       SNCol.setSortable(false);
      PosCol.setSortable(false);
      NRCol.setSortable(false);
@@ -352,7 +353,7 @@ public class SalesController implements Initializable {
         
            
        
-    table12.getColumns().addAll(SNCol, PosCol, NRCol, BeyondCol ,HolidayCol,remarkCol);
+    tables.getColumns().addAll(SNCol, PosCol, NRCol, BeyondCol ,HolidayCol,remarkCol);
     ObservableList<Person2> data;    
     data = FXCollections.observableArrayList(
     new Person2("", "", "","", "",""),
@@ -395,7 +396,7 @@ public class SalesController implements Initializable {
     
     remarkCol.setCellValueFactory(new PropertyValueFactory<Person,String>("Remarks")); 
      
-    table12.setItems(data);                         
+    tables.setItems(data);                         
  }
 
  static String cid; //for Customer Id
@@ -497,7 +498,7 @@ public class SalesController implements Initializable {
                                 table1.setDisable(false);
                                 table1.setVisible(true);
                                 table1.getItems().clear();
-                                newEnquiryPane_PriceBoxFill_Awin();
+                                newEnquiryPane_PriceBoxFill_Awin(table1);
                                 table1.setEffect(new ColorAdjust());
                             }
                             else
@@ -507,7 +508,7 @@ public class SalesController implements Initializable {
                                 table12.setDisable(false);
                                 table12.setVisible(true);
                                 table12.getItems().clear();
-                                newEnquiryPane_PriceBoxFill_Steels();
+                                newEnquiryPane_PriceBoxFill_Steels(table12);
                                 table12.setEffect(new ColorAdjust());
                             }
                             
@@ -564,7 +565,7 @@ public class SalesController implements Initializable {
         if(ECom1.getText().equals("Awin"))
         {
            //Generate the Awin Quotation Table 
-            newEnquiryPane_PriceBoxFill_Awin();
+            newEnquiryPane_PriceBoxFill_Awin(table11);
             
         }
         else
