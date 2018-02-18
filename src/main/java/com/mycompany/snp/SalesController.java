@@ -62,7 +62,7 @@ public class SalesController implements Initializable {
     private AnchorPane InvoicePane;
 
     @FXML
-    private AnchorPane newPOPane;
+    private ScrollPane newPOPane;
 
     @FXML
     private ScrollPane newEqPane;
@@ -114,6 +114,20 @@ public class SalesController implements Initializable {
     private TableView<Person2> table12;
     @FXML
     private TableView<Person2> table111;
+    @FXML
+    private JFXComboBox<String> QnoBox1;
+    @FXML
+    private JFXTextField PjNo;
+    @FXML
+    private JFXTextField PrNo;
+    @FXML
+    private JFXDatePicker DateRec;
+    @FXML
+    private JFXDatePicker EstDate;
+    @FXML
+    private JFXTextField EsVal;
+    @FXML
+    private JFXTextArea ProDes;
 
 
     /**
@@ -1190,6 +1204,26 @@ public class SalesController implements Initializable {
         table1.setEffect(new GaussianBlur(20));
         table12.setEffect(new GaussianBlur(20));
      }
+
+    @FXML
+    private void power_off(MouseEvent event) {
+    }
+
+    @FXML
+    private void tick_in_project(MouseEvent event) {
+    }
+
+    @FXML
+    private void save_in_project(MouseEvent event) {
+    }
+
+    @FXML
+    private void edit_in_project(MouseEvent event) {
+    }
+
+    @FXML
+    private void refresh_project_pane(MouseEvent event) {
+    }
     
 
     
