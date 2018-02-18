@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 17, 2018 at 07:36 PM
+-- Generation Time: Feb 18, 2018 at 05:51 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -26,6 +26,7 @@ DELIMITER $$
 --
 -- Procedures
 --
+DROP PROCEDURE IF EXISTS `insertCustomer`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(20), IN `addr` VARCHAR(100), IN `mail` VARCHAR(30), IN `ph` BIGINT(20))  MODIFIES SQL DATA
     COMMENT 'Insert into Customer table'
 BEGIN
@@ -37,6 +38,7 @@ END IF;
 INSERT INTO `customer`(`CID`, `Name`, `Address`, `email`,`phone`) VALUES (@x,name,addr,mail,ph);
 END$$
 
+DROP PROCEDURE IF EXISTS `quotelastdigitautogen`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `quotelastdigitautogen` (OUT `num` INT(15), IN `prev` INT(15))  NO SQL
 BEGIN
 SET @x=prev;
@@ -55,6 +57,7 @@ DELIMITER ;
 -- Table structure for table `company`
 --
 
+DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `CmpName` varchar(20) NOT NULL,
   `Address` varchar(100) NOT NULL,
@@ -68,6 +71,7 @@ CREATE TABLE `company` (
 -- Table structure for table `customer`
 --
 
+DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `CID` int(15) NOT NULL,
   `Address` varchar(100) NOT NULL,
@@ -120,7 +124,14 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (37, 'htrneet', 'jryjr', 'hethethe', 4352452),
 (38, 'gwrgrw', 'rwbwbwb', 'erbewbwb', 542242),
 (39, 'kuyktnrnyry', 'hykkjjk', 'bdgnhkuyrjn', 43536398),
-(40, 'fmyrhmn', 'bfdngsns', 'fdngndgng', 6547754);
+(40, 'fmyrhmn', 'bfdngsns', 'fdngndgng', 6547754),
+(41, 'sdfsdfsdf', 'sdfsdf', 'sdfsdf', 234234),
+(42, 'asdfasdf', 'asdfasdf', 'asdasdaf', 345345),
+(43, 'mncmjc', 'nbmgkfk', 'hgjhghg', 87876767),
+(44, 'sadvsadvsadva', 'sdvsdvsd', 'vsvsadvasv', 32423423),
+(45, 'GOTHAM CITY', 'JOKER', 'JOKER@GMAIL.COM', 2342342),
+(46, 'sfdgsdfgsdfgsdfg', 'sdfgsdfgs', 'zadfgsdfgsdfg', 34534534),
+(47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234);
 
 -- --------------------------------------------------------
 
@@ -128,6 +139,7 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 -- Table structure for table `enquiry`
 --
 
+DROP TABLE IF EXISTS `enquiry`;
 CREATE TABLE `enquiry` (
   `Eqno` varchar(15) NOT NULL,
   `Date` date NOT NULL,
@@ -146,19 +158,25 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 ('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7),
 ('1223', '2018-01-11', 'Awin', 'hghhehnet', 15),
 ('1223', '2018-01-17', 'Awin', 'tegegewg', 33),
+('1234554', '2018-02-18', 'Steels', 'HAPPY BIRTHDAY', 45),
 ('123456', '2018-01-15', 'Awin', 'bsfnfs bs', 40),
+('132123', '2018-02-18', 'Steels', 'asfsdafadsf', 47),
 ('1341', '2018-01-17', 'Awin', 'grwgwgw', 39),
 ('172', '2018-01-02', 'Awin', 'fsbvsbsfs', 18),
 ('2133', '2018-01-16', 'Awin', 'wrgvrww', 31),
 ('223', '2018-01-01', 'Awin', 'bfdbfbdb', 19),
 ('231', '2018-01-11', 'Awin', 'grgwgrwgw', 32),
 ('2314', '2018-01-05', 'Steels', 'sweg  sweg serg', 8),
+('23423', '2018-02-15', 'Awin', 'dvdsvdfsvsd', 44),
+('2342342', '2018-02-18', 'Awin', 'sdfgsdfgsfgsdfg', 46),
 ('23542', '2018-01-12', 'Awin', 'erbgerbebb', 38),
 ('2431', '2018-01-14', 'Awin', 'etnehgne', 26),
 ('3143', '2018-01-17', 'Awin', 'fwgvw', 35),
 ('3213', '2018-01-18', 'Awin', 'sgsrgrwgrwg', 30),
 ('324', '2018-01-18', 'Steels', 'grw3wggw', 27),
+('32423', '2018-02-22', 'Awin', 'sdfsdfs', 41),
 ('32425', '2018-01-08', 'Awin', 'ethteheh', 36),
+('33453', '2018-02-14', 'Awin', 'sdfsdfas', 42),
 ('341', '2018-01-19', 'Awin', 'rwgrgrwgw', 29),
 ('342', '2018-01-04', 'Awin', 'grsgrs', 16),
 ('345', '2018-01-17', 'Awin', 'hteheth', 34),
@@ -168,6 +186,7 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 ('4324', '2018-01-27', 'Awin', 'fsggw', 22),
 ('454', '2018-01-26', 'Steels', 'hrtnrnr', 24),
 ('619', '2018-01-10', 'Awin', 'gedgberb', 37),
+('676868', '2018-02-08', 'Steels', 'nmcmncm', 43),
 ('6969', '2018-01-19', 'Steels', 'vgfdddddddd', 20),
 ('778', '2018-01-05', 'Awin', 'ttttttttttttttttttt', 10),
 ('997', '2018-01-10', 'Steels', 'fffffffffwse', 21),
@@ -184,9 +203,10 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 -- Table structure for table `eqrel`
 --
 
+DROP TABLE IF EXISTS `eqrel`;
 CREATE TABLE `eqrel` (
   `Eno` varchar(15) NOT NULL,
-  `QNo` varchar(15) NOT NULL
+  `QNo` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -200,7 +220,11 @@ INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
 ('619', '18-AE-QT-021'),
 ('23542', '18-AE-QT-022'),
 ('1341', '18-AE-QT-023'),
-('123456', '18-AE-QT-024');
+('123456', '18-AE-QT-024'),
+('23423', '18-AE-QT-025'),
+('2342342', '18-AE-QT-027'),
+('1234554', '18-SC-QT-026'),
+('132123', '18-SC-QT-028');
 
 -- --------------------------------------------------------
 
@@ -208,6 +232,7 @@ INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
 -- Table structure for table `invoice`
 --
 
+DROP TABLE IF EXISTS `invoice`;
 CREATE TABLE `invoice` (
   `INo` varchar(15) NOT NULL,
   `Amount` double NOT NULL,
@@ -222,6 +247,7 @@ CREATE TABLE `invoice` (
 -- Table structure for table `pirel`
 --
 
+DROP TABLE IF EXISTS `pirel`;
 CREATE TABLE `pirel` (
   `PjNo` int(11) NOT NULL,
   `INo` varchar(15) NOT NULL
@@ -233,6 +259,7 @@ CREATE TABLE `pirel` (
 -- Table structure for table `product`
 --
 
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `PNo` varchar(15) NOT NULL,
   `PjNo` int(11) NOT NULL,
@@ -246,10 +273,11 @@ CREATE TABLE `product` (
 -- Table structure for table `qoutation`
 --
 
+DROP TABLE IF EXISTS `qoutation`;
 CREATE TABLE `qoutation` (
-  `Qno` varchar(15) NOT NULL,
+  `Qno` varchar(25) NOT NULL,
   `EstPrice` double DEFAULT NULL,
-  `RevNo` int(11) DEFAULT NULL,
+  `RevNo` int(11) NOT NULL DEFAULT '0',
   `Subject` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -258,14 +286,17 @@ CREATE TABLE `qoutation` (
 --
 
 INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
-('18-AE-QT-001', NULL, NULL, NULL),
-('18-AE-QT-002', NULL, NULL, NULL),
-('18-AE-QT-020', NULL, NULL, NULL),
-('18-AE-QT-021', NULL, NULL, NULL),
-('18-AE-QT-022', NULL, NULL, NULL),
-('18-AE-QT-023', NULL, NULL, NULL),
-('18-AE-QT-024', NULL, NULL, NULL),
-('18-SC-QT-019', NULL, NULL, NULL);
+('18-AE-QT-001', NULL, 0, NULL),
+('18-AE-QT-002', NULL, 0, NULL),
+('18-AE-QT-020', NULL, 0, NULL),
+('18-AE-QT-021', NULL, 0, NULL),
+('18-AE-QT-022', NULL, 0, NULL),
+('18-AE-QT-023', NULL, 0, NULL),
+('18-AE-QT-024', NULL, 0, NULL),
+('18-AE-QT-025', NULL, 0, NULL),
+('18-AE-QT-027', NULL, 0, NULL),
+('18-SC-QT-026', NULL, 0, NULL),
+('18-SC-QT-028', NULL, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -273,8 +304,9 @@ INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
 -- Table structure for table `qprel`
 --
 
+DROP TABLE IF EXISTS `qprel`;
 CREATE TABLE `qprel` (
-  `Qno` varchar(15) NOT NULL,
+  `Qno` varchar(25) NOT NULL,
   `PjNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -284,14 +316,25 @@ CREATE TABLE `qprel` (
 -- Table structure for table `QuotationDetails_Awin`
 --
 
+DROP TABLE IF EXISTS `QuotationDetails_Awin`;
 CREATE TABLE `QuotationDetails_Awin` (
   `Sno` int(11) NOT NULL,
   `Des` varchar(1000) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
   `total` bigint(20) DEFAULT NULL,
-  `qno` varchar(15) NOT NULL
+  `qno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `QuotationDetails_Awin`
+--
+
+INSERT INTO `QuotationDetails_Awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES
+(0, 'dsfgsdfgsdfgsdfg', 34534, 34534, 345345, '18-AE-QT-025'),
+(1, 'sdfgsdsdfgsdsdfg', 345345, 345345, 345345, '18-AE-QT-025'),
+(2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
+(3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025');
 
 -- --------------------------------------------------------
 
@@ -299,6 +342,7 @@ CREATE TABLE `QuotationDetails_Awin` (
 -- Table structure for table `QuotationDetails_Steels`
 --
 
+DROP TABLE IF EXISTS `QuotationDetails_Steels`;
 CREATE TABLE `QuotationDetails_Steels` (
   `Sno` int(11) NOT NULL,
   `Pos` varchar(1000) DEFAULT NULL,
@@ -306,8 +350,17 @@ CREATE TABLE `QuotationDetails_Steels` (
   `BeyondNormalRate` varchar(100) DEFAULT NULL,
   `Holidays` varchar(100) DEFAULT NULL,
   `Remarks` varchar(2000) DEFAULT NULL,
-  `qno` varchar(15) NOT NULL
+  `qno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `QuotationDetails_Steels`
+--
+
+INSERT INTO `QuotationDetails_Steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES
+(1, 'aasdfasdfalg', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028'),
+(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028'),
+(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028');
 
 --
 -- Indexes for dumped tables
@@ -403,8 +456,8 @@ ALTER TABLE `pirel`
 -- Constraints for table `qprel`
 --
 ALTER TABLE `qprel`
-  ADD CONSTRAINT `qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `qprel_ibfk_3` FOREIGN KEY (`PjNo`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `qprel_ibfk_3` FOREIGN KEY (`PjNo`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `qprel_ibfk_4` FOREIGN KEY (`Qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `QuotationDetails_Awin`

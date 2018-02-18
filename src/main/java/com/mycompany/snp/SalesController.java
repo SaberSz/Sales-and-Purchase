@@ -947,6 +947,7 @@ public class SalesController implements Initializable {
     }
     
     static boolean edit_button_hit_in_QPane=false;
+    static boolean revise_button_hit_in_QPane=false;
     @FXML
     private void Edit_Quotation_in_QuotationPane(MouseEvent event) {
         if(ECom1.getText().equals("Awin")){
@@ -993,6 +994,16 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
+       if( Utilities.AlertBox.alertoption("Revision","You just clicked the Revise button!"," Are you sure you want to revise quotation number :"+Qno1.getText())){
+                revise_button_hit_in_QPane=true;
+                
+       }
+       else
+       {
+           //accidental hit
+           
+           
+       }
     }
 
     @FXML
