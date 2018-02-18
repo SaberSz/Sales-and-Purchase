@@ -627,14 +627,18 @@ public class SalesController implements Initializable {
        void Quotation_insert_into_awin_table(String qo){//method to insert quotaion details into database for awin
            PreparedStatement stmt;
            try{
-                        
-
+                         //first deleting quotations details of the particular qno
+                         String suqdel="DELETE FROM `quotationdetails_awin` WHERE qno=?";
+                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
+                                 stmt.setString(1,qo);
+                                 stmt.executeUpdate();
+                                 System.out.println("the deleting is done if the contents were present before");
                          ObservableList<Person> trc;
                       trc =FXCollections.observableArrayList(table1.getItems());
                       int i=0;
-                      while(i<20){
+                      while(i<100){
                       Person p= trc.get(i);
-                      if(p.getLastName().getText().equalsIgnoreCase("")){
+                      if(p.getLastName().getText().trim().equalsIgnoreCase("")){
                           break;
                       }
                       else{
@@ -653,12 +657,8 @@ public class SalesController implements Initializable {
                         System.out.println("the quotation no is "+qo);
                         int no=Integer.parseInt(p.getFirstName().getText());
                       try{
-                          //first deleting quotations details of the particular qno
-                     String suqdel="DELETE FROM `quotationdetails_awin` WHERE qno=?";
-                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
-                                 stmt.setString(1,qo);
-                                 stmt.executeUpdate();
-                                 System.out.println("the deleting is done if the contents were present before");
+                         
+                    
                                          
                      String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
                                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
@@ -698,13 +698,18 @@ public class SalesController implements Initializable {
             PreparedStatement stmt;
              try{
                    
-
+                        //deleting befoehand just in case...
+                            String suqdel="DELETE FROM `quotationdetails_steels` WHERE qno=?";
+                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
+                                 stmt.setString(1,qo);
+                                 stmt.executeUpdate();
+                                 System.out.println("the deleting is done if the contents were present before");
                          ObservableList<Person2> trc;
                       trc =FXCollections.observableArrayList(table12.getItems());
                       int i=0;
-                      while(i<20){
+                      while(i<100){
                       Person2 p= trc.get(i);
-                      if(p.getPosition().getText().equalsIgnoreCase("")){
+                      if(p.getPosition().getText().trim().equalsIgnoreCase("")){
                           break;
                       }
                       else{
@@ -723,12 +728,7 @@ public class SalesController implements Initializable {
                      
                         System.out.println("the quotation no is "+qo);
                         int no=Integer.parseInt(p.getSN().getText());
-                      try{//deleting befoehand just in case...
-                            String suqdel="DELETE FROM `quotationdetails_awin` WHERE qno=?";
-                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
-                                 stmt.setString(1,qo);
-                                 stmt.executeUpdate();
-                                 System.out.println("the deleting is done if the contents were present before");
+                      try{
                      String suql1 = "INSERT INTO `quotationdetails_steels`(`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES (?,?,?,?,?,?,?)";
                                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                                             stmt.setInt(1,no);
