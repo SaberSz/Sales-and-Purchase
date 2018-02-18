@@ -113,6 +113,8 @@ public class SalesController implements Initializable {
     private AnchorPane ContentQNoPane;
     @FXML
     private TableView<Person2> table12;
+    @FXML
+    private TableView<Person2> table111;
 
 
     /**
@@ -136,6 +138,17 @@ public class SalesController implements Initializable {
         
         cmp.getItems().add("Awin");
         cmp.getItems().add("Steels");
+        try{
+            String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                QnoBox.getItems().add(rs.getString(1));
+            }
+        }
+        catch(Exception e){
+            
+        }
             
         try{
         VBox box = FXMLLoader.load(getClass().getResource("/fxml/SalesDrawer.fxml"));
@@ -162,6 +175,8 @@ public class SalesController implements Initializable {
        // newEnquiryPane_PriceBoxFill();
         table1.setEffect(new GaussianBlur(20));
         table12.setEffect(new GaussianBlur(20));
+        table11.setEffect(new GaussianBlur(20));
+        table111.setEffect(new GaussianBlur(20));
         threadtock();
     }
 
@@ -704,18 +719,63 @@ public class SalesController implements Initializable {
     @FXML
     private void Fill_details_of_existing_Qno_and_Eno(MouseEvent event) {
         //retrieve the details of enquiry using the quotation number.
-        
-        if(ECom1.getText().equals("Awin"))
-        {
-           //Generate the Awin Quotation Table 
-            newEnquiryPane_PriceBoxFill_Awin(table11);
-            
+        try{
+            String qno= QnoBox.getValue();
+            String sql="SELECT e.Date,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno join customer c on e.cid=c.cid WHERE er.qno= ? ;";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            stmt.setString(1, qno);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+               Edate1.setValue(LocalDate.parse(rs.getString(1)));
+               ENo1.setText(rs.getString(2));
+               ECom1.setText(rs.getString(3));
+               EDes1.setText(rs.getString(4));
+                CName1.setText(rs.getString(5));
+                 CPhone1.setText(rs.getString(6));
+                Cmail1.setText(rs.getString(7));
+                 Cadd1.setText(rs.getString(8));
+                 Qno1.setText(qno);
+                 
+            }
+            if(ECom1.getText().equals("Awin"))
+            {
+               //Generate the Awin Quotation Table 
+                table111.setDisable(true);
+                                    table111.setVisible(false);
+                                    table11.setDisable(false);
+                                    table11.setVisible(true);
+                                    table11.getItems().clear();
+                newEnquiryPane_PriceBoxFill_Awin(table11);
+                table11.setEffect(new ColorAdjust());
+
+            }
+            else{
+                if(ECom1.getText().equals("Steels"))
+            {
+                //Generate the Steels Quotation Table 
+                table11.setDisable(true);
+                                    table11.setVisible(false);
+                                    table111.setDisable(false);
+                                    table111.setVisible(true);
+                                    table111.getItems().clear();
+                newEnquiryPane_PriceBoxFill_Steels(table111);
+                table111.setEffect(new ColorAdjust());
+
+            }
+            }
         }
+<<<<<<< HEAD
         else
         {
             //Generate the Steels Quotation Table 
            // newEnquiryPane_PriceBoxFill_Steels(tabl);
             
+=======
+        catch(NullPointerException e){
+             Utilities.AlertBox.notificationWarn("Error","Please select a quotation number first.");             
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> 60130f05201dffb24a8eacf2ce1e1b0ca931e0b4
         }
     }
 
