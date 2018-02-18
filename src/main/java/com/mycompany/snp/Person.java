@@ -22,13 +22,21 @@ public class Person {
      Person(String fName, String lName, String email, String value,String total1) {
         this.firstName= new JFXTextArea();
         this.firstName.setText(fName);
-        this.firstName.setEditable(false);
+        //this.firstName.setEditable(false);
         //this.lastName = new SimpleStringProperty(lName);
        // this.email = new SimpleStringProperty(email);
-        this.remark = new JFXTextArea();   
+        this.remark = new JFXTextArea(); 
+        this.remark.setText(value);
+        //this.remark.setEditable(false);
         this.lastName = new JFXTextArea(); 
+        this.lastName.setText(lName);
+        //this.remark.setEditable(false);
         this.email = new JFXTextArea(); 
+        this.email.setText(email);
+        //this.remark.setEditable(false);
         this.total = new JFXTextArea(); 
+        this.total.setText(total1);
+        //this.remark.setEditable(false);
         
     }
  
