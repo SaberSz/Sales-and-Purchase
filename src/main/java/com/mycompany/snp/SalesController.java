@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -315,7 +314,10 @@ public class SalesController implements Initializable {
      unitCol.setSortable(false);
      totalCol.setSortable(false);
      indexCol.setPrefWidth(50);
-        
+     desCol.setPrefWidth(150); 
+     quantityCol.setPrefWidth(100);
+     unitCol.setPrefWidth(150);
+     totalCol.setPrefWidth(50);
         
            
        
@@ -923,7 +925,8 @@ public class SalesController implements Initializable {
                 Cmail1.setText(rs.getString(7));
                  Cadd1.setText(rs.getString(8));
                  Qno1.setText(qno);
-                 
+                 Edate1.setEditable(false);
+  
             }
             if(ECom1.getText().equals("Awin"))
             {
@@ -971,17 +974,22 @@ public class SalesController implements Initializable {
     private void Save_Quotation_in_QuotationPane(MouseEvent event) {
         String qno=Qno1.getText();
         if(edit_button_hit_in_QPane){
-        if(ECom1.getText().equals("Awin")){
-            Quotation_insert_into_awin_table(qno,table11);
-            generate_Awin_Table(false);
-            
-        }else if(ECom1.getText().equals("Steels"))
-        {
-            Quotation_insert_into_steel(qno,table111);
-             generate_Steels_Table(false);
+                if(ECom1.getText().equals("Awin")){
+                    Quotation_insert_into_awin_table(qno,table11);
+                    generate_Awin_Table(false);
+
+                }else if(ECom1.getText().equals("Steels"))
+                {
+                    Quotation_insert_into_steel(qno,table111);
+                     generate_Steels_Table(false);
+
+                }
         
         }
-        
+        else if(revisedQno!=""){
+            String k=ENo1.getText();
+          
+            
         }
         else{
             Utilities.AlertBox.notificationInfo("Sticky Buttons","The quotation has alreay been saved.");
@@ -991,15 +999,53 @@ public class SalesController implements Initializable {
     @FXML
     private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
     }
-
+    static String revisedQno="";
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
        if( Utilities.AlertBox.alertoption("Revision","You just clicked the Revise button!"," Are you sure you want to revise quotation number :"+Qno1.getText())){
                 revise_button_hit_in_QPane=true;
+                edit_button_hit_in_QPane=false;
+                try{       
+                     String qno=Qno1.getText();
+                           String suql = "SELECT Qno,RevNo FROM `qoutation` WHERE qno= ? ;";
+                           PreparedStatement st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           st.setString(1,qno);
+                           ResultSet rs=st.executeQuery();
+                       
+                           while(rs.next()){
+                    
+                           int k=Integer.valueOf(rs.getString(2));
+                           k++;
+                           if(k==1){
+                               //first revision
+                            revisedQno=Qno1.getText()+".Rev."+String.valueOf(k);
+                            
+                              }
+                           else{
+                               //not first revision
+                               int len=Qno1.getText().length();
+                               int v =Qno1.getText().lastIndexOf('.');
+                               String s=Qno1.getText().substring(v, len);
+                               int z=Integer.valueOf(s);
+                               z++;
+                               String x=Qno1.getText().substring(0, v+1);
+                               revisedQno=x+String.valueOf(z);
+                           }
+                           System.out.println(revisedQno);
+                           }
+                                  
+                          }
+                      
+                    
                 
+       
+                catch(Exception e ){
+                  Utilities.AlertBox.showErrorMessage(e);
+                }
        }
        else
        {
+           System.out.println("dfsdfsdfaysfgsldfugasfoa8sfaof4395723957=3459263935[20");
            //accidental hit
            
            
