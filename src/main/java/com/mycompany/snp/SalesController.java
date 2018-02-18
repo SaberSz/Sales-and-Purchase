@@ -670,6 +670,7 @@ public class SalesController implements Initializable {
         //We will not require any combo box for selections here. 
         //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
         //to get the data from the table
+
         if (cmp.getValue()=="Awin"){
        //this is for awin table 
        try{
@@ -738,7 +739,37 @@ public class SalesController implements Initializable {
             
             
         }
+
+        
+        
+        PreparedStatement stmt;
+        
+         ObservableList<Person> trc;
+      trc =FXCollections.observableArrayList(table1.getItems());
+      int i=0;
+      while(i<20){
+      Person p= trc.get(i);
+      if(p.getLastName().getText().equalsIgnoreCase("")){
+          break;
+      }
+      else{
+       /* System.out.print(p.getFirstName().getText()+"\t");
+        System.out.print(p.getLastName().getText()+"\t");
+        System.out.print(p.getEmail().getText()+"\t");
+        System.out.print(p.getRemark().getText()+"\t");
+        System.out.println(p.getTotal().getText()+"\t");
+          */
+        String d=p.getLastName().getText();
+        int q = Integer.parseInt(p.getEmail().getText());
+        int r=Integer.parseInt(p.getRemark().getText());
+        long s=Long.parseLong(p.getTotal().getText());
+        String qo=Qno.getText();
+        System.out.println("the quotation no is "+qo);
+        int no=i+1;
+     
       
+    }
+      }
     }
 
     @FXML
