@@ -20,7 +20,7 @@ public class Connect {
     
     Connection conn =null;
    public  static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   public static final String DB_URL = "jdbc:mysql://localhost:3306/snp";//3306
+   public static final String DB_URL = "jdbc:mysql://localhost:8889/snp";//3306
    //public static final String DB_URL = "jdbc:mysql://localhost:8889/login";
    //static final String DB_URL = "jdbc:mysql://192.168.0.102:8889/College_Database_v0_1?zeroDateTimeBehavior=convertToNull";
    public static final double vers= 1.03;

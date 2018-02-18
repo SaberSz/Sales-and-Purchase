@@ -144,6 +144,7 @@ public class SalesController implements Initializable {
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
                 QnoBox.getItems().add(rs.getString(1));
+                System.out.println(rs.getString(1));
             }
         }
         catch(Exception e){
@@ -518,6 +519,7 @@ public class SalesController implements Initializable {
                                 table1.setDisable(false);
                                 table1.setVisible(true);
                                 table1.getItems().clear();
+                                table1.getColumns().clear();
                                 newEnquiryPane_PriceBoxFill_Awin(table1);
                                 table1.setEffect(new ColorAdjust());
                             }
@@ -528,6 +530,7 @@ public class SalesController implements Initializable {
                                 table12.setDisable(false);
                                 table12.setVisible(true);
                                 table12.getItems().clear();
+                                table12.getColumns().clear();
                                 newEnquiryPane_PriceBoxFill_Steels(table12);
                                 table12.setEffect(new ColorAdjust());
                             }
@@ -667,65 +670,89 @@ public class SalesController implements Initializable {
         //We will not require any combo box for selections here. 
         //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
         //to get the data from the table
-        
-        
-        PreparedStatement stmt;
-        
-         ObservableList<Person> trc;
-      trc =FXCollections.observableArrayList(table1.getItems());
-      int i=0;
-      while(i<20){
-      Person p= trc.get(i);
-      if(p.getLastName().getText().equalsIgnoreCase("")){
-          break;
-      }
-      else{
-       /* System.out.print(p.getFirstName().getText()+"\t");
-        System.out.print(p.getLastName().getText()+"\t");
-        System.out.print(p.getEmail().getText()+"\t");
-        System.out.print(p.getRemark().getText()+"\t");
-        System.out.println(p.getTotal().getText()+"\t");
-          */
-        String d=p.getLastName().getText();
-        int q = Integer.parseInt(p.getEmail().getText());
-        int r=Integer.parseInt(p.getRemark().getText());
-        long s=Long.parseLong(p.getTotal().getText());
-        String qo=Qno.getText();
-        System.out.println("the quotation no is "+qo);
-        int no=i;
-      try{
+        if (cmp.getValue()=="Awin"){
+       //this is for awin table 
+       try{
+                        PreparedStatement stmt;
+
+                         ObservableList<Person> trc;
+                      trc =FXCollections.observableArrayList(table1.getItems());
+                      int i=0;
+                      while(i<20){
+                      Person p= trc.get(i);
+                      if(p.getLastName().getText().equalsIgnoreCase("")){
+                          break;
+                      }
+                      else{
+                       /* System.out.print(p.getFirstName().getText()+"\t");
+                        System.out.print(p.getLastName().getText()+"\t");
+                        System.out.print(p.getEmail().getText()+"\t");
+                        System.out.print(p.getRemark().getText()+"\t");
+                        System.out.println(p.getTotal().getText()+"\t");
+                          */
+
+                        String d=p.getLastName().getText();
+                        int q = Integer.parseInt(p.getEmail().getText());
+                        int r=Integer.parseInt(p.getRemark().getText());
+                        long s=Long.parseLong(p.getTotal().getText());
+                        String qo=Qno.getText();
+                        System.out.println("the quotation no is "+qo);
+                        int no=Integer.parseInt(p.getFirstName().getText());
+                      try{
+
+                     String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
+                                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                                            stmt.setInt(1,no);
+                                            stmt.setString(2,d);
+                                            stmt.setInt(3,q);
+                                            stmt.setInt(4,r);
+                                            stmt.setLong(5,s);
+                                            stmt.setString(6,qo);
+                                            stmt.executeUpdate();
+                      }
+                      catch(SQLException exe){
+                                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                                    Utilities.AlertBox.showErrorMessage(exe);
+                      }
+
+                      }
+                        i++;
+                      }
+             if(i==0){
+                 Utilities.AlertBox.notificationWarn("Blank Quotation","The quotation box seems to be blank.");           
+             }else{
+               Utilities.AlertBox.notificationInfo("Success","Your Quotation was saved successfully!");           
+             }
+             
+            }
+       catch(Exception e){
+            Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+           Utilities.AlertBox.showErrorMessage(e);
+       }
+        }
+        else
+        {
+           //for steels table 
+            
+            
+            
+        }
       
-     String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
-                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
-                            stmt.setInt(1,no);
-                            stmt.setString(2,d);
-                            stmt.setInt(3,q);
-                            stmt.setInt(4,r);
-                            stmt.setLong(5,s);
-                            stmt.setString(6,qo);
-                            stmt.executeUpdate();
-      }
-      catch(SQLException exe){
-                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
-                    Utilities.AlertBox.showErrorMessage(exe);
-      }
-        
-      }
-        i++;
-      }
     }
 
     @FXML
     private void Fill_details_of_existing_Qno_and_Eno(MouseEvent event) {
         //retrieve the details of enquiry using the quotation number.
         try{
+            System.out.println("sdfsdfsfddsfsdfsdfsdfsdfs");
             String qno= QnoBox.getValue();
             String sql="SELECT e.Date,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno join customer c on e.cid=c.cid WHERE er.qno= ? ;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             stmt.setString(1, qno);
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
+                
                Edate1.setValue(LocalDate.parse(rs.getString(1)));
                ENo1.setText(rs.getString(2));
                ECom1.setText(rs.getString(3));
@@ -745,9 +772,24 @@ public class SalesController implements Initializable {
                                     table11.setDisable(false);
                                     table11.setVisible(true);
                                     table11.getItems().clear();
+                                    table11.getColumns().clear();
                 newEnquiryPane_PriceBoxFill_Awin(table11);
-                table11.setEffect(new ColorAdjust());
+                //fill details of Awin table
 
+                table11.getItems().clear();
+                String sql1="SELECT * FROM `QuotationDetails_Awin` WHERE qno = ?";
+                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                stmt.setString(1, qno);
+                rs=stmt.executeQuery();
+                ObservableList<Person> data;    
+                data = FXCollections.observableArrayList();
+                while(rs.next()){
+                    data.add(new Person(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5)));
+                    System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+"  "+rs.getString(5));
+                }
+                table11.setItems(data);
+                table11.setEffect(new ColorAdjust());
+                
             }
             else{
                 if(ECom1.getText().equals("Steels"))
@@ -758,24 +800,28 @@ public class SalesController implements Initializable {
                                     table111.setDisable(false);
                                     table111.setVisible(true);
                                     table111.getItems().clear();
+                                    table111.getColumns().clear();
                 newEnquiryPane_PriceBoxFill_Steels(table111);
+                table111.getItems().clear();
+                String sql1="SELECT * FROM `QuotationDetails_Steels` WHERE qno = ?";
+                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                stmt.setString(1, qno);
+                rs=stmt.executeQuery();
+                ObservableList<Person2> data;    
+                data = FXCollections.observableArrayList();
+                while(rs.next()){
+                    data.add(new Person2(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5),rs.getString(6)));
+                }
+                table111.setItems(data);
                 table111.setEffect(new ColorAdjust());
-
+                //fill details of Steels Table
             }
             }
         }
-<<<<<<< HEAD
-        else
-        {
-            //Generate the Steels Quotation Table 
-           // newEnquiryPane_PriceBoxFill_Steels(tabl);
-            
-=======
         catch(NullPointerException e){
              Utilities.AlertBox.notificationWarn("Error","Please select a quotation number first.");             
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
->>>>>>> 60130f05201dffb24a8eacf2ce1e1b0ca931e0b4
         }
     }
 
