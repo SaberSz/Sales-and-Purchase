@@ -22,18 +22,40 @@ public class Person2 {
  
      Person2(String fName, String lName, String NormalRate, String value,String Holidays1,String Remarks) {
         this.SN= new JFXTextArea();
-        //this.SN.setText(fName);
+        this.SN.setText(fName);
         //this.SN.setEditable(false);
         //this.Position = new SimpleStringProperty(lName);
        // this.NormalRate = new SimpleStringProperty(NormalRate);
-        this.BeyondNormalHours = new JFXTextArea();   
+        this.BeyondNormalHours = new JFXTextArea(); 
+        this.BeyondNormalHours.setText(value);
         this.Position = new JFXTextArea(); 
+        this.Position.setText(lName);
         this.NormalRate = new JFXTextArea(); 
+        this.NormalRate.setText( NormalRate);
         this.Holidays = new JFXTextArea(); 
+        this.Holidays.setText(Holidays1);
         this.Remarks = new JFXTextArea(); 
+        this.Remarks.setText(Remarks);
         
     }
- 
+    public void setEdit(boolean input){
+        if(!input){
+           this.SN.setEditable(false);
+           this.Position.setEditable(false);
+           this.NormalRate.setEditable(false);
+           this.BeyondNormalHours.setEditable(false);
+           this.Holidays.setEditable(false);
+           this.Remarks.setEditable(false);
+        }
+        else{
+            this.SN.setEditable(true);
+           this.Position.setEditable(true);
+           this.NormalRate.setEditable(true);
+           this.BeyondNormalHours.setEditable(true);
+           this.Holidays.setEditable(true);
+           this.Remarks.setEditable(true);
+        }
+    }
     public JFXTextArea getSN() {
         return SN;
     }

@@ -39,7 +39,23 @@ public class Person {
         //this.remark.setEditable(false);
         
     }
- 
+     
+     public void setEdit(boolean input){
+        if(!input){
+           this.firstName.setEditable(false);
+           this.lastName.setEditable(false);
+           this.email.setEditable(false);
+           this.remark.setEditable(false);
+           this. total.setEditable(false);
+        }
+        else{
+            this.firstName.setEditable(true);
+           this.lastName.setEditable(true);
+           this.email.setEditable(true);
+           this.remark.setEditable(true);
+           this.total.setEditable(true);
+        }
+    }
     public JFXTextArea getFirstName() {
         return firstName;
     }

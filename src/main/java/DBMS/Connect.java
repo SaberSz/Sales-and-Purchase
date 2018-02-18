@@ -52,9 +52,30 @@ public class Connect {
        catch(Exception e)
        {
           //obj1.exceptionDialog(e);
-           JOptionPane.showMessageDialog(null, e);
+           try{
+               Class.forName(JDBC_DRIVER);
+
+            System.out.println("Please hold while we connect to the data base");
+            System.out.println();
+            
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:8889/snp",USER,PASS); 
+            //if(Updates())
+            {
+            if(c==0 )
+            {
+           // AlertBox.notificationInfo("Hello","Database Connection is Successful");
+            //JOptionPane.showMessageDialog(null, "Database Connection is Successful");
+            }
+            c++;
+            }
+            
+            return conn;
+           }
+           catch(Exception k){
+           JOptionPane.showMessageDialog(null, k);
            System.exit(0);
            return null;
+           }
        }
        
        
