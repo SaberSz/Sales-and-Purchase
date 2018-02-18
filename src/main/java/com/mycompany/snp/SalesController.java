@@ -692,7 +692,7 @@ public class SalesController implements Initializable {
         long s=Long.parseLong(p.getTotal().getText());
         String qo=Qno.getText();
         System.out.println("the quotation no is "+qo);
-        int no=i;
+        int no=i+1;
       try{
       
      String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
