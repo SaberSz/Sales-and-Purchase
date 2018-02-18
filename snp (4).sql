@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Feb 18, 2018 at 05:51 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost:3306
+-- Generation Time: Feb 18, 2018 at 08:39 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -131,7 +133,8 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (44, 'sadvsadvsadva', 'sdvsdvsd', 'vsvsadvasv', 32423423),
 (45, 'GOTHAM CITY', 'JOKER', 'JOKER@GMAIL.COM', 2342342),
 (46, 'sfdgsdfgsdfgsdfg', 'sdfgsdfgs', 'zadfgsdfgsdfg', 34534534),
-(47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234);
+(47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234),
+(48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413);
 
 -- --------------------------------------------------------
 
@@ -167,6 +170,7 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 ('223', '2018-01-01', 'Awin', 'bfdbfbdb', 19),
 ('231', '2018-01-11', 'Awin', 'grgwgrwgw', 32),
 ('2314', '2018-01-05', 'Steels', 'sweg  sweg serg', 8),
+('2342', '2018-02-14', 'Awin', 'gebtrbrgbrtbwbw', 48),
 ('23423', '2018-02-15', 'Awin', 'dvdsvdfsvsd', 44),
 ('2342342', '2018-02-18', 'Awin', 'sdfgsdfgsfgsdfg', 46),
 ('23542', '2018-01-12', 'Awin', 'erbgerbebb', 38),
@@ -223,8 +227,14 @@ INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
 ('123456', '18-AE-QT-024'),
 ('23423', '18-AE-QT-025'),
 ('2342342', '18-AE-QT-027'),
+('2342', '18-AE-QT-029'),
+('2342', '18-AE-QT-029.Rev.1'),
+('2342', '18-AE-QT-029.Rev.2'),
 ('1234554', '18-SC-QT-026'),
-('132123', '18-SC-QT-028');
+('132123', '18-SC-QT-028'),
+('132123', '18-SC-QT-028.Rev.1'),
+('132123', '18-SC-QT-028.Rev.2'),
+('132123', '18-SC-QT-028.Rev.3');
 
 -- --------------------------------------------------------
 
@@ -238,7 +248,8 @@ CREATE TABLE `invoice` (
   `Amount` double NOT NULL,
   `Type` tinyint(1) NOT NULL,
   `Date` date NOT NULL,
-  `Subject` varchar(100) NOT NULL
+  `Subject` varchar(100) NOT NULL,
+  `Duedate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -264,7 +275,8 @@ CREATE TABLE `product` (
   `PNo` varchar(15) NOT NULL,
   `PjNo` int(11) NOT NULL,
   `Value` int(11) NOT NULL,
-  `Date` date NOT NULL
+  `Date` date NOT NULL,
+  `EstDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -295,8 +307,14 @@ INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
 ('18-AE-QT-024', NULL, 0, NULL),
 ('18-AE-QT-025', NULL, 0, NULL),
 ('18-AE-QT-027', NULL, 0, NULL),
+('18-AE-QT-029', NULL, 0, NULL),
+('18-AE-QT-029.Rev.1', NULL, 1, NULL),
+('18-AE-QT-029.Rev.2', NULL, 2, NULL),
 ('18-SC-QT-026', NULL, 0, NULL),
-('18-SC-QT-028', NULL, 0, NULL);
+('18-SC-QT-028', NULL, 0, NULL),
+('18-SC-QT-028.Rev.1', NULL, 1, NULL),
+('18-SC-QT-028.Rev.2', NULL, 2, NULL),
+('18-SC-QT-028.Rev.3', NULL, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -313,11 +331,11 @@ CREATE TABLE `qprel` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `QuotationDetails_Awin`
+-- Table structure for table `quotationdetails_awin`
 --
 
-DROP TABLE IF EXISTS `QuotationDetails_Awin`;
-CREATE TABLE `QuotationDetails_Awin` (
+DROP TABLE IF EXISTS `quotationdetails_awin`;
+CREATE TABLE `quotationdetails_awin` (
   `Sno` int(11) NOT NULL,
   `Des` varchar(1000) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
@@ -327,23 +345,34 @@ CREATE TABLE `QuotationDetails_Awin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `QuotationDetails_Awin`
+-- Dumping data for table `quotationdetails_awin`
 --
 
-INSERT INTO `QuotationDetails_Awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES
+INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES
 (0, 'dsfgsdfgsdfgsdfg', 34534, 34534, 345345, '18-AE-QT-025'),
 (1, 'sdfgsdsdfgsdsdfg', 345345, 345345, 345345, '18-AE-QT-025'),
+(1, 'bub send plssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029'),
+(1, 'bub send pussylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.1'),
+(1, 'bub send pucciylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.2'),
 (2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
-(3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025');
+(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
+(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
+(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.2'),
+(3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
+(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
+(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
+(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.2'),
+(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.1'),
+(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.2');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `QuotationDetails_Steels`
+-- Table structure for table `quotationdetails_steels`
 --
 
-DROP TABLE IF EXISTS `QuotationDetails_Steels`;
-CREATE TABLE `QuotationDetails_Steels` (
+DROP TABLE IF EXISTS `quotationdetails_steels`;
+CREATE TABLE `quotationdetails_steels` (
   `Sno` int(11) NOT NULL,
   `Pos` varchar(1000) DEFAULT NULL,
   `NormalRate` varchar(100) DEFAULT NULL,
@@ -354,13 +383,22 @@ CREATE TABLE `QuotationDetails_Steels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `QuotationDetails_Steels`
+-- Dumping data for table `quotationdetails_steels`
 --
 
-INSERT INTO `QuotationDetails_Steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES
-(1, 'aasdfasdfalg', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028'),
+INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES
+(1, 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028'),
+(1, 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.1'),
+(1, 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2'),
+(1, 'dogg stylesssssssss', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.3'),
 (2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028'),
-(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028');
+(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1'),
+(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2'),
+(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.3'),
+(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028'),
+(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1'),
+(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2'),
+(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.3');
 
 --
 -- Indexes for dumped tables
@@ -421,16 +459,16 @@ ALTER TABLE `qprel`
   ADD KEY `PjNo` (`PjNo`);
 
 --
--- Indexes for table `QuotationDetails_Awin`
+-- Indexes for table `quotationdetails_awin`
 --
-ALTER TABLE `QuotationDetails_Awin`
+ALTER TABLE `quotationdetails_awin`
   ADD PRIMARY KEY (`Sno`,`qno`),
   ADD KEY `qno` (`qno`);
 
 --
--- Indexes for table `QuotationDetails_Steels`
+-- Indexes for table `quotationdetails_steels`
 --
-ALTER TABLE `QuotationDetails_Steels`
+ALTER TABLE `quotationdetails_steels`
   ADD PRIMARY KEY (`Sno`,`qno`),
   ADD KEY `qno` (`qno`);
 
@@ -460,16 +498,17 @@ ALTER TABLE `qprel`
   ADD CONSTRAINT `qprel_ibfk_4` FOREIGN KEY (`Qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `QuotationDetails_Awin`
+-- Constraints for table `quotationdetails_awin`
 --
-ALTER TABLE `QuotationDetails_Awin`
+ALTER TABLE `quotationdetails_awin`
   ADD CONSTRAINT `quotationdetails_awin_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `QuotationDetails_Steels`
+-- Constraints for table `quotationdetails_steels`
 --
-ALTER TABLE `QuotationDetails_Steels`
+ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
