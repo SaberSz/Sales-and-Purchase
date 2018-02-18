@@ -295,7 +295,7 @@ public class SalesController implements Initializable {
  TableColumn totalCol = new TableColumn("Total (SGD)"); 
  
  
-  void newEnquiryPane_PriceBoxFill_Awin(TableView<Person> tables){
+  void newEnquiryPane_PriceBoxFill_Awin(TableView<Person> tables, ObservableList<Person> data){
       indexCol.setSortable(false);
      desCol.setSortable(false);
      quantityCol.setSortable(false);
@@ -307,30 +307,7 @@ public class SalesController implements Initializable {
            
        
     tables.getColumns().addAll(indexCol, desCol, quantityCol, unitCol ,totalCol);
-    ObservableList<Person> data;    
-    data = FXCollections.observableArrayList(
-    new Person("1", "", "","", ""),
-    new Person("2", "", "","", ""),
-    new Person("3", "", "","", ""),
-    new Person("4", "", "","", ""),
-    new Person("5", "", "","", ""),
-    new Person("6", "", "","", ""),
-    new Person("7", "", "","", ""),
-    new Person("7", "", "","", ""),
-    new Person("8", "", "","", ""),
-    new Person("9", "", "","", ""),
-    new Person("10", "", "","", ""),
-    new Person("11", "", "","", ""),
-    new Person("12", "", "","", ""),
-    new Person("13", "", "","", ""),
-    new Person("14", "", "","", ""),
-    new Person("15", "", "","", ""),
-    new Person("16", "", "","", ""),
-    new Person("17", "", "","", ""),
-    new Person("18", "", "","", ""),
-    new Person("19", "", "","", ""),
-    new Person("20", "", "","", "")
-    );
+   
     
     indexCol.setCellValueFactory(
     new PropertyValueFactory<Person,String>("firstName")
@@ -520,7 +497,31 @@ public class SalesController implements Initializable {
                                 table1.setVisible(true);
                                 table1.getItems().clear();
                                 table1.getColumns().clear();
-                                newEnquiryPane_PriceBoxFill_Awin(table1);
+                                 ObservableList<Person> data;    
+                                    data = FXCollections.observableArrayList(
+                                    new Person("1", "", "","", ""),
+                                    new Person("2", "", "","", ""),
+                                    new Person("3", "", "","", ""),
+                                    new Person("4", "", "","", ""),
+                                    new Person("5", "", "","", ""),
+                                    new Person("6", "", "","", ""),
+                                    new Person("7", "", "","", ""),
+                                    new Person("7", "", "","", ""),
+                                    new Person("8", "", "","", ""),
+                                    new Person("9", "", "","", ""),
+                                    new Person("10", "", "","", ""),
+                                    new Person("11", "", "","", ""),
+                                    new Person("12", "", "","", ""),
+                                    new Person("13", "", "","", ""),
+                                    new Person("14", "", "","", ""),
+                                    new Person("15", "", "","", ""),
+                                    new Person("16", "", "","", ""),
+                                    new Person("17", "", "","", ""),
+                                    new Person("18", "", "","", ""),
+                                    new Person("19", "", "","", ""),
+                                    new Person("20", "", "","", "")
+                                    );
+                                newEnquiryPane_PriceBoxFill_Awin(table1,data);
                                 table1.setEffect(new ColorAdjust());
                             }
                             else
@@ -804,11 +805,8 @@ public class SalesController implements Initializable {
                                     table11.setVisible(true);
                                     table11.getItems().clear();
                                     table11.getColumns().clear();
-                newEnquiryPane_PriceBoxFill_Awin(table11);
-                //fill details of Awin table
-
-                table11.getItems().clear();
-                String sql1="SELECT * FROM `QuotationDetails_Awin` WHERE qno = ?";
+                                    //fill details of Awin table
+               String sql1="SELECT * FROM `QuotationDetails_Awin` WHERE qno = ?";
                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                 stmt.setString(1, qno);
                 rs=stmt.executeQuery();
@@ -817,8 +815,10 @@ public class SalesController implements Initializable {
                 while(rs.next()){
                     data.add(new Person(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5)));
                     System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+"  "+rs.getString(5));
-                }
-                table11.setItems(data);
+                }                     
+                newEnquiryPane_PriceBoxFill_Awin(table11,data);
+                
+
                 table11.setEffect(new ColorAdjust());
                 
             }
