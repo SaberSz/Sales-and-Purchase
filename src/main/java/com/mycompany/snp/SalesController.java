@@ -659,22 +659,10 @@ public class SalesController implements Initializable {
 }
 
 
-        
-    
-
-    @FXML
-    private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
-        //also note that as soon as the enquiry is detials are saved. A quotation number should be generated. The person can then either
-        //enter the details there itself or can just hit the save button to save as a draft(quotaion). 
-        //When the enquiry details are saved aert the user to note the quotation number
-        //We will not require any combo box for selections here. 
-        //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
-        //to get the data from the table
-
-        if (cmp.getValue()=="Awin"){
-       //this is for awin table 
-       try{
-                        PreparedStatement stmt;
+       void Quotation_insert_into_awin_table(String qo){//method to insert quotaion details into database for awin
+           PreparedStatement stmt;
+           try{
+                        
 
                          ObservableList<Person> trc;
                       trc =FXCollections.observableArrayList(table1.getItems());
@@ -696,11 +684,17 @@ public class SalesController implements Initializable {
                         int q = Integer.parseInt(p.getEmail().getText());
                         int r=Integer.parseInt(p.getRemark().getText());
                         long s=Long.parseLong(p.getTotal().getText());
-                        String qo=Qno.getText();
+                       
                         System.out.println("the quotation no is "+qo);
                         int no=Integer.parseInt(p.getFirstName().getText());
                       try{
-
+                          //first deleting quotations details of the particular qno
+                     String suqdel="DELETE FROM `quotationdetails_awin` WHERE qno=?";
+                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
+                                 stmt.setString(1,qo);
+                                 stmt.executeUpdate();
+                                 System.out.println("the deleting is done if the contents were present before");
+                                         
                      String suql1 = "INSERT INTO `quotationdetails_awin`(`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES (?,?,?,?,?,?)";
                                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                                             stmt.setInt(1,no);
@@ -731,46 +725,104 @@ public class SalesController implements Initializable {
             Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
            Utilities.AlertBox.showErrorMessage(e);
        }
+       }
+       
+       
+       void Quotation_insert_into_steel(String qo){//method to insert quotaion details into database for steel
+   
+            PreparedStatement stmt;
+             try{
+                   
+
+                         ObservableList<Person2> trc;
+                      trc =FXCollections.observableArrayList(table12.getItems());
+                      int i=0;
+                      while(i<20){
+                      Person2 p= trc.get(i);
+                      if(p.getPosition().getText().equalsIgnoreCase("")){
+                          break;
+                      }
+                      else{
+                       /* System.out.print(p.getFirstName().getText()+"\t");
+                        System.out.print(p.getLastName().getText()+"\t");
+                        System.out.print(p.getEmail().getText()+"\t");
+                        System.out.print(p.getRemark().getText()+"\t");
+                        System.out.println(p.getTotal().getText()+"\t");
+                          */
+
+                        String d=p.getPosition().getText();
+                        String q =p.getNormalRate().getText();
+                        String r=p.getBeyondNormalHours().getText();
+                        String s=p.getRemarks().getText();
+                        String h=p.getHolidays().getText();
+                     
+                        System.out.println("the quotation no is "+qo);
+                        int no=Integer.parseInt(p.getSN().getText());
+                      try{//deleting befoehand just in case...
+                            String suqdel="DELETE FROM `quotationdetails_awin` WHERE qno=?";
+                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suqdel);
+                                 stmt.setString(1,qo);
+                                 stmt.executeUpdate();
+                                 System.out.println("the deleting is done if the contents were present before");
+                     String suql1 = "INSERT INTO `quotationdetails_steels`(`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES (?,?,?,?,?,?,?)";
+                                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                                            stmt.setInt(1,no);
+                                            stmt.setString(2,d);
+                                            stmt.setString(3,q);
+                                            stmt.setString(4,r);
+                                            stmt.setString(5,h);
+                                            stmt.setString(6,s);
+                                            stmt.setString(7,qo);
+                                            stmt.executeUpdate();
+                      }
+                      catch(SQLException exe){
+                                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                                    Utilities.AlertBox.showErrorMessage(exe);
+                      }
+
+                      }
+                        i++;
+                      }
+             if(i==0){
+                 Utilities.AlertBox.notificationWarn("Blank Quotation","The quotation box seems to be blank.");           
+             }else{
+               Utilities.AlertBox.notificationInfo("Success","Your Quotation was saved successfully!");           
+             }
+             
+            }
+       catch(Exception e){
+            Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+           Utilities.AlertBox.showErrorMessage(e);
+       }
+    
+}
+    
+
+    @FXML
+    private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
+        //also note that as soon as the enquiry is detials are saved. A quotation number should be generated. The person can then either
+        //enter the details there itself or can just hit the save button to save as a draft(quotaion). 
+        //When the enquiry details are saved aert the user to note the quotation number
+        //We will not require any combo box for selections here. 
+        //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
+        //to get the data from the table
+        String qo=Qno.getText();   
+        if (cmp.getValue()=="Awin"){
+       //this is for awin table 
+       
+       Quotation_insert_into_awin_table(qo);
         }
         else
         {
            //for steels table 
-            
-            
-            
+       Quotation_insert_into_steel(qo);
+       
+                      }
+        
         }
 
-        
-        
-        PreparedStatement stmt;
-        
-         ObservableList<Person> trc;
-      trc =FXCollections.observableArrayList(table1.getItems());
-      int i=0;
-      while(i<20){
-      Person p= trc.get(i);
-      if(p.getLastName().getText().equalsIgnoreCase("")){
-          break;
-      }
-      else{
-       /* System.out.print(p.getFirstName().getText()+"\t");
-        System.out.print(p.getLastName().getText()+"\t");
-        System.out.print(p.getEmail().getText()+"\t");
-        System.out.print(p.getRemark().getText()+"\t");
-        System.out.println(p.getTotal().getText()+"\t");
-          */
-        String d=p.getLastName().getText();
-        int q = Integer.parseInt(p.getEmail().getText());
-        int r=Integer.parseInt(p.getRemark().getText());
-        long s=Long.parseLong(p.getTotal().getText());
-        String qo=Qno.getText();
-        System.out.println("the quotation no is "+qo);
-        int no=i+1;
-     
-      
-    }
-      }
-    }
+       
 
     @FXML
     private void Fill_details_of_existing_Qno_and_Eno(MouseEvent event) {
