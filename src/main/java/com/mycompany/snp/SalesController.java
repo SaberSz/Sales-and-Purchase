@@ -797,7 +797,7 @@ public class SalesController implements Initializable {
              if(i==0){
                  Utilities.AlertBox.notificationWarn("Blank Quotation","The quotation box seems to be blank.");           
              }else{
-               Utilities.AlertBox.notificationInfo("Success","Your Quotation was saved successfully!");           
+               Utilities.AlertBox.notificationInfo("Done","");           
              }
              
             }
@@ -839,7 +839,7 @@ public class SalesController implements Initializable {
     void generate_Awin_Table(boolean input){
         try {
             //here input is used to indicate if table is editable or not
-            String qno= QnoBox.getValue();
+            String qno= Qno1.getText();
             table111.setDisable(true);
             table111.setVisible(false);
             table111.setEditable(false);
@@ -870,6 +870,47 @@ public class SalesController implements Initializable {
         
     }
     
+     void generate_Awin_Table(boolean input,boolean extra){
+        try {
+            //here input is used to indicate if table is editable or not
+            String qno= Qno1.getText();
+            table111.setDisable(true);
+            table111.setVisible(false);
+            table111.setEditable(false);
+            table11.setDisable(false);
+            table11.setVisible(true);
+            table11.setEditable(false);
+            table11.getItems().clear();
+            table11.getColumns().clear();
+            //fill details of Awin table
+            String sql1="SELECT * FROM `QuotationDetails_Awin` WHERE qno = ?";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+            stmt.setString(1, qno);
+            ResultSet rs=stmt.executeQuery();
+            ObservableList<Person> data;
+            data = FXCollections.observableArrayList();
+            int count=0;
+            while(rs.next()){
+                Person p=new Person(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5));
+                p.setEdit(input);
+                data.add(p);
+                System.out.println(rs.getString(1)+" "+rs.getString(2)+" "+rs.getString(3)+" "+rs.getString(4)+"  "+rs.getString(5));
+                count++;
+            }
+             if(extra){
+                for(int o=count+1;o<count+100;o++){
+                    data.add(new Person(String.valueOf(o),"","","",""));
+                }
+                }
+            newEnquiryPane_PriceBoxFill_Awin(table11,data);
+            table11.setEditable(false);
+            table11.setEffect(new ColorAdjust());
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+     
     void generate_Steels_Table(boolean input){
         //here input is used to indicate if table is editable or not
         try {
@@ -894,6 +935,44 @@ public class SalesController implements Initializable {
                     p.setEdit(input);
                     data.add(p );
                 }                    
+                newEnquiryPane_PriceBoxFill_Steels(table111,data);
+                table111.setEffect(new ColorAdjust());
+                //fill details of Steels Table
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    void generate_Steels_Table(boolean input,boolean extra){
+        //here input is used to indicate if table is editable or not
+        try {
+            //Generate the Steels Quotation Table 
+            String qno= QnoBox.getValue();
+                table11.setDisable(true);
+                                    table11.setVisible(false);
+                                     table11.setEditable(false);
+                                    table111.setDisable(false);
+                                    table111.setVisible(true);
+                                     table111.setEditable(false);
+                                    table111.getItems().clear();
+                                    table111.getColumns().clear();
+                 String sql1="SELECT * FROM `QuotationDetails_Steels` WHERE qno = ?";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                stmt.setString(1, qno);
+                ResultSet rs=stmt.executeQuery();
+                ObservableList<Person2> data;    
+                data = FXCollections.observableArrayList();
+                while(rs.next()){
+                    Person2 p= new Person2(rs.getString(1), rs.getString(2),rs.getString(3),rs.getString(4), rs.getString(5),rs.getString(6));
+                    p.setEdit(input);
+                    data.add(p );
+                }
+                if(extra){
+                for(int o=0;o<100;o++){
+                    data.add(new Person2("","","","","",""));
+                }
+                }
                 newEnquiryPane_PriceBoxFill_Steels(table111,data);
                 table111.setEffect(new ColorAdjust());
                 //fill details of Steels Table
@@ -956,15 +1035,16 @@ public class SalesController implements Initializable {
         if(ECom1.getText().equals("Awin")){
         table11.setEditable(true);
         table111.setEditable(false);
-        generate_Awin_Table(true);
+        generate_Awin_Table(true,true);//overloaded
         edit_button_hit_in_QPane=true;
+        revisedQno="";
         }else if(ECom1.getText().equals("Steels"))
         {
             table11.setEditable(true);
         table111.setEditable(false);
         edit_button_hit_in_QPane=true;
-        generate_Steels_Table(true);
-        
+        generate_Steels_Table(true,true);//overloaded
+        revisedQno="";
         }
         
         
@@ -988,6 +1068,38 @@ public class SalesController implements Initializable {
         }
         else if(revisedQno!=""){
             String k=ENo1.getText();
+              PreparedStatement stmt;  
+      try{
+      
+     String suql1 = "INSERT INTO `qoutation`(`Qno`,`RevNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setString(1,revisedQno);
+                            stmt.setInt(2,revisedno);
+                            stmt.executeUpdate();
+     String suql2 = "INSERT INTO `eqrel`(`Eno`, `QNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql2);
+                            stmt.setString(1,k);
+                            stmt.setString(2,revisedQno);
+                            stmt.executeUpdate();
+                            Qno1.setText(revisedQno);
+                 if(ECom1.getText().equals("Awin")){
+                    Quotation_insert_into_awin_table(revisedQno,table11);
+                    
+                    generate_Awin_Table(false);
+
+                }else if(ECom1.getText().equals("Steels"))
+                {
+                    Quotation_insert_into_steel(revisedQno,table111);
+                     generate_Steels_Table(false);
+
+                }
+          
+      }
+      catch(SQLException exe){
+                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
+                    Utilities.AlertBox.showErrorMessage(exe);
+      }
           
             
         }
@@ -1000,22 +1112,25 @@ public class SalesController implements Initializable {
     private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
     }
     static String revisedQno="";
+    static int revisedno;
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
        if( Utilities.AlertBox.alertoption("Revision","You just clicked the Revise button!"," Are you sure you want to revise quotation number :"+Qno1.getText())){
                 revise_button_hit_in_QPane=true;
                 edit_button_hit_in_QPane=false;
+                
                 try{       
                      String qno=Qno1.getText();
                            String suql = "SELECT Qno,RevNo FROM `qoutation` WHERE qno= ? ;";
                            PreparedStatement st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                            st.setString(1,qno);
                            ResultSet rs=st.executeQuery();
-                       
+                           
                            while(rs.next()){
                     
                            int k=Integer.valueOf(rs.getString(2));
-                           k++;
+                           
+                           k++;revisedno=k;
                            if(k==1){
                                //first revision
                             revisedQno=Qno1.getText()+".Rev."+String.valueOf(k);
@@ -1025,7 +1140,7 @@ public class SalesController implements Initializable {
                                //not first revision
                                int len=Qno1.getText().length();
                                int v =Qno1.getText().lastIndexOf('.');
-                               String s=Qno1.getText().substring(v, len);
+                               String s=Qno1.getText().substring(v+1, len);
                                int z=Integer.valueOf(s);
                                z++;
                                String x=Qno1.getText().substring(0, v+1);
@@ -1034,11 +1149,20 @@ public class SalesController implements Initializable {
                            System.out.println(revisedQno);
                            }
                                   
-                          }
-                      
+                          
+                    if(ECom1.getText().equals("Awin")){
+                    Quotation_insert_into_awin_table(qno,table11);
+                    generate_Awin_Table(true,true);
+
+                }else if(ECom1.getText().equals("Steels"))
+                {
+                    Quotation_insert_into_steel(qno,table111);
+                     generate_Steels_Table(true,true);
+
+                }  
                     
                 
-       
+                }
                 catch(Exception e ){
                   Utilities.AlertBox.showErrorMessage(e);
                 }
