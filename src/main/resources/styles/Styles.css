@@ -14,3 +14,6 @@
     -fx-background-radius : 5px;
     -fx-ripple-color: #3F51B5;
 }
+.jfx-hamburger StackPane {
+	-fx-background-color: white;
+}
