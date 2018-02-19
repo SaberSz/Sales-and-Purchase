@@ -3,11 +3,7 @@
 
 -fx-background-color: #3F51B5
 }
-.combo-box .list-cell:selected{
 
--fx-background-color:#3F51B5; 
-
-}
 .jfx-hamburger-icon
 {
     -fx-background-color :white;
