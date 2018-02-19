@@ -39,7 +39,7 @@ public class FXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
          cate.getItems().add("Sales");
-         cate.getItems().add("Production");
+         cate.getItems().add("Purchase");
     } 
 
     @FXML

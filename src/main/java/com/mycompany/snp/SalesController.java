@@ -29,6 +29,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -38,6 +40,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -157,6 +160,7 @@ public class SalesController implements Initializable {
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
                 QnoBox.getItems().add(rs.getString(1));
+                QnoBox1.getItems().add(rs.getString(1));
                 System.out.println(rs.getString(1));
             }
         }
@@ -258,6 +262,19 @@ public class SalesController implements Initializable {
                                 newPOPane.setVisible(true);
                                 newEqPane.setDisable(true);
                                 newEqPane.setVisible(false); 
+                                 try{
+                                    QnoBox1.getItems().clear();
+            String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                QnoBox1.getItems().add(rs.getString(1));
+                System.out.println(rs.getString(1));
+            }
+        }
+        catch(Exception e){
+            
+        }
                             SD[3]=false;
                         } 
                         else if(SD[4])
@@ -1207,10 +1224,39 @@ public class SalesController implements Initializable {
 
     @FXML
     private void power_off(MouseEvent event) {
+        try {
+            tock=false;
+            Stage stage;
+            Parent root;
+            stage=(Stage) table1.getScene().getWindow();
+            //load up OTHER FXML document
+            root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
     private void tick_in_project(MouseEvent event) {
+        try {
+            String qno=QnoBox1.getValue();
+            String sql="SELECT * FROM `qprel` WHERE  qno =? ;";
+            PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ps.setString(1,qno);
+            ResultSet rs =ps.executeQuery();
+            if(rs.next())
+            {
+             //fill datails   
+            }
+            else{
+                //setEditable(true)
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -1223,6 +1269,26 @@ public class SalesController implements Initializable {
 
     @FXML
     private void refresh_project_pane(MouseEvent event) {
+        try{
+            QnoBox1.getItems().clear();//quotation combo box
+            String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                QnoBox1.getItems().add(rs.getString(1));
+                System.out.println(rs.getString(1));
+            }
+            PjNo.clear();//project number text box
+            PrNo.clear();//product number text box
+            EsVal.clear();//estimated value of project text box
+            DateRec.valueProperty().set(null);//date the project order was received
+            EstDate.valueProperty().set(null);//date completion estimate
+            ProDes.clear();//description text area
+            
+        }
+        catch(Exception e){
+            
+        } 
     }
     
 
