@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 import java.util.logging.Level;
@@ -196,6 +197,7 @@ public class SalesController implements Initializable {
         table12.setEffect(new GaussianBlur(20));
         table11.setEffect(new GaussianBlur(20));
         table111.setEffect(new GaussianBlur(20));
+        tock=true;
         threadtock();
     }
 
@@ -1244,16 +1246,50 @@ public class SalesController implements Initializable {
     private void tick_in_project(MouseEvent event) {
         try {
             String qno=QnoBox1.getValue();
-            String sql="SELECT * FROM `qprel` WHERE  qno =? ;";
+            String sql="SELECT `PjNo` FROM `qprel` where  qno =? ;";
             PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ps.setString(1,qno);
             ResultSet rs =ps.executeQuery();
             if(rs.next())
             {
-             //fill datails   
+             //fill datails
+             int PjNOs=rs.getInt(1); 
+             String sql1="SELECT `PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des` FROM `product` WHERE PjNo=?";
+             ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+             ps.setInt(1,PjNOs);
+             rs =ps.executeQuery();
+             while(rs.next()){
+                PjNo.setText(rs.getString(2));
+                PrNo.setText(rs.getString(1));
+                EsVal.setText(rs.getString(3));
+                DateRec.setValue(LocalDate.parse(rs.getString(4)));
+                EstDate.setValue(LocalDate.parse(rs.getString(5)));
+                ProDes.setText(rs.getString(6));
+                PjNo.setEditable(false);
+                PrNo.setEditable(false);
+                EsVal.setEditable(false);
+                DateRec.setEditable(false);
+                EstDate.setEditable(false);
+                ProDes.setEditable(false);
+             }
             }
             else{
                 //setEditable(true)
+                 
+                String sql1="SELECT IFNULL(MAX(`PjNo`)+1,1) as 'your value'  FROM `product` WHERE 1;";
+             ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+            // ps.setInt(1,PjNOs);
+             rs =ps.executeQuery();
+             while(rs.next()){
+              String PjNOs = rs.getString(1);
+              PjNo.setText(PjNOs);
+              PjNo.setEditable(false);
+                PrNo.setEditable(true);
+                EsVal.setEditable(true);
+                DateRec.setEditable(true);
+                EstDate.setEditable(true);
+                ProDes.setEditable(true);
+             }
             }
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1362,6 +1398,12 @@ public class SalesController implements Initializable {
             DateRec.valueProperty().set(null);//date the project order was received
             EstDate.valueProperty().set(null);//date completion estimate
             ProDes.clear();//description text area
+            PjNo.setEditable(false);
+                PrNo.setEditable(false);
+                EsVal.setEditable(false);
+                DateRec.setEditable(false);
+                EstDate.setEditable(false);
+                ProDes.setEditable(false);
             
         }
         catch(Exception e){
