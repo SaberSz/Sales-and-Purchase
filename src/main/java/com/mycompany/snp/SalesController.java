@@ -1138,7 +1138,7 @@ public class SalesController implements Initializable {
             
         }
         else{
-            Utilities.AlertBox.notificationInfo("Sticky Buttons","The quotation has alreay been saved.");
+            Utilities.AlertBox.notificationInfo("Sticky Buttons","The quotation has already been saved.");
         }
     }
 
@@ -1241,14 +1241,14 @@ public class SalesController implements Initializable {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    static String qno_static="";
     @FXML
     private void tick_in_project(MouseEvent event) {
         try {
-            String qno=QnoBox1.getValue();
+            qno_static=QnoBox1.getValue();
             String sql="SELECT `PjNo` FROM `qprel` where  qno =? ;";
             PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            ps.setString(1,qno);
+            ps.setString(1,qno_static);
             ResultSet rs =ps.executeQuery();
             if(rs.next())
             {
@@ -1303,7 +1303,7 @@ public class SalesController implements Initializable {
             int esval=Integer.parseInt(EsVal.getText());
             String daterec= DateRec.getValue().toString();
             String estrec= EstDate.getValue().toString();
-            String qnum=QnoBox1.getValue();
+            String qnum=qno_static;
             String prodes=ProDes.getText();
             
             
@@ -1328,6 +1328,8 @@ public class SalesController implements Initializable {
             
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+            Utilities.AlertBox.showErrorMessage(ex);
+             Utilities.AlertBox.notificationInfo("Sticky Buttons","The project information has already been saved.");
         }
     }
     
@@ -1339,15 +1341,23 @@ public class SalesController implements Initializable {
         if(edit_button_hit_in_PPane){
             try {
                 PreparedStatement ps;
-                String sql1="DELETE FROM `qprel` WHERE pjno=?;DELETE FROM `product` WHERE pjno=?";
+                String sql1="DELETE FROM `qprel` WHERE pjno=?;";
                 ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                ps.setInt(1,Integer.valueOf(PjNo.getText()));
-             ps.setInt(2,Integer.valueOf(PjNo.getText()));
+             
        
                 ps.executeUpdate();
+                
+                sql1="DELETE FROM `product` WHERE pjno=?";
+                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+               ps.setInt(1,Integer.valueOf(PjNo.getText()));
+            
+                ps.executeUpdate();
                 insert_into_proj_table();
+                 Utilities.AlertBox.notificationInfo("Updated","The project information has  been updated.");
             } catch (SQLException ex) {
                 Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                Utilities.AlertBox.showErrorMessage(ex);
             }catch (Exception e) {
                 Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
                 Utilities.AlertBox.notificationWarn("Error","Error in input!");
@@ -1359,6 +1369,7 @@ public class SalesController implements Initializable {
         else{
             
             insert_into_proj_table();
+            Utilities.AlertBox.notificationInfo("Saved","The project information has  been saved.");
         }
           PjNo.setEditable(false);
           PrNo.setEditable(false);

@@ -154,20 +154,12 @@
                   </Label>
                </children>
             </AnchorPane>
-<<<<<<< HEAD
-            <ScrollPane fx:id="newPOPane" disable="true" layoutX="-7.0" visible="false">
-=======
             <ScrollPane fx:id="newPOPane" layoutX="-7.0">
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
                         <JFXComboBox fx:id="QnoBox1" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="80.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
-<<<<<<< HEAD
-                        <JFXTextField fx:id="PjNo" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="157.0" prefHeight="27.0" prefWidth="210.0" promptText="Project Number">
-=======
                         <JFXTextField fx:id="PjNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="157.0" prefHeight="27.0" prefWidth="210.0" promptText="Project Number">
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
@@ -177,33 +169,19 @@
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                            </graphic>
                         </Label>
-<<<<<<< HEAD
-                        <JFXTextField fx:id="PrNo" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="231.0" prefHeight="27.0" prefWidth="210.0" promptText="Product Number">
-=======
                         <JFXTextField fx:id="PrNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="231.0" prefHeight="27.0" prefWidth="210.0" promptText="Product Number">
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-<<<<<<< HEAD
-                        <JFXDatePicker fx:id="DateRec" defaultColor="#3f51b5" layoutX="309.0" layoutY="157.0" prefHeight="27.0" prefWidth="235.0" promptText="Date Project Order Received" />
-                        <JFXDatePicker fx:id="EstDate" defaultColor="#3f51b5" layoutX="309.0" layoutY="231.0" prefHeight="27.0" prefWidth="235.0" promptText="Estimated Date of Completion" />
-                        <JFXTextField fx:id="EsVal" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="312.0" prefHeight="27.0" prefWidth="210.0" promptText="Estimated Value of Project">
-=======
                         <JFXDatePicker fx:id="DateRec" defaultColor="#3f51b5" editable="false" layoutX="309.0" layoutY="157.0" prefHeight="27.0" prefWidth="235.0" promptText="Date Project Order Received" />
                         <JFXDatePicker fx:id="EstDate" defaultColor="#3f51b5" editable="false" layoutX="309.0" layoutY="231.0" prefHeight="27.0" prefWidth="235.0" promptText="Estimated Date of Completion" />
                         <JFXTextField fx:id="EsVal" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="312.0" prefHeight="27.0" prefWidth="210.0" promptText="Estimated Value of Project">
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </JFXTextField>
-<<<<<<< HEAD
-                        <JFXTextArea fx:id="ProDes" focusColor="#3f51b5" labelFloat="true" layoutX="600.0" layoutY="160.0" prefHeight="183.0" prefWidth="522.0" promptText="Description" />
-=======
                         <JFXTextArea fx:id="ProDes" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="600.0" layoutY="160.0" prefHeight="183.0" prefWidth="522.0" promptText="Description" />
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                         <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1092.0" layoutY="421.0" text="Label">
                            <graphic>
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" onMouseClicked="#save_in_project" size="30" />
@@ -223,11 +201,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-<<<<<<< HEAD
-            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0">
-=======
             <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false">
->>>>>>> 6befa4541069542d1d7ac91c00962c1209a32194
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                      <children>
@@ -295,12 +269,6 @@
                               <Font name="Arial" size="20.0" />
                            </font>
                         </JFXButton>
-                        <JFXComboBox disable="true" focusColor="#3f51b5" labelFloat="true" layoutX="262.0" layoutY="19.0" prefHeight="27.0" prefWidth="230.0" promptText="Choose an Enquiry Number" visible="false" />
-                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="998.0" layoutY="595.0" text="Label">
-                           <graphic>
-                              <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
-                           </graphic>
-                        </Label>
                      </children>
                   </AnchorPane>
                </content>
