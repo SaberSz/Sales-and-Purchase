@@ -15,6 +15,7 @@ import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1258,13 +1259,90 @@ public class SalesController implements Initializable {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    void insert_into_proj_table(){
+          try {
+            int pjno=Integer.parseInt(PjNo.getText());
+            int prno=Integer.parseInt(PrNo.getText());
+            int esval=Integer.parseInt(EsVal.getText());
+            String daterec= DateRec.getValue().toString();
+            String estrec= EstDate.getValue().toString();
+            String qnum=QnoBox1.getValue();
+            String prodes=ProDes.getText();
+            
+            
+            
+            String sql="INSERT INTO `product`(`PNo`, `PjNo`, `Value`, `Date`, `EstDate`,`Des`) VALUES (?,?,?,?,?,?)";
+            PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ps.setInt(1,prno);
+            ps.setInt(2,pjno);
+            ps.setInt(3,esval);
+            ps.setString(4,daterec);
+            ps.setString(5,estrec);
+            ps.setString(6,prodes);
+            
+            
+            ps.executeUpdate();
+             
+            String sql1="INSERT INTO `qprel`(`Qno`, `PjNo`) VALUES (?,?)";
+            ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+            ps.setString(1,qnum);
+            ps.setInt(2,pjno);
+                 ps.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    
     @FXML
     private void save_in_project(MouseEvent event) {
+         
+        if(edit_button_hit_in_PPane){
+            try {
+                PreparedStatement ps;
+                String sql1="DELETE FROM `qprel` WHERE pjno=?;DELETE FROM `product` WHERE pjno=?";
+                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+               ps.setInt(1,Integer.valueOf(PjNo.getText()));
+             ps.setInt(2,Integer.valueOf(PjNo.getText()));
+       
+                ps.executeUpdate();
+                insert_into_proj_table();
+            } catch (SQLException ex) {
+                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+            }catch (Exception e) {
+                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.notificationWarn("Error","Error in input!");
+                    Utilities.AlertBox.showErrorMessage(e);
+                
+            }
+            
+        }
+        else{
+            
+            insert_into_proj_table();
+        }
+          PjNo.setEditable(false);
+          PrNo.setEditable(false);
+          EsVal.setEditable(false);
+          DateRec.setEditable(false);
+          EstDate.setEditable(false);
+          ProDes.setEditable(false);
+        
     }
-
+ static boolean edit_button_hit_in_PPane=false;
     @FXML
+    
     private void edit_in_project(MouseEvent event) {
+        edit_button_hit_in_PPane=true;
+         PjNo.setEditable(false);
+         PrNo.setEditable(true);
+         EsVal.setEditable(true);
+         DateRec.setEditable(true);
+         EstDate.setEditable(true);
+         ProDes.setEditable(true);
     }
 
     @FXML
