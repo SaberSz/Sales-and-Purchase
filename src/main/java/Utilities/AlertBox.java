@@ -16,6 +16,8 @@ package Utilities;
  */
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.stage.*;
 import javafx.scene.*;
@@ -89,6 +91,21 @@ alert.setContentText(content);
 
 Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
+    }
+    public static String alterchoice(String arr[],String Title,String Header,String Content){
+        List<String> choices = new ArrayList<>();
+        for (String x : arr){
+            choices.add(x);
+        } 
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(arr[0], choices);
+            dialog.setTitle(Title);
+            dialog.setHeaderText(Header);
+            dialog.setContentText(Content);
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent()){
+                return result.get();
+            }            return "Cancel";
+
     }
 
 }

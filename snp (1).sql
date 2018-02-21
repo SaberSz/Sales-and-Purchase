@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 18, 2018 at 10:56 PM
+-- Generation Time: Feb 21, 2018 at 10:09 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -132,7 +132,9 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (45, 'GOTHAM CITY', 'JOKER', 'JOKER@GMAIL.COM', 2342342),
 (46, 'sfdgsdfgsdfgsdfg', 'sdfgsdfgs', 'zadfgsdfgsdfg', 34534534),
 (47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234),
-(48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413);
+(48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413),
+(49, 'bangalore', 'abc', 'abc@abc.com', 23453245),
+(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245);
 
 -- --------------------------------------------------------
 
@@ -143,7 +145,7 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 DROP TABLE IF EXISTS `enquiry`;
 CREATE TABLE `enquiry` (
   `Eqno` varchar(15) NOT NULL,
-  `Date` date NOT NULL,
+  `Date1` date NOT NULL,
   `Cmpname` varchar(10) NOT NULL,
   `Subject` varchar(100) NOT NULL,
   `CID` int(15) NOT NULL
@@ -153,7 +155,7 @@ CREATE TABLE `enquiry` (
 -- Dumping data for table `enquiry`
 --
 
-INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
+INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('11', '2018-01-30', 'Steels', 'verbgveb', 23),
 ('111', '2018-01-04', 'Awin', 'plis send', 9),
 ('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7),
@@ -181,7 +183,9 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 ('33453', '2018-02-14', 'Awin', 'sdfsdfas', 42),
 ('341', '2018-01-19', 'Awin', 'rwgrgrwgw', 29),
 ('342', '2018-01-04', 'Awin', 'grsgrs', 16),
+('34345', '2018-02-15', 'Awin', 'f  fsgbsdbobs', 50),
 ('345', '2018-01-17', 'Awin', 'hteheth', 34),
+('345634', '2018-02-20', 'Awin', 'i want to buy', 49),
 ('421', '2018-01-03', 'Steels', 'bghhhhhhhhhhhhhh.', 17),
 ('425', '2018-01-26', 'Awin', 'hthetheth', 25),
 ('425', '2018-01-12', 'Awin', 'gegregwg', 28),
@@ -198,6 +202,22 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 ('gdhdfbgsfhs', '2018-01-18', 'Steels', 'bub', 6),
 ('hsgfsf', '2018-01-31', 'Awin', 'dsgdfgdfsg', 11),
 ('sdfsdfs', '2018-01-31', 'Awin', 'sdfsdfsdf', 14);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `enquiryBin`
+--
+
+DROP TABLE IF EXISTS `enquiryBin`;
+CREATE TABLE `enquiryBin` (
+  `Eqno` varchar(15) NOT NULL,
+  `Date1` date NOT NULL,
+  `Cmpname` varchar(10) NOT NULL,
+  `Subject` varchar(100) NOT NULL,
+  `CID` int(15) NOT NULL,
+  `Reason` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -228,6 +248,9 @@ INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
 ('2342', '18-AE-QT-029'),
 ('2342', '18-AE-QT-029.Rev.1'),
 ('2342', '18-AE-QT-029.Rev.2'),
+('345634', '18-AE-QT-030'),
+('345634', '18-AE-QT-030.Rev.1'),
+('34345', '18-AE-QT-034'),
 ('1234554', '18-SC-QT-026'),
 ('132123', '18-SC-QT-028'),
 ('132123', '18-SC-QT-028.Rev.1'),
@@ -278,6 +301,13 @@ CREATE TABLE `product` (
   `Des` varchar(5000) NOT NULL DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`) VALUES
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg');
+
 -- --------------------------------------------------------
 
 --
@@ -309,6 +339,12 @@ INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
 ('18-AE-QT-029', NULL, 0, NULL),
 ('18-AE-QT-029.Rev.1', NULL, 1, NULL),
 ('18-AE-QT-029.Rev.2', NULL, 2, NULL),
+('18-AE-QT-030', NULL, 0, NULL),
+('18-AE-QT-030.Rev.1', NULL, 1, NULL),
+('18-AE-QT-031', NULL, 0, NULL),
+('18-AE-QT-032', NULL, 0, NULL),
+('18-AE-QT-033', NULL, 0, NULL),
+('18-AE-QT-034', NULL, 0, NULL),
 ('18-SC-QT-026', NULL, 0, NULL),
 ('18-SC-QT-028', NULL, 0, NULL),
 ('18-SC-QT-028.Rev.1', NULL, 1, NULL),
@@ -326,6 +362,13 @@ CREATE TABLE `qprel` (
   `Qno` varchar(25) NOT NULL,
   `PjNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `qprel`
+--
+
+INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
+('18-AE-QT-030.Rev.1', 1);
 
 -- --------------------------------------------------------
 
@@ -353,16 +396,23 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 (1, 'bub send plssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029'),
 (1, 'bub send pussylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.1'),
 (1, 'bub send pucciylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.2'),
+(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030'),
+(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030.Rev.1'),
 (2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.2'),
+(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030'),
+(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030.Rev.1'),
 (3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.2'),
+(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030'),
+(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030.Rev.1'),
 (4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.1'),
-(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.2');
+(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.2'),
+(4, 'dsgfdf', 3456, 6543634, 45645, '18-AE-QT-030');
 
 -- --------------------------------------------------------
 
@@ -413,7 +463,13 @@ ALTER TABLE `customer`
 -- Indexes for table `enquiry`
 --
 ALTER TABLE `enquiry`
-  ADD PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date`) USING BTREE;
+  ADD PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date1`) USING BTREE;
+
+--
+-- Indexes for table `enquiryBin`
+--
+ALTER TABLE `enquiryBin`
+  ADD PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date1`) USING BTREE;
 
 --
 -- Indexes for table `eqrel`
