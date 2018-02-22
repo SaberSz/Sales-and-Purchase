@@ -1340,6 +1340,7 @@ public class SalesController implements Initializable {
          
         if(edit_button_hit_in_PPane){
             try {
+             
                 PreparedStatement ps;
                 String sql1="DELETE FROM `qprel` WHERE pjno=?;";
                 ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
@@ -1390,6 +1391,7 @@ public class SalesController implements Initializable {
          DateRec.setEditable(true);
          EstDate.setEditable(true);
          ProDes.setEditable(true);
+            Utilities.AlertBox.notificationInfo("Edit mode","You're now in edit mode.");
     }
 
     @FXML
