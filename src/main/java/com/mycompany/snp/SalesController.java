@@ -133,6 +133,18 @@ public class SalesController implements Initializable {
     private JFXTextField EsVal;
     @FXML
     private JFXTextArea ProDes;
+    @FXML
+    private AnchorPane eq_newpane;
+    @FXML
+    private AnchorPane eq_delpane;
+    @FXML
+    private JFXComboBox<String> eqno_del;
+    @FXML
+    private JFXComboBox<String> cmp_del;
+    @FXML
+    private JFXComboBox<String> email_del;
+    @FXML
+    private JFXDatePicker date_del;
 
 
     /**
@@ -548,22 +560,7 @@ public class SalesController implements Initializable {
                                 newEnquiryPane_PriceBoxFill_Steels(table12,data);
                                 table12.setEffect(new ColorAdjust());
                             }
-                            
-                        }
-                        
-                    
-                } catch (SQLException ex) {
-                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-                    Utilities.AlertBox.notificationWarn("Error","Please make sure you have entered all the details correctly.");
-                    Utilities.AlertBox.showErrorMessage(ex);
-                }
-                
-            }
-        }
-        catch(NullPointerException e){
-          Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
-        }
-          String compname=cmp.getValue();
+                               String compname=cmp.getValue();
        if(compname.equalsIgnoreCase("Awin")){
            compname="AE";
        }else{
@@ -583,7 +580,7 @@ public class SalesController implements Initializable {
      try{       
  String suql = "SELECT Qno FROM `qoutation` WHERE 1";
                             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-                           ResultSet rs=st.executeQuery(suql);
+                           rs=st.executeQuery(suql);
                            int i=0,j=0;
                            while(rs.next()){
                     
@@ -632,6 +629,16 @@ public class SalesController implements Initializable {
        Qno.setText(compname);
        System.out.println(compname);
     Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
+    
+    suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                            stmt.setString(1,compname);
+                            stmt.executeUpdate();
+    String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setString(1,eno);
+                            stmt.setString(2,compname);
+                            stmt.executeUpdate();
         
       } catch (SQLException exe){
                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
@@ -639,37 +646,30 @@ public class SalesController implements Initializable {
                     Utilities.AlertBox.showErrorMessage(exe);
       }
     
-         PreparedStatement stmt;
-        try{
-   
-     String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
-                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-                            stmt.setString(1,compname);
-                            stmt.executeUpdate();
-      }catch (SQLException exe){
-                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
-                    Utilities.AlertBox.showErrorMessage(exe);
-      }
+                            
+                        }
+                        
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    Utilities.AlertBox.notificationWarn("Error","Please make sure you have entered all the details correctly.");
+                    Utilities.AlertBox.showErrorMessage(ex);
+                }
+                
+            }
+        }
+        catch(NullPointerException e){
+          Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
+        }
+       
+         
+        
     
 
     
       
 
-      
-      try{
-      
-     String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
-                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
-                            stmt.setString(1,eno);
-                            stmt.setString(2,compname);
-                            stmt.executeUpdate();
-      }
-      catch(SQLException exe){
-                   Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                    Utilities.AlertBox.notificationWarn("Error","Oops something went wrong!");
-                    Utilities.AlertBox.showErrorMessage(exe);
-      }
+     
 }
 
 
@@ -1423,10 +1423,75 @@ public class SalesController implements Initializable {
             
         } 
     }
-    
 
+    @FXML
+    private void delNewEnq(MouseEvent event) {
+        eq_newpane.setEffect(new GaussianBlur(20));
+        eq_newpane.setDisable(true);
+        eq_delpane.setVisible(true);
+        eq_delpane.setDisable(false);
+    }
+
+    @FXML
+    private void Select_for_delete_of_Enquiry(MouseEvent event) {
+        try{
+            if(eqno_del.getValue().equals("")||cmp_del.getValue().equals("")|| 
+                    email_del.getValue().equals("")||date_del.getValue().toString().equals("")){
+                String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
+                        + "and email=? and cmpname=? and date=?";
+               PreparedStatement ps;
+                //
+                try {
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               ps.setString(1,eqno_del.getValue());
+               ps.setString(2,email_del.getValue());
+               ps.setString(3,cmp_del.getValue());
+               ps.setString(4,date_del.getValue().toString());
+               ResultSet rs =ps.executeQuery(); 
+               int cnt=0;
+               while(rs.next()){
+                   cnt=1;
+                  if(Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?")){
+                      String ar[]={"lack of man power","lack of equipments","too many requests","lack of raw materials","not profitable"};
+                      ar[5]="others";
+                    String res= Utilities.AlertBox.alterchoice(ar,"Reason","Any particular reason for declining "
+                            + "this enquiry","Please choose from the drop down menu below.");
+                    if(res.equals("Cancel")){
+                        break;
+                    }
+                    else
+                    {
+                        //call stored procedure
+                        
+                    }
+                  }
+        
+               }
+               if(cnt==0)
+               {
+                    Utilities.AlertBox.notificationInfo("Error","No such enquiry exists. Please check the entered details.");
+                   
+               }
+                } catch (SQLException ex) {
+                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+             
+       
+                
     
     
+    
+                
+            }
+        }
+        catch(NullPointerException e)
+        {
+         Utilities.AlertBox.notificationWarn("Error","You seem to have missed a field");
+            
+    }
+
+        }
     
 }
 
