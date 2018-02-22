@@ -1420,6 +1420,9 @@ public class SalesController implements Initializable {
             
         }
         catch(Exception e){
+              Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+                System.out.println("error y u comes?");
             
         } 
     }
@@ -1430,69 +1433,95 @@ public class SalesController implements Initializable {
         eq_newpane.setDisable(true);
         eq_delpane.setVisible(true);
         eq_delpane.setDisable(false);
-    }
+        try{
+            eqno_del.getItems().clear();
+            cmp_del.getItems().clear();
+            email_del.getItems().clear();
+          
+            String sql="SELECT `Eqno` FROM `enquiry` WHERE 1";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                eqno_del.getItems().add(rs.getString(1));
+                //System.out.println(rs.getString(1));
+            }
+            
+                cmp_del.getItems().add("AWIN");
+                cmp_del.getItems().add("STEEL");
+                
+             String sql1="SELECT email FROM `customer` WHERE 1";
+             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+             rs=stmt.executeQuery();
+            while(rs.next()){
+                email_del.getItems().add(rs.getString(1));
+                
+            }
+                
+            
+    } catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+        } }
 
     @FXML
     private void Select_for_delete_of_Enquiry(MouseEvent event) {
-        try{
-            if(eqno_del.getValue().equals("")||cmp_del.getValue().equals("")|| 
-                    email_del.getValue().equals("")||date_del.getValue().toString().equals("")){
-                String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
-                        + "and email=? and cmpname=? and date=?";
+       try{
+         if(eqno_del.getValue().toString().isEmpty()|| cmp_del.getValue().toString().isEmpty() || email_del.getValue().toString().isEmpty() || date_del.getValue().toString().isEmpty())
+            {
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
+            }
+         else {
+             String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
+                        + "and email=? and cmpname=? and Date1=?";
                PreparedStatement ps;
                 //
-                try {
+                System.out.println("inside else block nice statements really.");
+             
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                ps.setString(1,eqno_del.getValue());
                ps.setString(2,email_del.getValue());
                ps.setString(3,cmp_del.getValue());
                ps.setString(4,date_del.getValue().toString());
                ResultSet rs =ps.executeQuery(); 
-               int cnt=0;
-               while(rs.next()){
-                   cnt=1;
-                  if(Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?")){
-                      String ar[]={"lack of man power","lack of equipments","too many requests","lack of raw materials","not profitable"};
-                      ar[5]="others";
+             if(rs.next()){
+                 System.out.println("rs not 0");
+                 Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?");
+                  String ar[]={"lack of man power","lack of equipments","too many requests","lack of raw materials","not profitable","others"};
+                      
                     String res= Utilities.AlertBox.alterchoice(ar,"Reason","Any particular reason for declining "
                             + "this enquiry","Please choose from the drop down menu below.");
-                    if(res.equals("Cancel")){
-                        break;
-                    }
-                    else
-                    {
-                        //call stored procedure
-                        
-                    }
-                  }
-        
-               }
-               if(cnt==0)
-               {
-                    Utilities.AlertBox.notificationInfo("Error","No such enquiry exists. Please check the entered details.");
-                   
-               }
-                } catch (SQLException ex) {
-                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-               
+                     if(res.equals("Cancel")){
+                        System.out.println("cancel");
+                    }else{
+                           CallableStatement cs;
+                           String sql008= "{ call enquiry_del_bkup(?,?,?,?,?)}";
+                           cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
+                         
+                           cs.setString(1,eqno_del.getValue());
+                           cs.setString(2,email_del.getValue());
+                           cs.setDate(3,java.sql.Date.valueOf(date_del.getValue()));
+                           cs.setString(4,cmp_del.getValue());
+                           cs.setString(5,res);
+                         
+                           cs.executeQuery();
+                     }
+             }
              
-       
-                
-    
-    
-    
-                
-            }
-        }
-        catch(NullPointerException e)
-        {
-         Utilities.AlertBox.notificationWarn("Error","You seem to have missed a field");
-            
-    }
-
+             
+             
+             
+         }
+         
+         
+         
+         
+         
+        }catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
         }
     
+}
 }
 
             
