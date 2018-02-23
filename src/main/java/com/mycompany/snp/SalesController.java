@@ -1483,16 +1483,15 @@ public class SalesController implements Initializable {
                ps.setString(3,cmp_del.getValue());
                ps.setString(4,date_del.getValue().toString());
                ResultSet rs =ps.executeQuery(); 
-             if(rs.next()){
+             while(rs.next()){
                  System.out.println("rs not 0");
-                 Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?");
+                 if(Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?")){
                   String ar[]={"lack of man power","lack of equipments","too many requests","lack of raw materials","not profitable","others"};
-                      
-                    String res= Utilities.AlertBox.alterchoice(ar,"Reason","Any particular reason for declining "
-                            + "this enquiry","Please choose from the drop down menu below.");
-                     if(res.equals("Cancel")){
-                        System.out.println("cancel");
-                    }else{
+                  String res;
+                    do{
+                      res= Utilities.AlertBox.alterchoice(ar,"Reason","Any particular reason for declining "
+                            + "this enquiry?","Please choose from the drop down menu below.");
+                           if(!res.equals("Cancel")){
                            CallableStatement cs;
                            String sql008= "{ call enquiry_del_bkup(?,?,?,?,?)}";
                            cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
@@ -1504,7 +1503,12 @@ public class SalesController implements Initializable {
                            cs.setString(5,res);
                          
                            cs.executeQuery();
+                           }
+                    }while(res.equals("Cancel"));
                      }
+                 else{
+                     break;
+                 }
              }
              
              

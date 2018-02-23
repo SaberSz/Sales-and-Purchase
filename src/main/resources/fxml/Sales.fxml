@@ -145,15 +145,44 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
-               <children>
-                  <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Invoice">
-                     <font>
-                        <Font size="48.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
+            <ScrollPane fx:id="InvoicePane" layoutX="-7.0">
+               <content>
+                  <AnchorPane prefHeight="678.0" prefWidth="1200.0">
+                     <children>
+                        <Label layoutX="20.0" layoutY="14.0" prefHeight="20.0" prefWidth="82.0" text="Invoice">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                        </Label>
+                        <JFXComboBox focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
+                        <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="565.0" prefWidth="1202.0">
+                           <children>
+                              <JFXTextField editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Invoice Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="322.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Company">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="98.0" prefHeight="27.0" prefWidth="250.0" promptText="Terms of Payment">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField focusColor="#3f51b5" layoutX="629.0" layoutY="30.0" prefHeight="27.0" prefWidth="276.0" promptText="Quotation Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
             <ScrollPane fx:id="newPOPane" disable="true" layoutX="-7.0" visible="false">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
@@ -201,7 +230,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0">
+            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <content>
                   <AnchorPane>
                      <children>
