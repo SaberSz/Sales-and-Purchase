@@ -9,6 +9,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import de.jensd.fx.glyphs.octicons.OctIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -145,15 +146,73 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
-               <children>
-                  <Label layoutX="449.0" layoutY="270.0" prefHeight="130.0" prefWidth="276.0" text="Invoice">
-                     <font>
-                        <Font size="48.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
+            <ScrollPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefWidth="1202.0" visible="false" vvalue="1.0">
+               <content>
+                  <AnchorPane prefHeight="678.0" prefWidth="1200.0">
+                     <children>
+                        <Label layoutX="20.0" layoutY="14.0" prefHeight="20.0" prefWidth="82.0" text="Invoice">
+                           <font>
+                              <Font name="Arial" size="20.0" />
+                           </font>
+                        </Label>
+                        <JFXComboBox focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
+                        <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="871.0" prefWidth="1202.0">
+                           <children>
+                              <JFXTextField fx:id="inv_no" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Invoice Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_cmp" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="322.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Company">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_tum" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="98.0" prefHeight="27.0" prefWidth="250.0" promptText="Terms of Payment">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_qno" editable="false" focusColor="#3f51b5" layoutX="629.0" layoutY="30.0" prefHeight="27.0" prefWidth="260.0" promptText="Quotation Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_po" editable="false" focusColor="#3f51b5" layoutX="918.0" layoutY="30.0" prefHeight="27.0" prefWidth="255.0" promptText="Purchase Order Number">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_sp" focusColor="#3f51b5" labelFloat="true" layoutX="322.0" layoutY="98.0" prefHeight="27.0" prefWidth="250.0" promptText="Salesperson">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextField fx:id="inv_acc" focusColor="#3f51b5" labelFloat="true" layoutX="629.0" layoutY="98.0" prefHeight="27.0" prefWidth="263.0" promptText="OCBC A/C No.">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXTextArea fx:id="inv_to" editable="false" focusColor="#3f51b5" layoutX="27.0" layoutY="160.0" prefHeight="188.0" prefWidth="547.0" promptText="To:">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </JFXTextArea>
+                              <TableView fx:id="inv_newtable" layoutX="27.0" layoutY="391.0" prefHeight="464.0" prefWidth="887.0" />
+                              <JFXTextField fx:id="inv_gst" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="935.0" layoutY="494.0" prefHeight="27.0" prefWidth="238.0" promptText=" Add GST " />
+                              <JFXTextField fx:id="inv_total" focusColor="#3f51b5" labelFloat="true" layoutX="935.0" layoutY="422.0" prefHeight="27.0" prefWidth="238.0" promptText="Total" />
+                              <JFXTextField fx:id="inv_amt" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="935.0" layoutY="581.0" prefHeight="27.0" prefWidth="238.0" promptText="Amount Due" />
+                              <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1101.0" layoutY="711.0" onMouseClicked="#Invoice_Save_Button_Clicked_inInvPane" text="Save">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
+                                 </graphic>
+                              </JFXButton>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
             <ScrollPane fx:id="newPOPane" disable="true" layoutX="-7.0" visible="false">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
@@ -286,9 +345,37 @@
                               <JFXComboBox fx:id="cmp_del" labelFloat="true" layoutX="37.0" layoutY="116.0" prefHeight="27.0" prefWidth="165.0" promptText="Company" />
                               <JFXComboBox fx:id="email_del" labelFloat="true" layoutX="37.0" layoutY="174.0" prefHeight="27.0" prefWidth="165.0" promptText="Email" />
                               <JFXDatePicker fx:id="date_del" defaultColor="#3f51b5" layoutX="274.0" layoutY="62.0" promptText="Enquiry Date" />
-                              <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="431.0" layoutY="201.0" onMouseClicked="#Select_for_delete_of_Enquiry" prefHeight="26.0" prefWidth="19.0" text="Label">
+                              <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="368.0" layoutY="201.0" onMouseClicked="#Select_for_delete_of_Enquiry" prefHeight="26.0" prefWidth="19.0" text="Label">
                                  <graphic>
                                     <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                                 </graphic>
+                              </Label>
+                              <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="431.0" layoutY="201.0" onMouseClicked="#back_for_delete_of_Enquiry" prefHeight="26.0" prefWidth="19.0" text="Label">
+                                 <graphic>
+                                    <OctIconView fill="#3f51b5" glyphName="X" size="30" />
+                                 </graphic>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="eq_delpane1" disable="true" layoutX="373.0" layoutY="129.0" prefHeight="348.0" prefWidth="509.0" style="-fx-background-color: #E8EAF6;" visible="false">
+                           <children>
+                              <JFXComboBox fx:id="eqno_del1" labelFloat="true" layoutX="37.0" layoutY="62.0" prefHeight="27.0" prefWidth="165.0" promptText="Enquiry Number" />
+                              <Label layoutX="221.0" layoutY="14.0" text="Enquiry">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <JFXComboBox fx:id="cmp_del1" labelFloat="true" layoutX="37.0" layoutY="116.0" prefHeight="27.0" prefWidth="165.0" promptText="Company" />
+                              <JFXComboBox fx:id="email_del1" labelFloat="true" layoutX="37.0" layoutY="174.0" prefHeight="27.0" prefWidth="165.0" promptText="Email" />
+                              <JFXDatePicker fx:id="date_del1" defaultColor="#3f51b5" layoutX="274.0" layoutY="62.0" promptText="Enquiry Date" />
+                              <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="368.0" layoutY="201.0" onMouseClicked="#Select_for_quotation_generation" prefHeight="26.0" prefWidth="19.0" text="Label">
+                                 <graphic>
+                                    <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                                 </graphic>
+                              </Label>
+                              <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="431.0" layoutY="201.0" onMouseClicked="#back_for_quotation_generation" prefHeight="26.0" prefWidth="19.0" text="Label">
+                                 <graphic>
+                                    <OctIconView fill="#3f51b5" glyphName="X" size="30" />
                                  </graphic>
                               </Label>
                            </children>

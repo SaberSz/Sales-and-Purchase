@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -64,7 +66,7 @@ public class SalesController implements Initializable {
     private AnchorPane oldPOPane;
 
     @FXML
-    private AnchorPane InvoicePane;
+    private ScrollPane InvoicePane;
 
     @FXML
     private ScrollPane newPOPane;
@@ -145,6 +147,42 @@ public class SalesController implements Initializable {
     private JFXComboBox<String> email_del;
     @FXML
     private JFXDatePicker date_del;
+    @FXML
+    private AnchorPane insideINVPane;
+    @FXML
+    private JFXTextField inv_no;
+    @FXML
+    private JFXTextField inv_cmp;
+    @FXML
+    private JFXTextField inv_tum;
+    @FXML
+    private JFXTextField inv_qno;
+    @FXML
+    private JFXTextField inv_po;
+    @FXML
+    private JFXTextField inv_sp;
+    @FXML
+    private JFXTextField inv_acc;
+    @FXML
+    private JFXTextArea inv_to;
+    @FXML
+    private TableView<?> inv_newtable;
+    @FXML
+    private JFXTextField inv_gst;
+    @FXML
+    private JFXTextField inv_total;
+    @FXML
+    private JFXTextField inv_amt;
+    @FXML
+    private AnchorPane eq_delpane1;
+    @FXML
+    private JFXComboBox<String> eqno_del1;
+    @FXML
+    private JFXComboBox<String> cmp_del1;
+    @FXML
+    private JFXComboBox<String> email_del1;
+    @FXML
+    private JFXDatePicker date_del1;
 
 
     /**
@@ -210,6 +248,37 @@ public class SalesController implements Initializable {
         table11.setEffect(new GaussianBlur(20));
         table111.setEffect(new GaussianBlur(20));
         tock=true;
+        
+        inv_total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+             if (!newValue.matches("\\d*")) {
+                inv_total.setText(newValue.replaceAll("[^\\d]", ""));  
+            }
+            else
+            {  
+                if(inv_total.getText().equals(""))
+            {
+                inv_gst.setText("0");
+                inv_amt.setText("0");     
+                
+            }
+                else
+            {
+                inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText())*0.07)* 100d) / 100d));//Math.round(value * 100000d) / 100000d
+                inv_amt.setText(String.valueOf(Float.valueOf(inv_total.getText())+Float.valueOf(inv_gst.getText())));
+            }
+            }
+        });
+        /**
+         *        inv_total.textProperty().addListener(new ChangeListener<String>() {
+    @Override
+    public void changed(ObservableValue<? extends String> observable, String oldValue, 
+        String newValue) {
+        if (!newValue.matches("\\d*")) {
+            inv_total.setText(newValue.replaceAll("[^\\d]", ""));
+        }
+    }
+});
+         */
         threadtock();
     }
 
@@ -1438,7 +1507,7 @@ public class SalesController implements Initializable {
             cmp_del.getItems().clear();
             email_del.getItems().clear();
           
-            String sql="SELECT `Eqno` FROM `enquiry` WHERE 1";
+            String sql="SELECT `Eqno` FROM `enquiry` WHERE 1 order by `Date` DESC ";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
@@ -1449,7 +1518,7 @@ public class SalesController implements Initializable {
                 cmp_del.getItems().add("AWIN");
                 cmp_del.getItems().add("STEEL");
                 
-             String sql1="SELECT email FROM `customer` WHERE 1";
+             String sql1="SELECT email FROM `customer` WHERE 1 order by `CID` DESC";
              stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
              rs=stmt.executeQuery();
             while(rs.next()){
@@ -1472,11 +1541,11 @@ public class SalesController implements Initializable {
             }
          else {
              String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
-                        + "and email=? and cmpname=? and Date1=?";
+                        + "and email=? and cmpname=? and `Date`=? ";
                PreparedStatement ps;
                 //
                 System.out.println("inside else block nice statements really.");
-             
+              boolean f =true;
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                ps.setString(1,eqno_del.getValue());
                ps.setString(2,email_del.getValue());
@@ -1484,11 +1553,12 @@ public class SalesController implements Initializable {
                ps.setString(4,date_del.getValue().toString());
                ResultSet rs =ps.executeQuery(); 
              while(rs.next()){
+                 f=false;
                  System.out.println("rs not 0");
                  if(Utilities.AlertBox.alertoption("Decline","Enquiry Deletion","Are you sure you want to decline this enquiry?")){
                   String ar[]={"lack of man power","lack of equipments","too many requests","lack of raw materials","not profitable","others"};
                   String res;
-                    do{
+                    
                       res= Utilities.AlertBox.alterchoice(ar,"Reason","Any particular reason for declining "
                             + "this enquiry?","Please choose from the drop down menu below.");
                            if(!res.equals("Cancel")){
@@ -1503,17 +1573,86 @@ public class SalesController implements Initializable {
                            cs.setString(5,res);
                          
                            cs.executeQuery();
+                           Utilities.AlertBox.notificationInfo("Success","Enquiry "+eqno_del.getValue()+" has been deleted.");
                            }
-                    }while(res.equals("Cancel"));
+                           else{
+                               break;
+                           }
+                           
+                    
                      }
                  else{
                      break;
                  }
              }
-             
-             
-             
-             
+             if(f){
+                  Utilities.AlertBox.notificationInfo("Error","Enquiry "+eqno_del.getValue()+" doesn't exist.");
+             }
+
+         }  
+       }catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
+        }
+    
+}
+
+    @FXML
+    private void back_for_delete_of_Enquiry(MouseEvent event) {
+          eq_newpane.setEffect(new ColorAdjust());
+        eq_newpane.setDisable(false);
+        eq_delpane.setVisible(false);
+        eq_delpane.setDisable(true); 
+    }
+
+    @FXML
+    private void Invoice_Save_Button_Clicked_inInvPane(MouseEvent event) {
+        
+    }
+
+    @FXML
+    private void Select_for_quotation_generation(MouseEvent event) {
+        //please change codes
+         try{
+         if(eqno_del1.getValue().toString().isEmpty()|| cmp_del1.getValue().toString().isEmpty() || email_del1.getValue().toString().isEmpty() || date_del1.getValue().toString().isEmpty())
+            {
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
+            }
+         else {
+             String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
+                        + "and email=? and cmpname=? and `Date`=? ";
+               PreparedStatement ps;
+                //
+                System.out.println("inside else block nice statements really.");
+              boolean f =true;
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               ps.setString(1,eqno_del1.getValue());
+               ps.setString(2,email_del1.getValue());
+               ps.setString(3,cmp_del1.getValue());
+               ps.setString(4,date_del1.getValue().toString());
+               ResultSet rs =ps.executeQuery(); 
+             while(rs.next()){
+                 f=false;
+                 System.out.println("rs not 0");
+                     /**
+                           CallableStatement cs;
+                           String sql008= "SELECT IFNULL(MAX(`Qno`)+1,1) as 'your value'  FROM `qoutation` WHERE 1;";
+                           cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
+                         
+                           cs.setString(1,eqno_del.getValue());
+                           cs.setString(2,email_del.getValue());
+                           cs.setDate(3,java.sql.Date.valueOf(date_del.getValue()));
+                           cs.setString(4,cmp_del.getValue());
+                           cs.setString(5,res);
+                         
+                           cs.executeQuery();
+                           Utilities.AlertBox.notificationInfo("Success","Enquiry "+eqno_del.getValue()+" has been deleted.");
+                    **/ 
+             }
+             if(f){
+                  Utilities.AlertBox.notificationInfo("Error","Enquiry "+eqno_del.getValue()+" doesn't exist.");
+             }
          }
          
          
@@ -1523,9 +1662,22 @@ public class SalesController implements Initializable {
         }catch(Exception e){
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
                 Utilities.AlertBox.showErrorMessage(e);
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
         }
     
-}
+    }
+
+    @FXML
+    private void back_for_quotation_generation(MouseEvent event) {
+         eq_newpane.setEffect(new ColorAdjust());
+        eq_newpane.setDisable(false);
+        eq_delpane1.setVisible(false);
+        eq_delpane1.setDisable(true); 
+    }
+
+    @FXML
+    private void tick_in_invoice(MouseEvent event) {
+    }
 }
 
             
