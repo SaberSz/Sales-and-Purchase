@@ -776,15 +776,6 @@ public class SalesController implements Initializable {
         catch(NullPointerException e){
           Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
         }
-       
-         
-        
-    
-
-    
-      
-
-     
 }
 
 
@@ -1723,21 +1714,15 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_in_invoice(MouseEvent event) {
-        
-       /*
-        //Generatio of Invoice table
-        inv_newtable.getColumns().clear();
-        inv_newtable.getItems().clear();
-        ObservableList<Person3> data;    
-                data = FXCollections.observableArrayList();
-                for(int o=0;o<100;o++){
-                    data.add(new Person3("","","","",""));
-                }
-                newInvoicePane_PriceBoxFill(inv_newtable, data);
-                 insideINVPane.setEffect(new ColorAdjust());*/
+
+       
+         
     }
 
 }
+             
+    
+
 
             
             
