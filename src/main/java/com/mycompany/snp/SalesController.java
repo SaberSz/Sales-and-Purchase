@@ -730,15 +730,6 @@ public class SalesController implements Initializable {
         catch(NullPointerException e){
           Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
         }
-       
-         
-        
-    
-
-    
-      
-
-     
 }
 
 
@@ -1677,8 +1668,29 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_in_invoice(MouseEvent event) {
+       
+               PreparedStatement ps;
+               ResultSet rs;
+                //
+        try {
+               String sql="SELECT PNo FROM `product` WHERE 1 ";
+            ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                rs=ps.executeQuery();
+            while(rs.next()){
+       //        varname.getItems().add(rs.getString(1));
+                
+            }
+                
+             
+               
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
+             
+    
+
 
             
             

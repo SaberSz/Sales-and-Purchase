@@ -146,7 +146,7 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ScrollPane fx:id="InvoicePane" disable="true" layoutX="-7.0" prefWidth="1202.0" visible="false" vvalue="1.0">
+            <ScrollPane fx:id="InvoicePane" layoutX="-7.0" prefWidth="1202.0">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
@@ -156,7 +156,7 @@
                            </font>
                         </Label>
                         <JFXComboBox focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
-                        <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="871.0" prefWidth="1202.0">
+                        <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="871.0" prefWidth="1188.0">
                            <children>
                               <JFXTextField fx:id="inv_no" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Invoice Number">
                                  <font>
@@ -209,6 +209,11 @@
                               </JFXButton>
                            </children>
                         </AnchorPane>
+                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="305.0" layoutY="53.0" onMouseClicked="#tick_in_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">
+                           <graphic>
+                              <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                           </graphic>
+                        </Label>
                      </children>
                   </AnchorPane>
                </content>
@@ -260,7 +265,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="newEqPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0">
+            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false">
                <content>
                   <AnchorPane>
                      <children>
