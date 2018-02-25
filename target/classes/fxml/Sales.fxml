@@ -155,7 +155,7 @@
                               <Font name="Arial" size="20.0" />
                            </font>
                         </Label>
-                        <JFXComboBox focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
+                        <JFXComboBox fx:id="inv_pno" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
                         <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="871.0" prefWidth="1188.0">
                            <children>
                               <JFXTextField fx:id="inv_no" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Invoice Number">

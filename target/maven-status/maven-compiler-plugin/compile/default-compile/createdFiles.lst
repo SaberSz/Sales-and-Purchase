@@ -4,6 +4,7 @@ com\mycompany\snp\SalesDrawerController.class
 DBMS\Connect.class
 com\mycompany\snp\SalesController.class
 com\mycompany\snp\Person2.class
+com\mycompany\snp\Person3.class
 com\mycompany\snp\Person.class
 Utilities\AlertBox.class
 com\mycompany\snp\MainApp.class

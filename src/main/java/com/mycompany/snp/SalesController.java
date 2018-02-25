@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -184,7 +185,7 @@ public class SalesController implements Initializable {
     @FXML
     private JFXDatePicker date_del1;
     @FXML
-    private JFXComboBox<?> inv_pno;
+    private JFXComboBox<Integer> inv_pno;
 
 
     /**
@@ -1715,7 +1716,57 @@ public class SalesController implements Initializable {
     @FXML
     private void tick_in_invoice(MouseEvent event) {
         
-        //Generatio of Invoice table
+              PreparedStatement ps;
+               ResultSet rs;
+               inv_pno.getItems().clear();
+        try {
+             
+               String sql="SELECT PNo FROM `product` WHERE 1 ";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               rs=ps.executeQuery();
+            while(rs.next()){
+               int a= rs.getInt("PNo");
+               inv_pno.getItems().add(a);
+                
+            }
+            String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+               ps.setInt(1,inv_pno.getValue());
+               rs=ps.executeQuery();
+               inv_tum.setText(rs.getString("Termofpay"));
+               inv_sp.setText(rs.getString("Salesperson"));
+               inv_acc.setText(rs.getString("Acc No"));
+               inv_to.setText(rs.getString("To:"));//1801-AE-inv-001 //;
+               String cn=rs.getString("Company");
+               String date=Utilities.Date.Date();
+               String dt=date.substring(2,5);
+               String d;
+               if(inv_pno.getValue()<10){
+         //dg=String.valueOf(dig);dg="00"+dg;
+        dt="0"+inv_pno;
+        }
+        else
+        dt=dt+inv_pno;
+        
+        dt=dt+"-";
+        if(cn.equalsIgnoreCase("AWIN")){
+            dt=dt+"AE";
+           
+        }else{
+            dt=dt+"SE";
+            
+        }
+        dt=dt+"-inv";
+          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`IN`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);
+               ResultSet ri=ps.executeQuery();
+               dt=dt+ri.getInt(1);
+               inv_no.setText(dt);
+               
+         //;
+        }catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         inv_newtable.getColumns().clear();
         inv_newtable.getItems().clear();
         ObservableList<Person3> data;    
