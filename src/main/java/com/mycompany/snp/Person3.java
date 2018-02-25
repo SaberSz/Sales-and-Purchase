@@ -41,7 +41,26 @@ public class Person3 {
         this.Total = new JFXTextArea(); 
         this.Total.setText(Total1);
         //this.remark.setEditable(false);
-
+        
+        Total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+             if (!newValue.matches("\\d*")) {
+                Total.setText(newValue.replaceAll("[^\\d]", ""));  
+            }
+            else
+            {  
+                if(Total.getText().equals(""))
+            {
+                Total.setText("0");
+                Total.setText("0");     
+                
+            }
+                else
+            {
+                Total.setText(String.valueOf(Math.round((Double.valueOf(Total.getText())*0.07)* 100d) / 100d));//Math.round(value * 100000d) / 100000d
+                Total.setText(String.valueOf(Float.valueOf(Total.getText())+Float.valueOf(Total.getText())));
+            }
+            }
+        });
 
 
         

@@ -183,6 +183,8 @@ public class SalesController implements Initializable {
     private JFXComboBox<String> email_del1;
     @FXML
     private JFXDatePicker date_del1;
+    @FXML
+    private JFXComboBox<?> inv_pno;
 
 
     /**
