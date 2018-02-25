@@ -1716,7 +1716,7 @@ public class SalesController implements Initializable {
                                   Qno.setText(compname);
                                   PreparedStatement stmt;
                                     Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
-   
+
     String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                             stmt.setString(1,compname);
@@ -1760,7 +1760,7 @@ public class SalesController implements Initializable {
                                 for(int z=0; z<100;z++){
                                 data.add(new Person2("","","","","",""));
                             }
-                               //jbkgilglukgiglouglug
+
                                 newEnquiryPane_PriceBoxFill_Steels(table12,data);
                                 table12.setEffect(new ColorAdjust());
                             }
