@@ -216,6 +216,17 @@ public class SalesController implements Initializable {
                 QnoBox.getItems().add(rs.getString(1));
                 QnoBox1.getItems().add(rs.getString(1));
                 System.out.println(rs.getString(1));
+                
+                
+                
+                String sql1="SELECT PjNo FROM `product` WHERE 1 ";
+               stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+               rs=stmt.executeQuery();
+            while(rs.next()){
+               int a= rs.getInt("PjNo");
+               inv_pno.getItems().add(a);
+                
+            }
             }
         }
         catch(Exception e){
@@ -1821,14 +1832,7 @@ public class SalesController implements Initializable {
                inv_pno.getItems().clear();
         try {
              
-               String sql="SELECT PjNo FROM `product` WHERE 1 ";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-               rs=ps.executeQuery();
-            while(rs.next()){
-               int a= rs.getInt("PNo");
-               inv_pno.getItems().add(a);
-                
-            }
+               
             String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                ps.setInt(1,inv_pno.getValue());
