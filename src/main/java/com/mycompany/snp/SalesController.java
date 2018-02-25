@@ -676,6 +676,7 @@ public class SalesController implements Initializable {
                                 newEnquiryPane_PriceBoxFill_Steels(table12,data);
                                 table12.setEffect(new ColorAdjust());
                             }
+                            String compname1=cmp.getValue();
                                String compname=cmp.getValue();
        if(compname.equalsIgnoreCase("Awin")){
            compname="AE";
@@ -748,10 +749,14 @@ public class SalesController implements Initializable {
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                             stmt.setString(1,compname);
                             stmt.executeUpdate();
-    String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+    String suql1 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                             stmt.setString(1,eno);
                             stmt.setString(2,compname);
+                            stmt.setString(3,Edate.getValue().toString());
+                            stmt.setString(4,compname1);
+                            stmt.setString(5,cid);
+                            
                             stmt.executeUpdate();
         
       } catch (SQLException exe){
@@ -1128,7 +1133,7 @@ public class SalesController implements Initializable {
         try{
             System.out.println("sdfsdfsfddsfsdfsdfsdfsdfs");
             String qno= QnoBox.getValue();
-            String sql="SELECT e.Date,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno join customer c on e.cid=c.cid WHERE er.qno= ? ;";
+            String sql="SELECT e.Date,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno and er.Date1=e.Date1 and er.cmpname=e.cmpname and er.cid=e.cid join customer c on e.cid=c.cid WHERE er.qno= ? ;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             stmt.setString(1, qno);
             ResultSet rs=stmt.executeQuery();
@@ -1209,16 +1214,26 @@ public class SalesController implements Initializable {
             String k=ENo1.getText();
               PreparedStatement stmt;  
       try{
-      
+          
+          String sql5="Select cid from eqrel where e.qno=? ";//qnoforquery
+          stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql5);
+                            stmt.setString(1,qnoforquery);
+            
+            ResultSet rs=stmt.executeQuery();  
+            if(rs.next()){
+                Integer abc=rs.getInt(1);
      String suql1 = "INSERT INTO `qoutation`(`Qno`,`RevNo`) VALUES (?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                             stmt.setString(1,revisedQno);
                             stmt.setInt(2,revisedno);
                             stmt.executeUpdate();
-     String suql2 = "INSERT INTO `eqrel`(`Eno`, `QNo`) VALUES (?,?)";
+     String suql2 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql2);
                             stmt.setString(1,k);
                             stmt.setString(2,revisedQno);
+                              stmt.setString(3,Edate1.getValue().toString());  stmt.setString(4,CName1.getText());
+                                stmt.setInt(5,abc);
+                              
                             stmt.executeUpdate();
                             Qno1.setText(revisedQno);
                  if(ECom1.getText().equals("Awin")){
@@ -1232,7 +1247,7 @@ public class SalesController implements Initializable {
                      generate_Steels_Table(false);
 
                 }
-          
+            }
       }
       catch(SQLException exe){
                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
@@ -1252,13 +1267,15 @@ public class SalesController implements Initializable {
     }
     static String revisedQno="";
     static int revisedno;
+    static String qnoforquery="";
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
        if( Utilities.AlertBox.alertoption("Revision","You just clicked the Revise button!"," Are you sure you want to revise quotation number :"+Qno1.getText())){
                 revise_button_hit_in_QPane=true;
                 edit_button_hit_in_QPane=false;
                 
-                try{       
+                try{ 
+                    qnoforquery=Qno1.getText();
                      String qno=Qno1.getText();
                            String suql = "SELECT Qno,RevNo FROM `qoutation` WHERE qno= ? ;";
                            PreparedStatement st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
@@ -1686,6 +1703,7 @@ public class SalesController implements Initializable {
                            if(rs1.next()){
                               int dig= Integer.valueOf(rs1.getString(1));
                               System.out.println(dig);
+                              String compname1=cmp_del1.getValue();
                                String compname=cmp_del1.getValue();
                             if(compname.equalsIgnoreCase("Awin")){
                                 compname="AE";
@@ -1721,13 +1739,18 @@ public class SalesController implements Initializable {
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                             stmt.setString(1,compname);
                             stmt.executeUpdate();
-    String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+
+                            String suql1 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
-                            stmt.setString(1,eqno_del1.getValue());
+                            stmt.setString(1,eno);
                             stmt.setString(2,compname);
+                            stmt.setString(3,Edate.getValue().toString());
+                            stmt.setString(4,compname1);
+                            stmt.setString(5,cid);
+                            
                             stmt.executeUpdate();
-                            Utilities.AlertBox.notificationInfo("Success","Quotation "+compname+" has been generated.");
                            }
+                            
                            
                     if(cmp_del1.getValue().equalsIgnoreCase("AWIN"))
                             {
