@@ -155,7 +155,7 @@
                               <Font name="Arial" size="20.0" />
                            </font>
                         </Label>
-                        <JFXComboBox focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
+                        <JFXComboBox fx:id="inv_pno" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="54.0" prefHeight="27.0" prefWidth="247.0" promptText="Project Number" />
                         <AnchorPane fx:id="insideINVPane" layoutX="-6.0" layoutY="101.0" prefHeight="871.0" prefWidth="1188.0">
                            <children>
                               <JFXTextField fx:id="inv_no" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="27.0" layoutY="30.0" prefHeight="27.0" prefWidth="250.0" promptText="Invoice Number">
@@ -233,7 +233,7 @@
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                            </graphic>
                         </Label>
-                        <JFXTextField fx:id="PrNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="231.0" prefHeight="27.0" prefWidth="210.0" promptText="Product Number">
+                        <JFXTextField fx:id="PrNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="231.0" prefHeight="27.0" prefWidth="210.0" promptText="Purchase Order Number">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
@@ -265,7 +265,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false">
+            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" pannable="true" prefHeight="678.0" prefWidth="1200.0" visible="false" vvalue="0.66">
                <content>
                   <AnchorPane>
                      <children>
@@ -332,7 +332,7 @@
                                     <MaterialDesignIconView fill="#3f51b5" glyphName="DELETE" size="30" />
                                  </graphic>
                               </Label>
-                              <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="668.0" onMouseClicked="#New_Enquiry_Pane_Clear_Components" prefHeight="30.0" prefWidth="167.0" style="-fx-background-color: #ffffff;" text="Quotation">
+                              <JFXButton buttonType="RAISED" layoutX="25.0" layoutY="668.0" onMouseClicked="#New_Enquiry_Pane_Quotation_gen" prefHeight="30.0" prefWidth="167.0" style="-fx-background-color: #ffffff;" text="Quotation">
                                  <font>
                                     <Font name="Arial" size="20.0" />
                                  </font>

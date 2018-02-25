@@ -641,7 +641,8 @@ public class SalesController implements Initializable {
                             stmt.executeUpdate();
                             Utilities.AlertBox.notificationInfo("Success","New enquiry details saved");
                             cmpname=cmp.getValue();
-                            
+                            if(Utilities.AlertBox.alertoption("Quotation","Do you want to generate the quotation number?"," Note that once a quotation number is generated, "
+                                    + "you can edit/revise the quotation in the Quotation Pane.")){
                             if(cmpname.equals("Awin"))
                             {
                                 table12.setDisable(true);
@@ -681,14 +682,12 @@ public class SalesController implements Initializable {
        }else{
            compname="SC";
        }
-       String date= String.valueOf(Edate.getValue());
+       String date= Utilities.Date.Date();
        date=date.substring(2,5);
-       System.out.println(date);
       compname=date+compname;
       compname=compname+"-QT-";
       
        System.out.println(compname);
-    //  String price=pr.getText();
       String descr=EDes.getText();
        Statement st;
      
@@ -762,9 +761,9 @@ public class SalesController implements Initializable {
       }
     
                             
-                        }
+        }
                         
-                    
+                        }   
                 } catch (SQLException ex) {
                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                     Utilities.AlertBox.notificationWarn("Error","Please make sure you have entered all the details correctly.");
@@ -1641,11 +1640,12 @@ public class SalesController implements Initializable {
         eq_newpane.setDisable(false);
         eq_delpane.setVisible(false);
         eq_delpane.setDisable(true); 
+        eq_delpane1.setVisible(false);
+        eq_delpane1.setDisable(true); 
     }
 
     @FXML
     private void Invoice_Save_Button_Clicked_inInvPane(MouseEvent event) {
-        
     }
 
     @FXML
@@ -1672,23 +1672,101 @@ public class SalesController implements Initializable {
              while(rs.next()){
                  f=false;
                  System.out.println("rs not 0");
-                     /**
-                           CallableStatement cs;
-                           String sql008= "SELECT IFNULL(MAX(`Qno`)+1,1) as 'your value'  FROM `qoutation` WHERE 1;";
-                           cs=com.mycompany.snp.MainApp.conn.prepareCall(sql008);
+                     
+                           PreparedStatement cs;
+                           String sql008= "SELECT IFNULL(MAX(CAST(SUBSTRING(`Qno`,10,3) AS SIGNED))+1,1) as 'your value'  FROM `qoutation` WHERE 1;";
+                            //SELECT IFNULL(MAX(CAST(SUBSTRING(`Qno`, CHAR_LENGTH(`Qno`)-2) AS SIGNED))+1,1) as 'your value'  FROM `qoutation` WHERE 1;
+                           
+                           cs=com.mycompany.snp.MainApp.conn.prepareStatement(sql008);
+                            ResultSet rs1=cs.executeQuery();
+                             
+                           
                          
-                           cs.setString(1,eqno_del.getValue());
-                           cs.setString(2,email_del.getValue());
-                           cs.setDate(3,java.sql.Date.valueOf(date_del.getValue()));
-                           cs.setString(4,cmp_del.getValue());
-                           cs.setString(5,res);
-                         
-                           cs.executeQuery();
-                           Utilities.AlertBox.notificationInfo("Success","Enquiry "+eqno_del.getValue()+" has been deleted.");
-                    **/ 
+                          
+                           if(rs1.next()){
+                              int dig= Integer.valueOf(rs1.getString(1));
+                              System.out.println(dig);
+                               String compname=cmp_del1.getValue();
+                            if(compname.equalsIgnoreCase("Awin")){
+                                compname="AE";
+                            }else{
+                                compname="SC";
+                            }
+                            String date= Utilities.Date.Date();
+                            date=date.substring(2,5);
+                           compname=date+compname;
+                           compname=compname+"-QT-";
+                           String dg;
+                           System.out.println(compname);
+                           if(dig<10){
+                                    dg=String.valueOf(dig);
+                                    dg="00"+dg;
+                                   }
+                                   else if(dig>=10 && dig<100)
+                                   {
+                                        dg=String.valueOf(dig);
+                                        dg="0"+dg;
+                                   }  
+                                   else{
+                                        dg=String.valueOf(dig);
+                                   }
+                                  //18-AE or SC - QT - 001
+                                  System.out.println(compname);
+                                  compname=compname+dg;
+                                  Qno.setText(compname);
+                                  PreparedStatement stmt;
+                                    Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
+    
+    String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                            stmt.setString(1,compname);
+                            stmt.executeUpdate();
+    String suql1 = "INSERT INTO `eqrel`(`Eno`,`QNo`) VALUES (?,?)";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                            stmt.setString(1,eqno_del1.getValue());
+                            stmt.setString(2,compname);
+                            stmt.executeUpdate();
+                            Utilities.AlertBox.notificationInfo("Success","Quotation "+compname+" has been generated.");
+                           }
+                           
+                    if(cmp_del1.getValue().equalsIgnoreCase("AWIN"))
+                            {
+                                System.out.println("AWinnnnnnn");
+                                table12.setDisable(true);
+                                table12.setVisible(false);
+                                table1.setDisable(false);
+                                table1.setVisible(true);
+                                table1.getItems().clear();
+                                table1.getColumns().clear();
+                                 ObservableList<Person> data;    
+                                    data = FXCollections.observableArrayList();
+                                    for(int z=1; z<101;z++){
+                                data.add(new Person(String.valueOf(z),"","","",""));
+                            }
+                                newEnquiryPane_PriceBoxFill_Awin(table1,data);
+                                table1.setEffect(new ColorAdjust());
+                            }
+                            else
+                            {
+                                  System.out.println("ASteellslsdlsldlsl");
+                                table1.setDisable(true);
+                                table1.setVisible(false);
+                                table12.setDisable(false);
+                                table12.setVisible(true);
+                                table12.getItems().clear();
+                                table12.getColumns().clear();
+                                ObservableList<Person2> data;    
+                                data = FXCollections.observableArrayList();
+                                for(int z=0; z<100;z++){
+                                data.add(new Person2("","","","","",""));
+                            }
+                               
+                                newEnquiryPane_PriceBoxFill_Steels(table12,data);
+                                table12.setEffect(new ColorAdjust());
+                            }
              }
              if(f){
-                  Utilities.AlertBox.notificationInfo("Error","Enquiry "+eqno_del.getValue()+" doesn't exist.");
+                  Utilities.AlertBox.notificationInfo("Error","Enquiry "+eqno_del1.getValue()+" doesn't exist.");
              }
          }
          
@@ -1720,13 +1798,50 @@ public class SalesController implements Initializable {
         inv_newtable.getItems().clear();
         ObservableList<Person3> data;    
                 data = FXCollections.observableArrayList();
-                for(int o=0;o<100;o++){
+                for(int o=0;o<20;o++){
                     data.add(new Person3("","","","",""));
                 }
                 newInvoicePane_PriceBoxFill(inv_newtable, data);
                  insideINVPane.setEffect(new ColorAdjust());
        
          
+    }
+
+    @FXML
+    private void New_Enquiry_Pane_Quotation_gen(MouseEvent event) {
+          eq_newpane.setEffect(new GaussianBlur(20));
+        eq_newpane.setDisable(true);
+        eq_delpane1.setVisible(true);
+        eq_delpane1.setDisable(false);
+        try{
+            eqno_del1.getItems().clear();
+            cmp_del1.getItems().clear();
+            email_del1.getItems().clear();
+          
+            String sql="SELECT e.`Eqno` FROM `enquiry` e WHERE e  a order by `Date` DESC ";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                eqno_del1.getItems().add(rs.getString(1));
+                //System.out.println(rs.getString(1));
+            }
+            
+                cmp_del1.getItems().add("AWIN");
+                cmp_del1.getItems().add("STEEL");
+                
+             String sql1="SELECT email FROM `customer` WHERE 1 order by `CID` DESC";
+             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+             rs=stmt.executeQuery();
+            while(rs.next()){
+                email_del1.getItems().add(rs.getString(1));
+                
+            }
+                
+            
+    } catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+        }
     }
 
 }

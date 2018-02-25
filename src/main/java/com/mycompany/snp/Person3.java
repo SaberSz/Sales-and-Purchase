@@ -21,7 +21,7 @@ public class Person3 {
     private  JFXTextArea Qty;
     private JFXTextArea UnitPrice;  
     private  JFXTextArea Total;
-    
+    private String a="0",b="0";  
  
      Person3(String fName, String lName, String Qty, String value,String Total1) {
         this.ItemNo= new JFXTextArea();
@@ -40,27 +40,38 @@ public class Person3 {
         //this.remark.setEditable(false);
         this.Total = new JFXTextArea(); 
         this.Total.setText(Total1);
-        //this.remark.setEditable(false);
+        this.Total.setEditable(false);
         
         this.Qty.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-             if (!newValue.matches("\\d*")) {
-                Total.setText(newValue.replaceAll("[^\\d]", ""));  
-            }
-            else
-            {  
-                if(Total.getText().equals(""))
-            {
-                Total.setText("0");
-                Total.setText("0");     
+           
+             if (newValue.matches("\\d+")) {
+                this.a=newValue;
                 
             }
-                else
-            {
-                Total.setText(String.valueOf(Math.round((Double.valueOf(Total.getText())*0.07)* 100d) / 100d));//Math.round(value * 100000d) / 100000d
-                Total.setText(String.valueOf(Float.valueOf(Total.getText())+Float.valueOf(Total.getText())));
+             else if(newValue.matches("^(?!\\s*$).+"))
+            {  
+                this.a="1";
             }
-            }
+             else{
+                 this.a ="0";
+             }
+             if(!(this.a.equals("0") && this.b.equals("0"))){
+                 this.Total.setText(String.valueOf(Math.round(Double.valueOf(a)*Double.valueOf(b)* 100d) / 100d));
+                 //Math.round((Integer.valueOf(a)*Double.valueOf(b))* 100d) / 100d)
+             }
+             
         });
+        this.UnitPrice.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                this.UnitPrice.setText(newValue.replaceAll("[^\\d]", "")); 
+                this.b=this.UnitPrice.getText();
+            }
+            if(!(this.a.equals("0") && this.b.equals("0"))){
+                 this.Total.setText(String.valueOf(Math.round(Double.valueOf(a)*Double.valueOf(b)* 100d) / 100d));
+                 //Math.round((Integer.valueOf(a)*Double.valueOf(b))* 100d) / 100d)
+             }
+        });
+        
 
 
         
