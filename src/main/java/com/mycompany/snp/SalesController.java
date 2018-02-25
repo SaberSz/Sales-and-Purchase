@@ -1821,7 +1821,7 @@ public class SalesController implements Initializable {
                inv_pno.getItems().clear();
         try {
              
-               String sql="SELECT PNo FROM `product` WHERE 1 ";
+               String sql="SELECT PjNo FROM `product` WHERE 1 ";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                rs=ps.executeQuery();
             while(rs.next()){
