@@ -42,7 +42,7 @@ public class Person3 {
         this.Total.setText(Total1);
         //this.remark.setEditable(false);
         
-        Total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        this.Qty.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
              if (!newValue.matches("\\d*")) {
                 Total.setText(newValue.replaceAll("[^\\d]", ""));  
             }
