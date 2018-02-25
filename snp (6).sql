@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Feb 23, 2018 at 10:29 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost:3306
+-- Generation Time: Feb 25, 2018 at 10:08 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -29,14 +31,13 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS `enquiry_del_bkup`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `enquiry_del_bkup` (IN `eq` VARCHAR(15), IN `mail` VARCHAR(30), IN `dates` DATE, IN `cmp` VARCHAR(10), IN `rea` VARCHAR(50))  NO SQL
 BEGIN 
-SELECT eqno,`Date`,cmpname,subject,cid,Qno into @eno, @d, @c, @s, @cd,@q
-FROM `enquiry` e NATURAL JOIN `customer` c join `eqrel` k on e.eqno=k.eno
-WHERE e.eqno=eq and email=mail and cmpname=cmp and `Date`=dates and e.cid = c.cid; 
+SELECT eqno,Date1,cmpname,subject,cid into @eno, @d, @c, @s, @cd
+FROM `enquiry` NATURAL JOIN `customer` 
+WHERE eqno=eq and email=mail and cmpname=cmp and Date1=dates; 
 INSERT INTO `enquiryBin`(`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`) 
 VALUES (@eno,@d,@c,@s,@cd,rea); 
 DELETE FROM `enquiry` 
-WHERE eqno=eq and cid=@cd and cmpname=cmp and `Date`=dates; 
-Delete from qoutation where Qno=@q;
+WHERE eqno=eq and cid=@cd and cmpname=cmp and Date1=dates; 
 END$$
 
 DROP PROCEDURE IF EXISTS `insertCustomer`$$
@@ -71,7 +72,7 @@ DELIMITER ;
 --
 
 DROP TABLE IF EXISTS `company`;
-CREATE TABLE IF NOT EXISTS `company` (
+CREATE TABLE `company` (
   `CmpName` varchar(20) NOT NULL,
   `Address` varchar(100) NOT NULL,
   `Phone` bigint(20) NOT NULL,
@@ -85,13 +86,12 @@ CREATE TABLE IF NOT EXISTS `company` (
 --
 
 DROP TABLE IF EXISTS `customer`;
-CREATE TABLE IF NOT EXISTS `customer` (
+CREATE TABLE `customer` (
   `CID` int(15) NOT NULL,
   `Address` varchar(100) NOT NULL,
   `Name` varchar(20) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `phone` bigint(20) NOT NULL,
-  PRIMARY KEY (`CID`)
+  `phone` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -148,11 +148,7 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234),
 (48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413),
 (49, 'bangalore', 'abc', 'abc@abc.com', 23453245),
-(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245),
-(51, 'voma', 'voma', 'voma', 123),
-(52, 'voma', 'abc', 'voma', 3423234),
-(53, 'mountaijnt dttdjy', '.good cycle', 'cycle@mountain', 2433241),
-(54, 'voms', 'voms', 'voms', 34534);
+(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245);
 
 -- --------------------------------------------------------
 
@@ -161,20 +157,19 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 --
 
 DROP TABLE IF EXISTS `enquiry`;
-CREATE TABLE IF NOT EXISTS `enquiry` (
+CREATE TABLE `enquiry` (
   `Eqno` varchar(15) NOT NULL,
-  `Date` date NOT NULL,
+  `Date1` date NOT NULL,
   `Cmpname` varchar(10) NOT NULL,
   `Subject` varchar(100) NOT NULL,
-  `CID` int(15) NOT NULL,
-  PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date`) USING BTREE
+  `CID` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `enquiry`
 --
 
-INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
+INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('11', '2018-01-30', 'Steels', 'verbgveb', 23),
 ('1223', '2018-01-11', 'Awin', 'hghhehnet', 15),
 ('1223', '2018-01-17', 'Awin', 'tegegewg', 33),
@@ -227,14 +222,13 @@ INSERT INTO `enquiry` (`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES
 --
 
 DROP TABLE IF EXISTS `enquirybin`;
-CREATE TABLE IF NOT EXISTS `enquirybin` (
+CREATE TABLE `enquirybin` (
   `Eqno` varchar(15) NOT NULL,
   `Date1` date NOT NULL,
   `Cmpname` varchar(10) NOT NULL,
   `Subject` varchar(100) NOT NULL,
   `CID` int(15) NOT NULL,
-  `Reason` varchar(50) NOT NULL,
-  PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date1`) USING BTREE
+  `Reason` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -243,11 +237,7 @@ CREATE TABLE IF NOT EXISTS `enquirybin` (
 
 INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`) VALUES
 ('111', '2018-01-04', 'Awin', 'plis send', 9, 'yoga practice'),
-('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7, 'lack of equipments'),
-('123', '2018-02-24', 'Awin', 'voma', 51, 'not profitable'),
-('123', '2018-02-28', 'Awin', 'awin', 52, 'biscuit'),
-('123', '2018-02-28', 'Awin', 'sdfsdfsds', 54, 'lack of man power'),
-('4342', '2018-02-02', 'Awin', 'gehuhrthuywfhuywu', 53, 'lack of man power');
+('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7, 'lack of equipments');
 
 -- --------------------------------------------------------
 
@@ -256,12 +246,9 @@ INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`
 --
 
 DROP TABLE IF EXISTS `eqrel`;
-CREATE TABLE IF NOT EXISTS `eqrel` (
+CREATE TABLE `eqrel` (
   `Eno` varchar(15) NOT NULL,
-  `QNo` varchar(25) NOT NULL,
-  PRIMARY KEY (`Eno`,`QNo`),
-  KEY `Eno` (`Eno`,`QNo`),
-  KEY `QNo` (`QNo`)
+  `QNo` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -297,14 +284,35 @@ INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
 --
 
 DROP TABLE IF EXISTS `invoice`;
-CREATE TABLE IF NOT EXISTS `invoice` (
+CREATE TABLE `invoice` (
   `INo` varchar(15) NOT NULL,
   `Amount` double NOT NULL,
   `Type` tinyint(1) NOT NULL,
   `Date` date NOT NULL,
   `Subject` varchar(100) NOT NULL,
   `Duedate` date DEFAULT NULL,
-  PRIMARY KEY (`INo`)
+  `Salesperson` varchar(25) NOT NULL,
+  `Acc No` varchar(20) NOT NULL,
+  `Company Name` varchar(20) NOT NULL,
+  `Qno` varchar(25) NOT NULL,
+  `Purono` varchar(20) NOT NULL,
+  `Termofpay` varchar(25) NOT NULL,
+  `To:` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_details`
+--
+
+DROP TABLE IF EXISTS `invoice_details`;
+CREATE TABLE `invoice_details` (
+  `Item/No` int(10) NOT NULL,
+  `Descr` varchar(100) DEFAULT NULL,
+  `Qty` int(10) NOT NULL,
+  `UnitPrice` int(10) NOT NULL,
+  `Invno` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -314,12 +322,9 @@ CREATE TABLE IF NOT EXISTS `invoice` (
 --
 
 DROP TABLE IF EXISTS `pirel`;
-CREATE TABLE IF NOT EXISTS `pirel` (
+CREATE TABLE `pirel` (
   `PjNo` int(11) NOT NULL,
-  `INo` varchar(15) NOT NULL,
-  PRIMARY KEY (`PjNo`,`INo`),
-  KEY `PjNo` (`PjNo`,`INo`),
-  KEY `INo` (`INo`)
+  `INo` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -329,14 +334,13 @@ CREATE TABLE IF NOT EXISTS `pirel` (
 --
 
 DROP TABLE IF EXISTS `product`;
-CREATE TABLE IF NOT EXISTS `product` (
+CREATE TABLE `product` (
   `PNo` varchar(15) NOT NULL,
   `PjNo` int(11) NOT NULL,
   `Value` int(11) NOT NULL,
   `Date` date NOT NULL,
   `EstDate` date DEFAULT NULL,
-  `Des` varchar(5000) NOT NULL DEFAULT 'None',
-  PRIMARY KEY (`PjNo`)
+  `Des` varchar(5000) NOT NULL DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -353,12 +357,11 @@ INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`) VALUES
 --
 
 DROP TABLE IF EXISTS `qoutation`;
-CREATE TABLE IF NOT EXISTS `qoutation` (
+CREATE TABLE `qoutation` (
   `Qno` varchar(25) NOT NULL,
   `EstPrice` double DEFAULT NULL,
   `RevNo` int(11) NOT NULL DEFAULT '0',
-  `Subject` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Qno`)
+  `Subject` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -384,7 +387,6 @@ INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
 ('18-AE-QT-032', NULL, 0, NULL),
 ('18-AE-QT-033', NULL, 0, NULL),
 ('18-AE-QT-034', NULL, 0, NULL),
-('18-AE-QT-035', NULL, 0, NULL),
 ('18-SC-QT-026', NULL, 0, NULL),
 ('18-SC-QT-028', NULL, 0, NULL),
 ('18-SC-QT-028.Rev.1', NULL, 1, NULL),
@@ -398,12 +400,9 @@ INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
 --
 
 DROP TABLE IF EXISTS `qprel`;
-CREATE TABLE IF NOT EXISTS `qprel` (
+CREATE TABLE `qprel` (
   `Qno` varchar(25) NOT NULL,
-  `PjNo` int(11) NOT NULL,
-  PRIMARY KEY (`Qno`,`PjNo`),
-  KEY `Qno` (`Qno`,`PjNo`),
-  KEY `PjNo` (`PjNo`)
+  `PjNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -420,15 +419,13 @@ INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
 --
 
 DROP TABLE IF EXISTS `quotationdetails_awin`;
-CREATE TABLE IF NOT EXISTS `quotationdetails_awin` (
+CREATE TABLE `quotationdetails_awin` (
   `Sno` int(11) NOT NULL,
   `Des` varchar(1000) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
   `total` bigint(20) DEFAULT NULL,
-  `qno` varchar(25) NOT NULL,
-  PRIMARY KEY (`Sno`,`qno`),
-  KEY `qno` (`qno`)
+  `qno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -466,16 +463,14 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 --
 
 DROP TABLE IF EXISTS `quotationdetails_steels`;
-CREATE TABLE IF NOT EXISTS `quotationdetails_steels` (
+CREATE TABLE `quotationdetails_steels` (
   `Sno` int(11) NOT NULL,
   `Pos` varchar(1000) DEFAULT NULL,
   `NormalRate` varchar(100) DEFAULT NULL,
   `BeyondNormalRate` varchar(100) DEFAULT NULL,
   `Holidays` varchar(100) DEFAULT NULL,
   `Remarks` varchar(2000) DEFAULT NULL,
-  `qno` varchar(25) NOT NULL,
-  PRIMARY KEY (`Sno`,`qno`),
-  KEY `qno` (`qno`)
+  `qno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -497,6 +492,90 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 (3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.3');
 
 --
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`CID`);
+
+--
+-- Indexes for table `enquiry`
+--
+ALTER TABLE `enquiry`
+  ADD PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date1`) USING BTREE;
+
+--
+-- Indexes for table `enquirybin`
+--
+ALTER TABLE `enquirybin`
+  ADD PRIMARY KEY (`Eqno`,`Cmpname`,`CID`,`Date1`) USING BTREE;
+
+--
+-- Indexes for table `eqrel`
+--
+ALTER TABLE `eqrel`
+  ADD PRIMARY KEY (`Eno`,`QNo`),
+  ADD KEY `Eno` (`Eno`,`QNo`),
+  ADD KEY `QNo` (`QNo`);
+
+--
+-- Indexes for table `invoice`
+--
+ALTER TABLE `invoice`
+  ADD PRIMARY KEY (`INo`);
+
+--
+-- Indexes for table `invoice_details`
+--
+ALTER TABLE `invoice_details`
+  ADD KEY `Invno` (`Invno`);
+
+--
+-- Indexes for table `pirel`
+--
+ALTER TABLE `pirel`
+  ADD PRIMARY KEY (`PjNo`,`INo`),
+  ADD KEY `PjNo` (`PjNo`,`INo`),
+  ADD KEY `INo` (`INo`);
+
+--
+-- Indexes for table `product`
+--
+ALTER TABLE `product`
+  ADD PRIMARY KEY (`PjNo`);
+
+--
+-- Indexes for table `qoutation`
+--
+ALTER TABLE `qoutation`
+  ADD PRIMARY KEY (`Qno`);
+
+--
+-- Indexes for table `qprel`
+--
+ALTER TABLE `qprel`
+  ADD PRIMARY KEY (`Qno`,`PjNo`),
+  ADD KEY `Qno` (`Qno`,`PjNo`),
+  ADD KEY `PjNo` (`PjNo`);
+
+--
+-- Indexes for table `quotationdetails_awin`
+--
+ALTER TABLE `quotationdetails_awin`
+  ADD PRIMARY KEY (`Sno`,`qno`),
+  ADD KEY `qno` (`qno`);
+
+--
+-- Indexes for table `quotationdetails_steels`
+--
+ALTER TABLE `quotationdetails_steels`
+  ADD PRIMARY KEY (`Sno`,`qno`),
+  ADD KEY `qno` (`qno`);
+
+--
 -- Constraints for dumped tables
 --
 
@@ -506,6 +585,12 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 ALTER TABLE `eqrel`
   ADD CONSTRAINT `eqrel_ibfk_1` FOREIGN KEY (`Eno`) REFERENCES `enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `eqrel_ibfk_2` FOREIGN KEY (`QNo`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `invoice_details`
+--
+ALTER TABLE `invoice_details`
+  ADD CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`Invno`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pirel`
@@ -532,6 +617,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
