@@ -166,7 +166,7 @@ public class SalesController implements Initializable {
     @FXML
     private JFXTextArea inv_to;
     @FXML
-    private TableView<?> inv_newtable;
+    private TableView<Person3> inv_newtable;
     @FXML
     private JFXTextField inv_gst;
     @FXML
@@ -247,6 +247,7 @@ public class SalesController implements Initializable {
         table12.setEffect(new GaussianBlur(20));
         table11.setEffect(new GaussianBlur(20));
         table111.setEffect(new GaussianBlur(20));
+        insideINVPane.setEffect(new GaussianBlur(20));
         tock=true;
         
         inv_total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
@@ -500,6 +501,49 @@ public class SalesController implements Initializable {
      
     tables.setItems(data);                         
  }
+ 
+ TableColumn Item = new TableColumn("S. No.");
+ TableColumn DESCOl = new TableColumn("Description");
+ TableColumn QtyCOl = new TableColumn("Quantity"); 
+ TableColumn UtCol = new TableColumn("Unit/(SGD)"); 
+ TableColumn Total = new TableColumn("Total (SGD)"); 
+ 
+ 
+  void newInvoicePane_PriceBoxFill(TableView<Person3> tables, ObservableList<Person3> data){
+      Item.setSortable(false);
+     DESCOl.setSortable(false);
+     QtyCOl.setSortable(false);
+     UtCol.setSortable(false);
+     Total.setSortable(false);
+     Item.setPrefWidth(50);
+     DESCOl.setPrefWidth(150); 
+     QtyCOl.setPrefWidth(100);
+     UtCol.setPrefWidth(150);
+     Total.setPrefWidth(50);
+        
+           
+       
+    tables.getColumns().addAll(Item, DESCOl, QtyCOl, UtCol ,Total);
+   
+    
+    Item.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("ItemNo")
+    );
+    DESCOl.setCellValueFactory(
+    new PropertyValueFactory<Person,String>("Des")
+    );
+     QtyCOl.setCellValueFactory(     
+             new PropertyValueFactory<Person,String>("Qty")
+    );             
+    
+    UtCol.setCellValueFactory(
+             new PropertyValueFactory<Person,String>("UnitPrice")
+    );  
+    Total.setCellValueFactory(new PropertyValueFactory<Person,String>("Total"));       
+     
+    tables.setItems(data);
+    //return tables;
+  } 
 
  static String cid; //for Customer Id
  static String eno; //for enquiry number
@@ -1668,25 +1712,11 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_in_invoice(MouseEvent event) {
+
        
-               PreparedStatement ps;
-               ResultSet rs;
-                //
-        try {
-               String sql="SELECT PNo FROM `product` WHERE 1 ";
-            ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                rs=ps.executeQuery();
-            while(rs.next()){
-       //        varname.getItems().add(rs.getString(1));
-                
-            }
-                
-             
-               
-        } catch (SQLException ex) {
-            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+         
     }
+
 }
              
     
