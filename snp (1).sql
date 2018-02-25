@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 25, 2018 at 10:08 PM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- Host: localhost:8889
+-- Generation Time: Feb 25, 2018 at 11:39 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -64,6 +62,21 @@ SET num=@x;
 END$$
 
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `abc`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `abc`;
+CREATE TABLE `abc` (
+`Eno` varchar(15)
+,`QNo` varchar(25)
+,`Date1` date
+,`Cmpname` varchar(10)
+,`CID` int(15)
+);
 
 -- --------------------------------------------------------
 
@@ -248,34 +261,37 @@ INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`
 DROP TABLE IF EXISTS `eqrel`;
 CREATE TABLE `eqrel` (
   `Eno` varchar(15) NOT NULL,
-  `QNo` varchar(25) NOT NULL
+  `QNo` varchar(25) NOT NULL,
+  `Date1` date NOT NULL,
+  `Cmpname` varchar(10) NOT NULL,
+  `CID` int(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `eqrel`
 --
 
-INSERT INTO `eqrel` (`Eno`, `QNo`) VALUES
-('223', '18-AE-QT-001'),
-('1223', '18-AE-QT-020'),
-('231', '18-AE-QT-020'),
-('619', '18-AE-QT-021'),
-('23542', '18-AE-QT-022'),
-('1341', '18-AE-QT-023'),
-('123456', '18-AE-QT-024'),
-('23423', '18-AE-QT-025'),
-('2342342', '18-AE-QT-027'),
-('2342', '18-AE-QT-029'),
-('2342', '18-AE-QT-029.Rev.1'),
-('2342', '18-AE-QT-029.Rev.2'),
-('345634', '18-AE-QT-030'),
-('345634', '18-AE-QT-030.Rev.1'),
-('34345', '18-AE-QT-034'),
-('1234554', '18-SC-QT-026'),
-('132123', '18-SC-QT-028'),
-('132123', '18-SC-QT-028.Rev.1'),
-('132123', '18-SC-QT-028.Rev.2'),
-('132123', '18-SC-QT-028.Rev.3');
+INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
+('1223', '18-AE-QT-020', '2018-01-11', 'Awin', 15),
+('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
+('123456', '18-AE-QT-024', '2018-01-15', 'Awin', 40),
+('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.2', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.3', '2018-02-18', 'Steels', 47),
+('1341', '18-AE-QT-023', '2018-01-17', 'Awin', 39),
+('223', '18-AE-QT-001', '2018-01-01', 'Awin', 19),
+('231', '18-AE-QT-020', '2018-01-11', 'Awin', 32),
+('2342', '18-AE-QT-029', '2018-02-14', 'Awin', 48),
+('2342', '18-AE-QT-029.Rev.1', '2018-02-14', 'Awin', 48),
+('2342', '18-AE-QT-029.Rev.2', '2018-02-14', 'Awin', 48),
+('23423', '18-AE-QT-025', '2018-02-15', 'Awin', 44),
+('2342342', '18-AE-QT-027', '2018-02-18', 'Awin', 46),
+('23542', '18-AE-QT-022', '2018-01-12', 'Awin', 38),
+('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
+('345634', '18-AE-QT-030', '2018-02-20', 'Awin', 49),
+('345634', '18-AE-QT-030.Rev.1', '2018-02-20', 'Awin', 49),
+('619', '18-AE-QT-021', '2018-01-10', 'Awin', 37);
 
 -- --------------------------------------------------------
 
@@ -491,6 +507,15 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 (3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2'),
 (3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.3');
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `abc`
+--
+DROP TABLE IF EXISTS `abc`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `abc`  AS  select `eqrel`.`Eno` AS `Eno`,`eqrel`.`QNo` AS `QNo`,`eqrel`.`Date1` AS `Date1`,`eqrel`.`Cmpname` AS `Cmpname`,`eqrel`.`CID` AS `CID` from `eqrel` ;
+
 --
 -- Indexes for dumped tables
 --
@@ -617,7 +642,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
