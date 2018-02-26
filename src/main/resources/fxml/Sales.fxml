@@ -209,9 +209,20 @@
                               </JFXButton>
                            </children>
                         </AnchorPane>
-                        <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="305.0" layoutY="53.0" onMouseClicked="#tick_in_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">
+                        <Label fx:id="pno_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="305.0" layoutY="53.0" onMouseClicked="#tick_in_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">
                            <graphic>
                               <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                           </graphic>
+                        </Label>
+                        <JFXComboBox fx:id="inv_invbox" focusColor="#3f51b5" labelFloat="true" layoutX="412.0" layoutY="54.0" prefHeight="27.0" prefWidth="240.0" promptText="Invoice Number" />
+                        <Label fx:id="inv_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="719.0" layoutY="53.0" onMouseClicked="#tick_out_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">
+                           <graphic>
+                              <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                           </graphic>
+                        </Label>
+                        <Label contentDisplay="GRAPHIC_ONLY" layoutX="1063.0" layoutY="53.0" prefHeight="20.0" prefWidth="24.0" text="Label">
+                           <graphic>
+                              <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" onMouseClicked="#inv_edit_hit" size="30" />
                            </graphic>
                         </Label>
                      </children>
