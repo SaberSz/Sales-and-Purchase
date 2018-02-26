@@ -392,6 +392,21 @@ public class SalesController implements Initializable {
                                 newPOPane.setVisible(false);
                                 newEqPane.setDisable(true);
                                 newEqPane.setVisible(false); 
+                   try{             
+                     inv_pno.getItems().clear();
+            String sql="SELECT `PjNo` FROM `product` WHERE 1";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs=stmt.executeQuery();
+            while(rs.next()){
+                inv_pno.getItems().add(rs.getInt(1));
+            }
+        }
+        catch(Exception e){
+            
+        }
+                                
+                                
+                                
                             SD[5]=false;
                         }
               }
@@ -1793,19 +1808,7 @@ public class SalesController implements Initializable {
     @FXML
     private void tick_in_invoice(MouseEvent event) {
         
-              PreparedStatement ps;
-               ResultSet rs;
-               inv_pno.getItems().clear();
-        try {
-             
-               String sql="SELECT PNo FROM `product` WHERE 1 ";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-               rs=ps.executeQuery();
-            while(rs.next()){
-               int a= rs.getInt("PNo");
-               inv_pno.getItems().add(a);
-                
-            }
+          /*    
             String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                ps.setInt(1,inv_pno.getValue());
@@ -1818,6 +1821,8 @@ public class SalesController implements Initializable {
                String date=Utilities.Date.Date();
                String dt=date.substring(2,5);
                String d;
+              
+               
                if(inv_pno.getValue()<10){
          //dg=String.valueOf(dig);dg="00"+dg;
         dt="0"+inv_pno;
@@ -1834,6 +1839,7 @@ public class SalesController implements Initializable {
             
         }
         dt=dt+"-inv";
+        inv_cmp.setText(cn);
           String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`IN`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);
                ResultSet ri=ps.executeQuery();
@@ -1843,7 +1849,61 @@ public class SalesController implements Initializable {
     
         }catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+          try{
+           PreparedStatement ps;
+            String sl="SELECT * from product p,qprel qp,eqrel er WHERE p.PjNo=qp.PjNo and qp.Qno=er.Qno and p.PjNo=?";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+               ps.setInt(1,inv_pno.getValue());
+               ResultSet rs=ps.executeQuery();
+               rs.next();
+               inv_cmp.setText(rs.getString("Cmpname"));
+               inv_qno.setText(rs.getString("Qno"));
+               inv_po.setText(rs.getString("PNo"));
+               String comint=rs.getString("Qno");
+               String compname=comint.substring(3,5);
+               System.out.println("company name after ss is:"+compname);
+              String date=Utilities.Date.Date();
+               String dt=date.substring(2,4);
+               String d;
+              
+               
+               if(inv_pno.getValue()<10){
+         //dg=String.valueOf(dig);dg="00"+dg;
+        dt=dt+"0"+inv_pno.getValue();
         }
+               else     //1801-AE-inv-001
+        dt=dt+inv_pno.getValue();
+        
+        dt=dt+"-";
+        if(compname.equalsIgnoreCase("AWIN")){
+            dt=dt+"AE";
+           
+        }else{
+            dt=dt+"SE";
+            
+        }
+        dt=dt+"-INV-";
+        
+          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`INo`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);   
+               ResultSet ri=ps.executeQuery();
+               ri.next();
+               if(ri.getInt(1)<10){
+                   dt=dt+"00"+ri.getInt(1);
+               }else if(ri.getInt(1)>10&&ri.getInt(1)<100){
+                   dt=dt+"0"+ri.getInt(1);
+               }else{
+                   dt=dt+ri.getInt(1);
+               }
+               
+               inv_no.setText(dt);
+                         
+          }catch(Exception e){
+              Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+          }
+          
+          
         
         
         inv_newtable.getColumns().clear();
