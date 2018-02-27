@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="462.0" prefWidth="514.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.FXMLController">
+   <children>
+      <JFXTextField fx:id="username" focusColor="#3f51b5" labelFloat="true" layoutX="133.0" layoutY="138.0" prefHeight="27.0" prefWidth="237.0" promptText="Username">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXTextField>
+      <AnchorPane prefHeight="39.0" prefWidth="514.0" style="-fx-background-color: #3F51B5;">
+         <children>
+            <Label layoutX="12.0" layoutY="1.0" prefHeight="39.0" prefWidth="124.0" text="Login" textFill="WHITE">
+               <font>
+                  <Font name="Arial" size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <JFXPasswordField fx:id="password" focusColor="#3f51b5" labelFloat="true" layoutX="133.0" layoutY="204.0" prefHeight="27.0" prefWidth="237.0" promptText="Password">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font>
+      </JFXPasswordField>
+      <JFXComboBox fx:id="cate" focusColor="#3f51b5" labelFloat="true" layoutX="133.0" layoutY="279.0" prefHeight="27.0" prefWidth="237.0" promptText="Category" stylesheets="@../styles/Styles.css" />
+      <JFXButton fx:id="LoginButton" contentDisplay="GRAPHIC_ONLY" layoutX="220.0" layoutY="347.0" onMouseClicked="#LoginButtonHit" ripplerFill="#3e52b200" style="-fx-border-radius: 2; -fx-background-color: #ffffff;">
+         <graphic>
+            <MaterialDesignIconView fill="#3f51b5" glyphName="ARROW_RIGHT_BOLD_CIRCLE_OUTLINE" onMouseClicked="#LoginButtonHit" size="45" />
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

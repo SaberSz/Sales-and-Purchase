@@ -44,11 +44,11 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void LoginButtonHit(MouseEvent event) {
-        if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin"))
+        if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin")||true)
         {
             try{
             category=cate.getValue();
-            if(category.equals("Sales"))
+            if(category.equals("Sales")||true)
             {
                     //switch to sales controller
                     System.out.println("Hello");

@@ -193,7 +193,9 @@ public class SalesController implements Initializable {
     @FXML
     private Label inv_tick;
     @FXML
-    private JFXDatePicker due_date;
+    private Label pencilinv;
+    @FXML
+    private Label plusinv;
 
 
     /**
@@ -219,6 +221,10 @@ public class SalesController implements Initializable {
         inv_invbox.setVisible(false);
         inv_tick.setDisable(true);
         inv_tick.setVisible(false);
+        pencilinv.setDisable(false);
+                                pencilinv.setVisible(true);
+                                plusinv.setDisable(true);
+                                plusinv.setVisible(false);
         
         cmp.getItems().add("Awin");
         cmp.getItems().add("Steels");
@@ -417,33 +423,7 @@ public class SalesController implements Initializable {
                         }
                         else if(SD[5])
                         {
-                            
 
-                                QoutPane.setDisable(true);
-                                QoutPane.setVisible(false);
-                                oldPOPane.setDisable(true);
-                                oldPOPane.setVisible(false);
-                                InvoicePane.setDisable(false);
-                                InvoicePane.setVisible(true);
-                                newPOPane.setDisable(true);
-                                newPOPane.setVisible(false);
-                                newEqPane.setDisable(true);
-                                newEqPane.setVisible(false); 
-                   try{             
-                     inv_pno.getItems().clear();
-                     String sql="SELECT `PjNo` FROM `product` WHERE 1";
-            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            ResultSet rs=stmt.executeQuery();
-            while(rs.next()){
-                inv_pno.getItems().add(rs.getInt(1));
-            }
-        }
-        catch(Exception e){
-            
-        }
-                                
-          
-                                
                             SD[5]=false;
                             QoutPane.setDisable(true);
                             QoutPane.setVisible(false);
@@ -467,14 +447,16 @@ public class SalesController implements Initializable {
                                     inv_pno.getItems().add(a);
                                     SD[5]=false;
                                 }
-                                                sql1="SELECT Ino FROM `invoice` WHERE 1 ";
+                                  sql1="SELECT Ino FROM `invoice` WHERE 1 ";
                                   stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                                   rs=stmt.executeQuery();
+                                   inv_invbox.getItems().clear();
                                while(rs.next()){
                                  String a= rs.getString(1);
                                   inv_invbox.getItems().add(a);
                                }
-               
+                                
+
                             
                             } catch (SQLException ex) {
                                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -502,7 +484,7 @@ public class SalesController implements Initializable {
             
             };
             
-            timer.schedule(delayedThreadStartTask, 500);//0.5 second
+            timer.schedule(delayedThreadStartTask, 1500);//0.5 second
         };
  
  //columns for table1
@@ -1788,7 +1770,7 @@ public class SalesController implements Initializable {
         
         */
         try{
-         if(inv_sp.toString().isEmpty()|| inv_tum.toString().isEmpty() || inv_acc.toString().isEmpty())
+         if(inv_sp.getText().isEmpty()|| inv_tum.getText().isEmpty() || inv_acc.getText().isEmpty())
             {
                 Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
             }else{
@@ -1804,15 +1786,15 @@ public class SalesController implements Initializable {
                     
              
               String ql="INSERT INTO `invoice`(`INo`, `Total_amt`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`) VALUES (?,?,?,?,?,?)";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ql);
                ps.setString(1,inv_no.getText());
                ps.setDouble(2,Double.valueOf(inv_total.getText()));
                //ps.setString(3,.getValue());//pdf generation date will be used.
               
-               ps.setString(5,inv_sp.getText().trim());
-               ps.setString(6,inv_acc.getText().trim());
-               ps.setString(7,inv_tum.getText().trim());
-               ps.setFloat(8,Float.valueOf(inv_gst.getText()));
+               ps.setString(3,inv_sp.getText().trim());
+               ps.setString(4,inv_acc.getText().trim());
+               ps.setString(5,inv_tum.getText().trim());
+               ps.setFloat(6,Float.valueOf(inv_gst.getText()));
                ps.executeUpdate();  
              
                          
@@ -1825,9 +1807,11 @@ public class SalesController implements Initializable {
                       trc =FXCollections.observableArrayList(inv_newtable.getItems());
                       trc.add(new Person3("","","","",""));
                       int i=0;
+                       System.out.println("Hello");
                       while(i<20){
                       Person3 pe= trc.get(i);
                       if(pe.getItemNo().getText().trim().equalsIgnoreCase("")){
+                           System.out.println("HelloOut");
                           break;
                       }
                       else{
@@ -1837,7 +1821,7 @@ public class SalesController implements Initializable {
                         System.out.print(p.getRemark().getText()+"\t");
                         System.out.println(p.getTotal().getText()+"\t");
                           */
-
+                       System.out.println("HelloIN");
                        
                         String d=pe.getItemNo().getText();
                         String q =pe.getDes().getText();
@@ -1851,10 +1835,12 @@ public class SalesController implements Initializable {
                           ps.setString(3,r);
                           ps.setFloat(4,s);
                          ps.setDouble(5,h);
+                         ps.setString(6,inv_no.getText());
                          ps.executeUpdate();  
-                       
+                        System.out.println("HelloIn2");
                        
                       }
+                      i++;
                       }
                         Utilities.AlertBox.notificationInfo("Success","Invoice details have been saved.");
                       
@@ -2208,12 +2194,12 @@ static int combopno;
         try {
              
                
-            String sl="SELECT i.`INo`, i.`Total_amt`,"
-                    + " i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
-                    + " pr.pno,q.qno, e.cmpname,pr.pjno FROM "
-                    + "`invoice` i join pirel p on p.ino=i.ino join product"
-                    + " pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname"
-                    + "and e.cid=en.cid WHERE i.ino=?";
+            String sl="SELECT i.`INo`, i.`Total_amt`, " +
+"                     i.`Salesperson`, i.`Acc No`, i.`Termofpay`, " +
+"                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email FROM " +
+"                    `invoice` i join pirel p on p.ino=i.ino join product " +
+"                     pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname " +
+"                    and e.cid=en.cid join customer c on c.cid=en.cid WHERE i.ino=? ";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                ps.setString(1,inv_invbox.getValue());
                rs=ps.executeQuery();
@@ -2227,22 +2213,28 @@ static int combopno;
                    inv_qno.setText(rs.getString(7));
                    inv_cmp.setText(rs.getString(8));
                    combopno=rs.getInt(9);
+                   inv_to.setText(rs.getString(10)+"\n\n"+rs.getString(11)+"\n\n"+rs.getString(13)+"\n\n"+rs.getString(12));      
                }
-              sl="SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` WHERE i.ino=?"; 
+              sl="SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` i WHERE i.invno=?"; 
                 ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                   ps.setString(1,inv_invbox.getValue());
                rs=ps.executeQuery();
                 ObservableList<Person3> data;    
+                 data = FXCollections.observableArrayList();
               while(rs.next()){
                    
                   
-                data = FXCollections.observableArrayList();
-                for(int o=0;o<20;o++){
+               
+               
                     data.add(new Person3(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
-                }
-                newInvoicePane_PriceBoxFill(inv_newtable, data);
+                
+                
                
                }
+               for(int o=0;o<20;o++){
+                    data.add(new Person3("","","","",""));
+                }
+               newInvoicePane_PriceBoxFill(inv_newtable, data);
               insideINVPane.setEffect(new ColorAdjust()); 
                
     
@@ -2311,11 +2303,48 @@ static int combopno;
   inv_amt.clear();
      insideINVPane.setEffect(new GaussianBlur());      
    
-    
+    pencilinv.setDisable(true);
+    pencilinv.setVisible(false);
+    plusinv.setDisable(false);
+    plusinv.setVisible(true);
     
        
        
     
+    }
+
+    @FXML
+    private void inv_plus_hit(MouseEvent event) {
+          inv_pno.setDisable(false);
+           pno_tick.setDisable(false);
+            inv_invbox.setVisible(false);
+            inv_tick.setVisible(false);
+       
+            inv_invbox.setDisable(true);
+    
+   
+   
+    inv_tick.setDisable(true);
+    
+    inv_pno.setVisible(true);
+    pno_tick.setVisible(true);
+    inv_no.clear();
+    inv_cmp.clear();
+    inv_tum.clear();
+  inv_po.clear();
+   inv_sp.clear();
+    inv_acc.clear();
+  inv_newtable.getColumns().clear();
+  inv_newtable.getItems().clear();
+  inv_gst.clear();
+  inv_total.clear();
+  inv_amt.clear();
+     insideINVPane.setEffect(new GaussianBlur());      
+   
+    pencilinv.setDisable(false);
+    pencilinv.setVisible(true);
+    plusinv.setDisable(true);
+    plusinv.setVisible(false);
     }
 
 }
