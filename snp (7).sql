@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Feb 27, 2018 at 07:23 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost:3306
+-- Generation Time: Feb 27, 2018 at 07:16 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -303,8 +305,7 @@ DROP TABLE IF EXISTS `invoice`;
 CREATE TABLE `invoice` (
   `INo` varchar(15) NOT NULL,
   `Total_amt` double NOT NULL,
-  `Type` tinyint(1) NOT NULL,
-  `Date` date NOT NULL,
+  `Date` date DEFAULT NULL,
   `Duedate` date DEFAULT NULL,
   `Salesperson` varchar(25) NOT NULL,
   `Acc No` varchar(20) NOT NULL,
@@ -639,6 +640,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
