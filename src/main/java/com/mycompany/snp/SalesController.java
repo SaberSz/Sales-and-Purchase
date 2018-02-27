@@ -1748,6 +1748,11 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Invoice_Save_Button_Clicked_inInvPane(MouseEvent event) {
+        try{
+         if(eqno_del1.getValue().toString().isEmpty()|| cmp_del1.getValue().toString().isEmpty() || email_del1.getValue().toString().isEmpty() || date_del1.getValue().toString().isEmpty())
+            {
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
+            }
     }
 
     @FXML
