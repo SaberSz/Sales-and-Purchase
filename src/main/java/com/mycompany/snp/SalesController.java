@@ -1821,6 +1821,43 @@ public class SalesController implements Initializable {
                ps.setString(2,inv_no.getText());
                ps.setInt(1,combopno);
                ps.executeUpdate(); 
+                 ObservableList<Person3> trc;
+                      trc =FXCollections.observableArrayList(inv_newtable.getItems());
+                      trc.add(new Person3("","","","",""));
+                      int i=0;
+                      while(i<20){
+                      Person3 pe= trc.get(i);
+                      if(pe.getItemNo().getText().trim().equalsIgnoreCase("")){
+                          break;
+                      }
+                      else{
+                       /* System.out.print(p.getFirstName().getText()+"\t");
+                        System.out.print(p.getLastName().getText()+"\t");
+                        System.out.print(p.getEmail().getText()+"\t");
+                        System.out.print(p.getRemark().getText()+"\t");
+                        System.out.println(p.getTotal().getText()+"\t");
+                          */
+
+                       
+                        String d=pe.getItemNo().getText();
+                        String q =pe.getDes().getText();
+                        String r=pe.getQty().getText();
+                        float s=Float.valueOf(pe.getUnitPrice().getText());
+                        double h=Double.valueOf(pe.getTotal().getText());
+                        String sq="INSERT INTO `invoice_details`(`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES (?,?,?,?,?,?)";
+                           ps= com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                           ps.setString(1,d);
+                           ps.setString(2,q);     
+                          ps.setString(3,r);
+                          ps.setFloat(4,s);
+                         ps.setDouble(5,h);
+                         ps.executeUpdate();  
+                       
+                       
+                      }
+                      }
+                        Utilities.AlertBox.notificationInfo("Success","Invoice details have been saved.");
+                      
              
          }catch(Exception e){
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
@@ -2173,7 +2210,7 @@ static int combopno;
                
             String sl="SELECT i.`INo`, i.`Total_amt`,"
                     + " i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
-                    + " pr.pno,q.qno, e.cmpname FROM "
+                    + " pr.pno,q.qno, e.cmpname,pr.pjno FROM "
                     + "`invoice` i join pirel p on p.ino=i.ino join product"
                     + " pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname"
                     + "and e.cid=en.cid WHERE i.ino=?";
@@ -2189,6 +2226,7 @@ static int combopno;
                    inv_po.setText(rs.getString(6));
                    inv_qno.setText(rs.getString(7));
                    inv_cmp.setText(rs.getString(8));
+                   combopno=rs.getInt(9);
                }
               sl="SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` WHERE i.ino=?"; 
                 ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
