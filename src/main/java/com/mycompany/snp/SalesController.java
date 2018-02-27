@@ -414,7 +414,7 @@ public class SalesController implements Initializable {
                         else if(SD[5])
                         {
                             
-<<<<<<< HEAD
+
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(true);
@@ -441,7 +441,6 @@ public class SalesController implements Initializable {
                                 
                                 
                             SD[5]=false;
-=======
                             QoutPane.setDisable(true);
                             QoutPane.setVisible(false);
                             oldPOPane.setDisable(true);
@@ -477,7 +476,7 @@ public class SalesController implements Initializable {
                             } catch (SQLException ex) {
                                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
->>>>>>> f7f8d55e2fab98543203565eef911fb67f92cbdd
+
                         }
                         else{
                             timer.cancel();  // Terminates this timer, discarding any currently scheduled tasks.
@@ -1902,7 +1901,7 @@ public class SalesController implements Initializable {
     @FXML
     private void tick_in_invoice(MouseEvent event) {
         
-<<<<<<< HEAD
+
           /*    
 =======
               PreparedStatement ps;
