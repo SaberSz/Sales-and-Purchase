@@ -2167,7 +2167,7 @@ static int combopno;
 
               PreparedStatement ps;
                ResultSet rs;
-               inv_pno.getItems().clear();
+               
         try {
              
                
@@ -2190,9 +2190,22 @@ static int combopno;
                    inv_qno.setText(rs.getString(7));
                    inv_cmp.setText(rs.getString(8));
                }
+              sl="SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` WHERE i.ino=?"; 
+                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+                  ps.setString(1,inv_invbox.getValue());
+               rs=ps.executeQuery();
+                ObservableList<Person3> data;    
+              while(rs.next()){
+                   
+                  
+                data = FXCollections.observableArrayList();
+                for(int o=0;o<20;o++){
+                    data.add(new Person3(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5)));
+                }
+                newInvoicePane_PriceBoxFill(inv_newtable, data);
                
-              
-             
+               }
+              insideINVPane.setEffect(new ColorAdjust()); 
                
     
         }catch (SQLException ex) {
@@ -2203,7 +2216,7 @@ static int combopno;
 
     @FXML
     private void inv_edit_hit(MouseEvent event) {
-        /*                 @FXML
+        /*           
     private JFXComboBox<Integer> inv_pno;
 
     private Label pno_tick;

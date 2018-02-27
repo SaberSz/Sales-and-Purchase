@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 27, 2018 at 09:11 PM
+-- Generation Time: Feb 27, 2018 at 09:24 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -322,8 +322,9 @@ DROP TABLE IF EXISTS `invoice_details`;
 CREATE TABLE `invoice_details` (
   `Item/No` int(10) NOT NULL,
   `Descr` varchar(100) DEFAULT NULL,
-  `Qty` int(10) NOT NULL,
-  `UnitPrice` int(10) NOT NULL,
+  `Qty` varchar(20) DEFAULT NULL,
+  `UnitPrice` float NOT NULL DEFAULT '0',
+  `total` double DEFAULT NULL,
   `Invno` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
