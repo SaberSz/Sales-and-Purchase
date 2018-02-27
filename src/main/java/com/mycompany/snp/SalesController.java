@@ -2161,16 +2161,98 @@ static int combopno;
 
     @FXML
     private void tick_out_invoice(MouseEvent event) {
+            
+
+          /*    
+=======
+              PreparedStatement ps;
+               ResultSet rs;
+               inv_pno.getItems().clear();
+        try {
+             
+               
+>>>>>>> f7f8d55e2fab98543203565eef911fb67f92cbdd
+            String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+               ps.setInt(1,inv_pno.getValue());
+               rs=ps.executeQuery();
+               inv_tum.setText(rs.getString("Termofpay"));
+               inv_sp.setText(rs.getString("Salesperson"));
+               inv_acc.setText(rs.getString("Acc No"));
+               inv_to.setText(rs.getString("To:"));//1801-AE-inv-001 //;
+               String cn=rs.getString("Company");
+               String date=Utilities.Date.Date();
+               String dt=date.substring(2,5);
+               String d;
+              
+               
+               if(inv_pno.getValue()<10){
+         //dg=String.valueOf(dig);dg="00"+dg;
+        dt="0"+inv_pno;
+        }
+        else
+        dt=dt+inv_pno;
+        
+        dt=dt+"-";
+        if(cn.equalsIgnoreCase("AWIN")){
+            dt=dt+"AE";
+           
+        }else{
+            dt=dt+"SE";
+            
+        }
+        dt=dt+"-inv";
+        inv_cmp.setText(cn);
+          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`IN`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);
+               ResultSet ri=ps.executeQuery();
+               dt=dt+ri.getInt(1);
+               inv_no.setText(dt);
+               
+    
+        }catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
         
     }
 
-    void clear_in_invpane(){
-        
-        
-        
-    }
     @FXML
     private void inv_edit_hit(MouseEvent event) {
+        /*                 @FXML
+    private JFXComboBox<Integer> inv_pno;
+
+    private Label pno_tick;
+
+    private JFXComboBox<String> inv_invbox;
+
+    private Label inv_tick;
+
+
+    private JFXTextField inv_no;
+
+    private JFXTextField inv_cmp;
+
+    private JFXTextField inv_tum;
+
+    private JFXTextField inv_qno;
+
+    private JFXTextField inv_po;
+
+    private JFXTextField inv_sp;
+
+    private JFXTextField inv_acc;
+
+    private JFXTextArea inv_to;
+
+    private TableView<Person3> inv_newtable;
+
+    private JFXTextField inv_gst;
+
+    private JFXTextField inv_total;
+
+    private JFXTextField inv_amt;
+        
+        */
        inv_pno.setDisable(true);
        inv_invbox.setDisable(false);
     
@@ -2180,6 +2262,20 @@ static int combopno;
     inv_tick.setVisible(true);
     inv_pno.setVisible(false);
     pno_tick.setVisible(false);
+    inv_no.clear();
+    inv_cmp.clear();
+    inv_tum.clear();
+  inv_po.clear();
+   inv_sp.clear();
+    inv_acc.clear();
+  inv_newtable.getColumns().clear();
+  inv_newtable.getItems().clear();
+  inv_gst.clear();
+  inv_total.clear();
+  inv_amt.clear();
+     insideINVPane.setEffect(new GaussianBlur());      
+   
+    
     
        
        
