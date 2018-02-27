@@ -233,6 +233,8 @@ public class SalesController implements Initializable {
                 
                 
                 
+            }
+            
                 String sql1="SELECT PjNo FROM `product` WHERE 1 ";
                stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                rs=stmt.executeQuery();
@@ -249,7 +251,7 @@ public class SalesController implements Initializable {
                
                 
             }
-            }
+            
         }
         catch(Exception e){
             
@@ -429,7 +431,7 @@ public class SalesController implements Initializable {
                                 newEqPane.setVisible(false); 
                    try{             
                      inv_pno.getItems().clear();
-            String sql="SELECT `PjNo` FROM `product` WHERE 1";
+                     String sql="SELECT `PjNo` FROM `product` WHERE 1";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
@@ -440,7 +442,7 @@ public class SalesController implements Initializable {
             
         }
                                 
-                                
+          
                                 
                             SD[5]=false;
                             QoutPane.setDisable(true);
@@ -459,11 +461,10 @@ public class SalesController implements Initializable {
                                 String sql1="SELECT PjNo FROM `product` WHERE 1 ";
                                 PreparedStatement stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                                 ResultSet rs=stmt.executeQuery();
-                                
+                                inv_pno.getItems().clear();
                                 while(rs.next()){
                                     int a= rs.getInt("PjNo");
                                     inv_pno.getItems().add(a);
-                                    
                                     SD[5]=false;
                                 }
                                                 sql1="SELECT Ino FROM `invoice` WHERE 1 ";
@@ -1799,7 +1800,7 @@ public class SalesController implements Initializable {
                PreparedStatement ps;
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                ps.setString(1,inv_no.getText());
-               ResultSet rs =ps.executeQuery(); 
+                ps.executeUpdate();  
                     
              
               String ql="INSERT INTO `invoice`(`INo`, `Total_amt`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`) VALUES (?,?,?,?,?,?)";
@@ -1812,15 +1813,14 @@ public class SalesController implements Initializable {
                ps.setString(6,inv_acc.getText().trim());
                ps.setString(7,inv_tum.getText().trim());
                ps.setFloat(8,Float.valueOf(inv_gst.getText()));
-
-               rs =ps.executeQuery(); 
+               ps.executeUpdate();  
              
                          
               String sl="INSERT INTO `pirel`(`PjNo`, `INo`) VALUES (?,?)";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                ps.setString(2,inv_no.getText());
                ps.setInt(1,combopno);
-               rs =ps.executeQuery(); 
+               ps.executeUpdate(); 
              
          }catch(Exception e){
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
