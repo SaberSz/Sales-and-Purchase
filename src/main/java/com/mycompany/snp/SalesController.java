@@ -2064,7 +2064,18 @@ public class SalesController implements Initializable {
 
     @FXML
     private void inv_edit_hit(MouseEvent event) {
-        
+       inv_pno.setDisable(true);
+       inv_invbox.setDisable(false);
+    
+    pno_tick.setDisable(true);
+    inv_invbox.setVisible(true);
+    inv_tick.setDisable(false);
+    inv_tick.setVisible(true);
+    inv_pno.setVisible(false);
+    pno_tick.setVisible(false);
+       
+       
+    
     }
 
 }
