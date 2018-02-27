@@ -192,6 +192,8 @@ public class SalesController implements Initializable {
     private JFXComboBox<String> inv_invbox;
     @FXML
     private Label inv_tick;
+    @FXML
+    private JFXDatePicker due_date;
 
 
     /**
@@ -1748,11 +1750,52 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Invoice_Save_Button_Clicked_inInvPane(MouseEvent event) {
+<<<<<<< HEAD
         try{
          if(eqno_del1.getValue().toString().isEmpty()|| cmp_del1.getValue().toString().isEmpty() || email_del1.getValue().toString().isEmpty() || date_del1.getValue().toString().isEmpty())
             {
                 Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
             }
+=======
+        //due_date
+        /*
+            @FXML
+    private JFXComboBox<Integer> inv_pno;
+
+    private Label pno_tick;
+
+    private JFXComboBox<String> inv_invbox;
+
+    private Label inv_tick;
+
+    private JFXDatePicker due_date;
+
+    private JFXTextField inv_no;
+
+    private JFXTextField inv_cmp;
+
+    private JFXTextField inv_tum;
+
+    private JFXTextField inv_qno;
+
+    private JFXTextField inv_po;
+
+    private JFXTextField inv_sp;
+
+    private JFXTextField inv_acc;
+
+    private JFXTextArea inv_to;
+
+    private TableView<Person3> inv_newtable;
+
+    private JFXTextField inv_gst;
+
+    private JFXTextField inv_total;
+
+    private JFXTextField inv_amt;
+        
+        */
+>>>>>>> a44d1046291a4108e8ade4b0e888ea059b870f99
     }
 
     @FXML
@@ -2020,14 +2063,10 @@ public class SalesController implements Initializable {
                String nme=r.getString("Name");
                String em=r.getString("email");
                String phno=r.getString("phone");
-               inv_to.setText("Name:"+nme+"\n"+"Address:"+add+"\n"+"Email:"+em+"\n"+"Phone NO:"+phno);                   
+               inv_to.setText(nme+"\n\n"+add+"\n\n"+em+"\n\n"+phno);                   
           }catch(Exception e){
               Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
           }
-          
-          
-        
-        
         inv_newtable.getColumns().clear();
         inv_newtable.getItems().clear();
         ObservableList<Person3> data;    
@@ -2083,9 +2122,26 @@ public class SalesController implements Initializable {
         
     }
 
+    void clear_in_invpane(){
+        
+        
+        
+    }
     @FXML
     private void inv_edit_hit(MouseEvent event) {
-        
+       inv_pno.setDisable(true);
+       inv_invbox.setDisable(false);
+    
+    pno_tick.setDisable(true);
+    inv_invbox.setVisible(true);
+    inv_tick.setDisable(false);
+    inv_tick.setVisible(true);
+    inv_pno.setVisible(false);
+    pno_tick.setVisible(false);
+    
+       
+       
+    
     }
 
 }

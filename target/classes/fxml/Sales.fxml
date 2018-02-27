@@ -173,12 +173,12 @@
                                     <Font name="Arial" size="13.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXTextField fx:id="inv_qno" editable="false" focusColor="#3f51b5" layoutX="629.0" layoutY="30.0" prefHeight="27.0" prefWidth="260.0" promptText="Quotation Number">
+                              <JFXTextField fx:id="inv_qno" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="629.0" layoutY="30.0" prefHeight="27.0" prefWidth="260.0" promptText="Quotation Number">
                                  <font>
                                     <Font name="Arial" size="13.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXTextField fx:id="inv_po" editable="false" focusColor="#3f51b5" layoutX="918.0" layoutY="30.0" prefHeight="27.0" prefWidth="255.0" promptText="Purchase Order Number">
+                              <JFXTextField fx:id="inv_po" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="918.0" layoutY="30.0" prefHeight="27.0" prefWidth="255.0" promptText="Purchase Order Number">
                                  <font>
                                     <Font name="Arial" size="13.0" />
                                  </font>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 25, 2018 at 11:39 PM
+-- Generation Time: Feb 27, 2018 at 07:23 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -302,18 +302,15 @@ INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
 DROP TABLE IF EXISTS `invoice`;
 CREATE TABLE `invoice` (
   `INo` varchar(15) NOT NULL,
-  `Amount` double NOT NULL,
+  `Total_amt` double NOT NULL,
   `Type` tinyint(1) NOT NULL,
   `Date` date NOT NULL,
-  `Subject` varchar(100) NOT NULL,
   `Duedate` date DEFAULT NULL,
   `Salesperson` varchar(25) NOT NULL,
   `Acc No` varchar(20) NOT NULL,
-  `Company Name` varchar(20) NOT NULL,
-  `Qno` varchar(25) NOT NULL,
-  `Purono` varchar(20) NOT NULL,
   `Termofpay` varchar(25) NOT NULL,
-  `To:` varchar(200) NOT NULL
+  `addedgst` float NOT NULL,
+  `Amount_paid` double NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
