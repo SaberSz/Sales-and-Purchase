@@ -207,7 +207,6 @@
                                     <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
                                  </graphic>
                               </JFXButton>
-                              <JFXDatePicker fx:id="due_date" defaultColor="#3f51b5" layoutX="918.0" layoutY="98.0" prefHeight="27.0" prefWidth="255.0" promptText="Due Date" />
                            </children>
                         </AnchorPane>
                         <Label fx:id="pno_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="305.0" layoutY="53.0" onMouseClicked="#tick_in_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">
