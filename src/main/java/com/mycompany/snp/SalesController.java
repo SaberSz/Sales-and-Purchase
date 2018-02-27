@@ -50,7 +50,7 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author dylan
+ * @author Dylan,Abhishek
  */
 public class SalesController implements Initializable {
     public static boolean SD[]= {false,false,false,false,false,false};
@@ -414,7 +414,7 @@ public class SalesController implements Initializable {
                         else if(SD[5])
                         {
                             
-<<<<<<< HEAD
+
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(true);
@@ -441,7 +441,6 @@ public class SalesController implements Initializable {
                                 
                                 
                             SD[5]=false;
-=======
                             QoutPane.setDisable(true);
                             QoutPane.setVisible(false);
                             oldPOPane.setDisable(true);
@@ -477,7 +476,7 @@ public class SalesController implements Initializable {
                             } catch (SQLException ex) {
                                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
->>>>>>> f7f8d55e2fab98543203565eef911fb67f92cbdd
+
                         }
                         else{
                             timer.cancel();  // Terminates this timer, discarding any currently scheduled tasks.
@@ -1902,7 +1901,7 @@ public class SalesController implements Initializable {
     @FXML
     private void tick_in_invoice(MouseEvent event) {
         
-<<<<<<< HEAD
+
           /*    
 =======
               PreparedStatement ps;
@@ -1964,6 +1963,7 @@ public class SalesController implements Initializable {
                inv_qno.setText(rs.getString("Qno"));
                inv_po.setText(rs.getString("PNo"));
                String comint=rs.getString("Qno");
+               int cval=rs.getInt("CID");
                String compname=comint.substring(3,5);
                System.out.println("company name after ss is:"+compname);
               String date=Utilities.Date.Date();
@@ -2001,7 +2001,21 @@ public class SalesController implements Initializable {
                }
                
                inv_no.setText(dt);
-                         
+             String tum=inv_tum.getText();
+             String sp=inv_sp.getText();
+             String acc=inv_acc.getText();
+             String tot=inv_total.getText();
+             
+              String pl="SELECT `Address`, `Name`, `email`, `phone` FROM `customer` WHERE CID=?";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(pl);   
+               ps.setInt(1,cval);
+               ResultSet r=ps.executeQuery();
+               r.next();
+               String add=r.getString("Address");
+               String nme=r.getString("Name");
+               String em=r.getString("email");
+               String phno=r.getString("phone");
+               inv_to.setText("Name:"+nme+"\n"+"Address:"+add+"\n"+"Email:"+em+"\n"+"Phone NO:"+phno);                   
           }catch(Exception e){
               Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
           }
@@ -2061,6 +2075,7 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_out_invoice(MouseEvent event) {
+        
     }
 
     @FXML
