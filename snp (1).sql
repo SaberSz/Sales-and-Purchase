@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Feb 27, 2018 at 07:16 PM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- Host: localhost:8889
+-- Generation Time: Feb 27, 2018 at 09:11 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -274,26 +272,26 @@ CREATE TABLE `eqrel` (
 --
 
 INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
-('1223', '18-AE-QT-020', '2018-01-11', 'Awin', 15),
-('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
-('123456', '18-AE-QT-024', '2018-01-15', 'Awin', 40),
-('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
-('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
-('132123', '18-SC-QT-028.Rev.2', '2018-02-18', 'Steels', 47),
-('132123', '18-SC-QT-028.Rev.3', '2018-02-18', 'Steels', 47),
-('1341', '18-AE-QT-023', '2018-01-17', 'Awin', 39),
 ('223', '18-AE-QT-001', '2018-01-01', 'Awin', 19),
+('1223', '18-AE-QT-020', '2018-01-11', 'Awin', 15),
 ('231', '18-AE-QT-020', '2018-01-11', 'Awin', 32),
+('619', '18-AE-QT-021', '2018-01-10', 'Awin', 37),
+('23542', '18-AE-QT-022', '2018-01-12', 'Awin', 38),
+('1341', '18-AE-QT-023', '2018-01-17', 'Awin', 39),
+('123456', '18-AE-QT-024', '2018-01-15', 'Awin', 40),
+('23423', '18-AE-QT-025', '2018-02-15', 'Awin', 44),
+('2342342', '18-AE-QT-027', '2018-02-18', 'Awin', 46),
 ('2342', '18-AE-QT-029', '2018-02-14', 'Awin', 48),
 ('2342', '18-AE-QT-029.Rev.1', '2018-02-14', 'Awin', 48),
 ('2342', '18-AE-QT-029.Rev.2', '2018-02-14', 'Awin', 48),
-('23423', '18-AE-QT-025', '2018-02-15', 'Awin', 44),
-('2342342', '18-AE-QT-027', '2018-02-18', 'Awin', 46),
-('23542', '18-AE-QT-022', '2018-01-12', 'Awin', 38),
-('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
 ('345634', '18-AE-QT-030', '2018-02-20', 'Awin', 49),
 ('345634', '18-AE-QT-030.Rev.1', '2018-02-20', 'Awin', 49),
-('619', '18-AE-QT-021', '2018-01-10', 'Awin', 37);
+('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
+('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
+('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.2', '2018-02-18', 'Steels', 47),
+('132123', '18-SC-QT-028.Rev.3', '2018-02-18', 'Steels', 47);
 
 -- --------------------------------------------------------
 
@@ -540,7 +538,7 @@ ALTER TABLE `enquirybin`
 -- Indexes for table `eqrel`
 --
 ALTER TABLE `eqrel`
-  ADD PRIMARY KEY (`Eno`,`QNo`),
+  ADD PRIMARY KEY (`Eno`,`QNo`,`Date1`,`Cmpname`,`CID`),
   ADD KEY `Eno` (`Eno`,`QNo`),
   ADD KEY `QNo` (`QNo`);
 
@@ -554,6 +552,7 @@ ALTER TABLE `invoice`
 -- Indexes for table `invoice_details`
 --
 ALTER TABLE `invoice_details`
+  ADD PRIMARY KEY (`Item/No`,`Invno`),
   ADD KEY `Invno` (`Invno`);
 
 --
@@ -640,7 +639,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

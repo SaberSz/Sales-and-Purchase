@@ -2163,56 +2163,41 @@ static int combopno;
     private void tick_out_invoice(MouseEvent event) {
             
 
-          /*    
-=======
+           
+
               PreparedStatement ps;
                ResultSet rs;
                inv_pno.getItems().clear();
         try {
              
                
->>>>>>> f7f8d55e2fab98543203565eef911fb67f92cbdd
-            String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
+            String sl="SELECT i.`INo`, i.`Total_amt`,"
+                    + " i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
+                    + " pr.pno,q.qno, e.cmpname FROM "
+                    + "`invoice` i join pirel p on p.ino=i.ino join product"
+                    + " pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname"
+                    + "and e.cid=en.cid WHERE i.ino=?";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
-               ps.setInt(1,inv_pno.getValue());
+               ps.setString(1,inv_invbox.getValue());
                rs=ps.executeQuery();
-               inv_tum.setText(rs.getString("Termofpay"));
-               inv_sp.setText(rs.getString("Salesperson"));
-               inv_acc.setText(rs.getString("Acc No"));
-               inv_to.setText(rs.getString("To:"));//1801-AE-inv-001 //;
-               String cn=rs.getString("Company");
-               String date=Utilities.Date.Date();
-               String dt=date.substring(2,5);
-               String d;
-              
+               while(rs.next()){
+                   inv_no.setText(rs.getString(1));
+                   inv_total.setText(rs.getString(2));
+                   inv_sp.setText(rs.getString(3));
+                   inv_acc.setText(rs.getString(4));
+                   inv_tum.setText(rs.getString(5));
+                   inv_po.setText(rs.getString(6));
+                   inv_qno.setText(rs.getString(7));
+                   inv_cmp.setText(rs.getString(8));
+               }
                
-               if(inv_pno.getValue()<10){
-         //dg=String.valueOf(dig);dg="00"+dg;
-        dt="0"+inv_pno;
-        }
-        else
-        dt=dt+inv_pno;
-        
-        dt=dt+"-";
-        if(cn.equalsIgnoreCase("AWIN")){
-            dt=dt+"AE";
-           
-        }else{
-            dt=dt+"SE";
-            
-        }
-        dt=dt+"-inv";
-        inv_cmp.setText(cn);
-          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`IN`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);
-               ResultSet ri=ps.executeQuery();
-               dt=dt+ri.getInt(1);
-               inv_no.setText(dt);
+              
+             
                
     
         }catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         
     }
 
