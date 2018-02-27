@@ -1750,9 +1750,7 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Invoice_Save_Button_Clicked_inInvPane(MouseEvent event) {
-        //due_date
-        /*
-            @FXML
+   /*                 @FXML
     private JFXComboBox<Integer> inv_pno;
 
     private Label pno_tick;
@@ -1788,8 +1786,59 @@ public class SalesController implements Initializable {
     private JFXTextField inv_amt;
         
         */
-    }
+        try{
+         if(inv_sp.toString().isEmpty()|| inv_tum.toString().isEmpty() || inv_acc.toString().isEmpty())
+            {
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
+            }else{
+             
+             try{
+             
+               String sql="DELETE FROM `invoice` WHERE INo=?";
+                      
+               PreparedStatement ps;
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               ps.setString(1,inv_no.getText());
+               ResultSet rs =ps.executeQuery(); 
+                    
+             
+              String ql="INSERT INTO `invoice`(`INo`, `Total_amt`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`) VALUES (?,?,?,?,?,?)";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+               ps.setString(1,inv_no.getText());
+               ps.setDouble(2,Double.valueOf(inv_total.getText()));
+               //ps.setString(3,.getValue());//pdf generation date will be used.
+              
+               ps.setString(5,inv_sp.getText().trim());
+               ps.setString(6,inv_acc.getText().trim());
+               ps.setString(7,inv_tum.getText().trim());
+               ps.setFloat(8,Float.valueOf(inv_gst.getText()));
 
+               rs =ps.executeQuery(); 
+             
+                         
+              String sl="INSERT INTO `pirel`(`PjNo`, `INo`) VALUES (?,?)";
+               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+               ps.setString(2,inv_no.getText());
+               ps.setInt(1,combopno);
+               rs =ps.executeQuery(); 
+             
+         }catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+                Utilities.AlertBox.notificationWarn("Error","Error in invoice generation"); 
+        }
+      
+        
+   
+
+    }
+        }
+        catch(Exception e){
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                Utilities.AlertBox.showErrorMessage(e);
+                Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty"); 
+        }
+    }
     @FXML
     private void Select_for_quotation_generation(MouseEvent event) {
         //please change codes
@@ -1937,7 +1986,7 @@ public class SalesController implements Initializable {
         eq_delpane1.setVisible(false);
         eq_delpane1.setDisable(true); 
     }
-
+static int combopno;
     @FXML
     private void tick_in_invoice(MouseEvent event) {
         
@@ -1996,7 +2045,8 @@ public class SalesController implements Initializable {
            PreparedStatement ps;
             String sl="SELECT * from product p,qprel qp,eqrel er WHERE p.PjNo=qp.PjNo and qp.Qno=er.Qno and p.PjNo=?";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
-               ps.setInt(1,inv_pno.getValue());
+               combopno=inv_pno.getValue();
+               ps.setInt(1,combopno);
                ResultSet rs=ps.executeQuery();
                rs.next();
                inv_cmp.setText(rs.getString("Cmpname"));
