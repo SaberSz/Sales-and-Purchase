@@ -22,22 +22,22 @@
             </AnchorPane>
             <VBox layoutY="178.0" prefHeight="499.0" prefWidth="210.0" style="-fx-spacing: 30;">
                <children>
-                  <JFXButton buttonType="RAISED" onMouseClicked="#newEnqHit" prefHeight="35.0" prefWidth="219.0" style="-fx-background-color: #ffffff;" text="Enquiry">
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="100.0" onMouseClicked="#oldPOHit" prefHeight="35.0" prefWidth="229.0" style="-fx-background-color: #ffffff;" text="Dashboard">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="70.0" onMouseClicked="#QoutHit" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: #ffffff;" text="Quotation">
+                  <JFXButton buttonType="RAISED" onMouseClicked="#newEnqHit" prefHeight="35.0" prefWidth="219.0" style="-fx-background-color: #ffffff;" text="Enquiry &amp; Quotation">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="55.0" onMouseClicked="#newPOHit" prefHeight="35.0" prefWidth="240.0" style="-fx-background-color: #ffffff;" text="New Purchase Order">
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="70.0" onMouseClicked="#QoutHit" prefHeight="35.0" prefWidth="211.0" style="-fx-background-color: #ffffff;" text="Edit &amp; Revise Quotation">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="100.0" onMouseClicked="#oldPOHit" prefHeight="35.0" prefWidth="229.0" style="-fx-background-color: #ffffff;" text="Existing Purchase Order">
+                  <JFXButton buttonType="RAISED" layoutX="10.0" layoutY="55.0" onMouseClicked="#newPOHit" prefHeight="35.0" prefWidth="240.0" style="-fx-background-color: #ffffff;" text="Purchase Order">
                      <font>
                         <Font name="Arial" size="14.0" />
                      </font>

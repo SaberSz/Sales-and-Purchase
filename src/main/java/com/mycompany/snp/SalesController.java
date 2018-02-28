@@ -678,7 +678,7 @@ public class SalesController implements Initializable {
                             }
                             
                             //The below code is used to fetch enquiry numbers with the same details.
-                             String sql1= "Select * from enquiry where Eqno = ? and date = ? and Cmpname = ? and CID = ? ; ";
+                             String sql1= "Select * from enquiry where Eqno = ? and date1 = ? and Cmpname = ? and CID = ? ; ";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                             stmt.setString(1,ENo.getText().trim());
                             stmt.setString(2,Edate.getValue().toString());
@@ -701,7 +701,7 @@ public class SalesController implements Initializable {
                             }
                             
                             //The below code is used to insert the details into the enquiry table
-                            String sql3 = "INSERT INTO `enquiry`(`Eqno`, `Date`, `Cmpname`, `Subject`, `CID`) VALUES (?,?,?,?,?)";
+                            String sql3 = "INSERT INTO `enquiry`(`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES (?,?,?,?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
                             stmt.setString(1,eno);
                             stmt.setString(2,Edate.getValue().toString());
@@ -810,7 +810,7 @@ public class SalesController implements Initializable {
              dg=String.valueOf(dig);
         }
        //18-AE or SC - QT - 001
-       compname=compname+dg;
+       compname=compname+dg+".Rev.0";
        Qno.setText(compname);
        System.out.println(compname);
     Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
@@ -1203,7 +1203,8 @@ public class SalesController implements Initializable {
         try{
             System.out.println("sdfsdfsfddsfsdfsdfsdfsdfs");
             String qno= QnoBox.getValue();
-            String sql="SELECT e.Date,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno and er.Date1=e.Date1 and er.cmpname=e.cmpname and er.cid=e.cid join customer c on e.cid=c.cid WHERE er.qno= ? ;";
+            String sql="SELECT e.Date1,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno "
+                    + "and er.Date1=e.Date1 and er.cmpname=e.cmpname and er.cid=e.cid join customer c on e.cid=c.cid WHERE er.qno= ? ;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             stmt.setString(1, qno);
             ResultSet rs=stmt.executeQuery();
@@ -1285,7 +1286,7 @@ public class SalesController implements Initializable {
               PreparedStatement stmt;  
       try{
           
-          String sql5="Select cid from eqrel where e.qno=? ";//qnoforquery
+          String sql5="Select e.cid from eqrel e where e.qno=? ";//qnoforquery
           stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql5);
                             stmt.setString(1,qnoforquery);
             
@@ -1330,7 +1331,7 @@ public class SalesController implements Initializable {
         else{
             Utilities.AlertBox.notificationInfo("Sticky Buttons","The quotation has already been saved.");
         }
-    }
+    }//revision of quotation also handled here
 
     @FXML
     private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
@@ -1357,12 +1358,12 @@ public class SalesController implements Initializable {
                            int k=Integer.valueOf(rs.getString(2));
                            
                            k++;revisedno=k;
-                           if(k==1){
+                           //if(k==1){
                                //first revision
-                            revisedQno=Qno1.getText()+".Rev."+String.valueOf(k);
+                           // revisedQno=Qno1.getText()+".Rev."+String.valueOf(k);
                             
-                              }
-                           else{
+                             // }
+                           //else{
                                //not first revision
                                int len=Qno1.getText().length();
                                int v =Qno1.getText().lastIndexOf('.');
@@ -1371,7 +1372,7 @@ public class SalesController implements Initializable {
                                z++;
                                String x=Qno1.getText().substring(0, v+1);
                                revisedQno=x+String.valueOf(z);
-                           }
+                          // }
                            System.out.println(revisedQno);
                            }
                                   
@@ -1927,7 +1928,7 @@ public class SalesController implements Initializable {
                                    }
                                   //18-AE or SC - QT - 001
                                   System.out.println(compname);
-                                  compname=compname+dg;
+                                  compname=compname+dg+".Rev.0";
                                   Qno.setText(compname);
                                   PreparedStatement stmt;
                                     Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
@@ -2346,7 +2347,6 @@ static int combopno;
     plusinv.setDisable(true);
     plusinv.setVisible(false);
     }
-
 }
              
     
