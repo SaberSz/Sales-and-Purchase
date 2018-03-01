@@ -74,6 +74,7 @@ public class FXMLController implements Initializable {
             catch(Exception e)
             {
                 Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
+                e.printStackTrace();
             }
         }
         else

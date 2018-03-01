@@ -1,3 +1,5 @@
+com/mycompany/snp/SalesController$2.class
+com/mycompany/snp/SalesController$mths.class
 com/mycompany/snp/SalesDrawerController.class
 com/mycompany/snp/Person2.class
 Utilities/Date.class
@@ -7,5 +9,6 @@ com/mycompany/snp/FXMLController.class
 com/mycompany/snp/SalesController.class
 com/mycompany/snp/Person.class
 com/mycompany/snp/MainApp.class
+com/mycompany/snp/SalesController$AnalysisDT.class
 DBMS/Connect.class
 Utilities/AlertBox.class

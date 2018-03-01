@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Feb 27, 2018 at 09:24 PM
+-- Generation Time: Mar 01, 2018 at 10:05 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -161,7 +161,9 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234),
 (48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413),
 (49, 'bangalore', 'abc', 'abc@abc.com', 23453245),
-(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245);
+(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245),
+(51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', 2352424),
+(52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', 34534534);
 
 -- --------------------------------------------------------
 
@@ -197,6 +199,7 @@ INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('2314', '2018-01-05', 'Steels', 'sweg  sweg serg', 8),
 ('2342', '2018-02-14', 'Awin', 'gebtrbrgbrtbwbw', 48),
 ('23423', '2018-02-15', 'Awin', 'dvdsvdfsvsd', 44),
+('23423', '2018-03-06', 'Awin', '2341234234dsgfdsg', 52),
 ('2342342', '2018-02-18', 'Awin', 'sdfgsdfgsfgsdfg', 46),
 ('23542', '2018-01-12', 'Awin', 'erbgerbebb', 38),
 ('2431', '2018-01-14', 'Awin', 'etnehgne', 26),
@@ -241,16 +244,23 @@ CREATE TABLE `enquirybin` (
   `Cmpname` varchar(10) NOT NULL,
   `Subject` varchar(100) NOT NULL,
   `CID` int(15) NOT NULL,
-  `Reason` varchar(50) NOT NULL
+  `Reason` varchar(50) NOT NULL,
+  `delDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `enquirybin`
 --
 
-INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`) VALUES
-('111', '2018-01-04', 'Awin', 'plis send', 9, 'yoga practice'),
-('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7, 'lack of equipments');
+INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`, `delDate`) VALUES
+('111', '2018-01-04', 'Awin', 'plis send', 9, 'yoga practice', '2018-03-01 18:01:48'),
+('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7, 'lack of equipments', '2018-03-01 18:01:48'),
+('kksdfugiudgdfgi', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48'),
+('kkugiudgdfgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48'),
+('kkugiudgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-08-01 18:01:48'),
+('kkugiugiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-07-01 18:01:48'),
+('sdfugiudgdfgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48'),
+('sdfuudgdfgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48');
 
 -- --------------------------------------------------------
 
@@ -287,6 +297,8 @@ INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
 ('345634', '18-AE-QT-030', '2018-02-20', 'Awin', 49),
 ('345634', '18-AE-QT-030.Rev.1', '2018-02-20', 'Awin', 49),
 ('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
+('23423', '18-AE-QT-035.Rev.0', '2018-03-06', 'Awin', 52),
+('23423', '18-AE-QT-035.Rev.1', '2018-03-06', 'sdfgsdfgs', 52),
 ('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
 ('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
 ('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
@@ -312,6 +324,14 @@ CREATE TABLE `invoice` (
   `Amount_paid` double NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`) VALUES
+('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 0),
+('1801-SE-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -328,6 +348,15 @@ CREATE TABLE `invoice_details` (
   `Invno` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `invoice_details`
+--
+
+INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES
+(1, 'sfgsdfgs', '34', 45, 1530, '1801-SE-INV-001'),
+(1, 'dfgsdfg', '234', 2342, 548028, '1801-SE-INV-002'),
+(2, 'sdfsdf', '343', 2342, 803306, '1801-SE-INV-002');
+
 -- --------------------------------------------------------
 
 --
@@ -339,6 +368,14 @@ CREATE TABLE `pirel` (
   `PjNo` int(11) NOT NULL,
   `INo` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pirel`
+--
+
+INSERT INTO `pirel` (`PjNo`, `INo`) VALUES
+(1, '1801-SE-INV-001'),
+(1, '1801-SE-INV-002');
 
 -- --------------------------------------------------------
 
@@ -361,7 +398,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`) VALUES
-('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg');
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg'),
+('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag');
 
 -- --------------------------------------------------------
 
@@ -374,37 +412,40 @@ CREATE TABLE `qoutation` (
   `Qno` varchar(25) NOT NULL,
   `EstPrice` double DEFAULT NULL,
   `RevNo` int(11) NOT NULL DEFAULT '0',
-  `Subject` varchar(100) DEFAULT NULL
+  `Subject` varchar(100) DEFAULT NULL,
+  `times` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `qoutation`
 --
 
-INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`) VALUES
-('18-AE-QT-001', NULL, 0, NULL),
-('18-AE-QT-002', NULL, 0, NULL),
-('18-AE-QT-020', NULL, 0, NULL),
-('18-AE-QT-021', NULL, 0, NULL),
-('18-AE-QT-022', NULL, 0, NULL),
-('18-AE-QT-023', NULL, 0, NULL),
-('18-AE-QT-024', NULL, 0, NULL),
-('18-AE-QT-025', NULL, 0, NULL),
-('18-AE-QT-027', NULL, 0, NULL),
-('18-AE-QT-029', NULL, 0, NULL),
-('18-AE-QT-029.Rev.1', NULL, 1, NULL),
-('18-AE-QT-029.Rev.2', NULL, 2, NULL),
-('18-AE-QT-030', NULL, 0, NULL),
-('18-AE-QT-030.Rev.1', NULL, 1, NULL),
-('18-AE-QT-031', NULL, 0, NULL),
-('18-AE-QT-032', NULL, 0, NULL),
-('18-AE-QT-033', NULL, 0, NULL),
-('18-AE-QT-034', NULL, 0, NULL),
-('18-SC-QT-026', NULL, 0, NULL),
-('18-SC-QT-028', NULL, 0, NULL),
-('18-SC-QT-028.Rev.1', NULL, 1, NULL),
-('18-SC-QT-028.Rev.2', NULL, 2, NULL),
-('18-SC-QT-028.Rev.3', NULL, 3, NULL);
+INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`, `times`) VALUES
+('18-AE-QT-001', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-002', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-020', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-021', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-022', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-023', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-024', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-025', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-027', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-029', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-029.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-029.Rev.2', NULL, 2, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-030', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-030.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-031', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-032', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-033', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-034', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-035.Rev.0', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-AE-QT-035.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
+('18-SC-QT-026', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-SC-QT-028', NULL, 0, NULL, '2018-03-01 19:09:54'),
+('18-SC-QT-028.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
+('18-SC-QT-028.Rev.2', NULL, 2, NULL, '2018-03-01 19:09:54'),
+('18-SC-QT-028.Rev.3', NULL, 3, NULL, '2018-03-01 19:09:54');
 
 -- --------------------------------------------------------
 
@@ -423,7 +464,8 @@ CREATE TABLE `qprel` (
 --
 
 INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
-('18-AE-QT-030.Rev.1', 1);
+('18-AE-QT-030.Rev.1', 1),
+('18-AE-QT-035.Rev.1', 2);
 
 -- --------------------------------------------------------
 
@@ -453,12 +495,15 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 (1, 'bub send pucciylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.2'),
 (1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030'),
 (1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030.Rev.1'),
+(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.0'),
+(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.1'),
 (2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.2'),
 (2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030'),
 (2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030.Rev.1'),
+(2, 'sdfgsdf', 4353, 34534, 435, '18-AE-QT-035.Rev.1'),
 (3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
