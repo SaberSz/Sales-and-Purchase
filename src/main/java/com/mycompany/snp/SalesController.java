@@ -674,8 +674,50 @@ public class SalesController implements Initializable {
     }
     
     public void enq_pie(String d){
+        ResultSet rs;
+          try{
+       
+          String suql = "SELECT COUNT(*) FROM `enquirybin` WHERE Date1 LIKE '"+d+"%'";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           rs=st.executeQuery();
+                           rs.next();
+                           int dec_enqno=rs.getInt(1);
+                           System.out.println("FIRST QUERY FINE");
+                           
+          String seql="SELECT count(*) FROM `enquiry` e WHERE NOT EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and e.cid=eq.cid) and e.Date1 LIKE '"+d+"%'";
+                        st = com.mycompany.snp.MainApp.conn.prepareStatement(seql);
+                          rs=st.executeQuery();
+                          rs.next();
+                          int enq_noqo=rs.getInt(1);
+                             System.out.println("SECOND QUERY FINE");
+           String seql2="SELECT count(*) FROM `enquiry` e WHERE EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and eq.cid=e.cid) and e.Date1 LIKE '"+d+"%'";
+                        st = com.mycompany.snp.MainApp.conn.prepareStatement(seql2);
+                          rs=st.executeQuery();
+                          rs.next();
+                          int enq_qo=rs.getInt(1);
+                             System.out.println("THIRD QUERY FINE");
+            ObservableList<PieChart.Data> pcd=FXCollections.observableArrayList(
+                    new PieChart.Data("Declined enquiries",dec_enqno),
+                    new PieChart.Data("qoutationless enquiries",enq_noqo),
+                    new PieChart.Data("qouted enquiries",enq_qo));
+            enq_pie.setData(pcd);
+          
+               
+          }              
+                          
+                          
+            
+          
+                      //SELECT * FROM `enquiry` e WHERE EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and eq.cid=e.cid)
         
-    }
+    catch(Exception e)
+      {  
+           System.out.println(539);
+           Utilities.AlertBox.showErrorMessage(e);
+      }
+        }
+    
     public void enq_bar(String d){
          try {
               enq_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
