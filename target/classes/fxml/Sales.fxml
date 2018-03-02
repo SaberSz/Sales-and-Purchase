@@ -147,7 +147,7 @@
             </ScrollPane>
             <AnchorPane fx:id="oldPOPane" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0">
                <children>
-                  <TabPane prefHeight="661.0" prefWidth="1179.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane prefHeight="661.0" prefWidth="1179.0" stylesheets="@../styles/TabPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab text="Enquiry">
                            <content>
@@ -158,10 +158,10 @@
                                     <JFXTextField fx:id="enq_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
                                     <BarChart fx:id="enq_bar" layoutX="686.0" layoutY="54.0" prefHeight="351.0" prefWidth="479.0">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis side="BOTTOM" fx:id="xaxis_bc" />
                                       </xAxis>
                                       <yAxis>
-                                        <NumberAxis side="LEFT" />
+                                        <NumberAxis fx:id="yaxis_bc" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
                                     <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" />

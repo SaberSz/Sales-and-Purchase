@@ -52,6 +52,7 @@ import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Side;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -316,6 +317,10 @@ public class SalesController implements Initializable {
     private CategoryAxis xaxis_lc;
     @FXML
     private JFXComboBox<String> enq_year;
+    @FXML
+    private NumberAxis yaxis_bc;
+    @FXML
+    private CategoryAxis xaxis_bc;
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
@@ -549,63 +554,56 @@ public class SalesController implements Initializable {
         }
     
     public void enq_bar(String d){
-         //try {
-          /*  xaxis.getCategories().clear();
+         try {
+              enq_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
+             enq_bar.getData().clear();
+           xaxis_bc.getCategories().clear();
             XYChart.Series dataSeries1 = new XYChart.Series();
-            dataSeries1.setName("Classes Attended");
-            XYChart.Series dataSeries2 = new XYChart.Series();
-            dataSeries2.setName("Average Attendance");
-            XYChart.Series dataSeries3 = new XYChart.Series();
-            dataSeries3.setName("Required Attendance");
-            Statement stmt = javafxapplication2.JavaFXApplication2.conn.createStatement();
-            String sql="Select a2.code, a1.sub,a1.att,a2.avgatt,a1.HT " +
-"from (select sa.Attendance as att, sa.`Subject Code` as code, s.Subject as sub, f.`Hours Taken` as HT " +
-"from `Student Attendance` as sa JOIN Subjects as s  " +
-"ON sa.`Subject Code`=s.`Subject Code` " +
-"JOIN Student ss ON ss.USN=sa.USN JOIN Faculty f on f.Sem=ss.Sem AND f.Section=ss.Class AND f.`Subject Code`=s.`Subject Code` " +
-"where sa.USN='"+USN+"')  a1 JOIN  " +
-"(Select ak.`Subject Code` as code,AVG(ak.Attendance) as avgatt " +
-"from `Student Attendance` as ak  " +
-"group by ak.`Subject Code`) a2 " +
-"ON a1.code=a2.code ;";
+            dataSeries1.setName("Declined Enquiries");
+            xaxis_bc.setLabel("Reason");
+        yaxis_bc.setLabel("Number of Declined Enquiries");
+        yaxis_bc.setSide(Side.LEFT);
+        xaxis_bc.setSide(Side.BOTTOM);
             dataSeries1.getData().clear();
-             dataSeries2.getData().clear();
-              dataSeries3.getData().clear();
-              StackedBar.getData().clear();
-              //StackedBar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
-              //StackedBar.getData().clear();
-              xaxis.setAnimated(false);
-              yaxis.setAnimated(true);
-              StackedBar.setAnimated(true);
-            xaxis.getCategories().addAll("Classes Attended", "Average Attendance", "Required Attendance");
+             xaxis_bc.setAnimated(true);
+              yaxis_bc.setAnimated(true);
+              enq_bar.setAnimated(true);
+             
+              xaxis_bc.setAnimated(false);
+              yaxis_bc.setAnimated(true);
+              enq_bar.setAnimated(true);
+            xaxis_bc.getCategories().addAll("Declined Enquiries");
+            String sql="SELECT q.`Reason`,count(*) FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%') q group by q.Reason";
+            Statement stmt =com.mycompany.snp.MainApp.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql); 
             while(rs.next()){
-              dataSeries1.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(3)));  //my Attendance
-               dataSeries2.getData().add(new XYChart.Data(rs.getString(1), rs.getInt(4)));  //average attendance
-               if((rs.getInt(5)*0.8)>=rs.getInt(3)){
-                dataSeries3.getData().add(new XYChart.Data(rs.getString(1), rs.getInt(5)*0.8)); 
-               }//80%
-               // System.out.println(rs.getString(1)+" "+ rs.getInt(5)*0.8);
+              dataSeries1.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));  //Declined enquiries with reason
+             
             }
             
-            StackedBar.getData().add(dataSeries1);
-            StackedBar.getData().add(dataSeries2);
-            StackedBar.getData().add(dataSeries3); 
+            enq_bar.getData().add(dataSeries1);
+            
         } catch (SQLException ex) {
-            Logger.getLogger(StudentPageController.class.getName()).log(Level.SEVERE, null, ex);
+            Utilities.AlertBox.showErrorMessage(ex);
         }
-*/
+
     }
     public void enq_line(String d){
+        xaxis_lc.setLabel("Months");
+        yaxis_lc.setLabel("Number of Enquiries");
+        yaxis_lc.setSide(Side.LEFT);
+        xaxis_lc.setSide(Side.BOTTOM);
        xaxis_lc.getCategories().clear(); 
         enq_line.getData().clear();
       mths m;
       XYChart.Series s=new XYChart.Series();
        XYChart.Series s1=new XYChart.Series();
+       s1.getData().clear();
+       s.getData().clear();
       s.setName("Declined Enquiries");
        s1.setName("Received Enquiries");
       xaxis_lc.setAnimated(false);
-              yaxis_lc.setAnimated(false);
+              yaxis_lc.setAnimated(true);
               enq_line.setAnimated(true);
               int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
               ResultSet rs;
@@ -670,29 +668,26 @@ public class SalesController implements Initializable {
     }
     public void decline_enq(){
         JFXTreeTableColumn<AnalysisDT, String> subject = new JFXTreeTableColumn<>("Enquiry Number");
-        subject.setPrefWidth(100);
+        subject.setPrefWidth(200);
         subject.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().enqno);
         
         JFXTreeTableColumn<AnalysisDT, String> code = new JFXTreeTableColumn<>("Submission Date");
-        code.setPrefWidth(93);
-        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
+        code.setPrefWidth(200);        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
         
         JFXTreeTableColumn<AnalysisDT, String> attended = new JFXTreeTableColumn<>("Company Name");
-        attended.setPrefWidth(83);
-        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
+        attended.setPrefWidth(200);        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
 
         JFXTreeTableColumn<AnalysisDT, String> total = new JFXTreeTableColumn<>("Decline Date");
-        total.setPrefWidth(52);
-        total.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().decdate);
+        total.setPrefWidth(200);        total.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().decdate);
 
         JFXTreeTableColumn<AnalysisDT, String> need1 = new JFXTreeTableColumn<>("Subject");
-        need1.setPrefWidth(100);
+        need1.setPrefWidth(200);
         need1.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().sub);
          JFXTreeTableColumn<AnalysisDT, String> need2 = new JFXTreeTableColumn<>("Customer Name");
-        need2.setPrefWidth(100);
+        need2.setPrefWidth(200);
         need2.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().cname);
          JFXTreeTableColumn<AnalysisDT, String> need3 = new JFXTreeTableColumn<>("Reason");
-        need3.setPrefWidth(100);
+        need3.setPrefWidth(200);
         need3.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().rsn);
         
         ObservableList<AnalysisDT> users1 = FXCollections.observableArrayList();
@@ -737,23 +732,21 @@ public class SalesController implements Initializable {
     
    public void notquoted_enq(){
         JFXTreeTableColumn<AnalysisDT, String> subject = new JFXTreeTableColumn<>("Enquiry Number");
-        subject.setPrefWidth(100);
+        subject.setPrefWidth(200);
         subject.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().enqno);
         
         JFXTreeTableColumn<AnalysisDT, String> code = new JFXTreeTableColumn<>("Submission Date");
-        code.setPrefWidth(93);
-        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
+        code.setPrefWidth(200);        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
         
         JFXTreeTableColumn<AnalysisDT, String> attended = new JFXTreeTableColumn<>("Company Name");
-        attended.setPrefWidth(83);
-        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
+        attended.setPrefWidth(200);        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
 
 
         JFXTreeTableColumn<AnalysisDT, String> need1 = new JFXTreeTableColumn<>("Subject");
-        need1.setPrefWidth(100);
+        need1.setPrefWidth(200);
         need1.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().sub);
          JFXTreeTableColumn<AnalysisDT, String> need2 = new JFXTreeTableColumn<>("Customer Name");
-        need2.setPrefWidth(100);
+        need2.setPrefWidth(200);
         need2.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().cname);
 
         
@@ -797,26 +790,24 @@ public class SalesController implements Initializable {
    }
     public void quoted_enq(){
         JFXTreeTableColumn<AnalysisDT, String> subject = new JFXTreeTableColumn<>("Enquiry Number");
-        subject.setPrefWidth(100);
+        subject.setPrefWidth(200);
         subject.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().enqno);
         
         JFXTreeTableColumn<AnalysisDT, String> code = new JFXTreeTableColumn<>("Submission Date");
-        code.setPrefWidth(93);
-        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
+        code.setPrefWidth(200);        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().Subdate);
         
         JFXTreeTableColumn<AnalysisDT, String> attended = new JFXTreeTableColumn<>("Company Name");
-        attended.setPrefWidth(83);
-        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
+        attended.setPrefWidth(200);        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().comname);
 
 
         JFXTreeTableColumn<AnalysisDT, String> need1 = new JFXTreeTableColumn<>("Subject");
-        need1.setPrefWidth(100);
+        need1.setPrefWidth(200);
         need1.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().sub);
          JFXTreeTableColumn<AnalysisDT, String> need2 = new JFXTreeTableColumn<>("Customer Name");
-        need2.setPrefWidth(100);
+        need2.setPrefWidth(200);
         need2.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().cname);
         JFXTreeTableColumn<AnalysisDT, String> need3 = new JFXTreeTableColumn<>("Quotation Number");
-        need3.setPrefWidth(100);
+        need3.setPrefWidth(200);
         need3.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT, String> param) -> param.getValue().getValue().qno);
 
         
@@ -875,6 +866,7 @@ public class SalesController implements Initializable {
             this.decdate = new SimpleStringProperty(Total);
             this.Subdate= new SimpleStringProperty(SubjectCode);
             this.sub= new SimpleStringProperty(need);
+           //this.sub=new JFXTextArea();this.sub.setText(need);
             this.cname=new SimpleStringProperty(c);
             this.rsn=new SimpleStringProperty(r);
             
