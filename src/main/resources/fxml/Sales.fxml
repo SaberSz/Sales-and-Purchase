@@ -156,7 +156,7 @@
                                     <JFXComboBox fx:id="action" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
                                     <JFXTreeTableView fx:id="enq_tables" layoutX="14.0" layoutY="54.0" prefHeight="316.0" prefWidth="663.0" />
                                     <JFXTextField fx:id="enq_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
-                                    <BarChart fx:id="enq_bar" layoutX="686.0" layoutY="28.0" prefHeight="351.0" prefWidth="479.0">
+                                    <BarChart fx:id="enq_bar" layoutX="686.0" layoutY="54.0" prefHeight="351.0" prefWidth="479.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" />
                                       </xAxis>
@@ -164,7 +164,7 @@
                                         <NumberAxis side="LEFT" />
                                       </yAxis>
                                     </BarChart>
-                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="370.0" prefHeight="235.0" prefWidth="422.0" />
+                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" />
                                     <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="662.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_lc" />
@@ -178,6 +178,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
+                                    <JFXComboBox fx:id="enq_year" labelFloat="true" layoutX="729.0" layoutY="25.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
                                  </children>
                               </AnchorPane>
                            </content>

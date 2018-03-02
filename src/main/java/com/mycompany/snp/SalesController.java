@@ -314,6 +314,8 @@ public class SalesController implements Initializable {
     private NumberAxis yaxis_lc;
     @FXML
     private CategoryAxis xaxis_lc;
+    @FXML
+    private JFXComboBox<String> enq_year;
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
@@ -453,27 +455,58 @@ public class SalesController implements Initializable {
           
             if(newValue.equals("Declined Enquiries")){
                 decline_enq();
-                enq_line();
+                enq_filter.clear();
+                
             }
             else
                 if(newValue.equals("Enquiries for which Quotations are not generated")){
                     notquoted_enq();
+                    enq_filter.clear();
                 }
             else
                     if(newValue.equals("Enquires for which Quotations are generated"))
                     {
                         quoted_enq();
+                        enq_filter.clear();
                     }
         }    
     });
-        
+       ResultSet rs;
+        try {
+            String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
+       PreparedStatement ps;
+       
+            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                enq_year.getItems().add(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                    
+                           
+        enq_year.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+            
+                
+                enq_line(newValue);
+                enq_pie(newValue);
+                enq_bar(newValue);
+                
+            
+        }   
+    });
+        action.setValue("Declined Enquiries");
+        enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
         threadtock();
     }
     
-    public void enq_pie(){
+    public void enq_pie(String d){
         
     }
-    public void enq_bar(){
+    public void enq_bar(String d){
          //try {
           /*  xaxis.getCategories().clear();
             XYChart.Series dataSeries1 = new XYChart.Series();
@@ -521,34 +554,69 @@ public class SalesController implements Initializable {
         }
 */
     }
-    public void enq_line(){
+    public void enq_line(String d){
        xaxis_lc.getCategories().clear(); 
         enq_line.getData().clear();
       mths m;
       XYChart.Series s=new XYChart.Series();
-      s.setName("Months");
+       XYChart.Series s1=new XYChart.Series();
+      s.setName("Declined Enquiries");
+       s1.setName("Received Enquiries");
       xaxis_lc.setAnimated(false);
-              yaxis_lc.setAnimated(true);
+              yaxis_lc.setAnimated(false);
               enq_line.setAnimated(true);
-      
+              int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
               ResultSet rs;
       try{
-          
-          String suql = "SELECT substring(deldate,6,2) as m,count(*) as z FROM `enquirybin` group by substring(deldate,6,2)";
+          /* for (mths k : mths.values()){
+                                       
+                                       s.getData().add(new XYChart.Data(k.toString(),0));
+                           s1.getData().add(new XYChart.Data(k.toString(),0));
+                           }*/
+          String suql = "SELECT substring(q.deldate,6,2) as m,count(*) as z FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%') q group by substring(q.deldate,6,2)";
                            PreparedStatement st;
                             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-                    
+                        
                            rs=st.executeQuery();
                            int c=0,l=0;
                            while(rs.next()){
                                System.out.println(rs.getString(1));
                                for (mths k : mths.values())
+                                   
                                    if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
-                                     s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr[k.ordinal()]+=rs.getInt(2);
                                    }
                                    
                            }
-                           enq_line.getData().addAll(s);
+                           for (mths k : mths.values()){
+                                 s.getData().add(new XYChart.Data(k.toString(),arr[k.ordinal()]));
+                                 System.out.println(arr[k.ordinal()]+" "+k);
+                           }
+                           int arr1[]={0,0,0,0,0,0,0,0,0,0,0,0};
+                             suql = "SELECT substring(q.date1,6,2) as m,count(*) as z FROM (Select * from enquiry w where w.Date1 LIKE '"+d+"%') q group by substring(q.date1,6,2) ";
+                          
+                           Statement st1 = com.mycompany.snp.MainApp.conn.createStatement(); 
+                   
+                           rs=st1.executeQuery(suql);
+                        
+                           while(rs.next()){
+                         //      System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
+                                    // s1.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                     arr1[k.ordinal()]+=rs.getInt(2);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s1.getData().add(new XYChart.Data(k.toString(),arr1[k.ordinal()]));
+                                  System.out.println(arr1[k.ordinal()]+" "+k);
+                           }
+                          
+                                   
+                           
+                           enq_line.getData().addAll(s,s1);
                            
       }
       catch(Exception e)
@@ -2622,7 +2690,7 @@ static int combopno;
             cmp_del1.getItems().clear();
             email_del1.getItems().clear();
           
-            String sql="SELECT e.`Eqno` FROM `enquiry` e WHERE e  a order by `Date` DESC ";
+            String sql="SELECT e.`Eqno` FROM `enquiry` e where 1 order by `Date1` DESC ";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
