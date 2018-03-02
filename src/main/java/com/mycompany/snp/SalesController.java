@@ -50,9 +50,12 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.Event;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
@@ -61,6 +64,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
 
 /**
  * FXML Controller class
@@ -70,6 +74,137 @@ import javafx.scene.control.TreeTableColumn;
 public class SalesController implements Initializable {
     public static boolean SD[]= {false,false,false,false,false,false};
     static boolean tock=true;
+   
+        public void enqpane(){
+        
+        
+                            QoutPane.setDisable(true);
+                            QoutPane.setVisible(false);
+                            oldPOPane.setDisable(true);
+                            oldPOPane.setVisible(false);
+                            InvoicePane.setDisable(true);
+                            InvoicePane.setVisible(false);
+                            newPOPane.setDisable(true);
+                            newPOPane.setVisible(false);
+                            newEqPane.setDisable(false);
+                            newEqPane.setVisible(true);
+                            SalesDraw.close(); 
+      SalesDraw.toBack();
+                            
+    }
+    void qoutpane(){
+        QoutPane.setDisable(false);
+                            QoutPane.setVisible(true);
+                            oldPOPane.setDisable(true);
+                            oldPOPane.setVisible(false);
+                            InvoicePane.setDisable(true);
+                            InvoicePane.setVisible(false);
+                            newPOPane.setDisable(true);
+                            newPOPane.setVisible(false);
+                            newEqPane.setDisable(true);
+                            newEqPane.setVisible(false);
+                            try{
+                                QnoBox.getItems().clear();
+                                String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
+                                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                                ResultSet rs=stmt.executeQuery();
+                                while(rs.next()){
+                                    QnoBox.getItems().add(rs.getString(1));
+                                    System.out.println(rs.getString(1));
+                                }
+                            }
+                            catch(Exception e){
+                                
+                            }
+                            SalesDraw.close(); 
+      SalesDraw.toBack();
+        
+    }
+    void invpane(){
+        QoutPane.setDisable(true);
+                            QoutPane.setVisible(false);
+                            oldPOPane.setDisable(true);
+                            oldPOPane.setVisible(false);
+                            InvoicePane.setDisable(false);
+                            InvoicePane.setVisible(true);
+                            newPOPane.setDisable(true);
+                            newPOPane.setVisible(false);
+                            newEqPane.setDisable(true);
+                            newEqPane.setVisible(false);
+                            
+                            try {
+                                
+                                String sql1="SELECT PjNo FROM `product` WHERE 1 ";
+                                PreparedStatement stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                                ResultSet rs=stmt.executeQuery();
+                                inv_pno.getItems().clear();
+                                while(rs.next()){
+                                    int a= rs.getInt("PjNo");
+                                    inv_pno.getItems().add(a);
+                                    SD[5]=false;
+                                }
+                                  sql1="SELECT Ino FROM `invoice` WHERE 1 ";
+                                  stmt= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                                  rs=stmt.executeQuery();
+                                   inv_invbox.getItems().clear();
+                               while(rs.next()){
+                                 String a= rs.getString(1);
+                                  inv_invbox.getItems().add(a);
+                               }
+                                
+
+                            
+                            } catch (SQLException ex) {
+                                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            SalesDraw.close(); 
+      SalesDraw.toBack();
+        
+    }
+    void newpopane(){
+         QoutPane.setDisable(true);
+                            QoutPane.setVisible(false);
+                            oldPOPane.setDisable(true);
+                            oldPOPane.setVisible(false);
+                            InvoicePane.setDisable(true);
+                            InvoicePane.setVisible(false);
+                            newPOPane.setDisable(false);
+                            newPOPane.setVisible(true);
+                            newEqPane.setDisable(true);
+                            newEqPane.setVisible(false);
+                            try{
+                                QnoBox1.getItems().clear();
+                                String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
+                                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                                ResultSet rs=stmt.executeQuery();
+                                while(rs.next()){
+                                    QnoBox1.getItems().add(rs.getString(1));
+                                    System.out.println(rs.getString(1));
+                                }
+                            }
+                            catch(Exception e){
+                                
+                            }
+                            SalesDraw.close(); 
+      SalesDraw.toBack();
+        
+    }
+    void dashpane(){
+         QoutPane.setDisable(true);
+                            QoutPane.setVisible(false);
+                            oldPOPane.setDisable(false);
+                            oldPOPane.setVisible(true);
+                            InvoicePane.setDisable(true);
+                            InvoicePane.setVisible(false);
+                            newPOPane.setDisable(true);
+                            newPOPane.setVisible(false);
+                            newEqPane.setDisable(true);
+                            newEqPane.setVisible(false); 
+                            SalesDraw.close(); 
+      SalesDraw.toBack();
+        
+    }
+   
     @FXML
     private JFXHamburger SalesHam;
     @FXML
@@ -321,6 +456,8 @@ public class SalesController implements Initializable {
     private NumberAxis yaxis_bc;
     @FXML
     private CategoryAxis xaxis_bc;
+    @FXML
+    private JFXComboBox<?> enq_year1;
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
@@ -396,12 +533,37 @@ public class SalesController implements Initializable {
         VBox box = FXMLLoader.load(getClass().getResource("/fxml/SalesDrawer.fxml"));
        System.out.println(2);
         SalesDraw.setSidePane(box);
+      /*  for (Node node: box.getChildren()){
+            if(node.getAccessibleText()!=null){
+                node.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) ->{
+                    switch(node.getAccessibleText()){
+                        case "Dashboard" :dashpane();SalesDraw.close(); 
+      SalesDraw.toBack();break;
+                            
+                        case "Enquiry & Quotation" : enqpane();SalesDraw.close(); 
+      SalesDraw.toBack();break;
+                            
+                        case "Edit & Revise Quotation" : qoutpane();SalesDraw.close(); 
+      SalesDraw.toBack();break;
+                            
+                            
+                        case "Purchase Order" :   newpopane();SalesDraw.close(); 
+      SalesDraw.toBack();break;
+                            
+                        case "Invoice" :    invpane();SalesDraw.close(); 
+      SalesDraw.toBack();break;
+                    }
+                });
+            }
+        }*/
         } catch (IOException ex) {
            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
        }
+        
         HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(SalesHam);//for left arrow
        // HamburgerSlideCloseTransition transition = new HamburgerSlideCloseTransition(SalesHam);//For X Mark
        transition.setRate(-1);
+       
         SalesHam.addEventHandler(MouseEvent.MOUSE_PRESSED,(e)->{
         transition.setRate(transition.getRate()*-1);
         transition.play();
@@ -505,7 +667,10 @@ public class SalesController implements Initializable {
     });
         action.setValue("Declined Enquiries");
         enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
-        threadtock();
+        
+                    threadtock();
+      
+        
     }
     
     public void enq_pie(String d){
@@ -851,6 +1016,7 @@ public class SalesController implements Initializable {
         }
     }
 
+    
  public void threadtock() {
   final java.util.Timer timer = new java.util.Timer();
       final TimerTask delayedThreadStartTask;
@@ -872,7 +1038,8 @@ public class SalesController implements Initializable {
                             newPOPane.setVisible(false);
                             newEqPane.setDisable(false);
                             newEqPane.setVisible(true);
-                            
+                     
+     // SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
                             SD[0]=false;
                         }
                         else if(SD[2])
@@ -901,6 +1068,8 @@ public class SalesController implements Initializable {
                             catch(Exception e){
                                 
                             }
+                    
+     // SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
                             SD[2]=false;
                         }
                         else if(SD[3])
@@ -929,6 +1098,8 @@ public class SalesController implements Initializable {
                             catch(Exception e){
                                 
                             }
+                           
+      //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
                             SD[3]=false;
                         } 
                         else if(SD[4])
@@ -944,6 +1115,8 @@ public class SalesController implements Initializable {
                             newPOPane.setVisible(false);
                             newEqPane.setDisable(true);
                             newEqPane.setVisible(false); 
+                           
+      //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
                             SD[4]=false;
                         }
                         else if(SD[5])
@@ -986,6 +1159,8 @@ public class SalesController implements Initializable {
                             } catch (SQLException ex) {
                                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                            
+      //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
 
                         }
                         else{
@@ -1002,7 +1177,7 @@ public class SalesController implements Initializable {
                 }
                     catch(Exception e)
                             {
-                            e.printStackTrace();
+                             e.printStackTrace();
                             }
                     
                 }
