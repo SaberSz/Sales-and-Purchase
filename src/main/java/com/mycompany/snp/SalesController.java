@@ -738,12 +738,6 @@ public class SalesController implements Initializable {
 
 
           }              
-                          
-                          
-            
-          
-                      //SELECT * FROM `enquiry` e WHERE EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and eq.cid=e.cid)
-        
     catch(Exception e)
       {  
            System.out.println(539);
