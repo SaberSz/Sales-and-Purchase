@@ -54,6 +54,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
@@ -65,6 +66,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
+import javafx.scene.paint.Color;
 
 /**
  * FXML Controller class
@@ -665,6 +667,9 @@ public class SalesController implements Initializable {
             
         }   
     });
+        
+        //label in piechart
+
         action.setValue("Declined Enquiries");
         enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
         
@@ -683,14 +688,14 @@ public class SalesController implements Initializable {
                            rs=st.executeQuery();
                            rs.next();
                            int dec_enqno=rs.getInt(1);
-                           System.out.println("FIRST QUERY FINE");
+                         //  System.out.println("FIRST QUERY FINE");
                            
           String seql="SELECT count(*) FROM `enquiry` e WHERE NOT EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and e.cid=eq.cid) and e.Date1 LIKE '"+d+"%'";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql);
                           rs=st.executeQuery();
                           rs.next();
                           int enq_noqo=rs.getInt(1);
-                             System.out.println("SECOND QUERY FINE");
+                            // System.out.println("SECOND QUERY FINE");
            String seql2="SELECT count(*) FROM `enquiry` e WHERE EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and eq.cid=e.cid) and e.Date1 LIKE '"+d+"%'";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql2);
                           rs=st.executeQuery();
@@ -698,12 +703,13 @@ public class SalesController implements Initializable {
                           int enq_qo=rs.getInt(1);
                              System.out.println("THIRD QUERY FINE");
             ObservableList<PieChart.Data> pcd=FXCollections.observableArrayList(
-                    new PieChart.Data("Declined enquiries",dec_enqno),
-                    new PieChart.Data("qoutationless enquiries",enq_noqo),
-                    new PieChart.Data("qouted enquiries",enq_qo));
+                    new PieChart.Data("Declined Enquiries",dec_enqno),
+                    new PieChart.Data("Qoutationless Enquiries",enq_noqo),
+                    new PieChart.Data("Qouted Enquiries",enq_qo));
             enq_pie.setData(pcd);
-          
-               
+            enq_pie.setLegendVisible(true);
+
+
           }              
                           
                           

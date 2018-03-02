@@ -57,7 +57,7 @@
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
       <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1195.0" style="-fx-background-color: #e6e6ed4f;">
          <children>
-            <ScrollPane fx:id="QoutPane" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0">
+            <ScrollPane fx:id="QoutPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0" visible="false">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
@@ -164,7 +164,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <AnchorPane fx:id="oldPOPane" disable="true" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" visible="false">
+            <AnchorPane fx:id="oldPOPane" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0">
                <children>
                   <TabPane prefHeight="661.0" prefWidth="1179.0" stylesheets="@../styles/TabPane.css" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
@@ -183,7 +183,7 @@
                                         <NumberAxis fx:id="yaxis_bc" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
-                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" />
+                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" />
                                     <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="677.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_lc" />
@@ -348,6 +348,14 @@
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <Label layoutX="20.0" layoutY="14.0" prefHeight="20.0" prefWidth="82.0" text="Invoice">
                            <font>
                               <Font name="Arial" size="20.0" />
@@ -436,6 +444,14 @@
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <JFXComboBox fx:id="QnoBox1" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="80.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
                         <JFXTextField fx:id="PjNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="157.0" prefHeight="27.0" prefWidth="210.0" promptText="Project Number">
                            <font>
@@ -483,6 +499,14 @@
                <content>
                   <AnchorPane>
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <AnchorPane fx:id="eq_newpane" prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                            <children>
                               <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="24.0" layoutY="72.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
