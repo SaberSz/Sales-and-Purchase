@@ -29,6 +29,8 @@ public class SalesDrawerController implements Initializable {
     @FXML
     private void newEnqHit(MouseEvent event) {
         SalesController.SD[0]=true;
+        //new SalesController().enqpane();
+        //SalesController.s.enqpane();
     }
 
     @FXML

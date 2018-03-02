@@ -23,11 +23,22 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.GaussianBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
    <children>
+      <ImageView fitHeight="681.0" fitWidth="1241.0" layoutX="4.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Images/sales.jpg" />
+         </image>
+         <effect>
+            <GaussianBlur />
+         </effect>
+      </ImageView>
       <AnchorPane prefHeight="43.0" prefWidth="1200.0" style="-fx-background-color: #3F51B5;">
          <children>
             <Label layoutX="61.0" prefHeight="43.0" prefWidth="94.0" text="Sales" textFill="WHITE">
@@ -44,12 +55,20 @@
          </children>
       </AnchorPane>
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
-      <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1014.0">
+      <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1195.0" style="-fx-background-color: #e6e6ed4f;">
          <children>
             <ScrollPane fx:id="QoutPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0" visible="false">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <JFXComboBox fx:id="QnoBox" focusColor="#3f51b5" labelFloat="true" layoutX="20.0" layoutY="21.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
                         <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="288.0" layoutY="22.0" onMouseClicked="#Fill_details_of_existing_Qno_and_Eno" prefHeight="26.0" prefWidth="19.0" text="Label">
                            <graphic>
@@ -156,7 +175,7 @@
                                     <JFXComboBox fx:id="action" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
                                     <JFXTreeTableView fx:id="enq_tables" layoutX="14.0" layoutY="54.0" prefHeight="316.0" prefWidth="663.0" />
                                     <JFXTextField fx:id="enq_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
-                                    <BarChart fx:id="enq_bar" layoutX="686.0" layoutY="54.0" prefHeight="351.0" prefWidth="479.0">
+                                    <BarChart fx:id="enq_bar" layoutX="691.0" layoutY="43.0" prefHeight="351.0" prefWidth="479.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_bc" />
                                       </xAxis>
@@ -164,8 +183,8 @@
                                         <NumberAxis fx:id="yaxis_bc" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
-                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" />
-                                    <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="662.0">
+                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" />
+                                    <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="677.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_lc" />
                                       </xAxis>
@@ -178,7 +197,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <JFXComboBox fx:id="enq_year" labelFloat="true" layoutX="729.0" layoutY="25.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
+                                    <JFXComboBox fx:id="enq_year" labelFloat="true" layoutX="722.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -190,7 +209,7 @@
                                     <JFXComboBox fx:id="action1" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
                                     <JFXTreeTableView fx:id="qno_tables" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" />
                                     <JFXTextField fx:id="qno_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
-                                    <Label fx:id="qno_label" layoutX="318.0" layoutY="28.0" prefHeight="20.0" prefWidth="76.0" text="Label">
+                                    <Label fx:id="qno_label" layoutX="295.0" layoutY="19.0" prefHeight="20.0" prefWidth="150.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
@@ -204,7 +223,7 @@
                                        </yAxis>
                                     </LineChart>
                                     <PieChart fx:id="qno_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
-                                    <BarChart fx:id="qno_bar" layoutX="693.0" layoutY="15.0" prefHeight="351.0" prefWidth="479.0">
+                                    <BarChart fx:id="qno_bar" layoutX="693.0" layoutY="43.0" prefHeight="351.0" prefWidth="479.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" />
                                        </xAxis>
@@ -212,6 +231,7 @@
                                           <NumberAxis side="LEFT" />
                                        </yAxis>
                                     </BarChart>
+                                    <JFXComboBox fx:id="enq_year1" labelFloat="true" layoutX="729.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
                                  </children>
                               </AnchorPane>
                            </content>
@@ -328,6 +348,14 @@
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <Label layoutX="20.0" layoutY="14.0" prefHeight="20.0" prefWidth="82.0" text="Invoice">
                            <font>
                               <Font name="Arial" size="20.0" />
@@ -416,6 +444,14 @@
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0">
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <JFXComboBox fx:id="QnoBox1" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="80.0" prefHeight="27.0" prefWidth="210.0" promptText="Quotation Number" />
                         <JFXTextField fx:id="PjNo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="157.0" prefHeight="27.0" prefWidth="210.0" promptText="Project Number">
                            <font>
@@ -463,6 +499,14 @@
                <content>
                   <AnchorPane>
                      <children>
+                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/sales.jpg" />
+                           </image>
+                           <effect>
+                              <GaussianBlur />
+                           </effect>
+                        </ImageView>
                         <AnchorPane fx:id="eq_newpane" prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;">
                            <children>
                               <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="24.0" layoutY="72.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />

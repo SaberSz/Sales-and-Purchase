@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 01, 2018 at 10:05 PM
+-- Generation Time: Mar 02, 2018 at 08:54 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -390,16 +390,17 @@ CREATE TABLE `product` (
   `Value` int(11) NOT NULL,
   `Date` date NOT NULL,
   `EstDate` date DEFAULT NULL,
-  `Des` varchar(5000) NOT NULL DEFAULT 'None'
+  `Des` varchar(5000) NOT NULL DEFAULT 'None',
+  `Comp` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`) VALUES
-('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg'),
-('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag');
+INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`) VALUES
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 0),
+('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 0);
 
 -- --------------------------------------------------------
 
@@ -410,42 +411,41 @@ INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`) VALUES
 DROP TABLE IF EXISTS `qoutation`;
 CREATE TABLE `qoutation` (
   `Qno` varchar(25) NOT NULL,
-  `EstPrice` double DEFAULT NULL,
   `RevNo` int(11) NOT NULL DEFAULT '0',
-  `Subject` varchar(100) DEFAULT NULL,
-  `times` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `times` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Sent` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `qoutation`
 --
 
-INSERT INTO `qoutation` (`Qno`, `EstPrice`, `RevNo`, `Subject`, `times`) VALUES
-('18-AE-QT-001', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-002', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-020', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-021', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-022', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-023', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-024', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-025', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-027', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-029', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-029.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-029.Rev.2', NULL, 2, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-030', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-030.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-031', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-032', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-033', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-034', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-035.Rev.0', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-AE-QT-035.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
-('18-SC-QT-026', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-SC-QT-028', NULL, 0, NULL, '2018-03-01 19:09:54'),
-('18-SC-QT-028.Rev.1', NULL, 1, NULL, '2018-03-01 19:09:54'),
-('18-SC-QT-028.Rev.2', NULL, 2, NULL, '2018-03-01 19:09:54'),
-('18-SC-QT-028.Rev.3', NULL, 3, NULL, '2018-03-01 19:09:54');
+INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`) VALUES
+('18-AE-QT-001', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-002', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-020', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-021', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-022', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-023', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-024', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-025', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-027', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-029', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-029.Rev.1', 1, '2018-03-01 19:09:54', 1),
+('18-AE-QT-029.Rev.2', 2, '2018-03-01 19:09:54', 1),
+('18-AE-QT-030', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-030.Rev.1', 1, '2018-03-01 19:09:54', 1),
+('18-AE-QT-031', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-032', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-033', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-034', 0, '2018-03-01 19:09:54', 1),
+('18-AE-QT-035.Rev.0', 0, '2018-03-01 19:09:54', 0),
+('18-AE-QT-035.Rev.1', 1, '2018-03-01 19:09:54', 1),
+('18-SC-QT-026', 0, '2018-03-01 19:09:54', 0),
+('18-SC-QT-028', 0, '2018-03-01 19:09:54', 0),
+('18-SC-QT-028.Rev.1', 1, '2018-03-01 19:09:54', 0),
+('18-SC-QT-028.Rev.2', 2, '2018-03-01 19:09:54', 0),
+('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1);
 
 -- --------------------------------------------------------
 
