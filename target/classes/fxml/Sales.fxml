@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
@@ -166,7 +167,183 @@
             </ScrollPane>
             <AnchorPane fx:id="oldPOPane" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0">
                <children>
-                  <TabPane prefHeight="661.0" prefWidth="1179.0" stylesheets="@../styles/TabPane.css" tabClosingPolicy="UNAVAILABLE">
+                  <JFXTabPane prefHeight="678.0" prefWidth="1200.0" stylesheets="@../styles/TabPane.css">
+                     <tabs>
+                        <Tab text="Enquiry">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <JFXComboBox fx:id="action2" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
+                                    <JFXTreeTableView fx:id="enq_tables1" layoutX="14.0" layoutY="54.0" prefHeight="316.0" prefWidth="663.0" />
+                                    <JFXTextField fx:id="enq_filter1" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
+                                    <BarChart fx:id="enq_bar1" layoutX="691.0" layoutY="43.0" prefHeight="351.0" prefWidth="505.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_bc2" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="yaxis_bc1" side="LEFT" />
+                                       </yAxis>
+                                    </BarChart>
+                                    <PieChart fx:id="enq_pie1" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="456.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" />
+                                    <LineChart fx:id="enq_line1" layoutX="14.0" layoutY="380.0" prefHeight="253.0" prefWidth="677.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_lc2" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="yaxis_lc1" side="LEFT" />
+                                       </yAxis>
+                                    </LineChart>
+                                    <Label fx:id="enq_label1" layoutX="275.0" layoutY="19.0" prefHeight="20.0" prefWidth="174.0">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXComboBox fx:id="enq_year3" labelFloat="true" layoutX="722.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Quotation">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <JFXComboBox fx:id="action12" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
+                                    <JFXTreeTableView fx:id="qno_tables1" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" />
+                                    <JFXTextField fx:id="qno_filter1" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
+                                    <Label fx:id="qno_label1" layoutX="220.0" layoutY="19.0" prefHeight="20.0" prefWidth="293.0">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </Label>
+                                    <LineChart fx:id="qno_line1" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_lc11" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="yaxis_lc21" side="LEFT" />
+                                       </yAxis>
+                                    </LineChart>
+                                    <PieChart fx:id="qno_pie1" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
+                                    <BarChart fx:id="qno_bar1" layoutX="693.0" layoutY="43.0" prefHeight="351.0" prefWidth="479.0">
+                                       <xAxis>
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_bc11" />
+                                       </xAxis>
+                                       <yAxis>
+                                          <NumberAxis fx:id="yaxis_bc21" side="LEFT" />
+                                       </yAxis>
+                                    </BarChart>
+                                    <JFXComboBox fx:id="enq_year11" labelFloat="true" layoutX="729.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Project ">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="action112" focusColor="#3f51b5" labelFloat="true" layoutX="16.0" layoutY="15.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
+                                          <JFXTreeTableView fx:id="proj_table1" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" />
+                                          <JFXTextField fx:id="project_filter1" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
+                                          <Label fx:id="project_label1" layoutX="277.0" layoutY="19.0" prefHeight="20.0" prefWidth="167.0">
+                                             <font>
+                                                <Font name="Arial" size="13.0" />
+                                             </font>
+                                          </Label>
+                                          <LineChart fx:id="proj_line1" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" fx:id="xaxis_pjlc1" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis fx:id="yaxis_pjlc1" side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                          <PieChart fx:id="proj_pie1" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
+                                          <BarChart fx:id="proj_bar1" layoutX="677.0" layoutY="48.0" prefHeight="338.0" prefWidth="492.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" fx:id="xaxis_pjbc1" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis fx:id="yaxis_pjbc1" side="LEFT" />
+                                             </yAxis>
+                                          </BarChart>
+                                          <JFXComboBox fx:id="enq_year21" labelFloat="true" layoutX="732.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Invoice">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <JFXComboBox fx:id="action1111" focusColor="#3f51b5" labelFloat="true" layoutX="16.0" layoutY="15.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
+                                          <JFXTreeTableView fx:id="inv_tables1" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" />
+                                          <JFXTextField fx:id="inv_filter1" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
+                                          <Label fx:id="inv_label1" layoutX="318.0" layoutY="28.0" prefHeight="20.0" prefWidth="76.0" text="Label">
+                                             <font>
+                                                <Font name="Arial" size="13.0" />
+                                             </font>
+                                          </Label>
+                                          <LineChart fx:id="inv_line1" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                             </yAxis>
+                                          </LineChart>
+                                          <PieChart fx:id="inv_pie1" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
+                                          <BarChart fx:id="inv_bar1" layoutX="693.0" layoutY="15.0" prefHeight="351.0" prefWidth="479.0">
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis side="LEFT" />
+                                             </yAxis>
+                                          </BarChart>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="My Company">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <JFXTextField fx:id="mycomp_name1" labelFloat="true" layoutX="13.0" layoutY="97.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Name">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXComboBox fx:id="mycmp_box1" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="257.0" promptText="Company" />
+                                    <JFXTextField fx:id="mycomp_ph1" labelFloat="true" layoutX="13.0" layoutY="222.0" prefHeight="29.0" prefWidth="259.0" promptText="Phone Number">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="mycomp_code1" labelFloat="true" layoutX="13.0" layoutY="159.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Code">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextArea fx:id="mycomp_add1" labelFloat="true" layoutX="14.0" layoutY="280.0" promptText="Company Address">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextArea>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </JFXTabPane>
+                  <TabPane disable="true" prefHeight="661.0" prefWidth="1179.0" stylesheets="@../styles/TabPane.css" tabClosingPolicy="UNAVAILABLE" visible="false">
                     <tabs>
                       <Tab text="Enquiry">
                            <content>
@@ -209,7 +386,7 @@
                                     <JFXComboBox fx:id="action1" focusColor="#3f51b5" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
                                     <JFXTreeTableView fx:id="qno_tables" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" />
                                     <JFXTextField fx:id="qno_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" />
-                                    <Label fx:id="qno_label" layoutX="295.0" layoutY="19.0" prefHeight="20.0" prefWidth="150.0">
+                                    <Label fx:id="qno_label" layoutX="220.0" layoutY="19.0" prefHeight="20.0" prefWidth="293.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
@@ -252,19 +429,19 @@
                                           </Label>
                                           <LineChart fx:id="proj_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0">
                                              <xAxis>
-                                                <CategoryAxis side="BOTTOM" />
+                                                <CategoryAxis side="BOTTOM" fx:id="xaxis_pjlc" />
                                              </xAxis>
                                              <yAxis>
-                                                <NumberAxis side="LEFT" />
+                                                <NumberAxis fx:id="yaxis_pjlc" side="LEFT" />
                                              </yAxis>
                                           </LineChart>
                                           <PieChart fx:id="proj_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
                                           <BarChart fx:id="proj_bar" layoutX="677.0" layoutY="48.0" prefHeight="338.0" prefWidth="492.0">
                                              <xAxis>
-                                                <CategoryAxis side="BOTTOM" />
+                                                <CategoryAxis side="BOTTOM" fx:id="xaxis_pjbc" />
                                              </xAxis>
                                              <yAxis>
-                                                <NumberAxis side="LEFT" />
+                                                <NumberAxis fx:id="yaxis_pjbc" side="LEFT" />
                                              </yAxis>
                                           </BarChart>
                                           <JFXComboBox fx:id="enq_year2" labelFloat="true" layoutX="732.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />
