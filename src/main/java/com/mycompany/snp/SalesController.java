@@ -76,6 +76,16 @@ import javafx.scene.paint.Color;
 public class SalesController implements Initializable {
     public static boolean SD[]= {false,false,false,false,false,false};
     static boolean tock=true;
+    @FXML
+    private NumberAxis yaxis_lc2;
+    @FXML
+    private CategoryAxis xaxis_lc1;
+    @FXML
+    private JFXComboBox<?> enq_year2;
+    @FXML
+    private NumberAxis yaxis_bc2;
+    @FXML
+    private CategoryAxis xaxis_bc1;
    
         public void enqpane(){
         
@@ -616,7 +626,7 @@ public class SalesController implements Initializable {
     }
 });
          */
-        action.getItems().add("Completed Projects");
+//        action.getItems().add("Completed Projects");
         action.getItems().add("Enquiries for which Quotations are not generated");
         action.getItems().add("Enquires for which Quotations are generated");
         action11.getItems().add("Completed Projects");
@@ -721,29 +731,172 @@ public class SalesController implements Initializable {
                     }
         }    
     });
-        
+    
+       try{
+       
+          String suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           rs=st.executeQuery();
+                           while(rs.next()){
+                               enq_year1.getItems().add(rs.getString(1));
+                           }
+                         
+          }              
+    catch(Exception e)
+      {  
+           System.out.println(539);
+           Utilities.AlertBox.showErrorMessage(e);
+      }
+
         //label in piechart
 
-        action.setValue("Declined Enquiries");
-        action11.setValue("Accepted Quotations");
-        enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
-        
-                    threadtock();
+//        action.setValue("Declined Enquiries");
+  //      action11.setValue("Accepted Quotations");
+      //  enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
+         
+                 
            enq_year1.valueProperty().addListener(new ChangeListener<String>() {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
           
             
                       
-             //   qno_line(newValue);
-                qno_pie(newValue);
-               // qno_bar(newValue);
+               qno_line(newValue);
+               qno_pie(newValue);
+               qno_bar(newValue);
                 
                 
             
-        }   
-    });
         
+        }   
+       
+    });
+        threadtock();  
     }
+    public void qno_bar(String d){
+        try {
+              qno_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
+             qno_bar.getData().clear();
+           xaxis_bc.getCategories().clear();
+            XYChart.Series dataSeries1 = new XYChart.Series();
+             XYChart.Series dataSeries2 = new XYChart.Series();
+            enq_bar.setTitle("Declined Enquiries");
+            dataSeries1.setName("Awin");
+            dataSeries2.setName("Steels");
+            xaxis_bc.setLabel("Reason");
+        yaxis_bc.setLabel("Number of Declined Enquiries");
+        yaxis_bc.setSide(Side.LEFT);
+        xaxis_bc.setSide(Side.BOTTOM);
+            dataSeries1.getData().clear();
+             xaxis_bc.setAnimated(true);
+              yaxis_bc.setAnimated(true);
+              enq_bar.setAnimated(true);
+             
+              xaxis_bc.setAnimated(false);
+              yaxis_bc.setAnimated(true);
+              enq_bar.setAnimated(true);
+            xaxis_bc.getCategories().addAll("Awin","Steels");
+            String sql="SELECT q.`Reason`,count(*) FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%' and cmpname='Awin') q group by q.Reason";
+            Statement stmt =com.mycompany.snp.MainApp.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql); 
+            while(rs.next()){
+              dataSeries1.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));  //Declined enquiries with reason
+             
+            }
+            sql="SELECT q.`Reason`,count(*) FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%' and cmpname='Steels') q group by q.Reason";
+             stmt =com.mycompany.snp.MainApp.conn.createStatement();
+             rs = stmt.executeQuery(sql); 
+            while(rs.next()){
+              dataSeries2.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));  //Declined enquiries with reason
+             
+            }
+            
+            enq_bar.getData().addAll(dataSeries1,dataSeries2);
+            
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+        }
+    }
+    
+    public void qno_line(String d){
+             xaxis_lc1.setLabel("Months");
+        yaxis_lc2.setLabel("Number of sent quotations");
+        yaxis_lc2.setSide(Side.LEFT);
+        xaxis_lc1.setSide(Side.BOTTOM);
+       xaxis_lc1.getCategories().clear(); 
+        qno_line.getData().clear();
+      mths m;
+      XYChart.Series s=new XYChart.Series();
+       XYChart.Series s1=new XYChart.Series();
+       s1.getData().clear();
+       s.getData().clear();
+      s.setName("Qoutations sent");
+       s1.setName("Qoutation accepted");
+      xaxis_lc1.setAnimated(false);
+              yaxis_lc2.setAnimated(true);
+              qno_line.setAnimated(true);
+              int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
+              ResultSet rs;
+      try{
+          /* for (mths k : mths.values()){
+                                       
+                                       s.getData().add(new XYChart.Data(k.toString(),0));
+                           s1.getData().add(new XYChart.Data(k.toString(),0));
+                           }*/
+          String suql = "SELECT substring(Sentdate,6,2) as m,COUNT(*) FROM `qoutation` WHERE sent=1 and substring(Sentdate,1,4) LIKE '"+d+"%' GROUP BY m";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                        
+                           rs=st.executeQuery();
+                           int c=0,l=0;
+                           while(rs.next()){
+                               System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   
+                                   if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr[k.ordinal()]+=rs.getInt(2);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s.getData().add(new XYChart.Data(k.toString(),arr[k.ordinal()]));
+                                 System.out.println(arr[k.ordinal()]+" "+k);
+                           }
+                           int arr1[]={0,0,0,0,0,0,0,0,0,0,0,0};
+                             suql = "SELECT substring(Sentdate,6,2) as m,COUNT(*) FROM `qoutation` q WHERE sent=1 AND  EXISTS(SELECT * FROM qprel qp WHERE\n" +
+                              "qp.Qno=q.Qno) AND substring(Sentdate,1,4) LIKE '"+d+"%'  GROUP BY m";
+                          
+                           Statement st1 = com.mycompany.snp.MainApp.conn.createStatement(); 
+                   
+                           rs=st1.executeQuery(suql);
+                        
+                           while(rs.next()){
+                         //      System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
+                                    // s1.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                     arr1[k.ordinal()]+=rs.getInt(2);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s1.getData().add(new XYChart.Data(k.toString(),arr1[k.ordinal()]));
+                                  System.out.println(arr1[k.ordinal()]+" "+k);
+                           }
+                          
+                                   
+                           
+                           qno_line.getData().addAll(s,s1);
+                           
+      }
+      catch(Exception e)
+      {
+           Utilities.AlertBox.showErrorMessage(e);
+      }      
+    }
+    
+    
     public void qno_pie(String d){
            ResultSet rs;
           try{
@@ -753,27 +906,27 @@ public class SalesController implements Initializable {
                             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                            rs=st.executeQuery();
                            rs.next();
-                           int dec_enqno=rs.getInt(1);
-                         //  System.out.println("FIRST QUERY FINE");
+                           int accep_customno=rs.getInt(1);
+                        
                            
-          String seql="SELECT count(*) FROM `enquiry` e WHERE NOT EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and e.cid=eq.cid) and e.Date1 LIKE '"+d+"%'";
+          String seql="SELECT COUNT(*) FROM `qoutation` WHERE sent=0 AND Substring(times,1,4) LIKE '"+d+"%'";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql);
                           rs=st.executeQuery();
                           rs.next();
-                          int enq_noqo=rs.getInt(1);
-                            // System.out.println("SECOND QUERY FINE");
-           String seql2="SELECT count(*) FROM `enquiry` e WHERE EXISTS(SELECT * FROM `eqrel` eq WHERE eq.eno=e.eqno and eq.cid=e.cid) and e.Date1 LIKE '"+d+"%'";
+                          int notsent=rs.getInt(1);
+                      
+           String seql2="SELECT count(*) FROM `qoutation` q WHERE sent=1 AND Substring(times,1,4) LIKE '"+d+"%' and NOT EXISTS(SELECT * FROM `qprel` qp where q.Qno=qp.Qno)";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql2);
                           rs=st.executeQuery();
                           rs.next();
-                          int enq_qo=rs.getInt(1);
-                             System.out.println("THIRD QUERY FINE");
-            ObservableList<PieChart.Data> pcd=FXCollections.observableArrayList(
-                    new PieChart.Data("Declined Enquiries",dec_enqno),
-                    new PieChart.Data("Qoutationless Enquiries",enq_noqo),
-                    new PieChart.Data("Qouted Enquiries",enq_qo));
-            enq_pie.setData(pcd);
-            enq_pie.setLegendVisible(true);
+                          int sent_botnoaccept=rs.getInt(1);
+                       
+            ObservableList<PieChart.Data> pc=FXCollections.observableArrayList(
+                    new PieChart.Data("Accepted quotations",accep_customno),
+                    new PieChart.Data("Not sent quotations",notsent),
+                    new PieChart.Data("Sent not accepted",sent_botnoaccept));
+            qno_pie.setData(pc);
+            qno_pie.setLegendVisible(true);
 
 
           }              

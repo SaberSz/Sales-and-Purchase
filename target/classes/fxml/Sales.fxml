@@ -216,10 +216,10 @@
                                     </Label>
                                     <LineChart fx:id="qno_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0">
                                        <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_lc1" />
                                        </xAxis>
                                        <yAxis>
-                                          <NumberAxis side="LEFT" />
+                                          <NumberAxis fx:id="yaxis_lc2" side="LEFT" />
                                        </yAxis>
                                     </LineChart>
                                     <PieChart fx:id="qno_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
