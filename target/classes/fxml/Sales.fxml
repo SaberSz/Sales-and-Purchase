@@ -225,10 +225,10 @@
                                     <PieChart fx:id="qno_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="472.0" />
                                     <BarChart fx:id="qno_bar" layoutX="693.0" layoutY="43.0" prefHeight="351.0" prefWidth="479.0">
                                        <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
+                                          <CategoryAxis side="BOTTOM" fx:id="xaxis_bc1" />
                                        </xAxis>
                                        <yAxis>
-                                          <NumberAxis side="LEFT" />
+                                          <NumberAxis fx:id="yaxis_bc2" side="LEFT" />
                                        </yAxis>
                                     </BarChart>
                                     <JFXComboBox fx:id="enq_year1" labelFloat="true" layoutX="729.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" />

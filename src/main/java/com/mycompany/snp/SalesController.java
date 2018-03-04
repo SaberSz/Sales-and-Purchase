@@ -774,44 +774,67 @@ public class SalesController implements Initializable {
         threadtock();  
     }
     public void qno_bar(String d){
+         int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
         try {
               qno_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
              qno_bar.getData().clear();
-           xaxis_bc.getCategories().clear();
+           xaxis_bc1.getCategories().clear();
             XYChart.Series dataSeries1 = new XYChart.Series();
              XYChart.Series dataSeries2 = new XYChart.Series();
-            enq_bar.setTitle("Declined Enquiries");
+            qno_bar.setTitle("Quotations Sent Monthly");
             dataSeries1.setName("Awin");
             dataSeries2.setName("Steels");
-            xaxis_bc.setLabel("Reason");
-        yaxis_bc.setLabel("Number of Declined Enquiries");
-        yaxis_bc.setSide(Side.LEFT);
-        xaxis_bc.setSide(Side.BOTTOM);
+            xaxis_bc1.setLabel("Month");
+        yaxis_bc2.setLabel("Quotations");
+        yaxis_bc2.setSide(Side.LEFT);
+        xaxis_bc1.setSide(Side.BOTTOM);
             dataSeries1.getData().clear();
-             xaxis_bc.setAnimated(true);
-              yaxis_bc.setAnimated(true);
-              enq_bar.setAnimated(true);
+             xaxis_bc1.setAnimated(true);
+              yaxis_bc2.setAnimated(true);
+              qno_bar.setAnimated(true);
              
-              xaxis_bc.setAnimated(false);
-              yaxis_bc.setAnimated(true);
-              enq_bar.setAnimated(true);
-            xaxis_bc.getCategories().addAll("Awin","Steels");
-            String sql="SELECT q.`Reason`,count(*) FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%' and cmpname='Awin') q group by q.Reason";
+              xaxis_bc1.setAnimated(false);
+              yaxis_bc2.setAnimated(true);
+              qno_bar.setAnimated(true);
+            xaxis_bc1.getCategories().addAll("Awin","Steels");
+            String sql="SELECT COUNT(*),substring(Sentdate,6,2) as a FROM qoutation WHERE substring(Qno,4,2) LIKE \"AE\" AND substring(Sentdate,1,4) LIKE '"+d+"%' GROUP BY a";
             Statement stmt =com.mycompany.snp.MainApp.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql); 
-            while(rs.next()){
-              dataSeries1.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));  //Declined enquiries with reason
-             
-            }
-            sql="SELECT q.`Reason`,count(*) FROM (Select * from enquirybin w where w.Date1 LIKE '"+d+"%' and cmpname='Steels') q group by q.Reason";
+   
+          while(rs.next()){
+                               System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   
+                                   if((rs.getString(2).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(2).equals(String.valueOf(k.ordinal()+1)))){
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr[k.ordinal()]+=rs.getInt(1);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 dataSeries1.getData().add(new XYChart.Data(k.toString(),arr[k.ordinal()]));
+                                 System.out.println(arr[k.ordinal()]+" "+k);
+                           }
+             int[] arr2={0,0,0,0,0,0,0,0,0,0,0,0};
+            sql="SELECT COUNT(*),substring(Sentdate,6,2) as a FROM qoutation WHERE substring(Qno,4,2) LIKE \"SC\" AND substring(Sentdate,1,4) LIKE '"+d+"%' GROUP BY a";
              stmt =com.mycompany.snp.MainApp.conn.createStatement();
              rs = stmt.executeQuery(sql); 
             while(rs.next()){
-              dataSeries2.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));  //Declined enquiries with reason
-             
-            }
+                               System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   
+                                   if((rs.getString(2).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(2).equals(String.valueOf(k.ordinal()+1)))){
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr2[k.ordinal()]+=rs.getInt(1);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 dataSeries2.getData().add(new XYChart.Data(k.toString(),arr2[k.ordinal()]));
+                                 //System.out.println(arr[k.ordinal()]+" "+k);
+                           }
             
-            enq_bar.getData().addAll(dataSeries1,dataSeries2);
+            qno_bar.getData().addAll(dataSeries1,dataSeries2);
             
         } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
