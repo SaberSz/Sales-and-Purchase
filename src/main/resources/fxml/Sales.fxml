@@ -31,7 +31,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.SalesController">
    <children>
-      <ImageView fitHeight="681.0" fitWidth="1241.0" layoutX="4.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView disable="true" fitHeight="681.0" fitWidth="1241.0" layoutX="4.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@Images/sales.jpg" />
          </image>
@@ -54,8 +54,8 @@
             </Label>
          </children>
       </AnchorPane>
-      <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" />
-      <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1195.0" style="-fx-background-color: #e6e6ed4f;">
+      <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="43.0" />
+      <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1195.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
          <children>
             <ScrollPane fx:id="QoutPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="1.0" prefWidth="1202.0" visible="false">
                <content>
@@ -164,7 +164,7 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <AnchorPane fx:id="oldPOPane" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0">
+            <AnchorPane fx:id="oldPOPane" layoutX="-7.0" prefHeight="678.0" prefWidth="1200.0" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TabPane prefHeight="661.0" prefWidth="1179.0" stylesheets="@../styles/TabPane.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="0.0">
                     <tabs>
@@ -183,7 +183,7 @@
                                         <NumberAxis fx:id="yaxis_bc" side="LEFT" />
                                       </yAxis>
                                     </BarChart>
-                                    <PieChart fx:id="enq_pie" layoutX="729.0" layoutY="395.0" prefHeight="210.0" prefWidth="422.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" AnchorPane.bottomAnchor="23.0" AnchorPane.rightAnchor="28.0" />
+                                    <PieChart fx:id="enq_pie" layoutX="703.0" layoutY="418.0" prefHeight="226.0" prefWidth="437.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="13.0" />
                                     <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="677.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="14.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_lc" />
@@ -248,7 +248,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <LineChart fx:id="proj_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="379.0">
+                                    <LineChart fx:id="proj_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="16.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_pjlc" />
                                        </xAxis>
@@ -256,7 +256,7 @@
                                           <NumberAxis fx:id="yaxis_pjlc" side="LEFT" />
                                        </yAxis>
                                     </LineChart>
-                                    <PieChart fx:id="proj_pie" layoutX="200.0" layoutY="379.0" prefHeight="223.0" prefWidth="471.0" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="7.0" />
+                                    <PieChart fx:id="proj_pie" layoutX="200.0" layoutY="379.0" legendSide="LEFT" prefHeight="223.0" prefWidth="471.0" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="7.0" />
                                     <BarChart fx:id="proj_bar" layoutX="186.0" layoutY="48.0" prefHeight="338.0" prefWidth="492.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_pjbc" />
@@ -291,7 +291,7 @@
                                        </yAxis>
                                     </LineChart>
                                     <PieChart fx:id="inv_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="451.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                                    <BarChart fx:id="inv_bar" layoutX="686.0" layoutY="15.0" prefHeight="351.0" prefWidth="479.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                                    <BarChart fx:id="inv_bar" layoutX="686.0" layoutY="52.0" prefHeight="314.0" prefWidth="479.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" />
                                        </xAxis>
@@ -299,6 +299,7 @@
                                           <NumberAxis side="LEFT" />
                                        </yAxis>
                                     </BarChart>
+                                    <JFXComboBox fx:id="enq_year21" labelFloat="true" layoutX="725.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="15.0" />
                                  </children>
                               </AnchorPane>
                            </content>
