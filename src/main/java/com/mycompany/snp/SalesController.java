@@ -427,7 +427,7 @@ public class SalesController implements Initializable {
     private JFXComboBox<String> action111;
 
     @FXML
-    private JFXTreeTableView<?> inv_tables;
+    private JFXTreeTableView<AnalysisDT3> inv_tables;
 
     @FXML
     private JFXTextField inv_filter;
@@ -699,8 +699,53 @@ public class SalesController implements Initializable {
                     }
         }    
     });
+        action111.getItems().add("Invoices Generated but not paid.");
+        action111.getItems().add("Invoices paid.");
+        action111.getItems().add("Invoices that have not been generated yet.");
+          action111.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+            if(newValue.equals("Invoices Generated but not paid.")){
+                inv_gen_but_not_paid();
+                inv_filter.clear();
+                
+            }
+            else
+                if(newValue.equals("Invoices paid.")){
+                   
+                    prj_yetcomp();
+                     inv_filter.clear();
+                }
+            else
+                    if(newValue.equals("Invoices that have not been generated yet."))
+                    {
+                        prj_xedead();
+                         inv_filter.clear();
+                    }
+        }    
+    });
       
-                    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      
+                   
                            
         enq_year.valueProperty().addListener(new ChangeListener<String>() {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -1617,10 +1662,139 @@ public class SalesController implements Initializable {
         }
 
      
+    }  
+    class AnalysisDT3 extends RecursiveTreeObject<AnalysisDT3> {
+        //this inner class is used for the enquiry tab on the dashboard
+        StringProperty ino;
+        StringProperty totamt;
+        StringProperty date;
+        StringProperty duedate;
+        StringProperty salesperson;
+        StringProperty top;
+        StringProperty daysleft;
+        StringProperty desc;
+       
+
+        public AnalysisDT3(String io,String toamt, String dat, String dudate,String salperson,String topp,String dayslef,String desc){
+            this.ino = new SimpleStringProperty(io);
+            this.totamt = new SimpleStringProperty(toamt);
+            this.date = new SimpleStringProperty(dat);
+            this.duedate= new SimpleStringProperty(dudate);
+            this.salesperson= new SimpleStringProperty(salperson);
+            this.top=new SimpleStringProperty(topp);
+            this.daysleft=new SimpleStringProperty(dayslef);
+            this.desc=new SimpleStringProperty(desc);
+       
+            
+        }
+        /* public AnalysisDT3(String q ,String eno, String company,String su,String cuname){
+            this.qo = new SimpleStringProperty(q);
+            this.eno = new SimpleStringProperty(eno);
+            this.company= new SimpleStringProperty(company);
+            this.sub= new SimpleStringProperty(su);
+            this.custname=new SimpleStringProperty(cuname);
+       
+            
+        }*/
+
+        private AnalysisDT3(String string, String string0, String toString, String toString0, String string1, String string2) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+     
     }
     
     
+  public void inv_gen_but_not_paid(){
+     JFXTreeTableColumn<AnalysisDT3, String> subject = new JFXTreeTableColumn<>("Invoice Number");
+        subject.setPrefWidth(200);
+        subject.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().ino);
+        
+        JFXTreeTableColumn<AnalysisDT3, String> code = new JFXTreeTableColumn<>("Total Amount");
+        code.setPrefWidth(200); 
+        code.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().totamt);
+        
+        JFXTreeTableColumn<AnalysisDT3, String> attended = new JFXTreeTableColumn<>("Date");
+        attended.setPrefWidth(200); 
+        attended.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().date);
+
+
+        JFXTreeTableColumn<AnalysisDT3, String> need1 = new JFXTreeTableColumn<>("Due Date");
+        need1.setPrefWidth(200);
+        need1.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().duedate);
+         JFXTreeTableColumn<AnalysisDT3, String> need2 = new JFXTreeTableColumn<>("Salesperson");
+        need2.setPrefWidth(200);
+        need2.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().salesperson);
+        JFXTreeTableColumn<AnalysisDT3, String> need3 = new JFXTreeTableColumn<>("Term of Pay");
+        need3.setPrefWidth(200);
+        need3.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().top);
+          JFXTreeTableColumn<AnalysisDT3, String> need4 = new JFXTreeTableColumn<>("Days Left");
+        need4.setPrefWidth(200);
+        need4.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().daysleft);
+
+        JFXTreeTableColumn<AnalysisDT3, String> need5 = new JFXTreeTableColumn<>("Description");
+        need5.setPrefWidth(200);
+        need5.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().desc);
+
+        
+        ObservableList<AnalysisDT3> users3 = FXCollections.observableArrayList();
+        
+           
+                   
+                    try {
+                       
+                           String suql = "select i.INo,i.Total_amt,i.Date,i.Duedate,i.Salesperson,i.Termofpay,DATEDIFF(i.Duedate,CURDATE()),"
+                                   + "p.Des from `invoice` i,`product` p,`pirel` pi where\n" +
+                                    "i.INo=pi.INo and pi.PjNo=p.PjNo;";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                      
+                           ResultSet rs=st.executeQuery();
+                           
+            
+            while(rs.next())
+            {
+             users3.add(new AnalysisDT3(rs.getString(1),String.valueOf(rs.getDouble(2)), rs.getDate(3).toString(), rs.getDate(4).toString(),rs.getString(5),rs.getString(6),String.valueOf(rs.getInt(7)),rs.getString(8)));
+            }
+            rs.previous();
+            inv_label.setText("Generated but not paid invoices: "+rs.getRow());
+            final TreeItem<AnalysisDT3> root = new RecursiveTreeItem<AnalysisDT3>(users3, RecursiveTreeObject::getChildren);
+            inv_tables.getColumns().clear();
+            inv_tables.getColumns().setAll(subject,code,attended,need1,need2,need3,need4,need5);
+            inv_tables.setRoot(root);
+            inv_tables.setShowRoot(false);
+            
+            inv_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                            inv_tables.setPredicate((TreeItem<AnalysisDT3> t) -> {
+                                Boolean flag =t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().enqno.x.contains(newValue.toUpperCase())||t.getValue().Subdate.getValue().contains(newValue)||t.getValue().comname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                return flag;
+                            });
+                        });
+                    } catch (Exception ex) {
+                         Utilities.AlertBox.showErrorMessage(ex);
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
     
     
     
