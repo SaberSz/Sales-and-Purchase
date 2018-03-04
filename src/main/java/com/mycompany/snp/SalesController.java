@@ -81,7 +81,7 @@ public class SalesController implements Initializable {
     @FXML
     private CategoryAxis xaxis_lc1;
     @FXML
-    private JFXComboBox<?> enq_year2;
+    private JFXComboBox<String> enq_year2;
     @FXML
     private NumberAxis yaxis_bc2;
     @FXML
@@ -626,7 +626,7 @@ public class SalesController implements Initializable {
     }
 });
          */
-//        action.getItems().add("Completed Projects");
+       action.getItems().add("Decline Enquiries");
         action.getItems().add("Enquiries for which Quotations are not generated");
         action.getItems().add("Enquires for which Quotations are generated");
         action11.getItems().add("Completed Projects");
@@ -662,6 +662,16 @@ public class SalesController implements Initializable {
             rs=ps.executeQuery();
             while(rs.next()){
                 enq_year.getItems().add(rs.getString(1));
+                
+            }
+             suql = "select distinct Date_format (Date, '%Y') FROM product where 1";
+      
+       
+            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                enq_year2.getItems().add(rs.getString(1));
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -678,12 +688,13 @@ public class SalesController implements Initializable {
             else
                 if(newValue.equals("Projects yet to be completed")){
                    
+                    prj_yetcomp();
                     project_filter.clear();
                 }
             else
                     if(newValue.equals("Projects that have exceeded the estimated deadline"))
                     {
-                       
+                        prj_xedead();
                         project_filter.clear();
                     }
         }    
@@ -692,6 +703,18 @@ public class SalesController implements Initializable {
                     
                            
         enq_year.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+            
+                
+                enq_line(newValue);
+                enq_pie(newValue);
+                enq_bar(newValue);
+                
+            
+        }   
+    });
+         enq_year2.valueProperty().addListener(new ChangeListener<String>() {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
           
             
@@ -751,9 +774,7 @@ public class SalesController implements Initializable {
 
         //label in piechart
 
-//        action.setValue("Declined Enquiries");
-  //      action11.setValue("Accepted Quotations");
-      //  enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
+        
          
                  
            enq_year1.valueProperty().addListener(new ChangeListener<String>() {
@@ -771,6 +792,13 @@ public class SalesController implements Initializable {
         }   
        
     });
+          
+       action.setValue("Declined Enquiries");
+       action1.setValue("Accepted by customer");
+       enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
+       enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
+            enq_year2.setValue(String.valueOf(LocalDate.now().getYear()));
+            action11.setValue("Completed Projects");
         threadtock();  
     }
     public void qno_bar(String d){
@@ -820,7 +848,7 @@ public class SalesController implements Initializable {
     
     public void qno_line(String d){
              xaxis_lc1.setLabel("Months");
-        yaxis_lc2.setLabel("Number of sent quotations");
+        yaxis_lc2.setLabel("Number of Quotations");
         yaxis_lc2.setSide(Side.LEFT);
         xaxis_lc1.setSide(Side.BOTTOM);
        xaxis_lc1.getCategories().clear(); 
@@ -830,8 +858,8 @@ public class SalesController implements Initializable {
        XYChart.Series s1=new XYChart.Series();
        s1.getData().clear();
        s.getData().clear();
-      s.setName("Qoutations sent");
-       s1.setName("Qoutation accepted");
+      s.setName("Quotations sent");
+       s1.setName("Quotation accepted");
       xaxis_lc1.setAnimated(false);
               yaxis_lc2.setAnimated(true);
               qno_line.setAnimated(true);
@@ -1593,10 +1621,149 @@ public class SalesController implements Initializable {
     
 
     public void prj_xedead(){
+         JFXTreeTableColumn<AnalysisDT2, String> pjno = new JFXTreeTableColumn<>("Project Number");
+        pjno.setPrefWidth(200);
+        pjno.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().PjNo);
         
+        JFXTreeTableColumn<AnalysisDT2, String> pno = new JFXTreeTableColumn<>("Purchase Order Number");
+        pno.setPrefWidth(200);
+        pno.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().Pno);
+        
+        JFXTreeTableColumn<AnalysisDT2, String> val = new JFXTreeTableColumn<>("Total Value");
+        val.setPrefWidth(200);
+        val.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().val);
+        JFXTreeTableColumn<AnalysisDT2, String> sdate = new JFXTreeTableColumn<>("Start Date");
+        sdate.setPrefWidth(200);
+        sdate.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().sdate);
+        
+        JFXTreeTableColumn<AnalysisDT2, String> edate = new JFXTreeTableColumn<>("Estimated Date");
+        edate.setPrefWidth(200);
+        edate.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().edate);
+        JFXTreeTableColumn<AnalysisDT2, String> delay = new JFXTreeTableColumn<>("Exceeded by ");
+        delay.setPrefWidth(200);
+        delay.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().delay);
+        
+        
+        JFXTreeTableColumn<AnalysisDT2, String> cname = new JFXTreeTableColumn<>("Customer Name");
+        cname.setPrefWidth(200);
+        cname.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().cname);
+        JFXTreeTableColumn<AnalysisDT2, String> cmpname = new JFXTreeTableColumn<>("Company Name");
+        cmpname.setPrefWidth(200);
+        cmpname.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().cmpname);
+        JFXTreeTableColumn<AnalysisDT2, String> des = new JFXTreeTableColumn<>("Description");
+        des.setPrefWidth(200);
+        des.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().des);
+        
+        
+        
+        ObservableList<AnalysisDT2> users1 = FXCollections.observableArrayList();
+        
+           
+                   
+                    try {
+                       
+                           String suql = "SELECT p.`PNo`, p.`PjNo`, p.`Value`, p.`Des`,p.`Date`, p.`Estdate`,DATEDIFF(CURDATE(),p.`Estdate`),"
+                                   + " e.Cmpname,c.Name FROM `product` p join qprel qp on p.pjno=qp.PjNo join eqrel e on "
+                                   + "qp.Qno=e.QNo join customer c on c.cid=e.CID WHERE p.`Comp`=0 and p.`Estdate`< CURDATE();";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                      
+                           ResultSet rs=st.executeQuery();
+                           
+            
+            while(rs.next())
+            {
+                users1.add(new AnalysisDT2(rs.getString(2),rs.getString(1), rs.getString(3), rs.getString(5),rs.getString(6),rs.getString(7)+" days",rs.getString(9),rs.getString(8),rs.getString(4)));
+                //System.out.println(rs.getString(2)+rs.getString(1)+rs.getString(3)+rs.getString(5)+rs.getString(7)+rs.getString(6)+rs.getString(4));
+            }
+            rs.previous();
+            project_label.setText("Number of Incomplete Projects : "+rs.getRow());
+            final TreeItem<AnalysisDT2> root = new RecursiveTreeItem<AnalysisDT2>(users1, RecursiveTreeObject::getChildren);
+            proj_table.getColumns().clear();
+            proj_table.getColumns().setAll(pjno,pno,val,sdate,edate,delay,cname,cmpname,des);
+            proj_table.setRoot(root);
+            proj_table.setShowRoot(false);
+            
+            project_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                            proj_table.setPredicate((TreeItem<AnalysisDT2> t) -> {
+                                Boolean flag =t.getValue().PjNo.getValue().contains(newValue)||t.getValue().Pno.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().delay.getValue().contains(newValue)||t.getValue().val.getValue().contains(newValue)||t.getValue().cmpname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                return flag;
+                            });
+                        });
+                    } catch (Exception ex) {
+                         Utilities.AlertBox.showErrorMessage(ex);
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
     }
      public void prj_yetcomp(){
+         JFXTreeTableColumn<AnalysisDT2, String> pjno = new JFXTreeTableColumn<>("Project Number");
+        pjno.setPrefWidth(200);
+        pjno.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().PjNo);
         
+        JFXTreeTableColumn<AnalysisDT2, String> pno = new JFXTreeTableColumn<>("Purchase Order Number");
+        pno.setPrefWidth(200);
+        pno.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().Pno);
+        
+        JFXTreeTableColumn<AnalysisDT2, String> val = new JFXTreeTableColumn<>("Total Value");
+        val.setPrefWidth(200);
+        val.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().val);
+        JFXTreeTableColumn<AnalysisDT2, String> sdate = new JFXTreeTableColumn<>("Start Date");
+        sdate.setPrefWidth(200);
+        sdate.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().sdate);
+        
+        JFXTreeTableColumn<AnalysisDT2, String> edate = new JFXTreeTableColumn<>("Estimated Date");
+        edate.setPrefWidth(200);
+        edate.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().edate);
+        
+        JFXTreeTableColumn<AnalysisDT2, String> cname = new JFXTreeTableColumn<>("Customer Name");
+        cname.setPrefWidth(200);
+        cname.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().cname);
+        JFXTreeTableColumn<AnalysisDT2, String> cmpname = new JFXTreeTableColumn<>("Company Name");
+        cmpname.setPrefWidth(200);
+        cmpname.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().cmpname);
+        JFXTreeTableColumn<AnalysisDT2, String> des = new JFXTreeTableColumn<>("Description");
+        des.setPrefWidth(200);
+        des.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().des);
+        
+        
+        
+        ObservableList<AnalysisDT2> users1 = FXCollections.observableArrayList();
+        
+           
+                   
+                    try {
+                       
+                           String suql = "SELECT p.`PNo`, p.`PjNo`, p.`Value`, p.`Des`,p.`Date`, p.`Estdate`, e.Cmpname,c.Name FROM `product` p "
+                                   + "join qprel qp on p.pjno=qp.PjNo join eqrel e on qp.Qno=e.QNo join customer c on c.cid=e.CID WHERE p.`Comp`=0;";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                      
+                           ResultSet rs=st.executeQuery();
+                           
+            
+            while(rs.next())
+            {
+                users1.add(new AnalysisDT2(rs.getString(2),rs.getString(1), rs.getString(3), rs.getString(5),rs.getString(6),rs.getString(8),rs.getString(7),rs.getString(4)));
+                System.out.println(rs.getString(5)+"\n"+rs.getString(6));
+            }
+            rs.previous();
+            project_label.setText("Number of Incomplete Projects : "+rs.getRow());
+            final TreeItem<AnalysisDT2> root = new RecursiveTreeItem<AnalysisDT2>(users1, RecursiveTreeObject::getChildren);
+            proj_table.getColumns().clear();
+            proj_table.getColumns().setAll(pjno,pno,val,sdate,edate,cname,cmpname,des);
+            proj_table.setRoot(root);
+            proj_table.setShowRoot(false);
+            
+            project_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                            proj_table.setPredicate((TreeItem<AnalysisDT2> t) -> {
+                                Boolean flag =t.getValue().PjNo.getValue().contains(newValue)||t.getValue().Pno.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().val.getValue().contains(newValue)||t.getValue().cmpname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                return flag;
+                            });
+                        });
+                    } catch (Exception ex) {
+                         Utilities.AlertBox.showErrorMessage(ex);
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
     }
       public void prj_completed(){
         JFXTreeTableColumn<AnalysisDT2, String> pjno = new JFXTreeTableColumn<>("Project Number");
@@ -1644,7 +1811,7 @@ public class SalesController implements Initializable {
             while(rs.next())
             {
                 users1.add(new AnalysisDT2(rs.getString(2),rs.getString(1), rs.getString(3), rs.getString(5),rs.getString(7),rs.getString(6),rs.getString(4)));
-                System.out.println(rs.getString(2)+rs.getString(1)+rs.getString(3)+rs.getString(5)+rs.getString(7)+rs.getString(6)+rs.getString(4));
+                System.out.println(rs.getString(5));
             }
             rs.previous();
             project_label.setText("Completed Projects : "+rs.getRow());
@@ -1656,7 +1823,7 @@ public class SalesController implements Initializable {
             
             project_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                             proj_table.setPredicate((TreeItem<AnalysisDT2> t) -> {
-                                Boolean flag =t.getValue().PjNo.getValue().contains(newValue)||t.getValue().Pno.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().val.getValue().contains(newValue)||t.getValue().cmpname.getValue().contains(newValue)||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                Boolean flag =t.getValue().PjNo.getValue().contains(newValue)||t.getValue().Pno.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().val.getValue().contains(newValue)||t.getValue().cmpname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
                                 return flag;
                             });
                         });
@@ -1677,6 +1844,8 @@ public class SalesController implements Initializable {
         StringProperty cmpname;
         StringProperty des;
         StringProperty cdate;
+        StringProperty delay;
+       
 
         public AnalysisDT2(String Subject, String Attended, String Total,String need,String c,String r,String k) {
             this.PjNo = new SimpleStringProperty(Subject);
@@ -1691,17 +1860,36 @@ public class SalesController implements Initializable {
             
         }
 
-       /* private AnalysisDT2(String string, String string0, String string1, String string2, String string3) {
-            this.enqno = new SimpleStringProperty(string);
-            this.comname = new SimpleStringProperty(string1);
-            this.cname = new SimpleStringProperty(string3);
-            this.Subdate= new SimpleStringProperty(string0);
-            this.sub= new SimpleStringProperty(string2);
-           
+        private AnalysisDT2(String Subject, String Attended, String Total,String need,String need1,String c,String r,String k) {
+            this.PjNo = new SimpleStringProperty(Subject);
+            this.Pno = new SimpleStringProperty(Attended);
+            this.val = new SimpleStringProperty(Total);
+            
+            this.sdate= new SimpleStringProperty(need);
+            this.edate= new SimpleStringProperty(need1);
+            
+           //this.sub=new JFXTextArea();this.sub.setText(need);
+            this.cname=new SimpleStringProperty(c);
+            this.cmpname=new SimpleStringProperty(r);
+            this.des=new SimpleStringProperty(k);
+            
+        }
+        private AnalysisDT2(String Subject, String Attended, String Total,String need,String need1,String del,String c,String r,String k) {
+            this.PjNo = new SimpleStringProperty(Subject);
+            this.Pno = new SimpleStringProperty(Attended);
+            this.val = new SimpleStringProperty(Total);
+            
+            this.sdate= new SimpleStringProperty(need);
+            this.edate= new SimpleStringProperty(need1);
+            this.delay= new SimpleStringProperty(del);
+           //this.sub=new JFXTextArea();this.sub.setText(need);
+            this.cname=new SimpleStringProperty(c);
+            this.cmpname=new SimpleStringProperty(r);
+            this.des=new SimpleStringProperty(k);
             
         }
 
-        private AnalysisDT2(String string, String string0, String string1, String string2, String string3, String string4) {
+       /* private AnalysisDT2(String string, String string0, String string1, String string2, String string3, String string4) {
             this.enqno = new SimpleStringProperty(string);
             this.comname = new SimpleStringProperty(string1);
             this.cname = new SimpleStringProperty(string3);
