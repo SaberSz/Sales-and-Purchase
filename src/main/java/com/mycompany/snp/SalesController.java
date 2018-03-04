@@ -731,7 +731,7 @@ public class SalesController implements Initializable {
    
          action1.getItems().add("Accepted by customer");
         action1.getItems().add("Pending quotation");
-        action1.getItems().add("Quotation waiting for customer's approval");
+        action1.getItems().add("Quotation waiting for customer's approval/ Project not started");
      
         action1.valueProperty().addListener(new ChangeListener<String>() {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -747,7 +747,7 @@ public class SalesController implements Initializable {
                     qno_filter.clear();
                 }
             else
-                    if(newValue.equals("Quotation waiting for customer's approval"))
+                    if(newValue.equals("Quotation waiting for customer's approval/ Project not started"))
                     {
                         pending_qno();
                         qno_filter.clear();
@@ -1038,7 +1038,7 @@ public class SalesController implements Initializable {
                 users1.add(new AnalysisDT1(rs.getString(1),rs.getDate(2).toString(), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6)));
             }
             rs.previous();
-            qno_label.setText("PENDING CUSTOMER APPROVAL : "+rs.getRow());
+            qno_label.setText("Pending customer approval /project not started : "+rs.getRow());
             final TreeItem<AnalysisDT1> root = new RecursiveTreeItem<AnalysisDT1>(users1, RecursiveTreeObject::getChildren);
             qno_tables.getColumns().clear();
             qno_tables.getColumns().setAll(subjec,cod,attende,need11,need22,need33);

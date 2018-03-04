@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 04, 2018 at 03:39 PM
+-- Generation Time: Mar 04, 2018 at 06:54 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -320,16 +320,17 @@ CREATE TABLE `invoice` (
   `Acc No` varchar(20) NOT NULL,
   `Termofpay` varchar(25) NOT NULL,
   `addedgst` float NOT NULL,
-  `Amount_paid` double NOT NULL DEFAULT '0'
+  `Amount_paid` double NOT NULL DEFAULT '0',
+  `invgen` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `invoice`
 --
 
-INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`) VALUES
-('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 0),
-('1801-SE-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0);
+INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
+('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 0, 0),
+('1801-SE-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -400,7 +401,7 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`, `Compdate`) VALUES
 ('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 0, NULL),
-('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 0, NULL);
+('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 1, '2018-03-03');
 
 -- --------------------------------------------------------
 
