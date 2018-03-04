@@ -46,3 +46,7 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 16px;
 }
+
+.jfx-tab-pane:selected .tab-selected-line{
+    -fx-stroke : #3F51B5f4;
+}

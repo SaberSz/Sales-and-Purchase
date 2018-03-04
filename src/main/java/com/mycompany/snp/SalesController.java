@@ -86,6 +86,18 @@ public class SalesController implements Initializable {
     private NumberAxis yaxis_bc2;
     @FXML
     private CategoryAxis xaxis_bc1;
+    @FXML
+    private NumberAxis yaxis_pjlc;
+    @FXML
+    private CategoryAxis xaxis_pjlc;
+    @FXML
+    private NumberAxis yaxis_pjbc;
+    @FXML
+    private CategoryAxis xaxis_pjbc;
+    @FXML
+    private Label edit_comp;
+    @FXML
+    private Label save_comp;
    
         public void enqpane(){
         
@@ -470,6 +482,14 @@ public class SalesController implements Initializable {
     private CategoryAxis xaxis_bc;
     @FXML
     private JFXComboBox<String> enq_year1;
+
+    @FXML
+    private void edit_in_comp(MouseEvent event) {
+    }
+
+    @FXML
+    private void save_in_comp(MouseEvent event) {
+    }
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
@@ -830,6 +850,21 @@ public class SalesController implements Initializable {
                qno_line(newValue);
                qno_pie(newValue);
                qno_bar(newValue);
+                
+                
+            
+        
+        }   
+       
+    });
+           enq_year2.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+            
+                      
+               prj_lc(newValue);
+               prj_pie(newValue);
+               prj_bc(newValue);
                 
                 
             
@@ -1790,8 +1825,91 @@ public class SalesController implements Initializable {
     
     
     
+   public void prj_pie(String d){ 
+       ResultSet rs;
+          try{
+       
+          String suql = "SELECT count(*) FROM `product` p join qprel qp on p.pjno=qp.PjNo join eqrel e on " +
+"qp.Qno=e.QNo join customer c on c.cid=e.CID WHERE p.`Comp`=0 and p.`Estdate`< CURDATE() and substring(p.Date,1,4)=\""+d+"\";";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                           rs=st.executeQuery();
+                           rs.next();
+                           int accep_customno=rs.getInt(1);
+                        
+                           
+          String seql="SELECT count(*) FROM `product` p " +
+"join qprel qp on p.pjno=qp.PjNo join eqrel e on qp.Qno=e.QNo join customer c on c.cid=e.CID WHERE p.`Comp`=1 and substring(p.date,1,4)=\""+d+"\";";
+                        st = com.mycompany.snp.MainApp.conn.prepareStatement(seql);
+                          rs=st.executeQuery();
+                          rs.next();
+                          int notsent=rs.getInt(1);
+                      
+           String seql2 = "SELECT count(*) FROM `product` p join qprel qp on p.pjno=qp.PjNo join eqrel e on " +
+"qp.Qno=e.QNo join customer c on c.cid=e.CID WHERE p.`Comp`=0 and p.`Estdate`>= CURDATE() and substring(p.Date,1,4)=\""+d+"\";";
+                        st = com.mycompany.snp.MainApp.conn.prepareStatement(seql2);
+                          rs=st.executeQuery();
+                          rs.next();
+                          int sent_botnoaccept=rs.getInt(1);
+                       
+            ObservableList<PieChart.Data> pc=FXCollections.observableArrayList(
+                    new PieChart.Data("Projects that have exceeded the deadline",accep_customno),
+                    new PieChart.Data("Projects that have been completed.",notsent),
+                    new PieChart.Data("Projects that not have exceeded the deadline",sent_botnoaccept));
+            proj_pie.setData(pc);
+            proj_pie.setLegendVisible(true);
+
+
+          }              
+    catch(Exception e)
+      {  
+           Utilities.AlertBox.showErrorMessage(e);
+      }
+       
+   }
     
+    public void prj_bc(String d){
+        try {
+              proj_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("",0))));
+             proj_bar.getData().clear();
+           xaxis_pjbc.getCategories().clear();
+           xaxis_pjbc.getCategories().addAll("Awin","Steels");
+            XYChart.Series dataSeries1 = new XYChart.Series();
+             XYChart.Series dataSeries2 = new XYChart.Series();
+            proj_bar.setTitle("Delayed Projects");
+            dataSeries1.setName("Awin");
+            dataSeries2.setName("Steels");
+            xaxis_bc.setLabel("Reason");
+        yaxis_pjbc.setLabel("Number of Delayed Projects");
+        yaxis_pjbc.setSide(Side.LEFT);
+        xaxis_pjbc.setSide(Side.BOTTOM);
+            dataSeries1.getData().clear();
+            dataSeries2.getData().clear();
+              xaxis_pjbc.setAnimated(false);
+              yaxis_pjbc.setAnimated(true);
+              proj_bar.setAnimated(true);
+            
+            String sql="SELECT (CASE substring(m.qno,4,2) when \"AE\" then \"Awin\" when \"SC\" then \"Steels\" END) as k, count(*) FROM "
+                    + "(Select * from product p natural join qprel q where substring(Date,1,4)=\""+d+"\" and CURDATE()>p.Date) m group by substring(m.qno,4,2) ;";
+            Statement stmt =com.mycompany.snp.MainApp.conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql); 
+            while(rs.next()){
+                if(rs.getString(1).equals("Awin"))
+              dataSeries1.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));
+                else if(rs.getString(1).equals("Steels"))
+               dataSeries2.getData().add(new XYChart.Data(rs.getString(1),rs.getInt(2)));     
+             
+            }
+           
+            proj_bar.getData().addAll(dataSeries1,dataSeries2);
+            
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+        }
+
+    }
     
+<<<<<<< HEAD
     
     
 }
@@ -1812,6 +1930,88 @@ public class SalesController implements Initializable {
     
     
     
+=======
+    public void prj_lc(String d){
+               xaxis_pjlc.setLabel("Months");
+        yaxis_pjlc.setLabel("Number of Projects");
+        yaxis_pjlc.setSide(Side.LEFT);
+        xaxis_pjlc.setSide(Side.BOTTOM);
+       xaxis_pjlc.getCategories().clear(); 
+        proj_line.getData().clear();
+      mths m;
+      XYChart.Series s=new XYChart.Series();
+       XYChart.Series s1=new XYChart.Series();
+       s1.getData().clear();
+       s.getData().clear();
+      s.setName("Awin");
+       s1.setName("Steels");
+     xaxis_pjlc.setAnimated(false);
+              yaxis_pjlc.setAnimated(true);
+              proj_line.setAnimated(true);
+              int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
+              ResultSet rs;
+      try{
+          /* for (mths k : mths.values()){
+                                       
+                                       s.getData().add(new XYChart.Data(k.toString(),0));
+                           s1.getData().add(new XYChart.Data(k.toString(),0));
+                           }*/
+          String suql = "SELECT substring(m.`Date`,6,2), count(*) FROM (Select * from `product` p natural "
+                  + "join qprel q where substring(`qno`,4,2) like \"AE\" and substring(`Date`,1,4)=\""+d+"\") m group by substring(m.`Date`,6,2) ;";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                        
+                           rs=st.executeQuery();
+                           //int c=0,l=0;
+                           while(rs.next()){
+                               System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   
+                                   if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr[k.ordinal()]+=rs.getInt(2);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s.getData().add(new XYChart.Data(k.toString(),arr[k.ordinal()]));
+                                 System.out.println(arr[k.ordinal()]+" "+k);
+                           }
+                           int arr1[]={0,0,0,0,0,0,0,0,0,0,0,0};
+                            suql = "SELECT substring(m.`Date`,6,2), count(*) FROM (Select * from `product` p natural "
+                  + "join qprel q where substring(`qno`,4,2) like \"SC\" and substring(`Date`,1,4)=\""+d+"\") m group by substring(m.`Date`,6,2) ;";
+                          
+                           Statement st1 = com.mycompany.snp.MainApp.conn.createStatement(); 
+                   
+                           rs=st1.executeQuery(suql);
+                        
+                           while(rs.next()){
+                         //      System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   if((rs.getString(1).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(1).equals(String.valueOf(k.ordinal()+1)))){
+                                    // s1.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                     arr1[k.ordinal()]+=rs.getInt(2);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s1.getData().add(new XYChart.Data(k.toString(),arr1[k.ordinal()]));
+                                  System.out.println(arr1[k.ordinal()]+" "+k);
+                           }
+                          
+                                   
+                           
+                           proj_line.getData().addAll(s,s1);
+                           
+      }
+      catch(Exception e)
+      {
+           Utilities.AlertBox.showErrorMessage(e);
+      }      
+        
+        
+    }
+>>>>>>> 7a65e3dc8b05b92e76f030083a211859a125a008
     
     
     
