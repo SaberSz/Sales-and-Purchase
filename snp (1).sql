@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Mar 04, 2018 at 01:55 PM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- Host: localhost:8889
+-- Generation Time: Mar 04, 2018 at 03:39 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -299,7 +297,7 @@ INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
 ('345634', '18-AE-QT-030.Rev.1', '2018-02-20', 'Awin', 49),
 ('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
 ('23423', '18-AE-QT-035.Rev.0', '2018-03-06', 'Awin', 52),
-('23423', '18-AE-QT-035.Rev.1', '2018-03-06', 'sdfgsdfgs', 52),
+('23423', '18-AE-QT-035.Rev.1', '2018-03-06', 'Awin', 52),
 ('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
 ('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
 ('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
@@ -392,16 +390,17 @@ CREATE TABLE `product` (
   `Date` date NOT NULL,
   `EstDate` date DEFAULT NULL,
   `Des` varchar(5000) NOT NULL DEFAULT 'None',
-  `Comp` tinyint(1) NOT NULL DEFAULT '0'
+  `Comp` tinyint(1) NOT NULL DEFAULT '0',
+  `Compdate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`) VALUES
-('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 0),
-('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 0);
+INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`, `Compdate`) VALUES
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 0, NULL),
+('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -688,7 +687,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
