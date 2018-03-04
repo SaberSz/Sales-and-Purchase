@@ -256,7 +256,7 @@
                                           <NumberAxis fx:id="yaxis_pjlc" side="LEFT" />
                                        </yAxis>
                                     </LineChart>
-                                    <PieChart fx:id="proj_pie" layoutX="200.0" layoutY="379.0" prefHeight="223.0" prefWidth="471.0" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="7.0" />
+                                    <PieChart fx:id="proj_pie" layoutX="200.0" layoutY="379.0" legendSide="LEFT" prefHeight="223.0" prefWidth="471.0" AnchorPane.bottomAnchor="12.0" AnchorPane.rightAnchor="7.0" />
                                     <BarChart fx:id="proj_bar" layoutX="186.0" layoutY="48.0" prefHeight="338.0" prefWidth="492.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_pjbc" />
@@ -291,7 +291,7 @@
                                        </yAxis>
                                     </LineChart>
                                     <PieChart fx:id="inv_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="451.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                                    <BarChart fx:id="inv_bar" layoutX="686.0" layoutY="15.0" prefHeight="351.0" prefWidth="479.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0">
+                                    <BarChart fx:id="inv_bar" layoutX="686.0" layoutY="52.0" prefHeight="314.0" prefWidth="479.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" />
                                        </xAxis>
@@ -299,6 +299,7 @@
                                           <NumberAxis side="LEFT" />
                                        </yAxis>
                                     </BarChart>
+                                    <JFXComboBox fx:id="enq_year21" labelFloat="true" layoutX="725.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="15.0" />
                                  </children>
                               </AnchorPane>
                            </content>

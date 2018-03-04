@@ -733,40 +733,18 @@ public class SalesController implements Initializable {
             else
                 if(newValue.equals("Invoices paid.")){
                    
-                    prj_yetcomp();
+                    paid_invoices();
                      inv_filter.clear();
                 }
             else
                     if(newValue.equals("Invoices that have not been generated yet."))
                     {
-                        prj_xedead();
+                        
                          inv_filter.clear();
                     }
         }    
     });
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      
-                   
-                           
+                         
         enq_year.valueProperty().addListener(new ChangeListener<String>() {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
           
@@ -947,6 +925,9 @@ public class SalesController implements Initializable {
         } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
         }
+    }
+    public void paid_invoices(){
+        
     }
     
     public void qno_line(String d){
@@ -1778,9 +1759,9 @@ public class SalesController implements Initializable {
                    
                     try {
                        
-                           String suql = "select i.INo,i.Total_amt,i.Date,i.Duedate,i.Salesperson,i.Termofpay,DATEDIFF(i.Duedate,CURDATE()),"
+                           String suql = "select i.INo,i.Total_amt+i.addedgst as m,ifnull(i.Date,\"-\"),ifnull(i.Duedate,\"-\"),i.Salesperson,ifnull(i.Termofpay,\"-\"),ifnull(DATEDIFF(i.Duedate,CURDATE()),\"-\"),"
                                    + "p.Des from `invoice` i,`product` p,`pirel` pi where\n" +
-                                    "i.INo=pi.INo and pi.PjNo=p.PjNo;";
+                                    "i.INo=pi.INo and pi.PjNo=p.PjNo and i.invgen=1;";
                            PreparedStatement st;
                             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                       
@@ -1789,7 +1770,7 @@ public class SalesController implements Initializable {
             
             while(rs.next())
             {
-             users3.add(new AnalysisDT3(rs.getString(1),String.valueOf(rs.getDouble(2)), rs.getDate(3).toString(), rs.getDate(4).toString(),rs.getString(5),rs.getString(6),String.valueOf(rs.getInt(7)),rs.getString(8)));
+             users3.add(new AnalysisDT3(rs.getString(1),(rs.getString(2)), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
             }
             rs.previous();
             inv_label.setText("Generated but not paid invoices: "+rs.getRow());
@@ -1801,7 +1782,7 @@ public class SalesController implements Initializable {
             
             inv_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
                             inv_tables.setPredicate((TreeItem<AnalysisDT3> t) -> {
-                                Boolean flag =t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().enqno.x.contains(newValue.toUpperCase())||t.getValue().Subdate.getValue().contains(newValue)||t.getValue().comname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().cname.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                Boolean flag =t.getValue().daysleft.getValue().contains(newValue)||t.getValue().top.getValue().contains(newValue)||t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().totamt.getValue().contains(newValue)||t.getValue().date.getValue().contains(newValue)||t.getValue().duedate.getValue().contains(newValue)||t.getValue().salesperson.getValue().toUpperCase().contains(newValue.toUpperCase());
                                 return flag;
                             });
                         });
@@ -1812,7 +1793,7 @@ public class SalesController implements Initializable {
     
     
     
-    
+  } 
     
     
     
@@ -1909,13 +1890,10 @@ public class SalesController implements Initializable {
 
     }
     
-<<<<<<< HEAD
+
     
     
-}
-    
-    
-    
+
     
     
     
@@ -1930,7 +1908,10 @@ public class SalesController implements Initializable {
     
     
     
-=======
+    
+    
+    
+
     public void prj_lc(String d){
                xaxis_pjlc.setLabel("Months");
         yaxis_pjlc.setLabel("Number of Projects");
@@ -2011,7 +1992,7 @@ public class SalesController implements Initializable {
         
         
     }
->>>>>>> 7a65e3dc8b05b92e76f030083a211859a125a008
+
     
     
     
