@@ -275,14 +275,14 @@
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <JFXComboBox fx:id="action111" focusColor="#3f51b5" labelFloat="true" layoutX="16.0" layoutY="15.0" prefHeight="27.0" prefWidth="182.0" promptText="Choose Action" />
-                                    <JFXTreeTableView fx:id="inv_tables" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="663.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="52.0" />
+                                    <JFXTreeTableView fx:id="inv_tables" layoutX="15.0" layoutY="52.0" prefHeight="316.0" prefWidth="1152.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="52.0" />
                                     <JFXTextField fx:id="inv_filter" labelFloat="true" layoutX="526.0" layoutY="15.0" promptText="Filter" AnchorPane.leftAnchor="526.0" AnchorPane.topAnchor="15.0" />
                                     <Label fx:id="inv_label" layoutX="256.0" layoutY="19.0" prefHeight="20.0" prefWidth="210.0" text="Label" AnchorPane.leftAnchor="256.0" AnchorPane.topAnchor="19.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
+                                    <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="254.0" prefWidth="662.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" />
                                        </xAxis>
@@ -290,15 +290,7 @@
                                           <NumberAxis side="LEFT" />
                                        </yAxis>
                                     </LineChart>
-                                    <PieChart fx:id="inv_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="451.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-                                    <BarChart fx:id="inv_bar" layoutX="686.0" layoutY="52.0" prefHeight="314.0" prefWidth="479.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
-                                       <xAxis>
-                                          <CategoryAxis side="BOTTOM" />
-                                       </xAxis>
-                                       <yAxis>
-                                          <NumberAxis side="LEFT" />
-                                       </yAxis>
-                                    </BarChart>
+                                    <PieChart fx:id="inv_pie" layoutX="693.0" layoutY="379.0" prefHeight="235.0" prefWidth="489.0" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
                                     <JFXComboBox fx:id="enq_year21" labelFloat="true" layoutX="725.0" layoutY="15.0" prefHeight="28.0" prefWidth="171.0" promptText="Year" AnchorPane.rightAnchor="280.0" AnchorPane.topAnchor="15.0" />
                                  </children>
                               </AnchorPane>
@@ -329,7 +321,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </JFXTextArea>
-                                    <Label fx:id="edit_comp" contentDisplay="GRAPHIC_ONLY" layoutX="536.0" layoutY="26.0" onMouseClicked="#edit_in_comp" text="Label" AnchorPane.rightAnchor="613.0" AnchorPane.topAnchor="26.0">
+                                    <Label fx:id="edit_comp" contentDisplay="GRAPHIC_ONLY" layoutX="596.0" layoutY="13.0" onMouseClicked="#edit_in_comp" text="Label" AnchorPane.rightAnchor="550.0" AnchorPane.topAnchor="13.0">
                                        <graphic>
                                           <MaterialDesignIconView accessibleRole="BUTTON" fill="#3f51b5" glyphName="PENCIL" size="30" />
                                        </graphic>
@@ -339,6 +331,7 @@
                                           <MaterialDesignIconView accessibleRole="BUTTON" fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
                                        </graphic>
                                     </Label>
+                                    <JFXTextField fx:id="compgst" labelFloat="true" layoutX="302.0" layoutY="14.0" prefHeight="27.0" prefWidth="239.0" promptText="GST" AnchorPane.leftAnchor="302.0" AnchorPane.topAnchor="14.0" />
       
                                              </children>
                               </AnchorPane>
