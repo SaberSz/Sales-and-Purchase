@@ -98,6 +98,10 @@ public class SalesController implements Initializable {
     private Label edit_comp;
     @FXML
     private Label save_comp;
+    @FXML
+    private JFXComboBox<?> enq_year21;
+    @FXML
+    private JFXTextField compgst;
    
         public void enqpane(){
         
@@ -453,8 +457,6 @@ public class SalesController implements Initializable {
     @FXML
     private PieChart inv_pie;
 
-    @FXML
-    private BarChart<?, ?> inv_bar;
 
     @FXML
     private JFXTextField mycomp_name;
@@ -1850,8 +1852,14 @@ public class SalesController implements Initializable {
     
   } 
     
+    public void inv_bc_method(String d){
     
     
+}
+     public void inv_pie_method(String d){
+    
+    
+}   
     
     
     
