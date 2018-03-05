@@ -4387,7 +4387,7 @@ static int combopno;
             dt=dt+"AE";
            
         }else{
-            dt=dt+"SE";
+            dt=dt+"SC";
             
         }
         dt=dt+"-INV-";
