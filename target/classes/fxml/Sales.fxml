@@ -282,11 +282,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-<<<<<<< HEAD
-                                    <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="254.0" prefWidth="662.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
-=======
                                     <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="254.0" prefWidth="662.0" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
->>>>>>> 86b40262ade16774bfa1db404bd909da2bab5cc0
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_inv" />
                                        </xAxis>
