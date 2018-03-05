@@ -99,9 +99,13 @@ public class SalesController implements Initializable {
     @FXML
     private Label save_comp;
     @FXML
-    private JFXComboBox<?> enq_year21;
+    private JFXComboBox<String> enq_year21;
     @FXML
     private JFXTextField compgst;
+    @FXML
+    private NumberAxis yaxis_inv;
+    @FXML
+    private CategoryAxis xaxis_inv;
    
         public void enqpane(){
         
@@ -695,6 +699,15 @@ public class SalesController implements Initializable {
                 enq_year2.getItems().add(rs.getString(1));
                 
             }
+             suql = "select distinct Date_format (Date, '%Y') FROM invoice where 1";
+      
+       
+            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+            rs=ps.executeQuery();
+            while(rs.next()){
+                enq_year21.getItems().add(rs.getString(1));
+                
+            }
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -854,13 +867,32 @@ public class SalesController implements Initializable {
         }   
        
     });
+            enq_year21.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+            
+                      
+              inv_lc_method(newValue);
+               inv_pie_method(newValue);
+               
+                
+                
+            
+        
+        }   
+       
+    });
+            
+           
           
        action.setValue("Declined Enquiries");
        action1.setValue("Accepted by customer");
        enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
+       enq_year21.setValue(String.valueOf(LocalDate.now().getYear()));
        enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
             enq_year2.setValue(String.valueOf(LocalDate.now().getYear()));
             action11.setValue("Completed Projects");
+            action111.setValue("Invoices Generated but not paid.");
         threadtock();  
     }
     public void qno_bar(String d){
@@ -1852,8 +1884,84 @@ public class SalesController implements Initializable {
     
   } 
     
-    public void inv_bc_method(String d){
-    
+    public void inv_lc_method(String d){
+                 xaxis_inv.setLabel("Months");
+                 yaxis_inv.setLabel("Cash Inflow in $");
+
+        yaxis_inv.setSide(Side.LEFT);
+        xaxis_inv.setSide(Side.BOTTOM);
+       xaxis_inv.getCategories().clear(); 
+        inv_line.getData().clear();
+      mths m;
+      XYChart.Series s=new XYChart.Series();
+       XYChart.Series s1=new XYChart.Series();
+       s1.getData().clear();
+       s.getData().clear();
+      s.setName("Awin");
+       s1.setName("Steels");
+     xaxis_inv.setAnimated(false);
+              yaxis_inv.setAnimated(true);
+              inv_line.setAnimated(true);
+              int arr[]={0,0,0,0,0,0,0,0,0,0,0,0};
+              ResultSet rs;
+      try{
+          /* for (mths k : mths.values()){
+                                       
+                                       s.getData().add(new XYChart.Data(k.toString(),0));
+                           s1.getData().add(new XYChart.Data(k.toString(),0));
+                           }*/
+          String suql = "Select sum(m.Total_amt)+sum(m.addedgst) k,substring(m.Date,6,2) "
+                  + "from (Select * from invoice i where i.Date like \""+d+"%\" and substring(i.INo,6,2) like"
+                  + " \"AE\" and i.invgen=1) m group by substring(m.Date,6,2); ";
+                           PreparedStatement st;
+                            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                        
+                           rs=st.executeQuery();
+                           //int c=0,l=0;
+                           while(rs.next()){
+                               System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   
+                                   if((rs.getString(2).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(2).equals(String.valueOf(k.ordinal()+1)))){
+                                   //  s.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                   arr[k.ordinal()]+=rs.getInt(1);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s.getData().add(new XYChart.Data(k.toString(),arr[k.ordinal()]));
+                                 //System.out.println(arr[k.ordinal()]+" "+k);
+                           }
+                           int arr1[]={0,0,0,0,0,0,0,0,0,0,0,0};
+                             suql = "Select sum(m.Total_amt)+sum(m.addedgst) k,substring(m.Date,6,2) "
+                  + "from (Select * from invoice i where i.Date like \""+d+"%\" and substring(i.INo,6,2) like"
+                  + " \"SC\" and i.invgen=1) m group by substring(m.Date,6,2); ";
+                          
+                           Statement st1 = com.mycompany.snp.MainApp.conn.createStatement(); 
+                   
+                           rs=st1.executeQuery(suql);
+                        
+                           while(rs.next()){
+                         //      System.out.println(rs.getString(1));
+                               for (mths k : mths.values())
+                                   if((rs.getString(2).equals("0"+String.valueOf(k.ordinal()+1)))||(rs.getString(2).equals(String.valueOf(k.ordinal()+1)))){
+                                    // s1.getData().add(new XYChart.Data(k.toString(),rs.getInt("z"))); 
+                                     arr1[k.ordinal()]+=rs.getInt(1);
+                                   }
+                                   
+                           }
+                           for (mths k : mths.values()){
+                                 s1.getData().add(new XYChart.Data(k.toString(),arr1[k.ordinal()]));
+                                 //System.out.println(arr1[k.ordinal()]+" "+k);
+                           }
+                           inv_line.getData().addAll(s,s1);
+                           
+      }
+      catch(Exception e)
+      {
+           Utilities.AlertBox.showErrorMessage(e);
+      }      
+        
     
 }
      public void inv_pie_method(String d){

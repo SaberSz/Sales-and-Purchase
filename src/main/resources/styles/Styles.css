@@ -17,3 +17,16 @@
 .jfx-hamburger StackPane {
 	-fx-background-color: white;
 }
+
+.chart-series-line {    
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
+}
+ 
+.default-color0.chart-series-line { -fx-stroke: #f00000; }
+.default-color1.chart-series-line { -fx-stroke: #0054ef; }
+.default-color2.chart-series-line { -fx-stroke: #93ef00; }
+ 
+.default-color0.chart-line-symbol { -fx-background-color: #f00000, white; }
+.default-color1.chart-line-symbol { -fx-background-color: #0054ef, white; }
+.default-color2.chart-line-symbol { -fx-background-color: #93ef00, white; }
