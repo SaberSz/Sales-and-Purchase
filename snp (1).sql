@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Mar 05, 2018 at 09:35 AM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- Host: localhost:8889
+-- Generation Time: Mar 05, 2018 at 08:46 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -88,11 +86,25 @@ CREATE TABLE `abc` (
 
 DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
-  `CmpName` varchar(20) NOT NULL,
+  `CmpName` varchar(40) NOT NULL,
   `Address` varchar(100) NOT NULL,
-  `Phone` bigint(20) NOT NULL,
-  `cmpcode` varchar(2) NOT NULL
+  `Phone` varchar(20) NOT NULL,
+  `cmpcode` varchar(2) NOT NULL,
+  `GST` float NOT NULL DEFAULT '0',
+  `Fax` varchar(20) DEFAULT NULL,
+  `CompRegNo` varchar(40) NOT NULL,
+  `GSTRegNo` varchar(40) NOT NULL,
+  `Email` varchar(30) DEFAULT NULL,
+  `Website` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `company`
+--
+
+INSERT INTO `company` (`CmpName`, `Address`, `Phone`, `cmpcode`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website`) VALUES
+('AWIN ENGINEERING PTE LTD', 'No. 109, Tuas South Ave. 8, Singapore 637 037.', '+65 6778 8271', 'AE', 7, '+65 6265 7685', '201012187G', '201012187G', NULL, NULL),
+('STEEL COAT PTE LTD', 'No. 12, Tuas View Place, Singapore - 637864.', '+65 6265 9476', 'SC', 7, '+65 6265 7685', '201410749G', '201410749G', 'Enquires@steelcoat.com.sg', 'www.steelcoat.com.sg');
 
 -- --------------------------------------------------------
 
@@ -334,8 +346,8 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
-('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 2513534244, 1),
-('1801-SE-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0, 0);
+('1801-SC-INV-001', 2342342, '2018-03-05', NULL, 'sfgsdfgs', '435345', '23', 163964, 2506306, 1),
+('1801-SC-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -358,9 +370,9 @@ CREATE TABLE `invoice_details` (
 --
 
 INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES
-(1, 'sfgsdfgs', '34', 45, 1530, '1801-SE-INV-001'),
-(1, 'dfgsdfg', '234', 2342, 548028, '1801-SE-INV-002'),
-(2, 'sdfsdf', '343', 2342, 803306, '1801-SE-INV-002');
+(1, 'sfgsdfgs', '34', 45, 1530, '1801-SC-INV-001'),
+(1, 'dfgsdfg', '234', 2342, 548028, '1801-SC-INV-002'),
+(2, 'sdfsdf', '343', 2342, 803306, '1801-SC-INV-002');
 
 -- --------------------------------------------------------
 
@@ -379,8 +391,8 @@ CREATE TABLE `pirel` (
 --
 
 INSERT INTO `pirel` (`PjNo`, `INo`) VALUES
-(1, '1801-SE-INV-001'),
-(1, '1801-SE-INV-002');
+(1, '1801-SC-INV-001'),
+(1, '1801-SC-INV-002');
 
 -- --------------------------------------------------------
 
@@ -571,6 +583,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 
 --
+-- Indexes for table `company`
+--
+ALTER TABLE `company`
+  ADD PRIMARY KEY (`CmpName`);
+
+--
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
@@ -693,7 +711,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

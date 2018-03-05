@@ -699,7 +699,7 @@ public class SalesController implements Initializable {
                 enq_year2.getItems().add(rs.getString(1));
                 
             }
-             suql = "select distinct Date_format (Date, '%Y') FROM invoice where 1";
+             suql = "select distinct Date_format (Date, '%Y') FROM invoice where Date IS NOT NULL";
       
        
             ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
@@ -774,18 +774,7 @@ public class SalesController implements Initializable {
             
         }   
     });
-         enq_year2.valueProperty().addListener(new ChangeListener<String>() {
-        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
-          
-            
-                
-                enq_line(newValue);
-                enq_pie(newValue);
-                enq_bar(newValue);
-                
-            
-        }   
-    });
+       
         
                             
    
@@ -858,7 +847,7 @@ public class SalesController implements Initializable {
             
                       
                prj_lc(newValue);
-               prj_pie(newValue);
+              // prj_pie(newValue);
                prj_bc(newValue);
                 
                 
@@ -1974,6 +1963,7 @@ public class SalesController implements Initializable {
                            rs=st.executeQuery();
                            rs.next();
                            int genbutnotp=rs.getInt(1);
+                           System.out.println(genbutnotp);
                          //  System.out.println("FIRST QUERY FINE");
                            
           String seql="Select count(*) from invoice i where i.invgen=1 and (i.Total_amt+i.addedgst)<>0 and i.Amount_paid>=(i.Total_amt+i.addedgst) AND i.Date LIKE '"+d+"%'";
@@ -1981,23 +1971,30 @@ public class SalesController implements Initializable {
                           rs=st.executeQuery();
                           rs.next();
                           int genandp=rs.getInt(1);
+                          System.out.println(genandp);
                             // System.out.println("SECOND QUERY FINE");
-           String seql2="SELECT count(*) FROM invoice i where i.invgen=0 and i.Date LIKE '"+d+"%'";
+           String seql2="SELECT count(*) FROM invoice i where i.invgen=0 and i.Date LIKE '"+d+"%' || i.Date IS NULL";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql2);
                           rs=st.executeQuery();
                           rs.next();
+                          
                           int notgen=rs.getInt(1);
-         String seql23="SELECT * FROM invoice i where (i.Total_amt+i.addedgst)<>0 and i.Amount_paid<(i.Total_amt+i.addedgst) and i.Amount_paid<>0 and i.invgen=1 and i.Date LIKE '"+d+"%'";
+                          System.out.println(notgen);
+         String seql23="SELECT count(*) FROM invoice i where (i.Total_amt+i.addedgst)<>0 and i.Amount_paid<(i.Total_amt+i.addedgst) and i.Amount_paid<>0 and i.invgen=1 and i.Date LIKE '"+d+"%'";
                         st = com.mycompany.snp.MainApp.conn.prepareStatement(seql23);
                           rs=st.executeQuery();
                           rs.next();
                           int partialp=rs.getInt(1);               
-          
-            ObservableList<PieChart.Data> pcd=FXCollections.observableArrayList(
-                    new PieChart.Data("Generated but not paid",genandp),
-                    new PieChart.Data("Paid invoices",genandp),
-                    new PieChart.Data("Not generated",notgen),
-                    new PieChart.Data("Partially paid invoices",partialp));
+                          System.out.println(partialp);
+                         
+            ObservableList<PieChart.Data> pcd=FXCollections.observableArrayList();
+            if(genbutnotp!=0)pcd.add(new PieChart.Data("Generated but not paid",genbutnotp));
+            if(genandp!=0)pcd.add( new PieChart.Data("Paid invoices",genandp));
+            if(notgen!=0)pcd.add(new PieChart.Data("Not generated",notgen));
+            if(partialp!=0)pcd.add(  new PieChart.Data("Partially paid invoices",partialp));
+            
+                   
+                 
             inv_pie.setData(pcd);
             inv_pie.setLegendVisible(true);
 
