@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Mar 04, 2018 at 06:54 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost:3306
+-- Generation Time: Mar 05, 2018 at 09:35 AM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -163,7 +165,8 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (49, 'bangalore', 'abc', 'abc@abc.com', 23453245),
 (50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245),
 (51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', 2352424),
-(52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', 34534534);
+(52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', 34534534),
+(53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', 4312431415);
 
 -- --------------------------------------------------------
 
@@ -210,6 +213,8 @@ INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('32425', '2018-01-08', 'Awin', 'ethteheh', 36),
 ('33453', '2018-02-14', 'Awin', 'sdfsdfas', 42),
 ('341', '2018-01-19', 'Awin', 'rwgrgrwgw', 29),
+('34141231414', '2018-03-08', 'Awin', 'ton of iron.', 53),
+('34141231414_r', '2018-03-08', 'Awin', 'ton of iron.', 53),
 ('342', '2018-01-04', 'Awin', 'grsgrs', 16),
 ('34345', '2018-02-15', 'Awin', 'f  fsgbsdbobs', 50),
 ('345', '2018-01-17', 'Awin', 'hteheth', 34),
@@ -313,13 +318,13 @@ INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
 DROP TABLE IF EXISTS `invoice`;
 CREATE TABLE `invoice` (
   `INo` varchar(15) NOT NULL,
-  `Total_amt` double NOT NULL,
+  `Total_amt` double NOT NULL DEFAULT '0',
   `Date` date DEFAULT NULL,
   `Duedate` date DEFAULT NULL,
   `Salesperson` varchar(25) NOT NULL,
   `Acc No` varchar(20) NOT NULL,
   `Termofpay` varchar(25) NOT NULL,
-  `addedgst` float NOT NULL,
+  `addedgst` float NOT NULL DEFAULT '0',
   `Amount_paid` double NOT NULL DEFAULT '0',
   `invgen` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -329,7 +334,7 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
-('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 0, 0),
+('1801-SE-INV-001', 2342342, NULL, NULL, 'sfgsdfgs', '435345', '23', 163964, 2513534244, 1),
 ('1801-SE-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0, 0);
 
 -- --------------------------------------------------------
@@ -688,6 +693,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

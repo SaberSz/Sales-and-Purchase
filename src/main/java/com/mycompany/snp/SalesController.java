@@ -726,21 +726,23 @@ public class SalesController implements Initializable {
         @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
           
             if(newValue.equals("Invoices Generated but not paid.")){
-                inv_gen_but_not_paid();
+                inv_gen_but_not_paid(0);
                 inv_filter.clear();
                 
             }
             else
                 if(newValue.equals("Invoices paid.")){
                    
-                    paid_invoices();
+                    inv_gen_but_not_paid(1);
                      inv_filter.clear();
                 }
             else
                     if(newValue.equals("Invoices that have not been generated yet."))
                     {
                         
-                         inv_filter.clear();
+                       
+                    inv_gen_but_not_paid(2);
+                     inv_filter.clear();
                     }
         }    
     });
@@ -926,9 +928,7 @@ public class SalesController implements Initializable {
             Utilities.AlertBox.showErrorMessage(ex);
         }
     }
-    public void paid_invoices(){
-        
-    }
+  
     
     public void qno_line(String d){
              xaxis_lc1.setLabel("Months");
@@ -1689,9 +1689,12 @@ public class SalesController implements Initializable {
         StringProperty top;
         StringProperty daysleft;
         StringProperty desc;
+        StringProperty amt;
+        StringProperty custname;
+      
        
 
-        public AnalysisDT3(String io,String toamt, String dat, String dudate,String salperson,String topp,String dayslef,String desc){
+        public AnalysisDT3(String io,String toamt, String dat, String dudate,String salperson,String topp,String dayslef,String desc,String a,String c){
             this.ino = new SimpleStringProperty(io);
             this.totamt = new SimpleStringProperty(toamt);
             this.date = new SimpleStringProperty(dat);
@@ -1700,6 +1703,8 @@ public class SalesController implements Initializable {
             this.top=new SimpleStringProperty(topp);
             this.daysleft=new SimpleStringProperty(dayslef);
             this.desc=new SimpleStringProperty(desc);
+            this.amt=new SimpleStringProperty(a);
+            this.custname=new SimpleStringProperty(c);
        
             
         }
@@ -1713,15 +1718,13 @@ public class SalesController implements Initializable {
             
         }*/
 
-        private AnalysisDT3(String string, String string0, String toString, String toString0, String string1, String string2) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+     
 
      
     }
     
     
-  public void inv_gen_but_not_paid(){
+  public void inv_gen_but_not_paid(int i){
      JFXTreeTableColumn<AnalysisDT3, String> subject = new JFXTreeTableColumn<>("Invoice Number");
         subject.setPrefWidth(200);
         subject.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().ino);
@@ -1751,17 +1754,38 @@ public class SalesController implements Initializable {
         JFXTreeTableColumn<AnalysisDT3, String> need5 = new JFXTreeTableColumn<>("Description");
         need5.setPrefWidth(200);
         need5.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().desc);
-
+   JFXTreeTableColumn<AnalysisDT3, String> need6 = new JFXTreeTableColumn<>("Amount paid");
+        need6.setPrefWidth(200);
+        need6.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().amt);
+        JFXTreeTableColumn<AnalysisDT3, String> need7 = new JFXTreeTableColumn<>("Customer Name");
+        need7.setPrefWidth(200);
+        need7.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT3, String> param) -> param.getValue().getValue().custname); 
         
         ObservableList<AnalysisDT3> users3 = FXCollections.observableArrayList();
         
            
-                   
+                   String suql;
                     try {
-                       
-                           String suql = "select i.INo,i.Total_amt+i.addedgst as m,ifnull(i.Date,\"-\"),ifnull(i.Duedate,\"-\"),i.Salesperson,ifnull(i.Termofpay,\"-\"),ifnull(DATEDIFF(i.Duedate,CURDATE()),\"-\"),"
-                                   + "p.Des from `invoice` i,`product` p,`pirel` pi where\n" +
-                                    "i.INo=pi.INo and pi.PjNo=p.PjNo and i.invgen=1;";
+                       if(i==0){
+                           
+                           suql = "select i.INo,i.Total_amt+i.addedgst as m,ifnull(i.Date,\"-\"),ifnull(i.Duedate,\"-\"),i.Salesperson,"
+                                   + "ifnull(i.Termofpay,\"-\"),ifnull(DATEDIFF(i.Duedate,CURDATE()),\"-\"),p.Des,i.Amount_paid, c.name from `invoice` i,`product` p,"
+                                   + "`pirel` pi, `qprel` qp, eqrel e,customer c where i.INo=pi.INo and pi.PjNo=p.PjNo and "
+                                   + "qp.pjno=pi.pjno and e.QNo=qp.qno  and c.cid=e.cid and i.invgen=1 and i.Amount_paid<(i.Total_amt+i.addedgst);";
+                       }else if(i==1){
+                           suql = "select i.INo,i.Total_amt+i.addedgst as m,ifnull(i.Date,\"-\"),ifnull(i.Duedate,\"-\"),i.Salesperson,"
+                                   + "ifnull(i.Termofpay,\"-\"),ifnull(DATEDIFF(i.Duedate,CURDATE()),\"-\"),p.Des,i.Amount_paid, c.name from `invoice` i,`product` p,"
+                                   + "`pirel` pi, `qprel` qp, eqrel e,customer c where i.INo=pi.INo and pi.PjNo=p.PjNo and "
+                                   + "qp.pjno=pi.pjno and e.QNo=qp.qno  and c.cid=e.cid and i.invgen=1 and i.Amount_paid>=(i.Total_amt+i.addedgst);";
+                     
+                       }else{
+                                   suql = "select i.INo,i.Total_amt+i.addedgst as m,ifnull(i.Date,\"-\"),ifnull(i.Duedate,\"-\"),ifnull(i.Salesperson,\"-\"),"
+                                   + "ifnull(i.Termofpay,\"-\"),ifnull(DATEDIFF(i.Duedate,CURDATE()),\"-\"),p.Des,i.Amount_paid, c.name from `invoice` i,`product` p,"
+                                   + "`pirel` pi, `qprel` qp, eqrel e,customer c where i.INo=pi.INo and pi.PjNo=p.PjNo and "
+                                   + "qp.pjno=pi.pjno and e.QNo=qp.qno  and c.cid=e.cid and i.invgen=0";
+                           
+                           
+                       } 
                            PreparedStatement st;
                             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                       
@@ -1770,13 +1794,21 @@ public class SalesController implements Initializable {
             
             while(rs.next())
             {
-             users3.add(new AnalysisDT3(rs.getString(1),(rs.getString(2)), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
+             users3.add(new AnalysisDT3(rs.getString(1),(rs.getString(2)), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10)));
             }
             rs.previous();
-            inv_label.setText("Generated but not paid invoices: "+rs.getRow());
+           
+           if(i==0)
+               inv_label.setText("Generated but not paid invoices: "+rs.getRow());
+           else if(i==1)
+               inv_label.setText("Paid invoices: "+rs.getRow());
+            else
+               inv_label.setText("Invoices not generated: "+rs.getRow());
+               
             final TreeItem<AnalysisDT3> root = new RecursiveTreeItem<AnalysisDT3>(users3, RecursiveTreeObject::getChildren);
             inv_tables.getColumns().clear();
-            inv_tables.getColumns().setAll(subject,code,attended,need1,need2,need3,need4,need5);
+            if(i==0){
+            inv_tables.getColumns().setAll(subject,code,need6,attended,need1,need2,need3,need4,need5,need7);
             inv_tables.setRoot(root);
             inv_tables.setShowRoot(false);
             
@@ -1786,6 +1818,29 @@ public class SalesController implements Initializable {
                                 return flag;
                             });
                         });
+            }else if(i==1){
+               inv_tables.getColumns().setAll(subject,need6,attended,need3,need5,need7);
+            inv_tables.setRoot(root);
+            inv_tables.setShowRoot(false);
+            
+            inv_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                            inv_tables.setPredicate((TreeItem<AnalysisDT3> t) -> {
+                                Boolean flag =t.getValue().custname.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().date.getValue().contains(newValue)||t.getValue().salesperson.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                return flag;
+                            });
+                        });  
+            }else{
+                 inv_tables.getColumns().setAll(subject,code,attended,need1,need2,need3,need4,need5,need7);
+            inv_tables.setRoot(root);
+            inv_tables.setShowRoot(false);
+            
+            inv_filter.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                            inv_tables.setPredicate((TreeItem<AnalysisDT3> t) -> {
+                                Boolean flag =t.getValue().daysleft.getValue().contains(newValue)||t.getValue().top.getValue().contains(newValue)||t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase())||t.getValue().totamt.getValue().contains(newValue)||t.getValue().date.getValue().contains(newValue)||t.getValue().duedate.getValue().contains(newValue)||t.getValue().salesperson.getValue().toUpperCase().contains(newValue.toUpperCase());
+                                return flag;
+                            });
+                        });
+            }
                     } catch (Exception ex) {
                          Utilities.AlertBox.showErrorMessage(ex);
                         Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
