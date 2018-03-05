@@ -106,6 +106,16 @@ public class SalesController implements Initializable {
     private NumberAxis yaxis_inv;
     @FXML
     private CategoryAxis xaxis_inv;
+    @FXML
+    private JFXTextField mycomp_name1;
+    @FXML
+    private JFXTextField mycomp_code1;
+    @FXML
+    private JFXTextField mycomp_ph1;
+    @FXML
+    private JFXTextField mycomp_ph2;
+    @FXML
+    private JFXTextField mycomp_ph11;
    
         public void enqpane(){
         
@@ -471,8 +481,6 @@ public class SalesController implements Initializable {
     @FXML
     private JFXTextField mycomp_ph;
 
-    @FXML
-    private JFXTextField mycomp_code;
 
     @FXML
     private JFXTextArea mycomp_add;
@@ -491,16 +499,120 @@ public class SalesController implements Initializable {
 
     @FXML
     private void edit_in_comp(MouseEvent event) {
+        edit_comp.setVisible(false);
+        edit_comp.setDisable(true);
+         save_comp.setDisable(false);
+       save_comp.setVisible(true);
+      
+     mycomp_name.setEditable(true);
+    // mycomp_code.setEditable(true);
+     mycomp_ph.setEditable(true);
+        mycomp_add.setEditable(true);
+        compgst.setEditable(true);
+        mycomp_name1.setEditable(true);
+        mycomp_code1.setEditable(true);
+                mycomp_ph1.setEditable(true);
+         mycomp_ph11.setEditable(true);        
+        mycomp_ph2.setEditable(true);
+        
     }
 
     @FXML
     private void save_in_comp(MouseEvent event) {
+        try {
+            
+            if(mycomp_name.getText().trim().equals("")||mycomp_add.getText().trim().equals("")||mycomp_name1.getText().trim().equals("")||mycomp_ph.getText().trim().equals("")||
+                    mycomp_ph2.getText().trim().equals("")||mycomp_ph11.getText().trim().equals("")||mycomp_code1.getText().trim().equals("")||mycomp_ph1.getText().trim().equals("")||compgst.getText().trim().equals("")){
+            }else{
+           try{
+               
+            String sql2="DELETE FROM `company` WHERE CmpName = ?";
+            PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
+            ps.setString(1,mycomp_name.getText().trim());
+            ps.executeUpdate();
+            String sql ="INSERT INTO `company`(`CmpName`, `Address`, `Phone`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website`) VALUES "
+                    + "(?,?,?,?,?,?,?,?,?)";
+                    ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                    ps.setString(1,mycomp_name.getText().trim());
+                    ps.setString(2,mycomp_add.getText().trim());
+                    ps.setString(3,mycomp_ph.getText().trim());
+                    ps.setFloat(4,Float.valueOf(compgst.getText()));
+                    ps.setString(5,mycomp_name1.getText().trim());
+                    ps.setString(6,mycomp_ph2.getText().trim());
+                    ps.setString(7,mycomp_ph11.getText().trim());
+                    ps.setString(8,mycomp_code1.getText().trim());
+                    ps.setString(9,mycomp_ph1.getText().trim());
+            
+                    ps.executeUpdate();
+                     edit_comp.setVisible(true);
+            edit_comp.setDisable(false);
+            save_comp.setDisable(true);
+            save_comp.setVisible(false);
+            mycomp_name.setEditable(false);
+                    mycomp_add.setEditable(false);
+                    mycomp_ph.setEditable(false);
+                    compgst.setEditable(false);
+                  mycomp_name1.setEditable(false);
+                   mycomp_ph2.setEditable(false);
+                   mycomp_ph11.setEditable(false);
+                   mycomp_code1.setEditable(false);
+                   mycomp_ph1.setEditable(false);
+            
+                 
+                   
+        } catch (SQLException ex) {
+             Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        }
+        catch(Exception e){
+          Utilities.AlertBox.showErrorMessage(e);
+          Utilities.AlertBox.notificationWarn("Error","You seem to have missed a field");
+        }
+            
+       
     }
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
                     }
-    
+    public void fillcomp(String d){
+         try{
+               
+              String sql ="SELECT `CmpName`, `Address`, `Phone`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website` FROM `company` WHERE CMPNAMe LIKE \""+d+"%\" ";
+            PreparedStatement ps=com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+           
+            ResultSet rs =ps.executeQuery();
+           if(rs.next()){
+            
+                  
+                 mycomp_name.setText(rs.getString(1));
+                    mycomp_add.setText(rs.getString(2));
+                    mycomp_ph.setText(rs.getString(3));
+                    compgst.setText(rs.getString(4));
+                  mycomp_name1.setText(rs.getString(5));
+                   mycomp_ph2.setText(rs.getString(6));
+                   mycomp_ph11.setText(rs.getString(7));
+                   mycomp_code1.setText(rs.getString(8));
+                   mycomp_ph1.setText(rs.getString(9));
+                   mycomp_name.setEditable(false);
+                    mycomp_add.setEditable(false);
+                    mycomp_ph.setEditable(false);
+                    compgst.setEditable(false);
+                  mycomp_name1.setEditable(false);
+                   mycomp_ph2.setEditable(false);
+                   mycomp_ph11.setEditable(false);
+                   mycomp_code1.setEditable(false);
+                   mycomp_ph1.setEditable(false);
+            
+           }
+                   
+        } catch (SQLException ex) {
+             Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     /**
      * Initializes the controller class.
@@ -532,6 +644,8 @@ public class SalesController implements Initializable {
         
         cmp.getItems().add("Awin");
         cmp.getItems().add("Steels");
+        mycmp_box.getItems().add("Awin");
+       mycmp_box.getItems().add("Steel");
         try{
             String sql="SELECT `Qno` FROM `qoutation` WHERE 1";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
@@ -621,7 +735,12 @@ public class SalesController implements Initializable {
         table111.setEffect(new GaussianBlur(20));
         insideINVPane.setEffect(new GaussianBlur(20));
         tock=true;
-        
+        mycmp_box.valueProperty().addListener(new ChangeListener<String>() {
+        @Override public void changed(ObservableValue ov, String oldValue, String newValue) {
+          
+           fillcomp(newValue.toUpperCase());
+        }    
+    });
         inv_total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
              if (!newValue.matches("\\d*")) {
                 inv_total.setText(newValue.replaceAll("[^\\d]", ""));  
