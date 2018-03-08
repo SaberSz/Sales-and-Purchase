@@ -300,23 +300,18 @@
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <JFXTextField fx:id="mycomp_name" labelFloat="true" layoutX="13.0" layoutY="97.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Name" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="97.0">
+                                    <JFXTextField fx:id="mycomp_name" labelFloat="true" layoutX="13.0" layoutY="97.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Name" unFocusColor="RED" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="97.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </JFXTextField>
                                     <JFXComboBox fx:id="mycmp_box" labelFloat="true" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="257.0" promptText="Company" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                                    <JFXTextField fx:id="mycomp_ph" labelFloat="true" layoutX="13.0" layoutY="222.0" prefHeight="29.0" prefWidth="259.0" promptText="Phone Number" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="222.0">
+                                    <JFXTextField fx:id="mycomp_ph" labelFloat="true" layoutX="13.0" layoutY="222.0" prefHeight="29.0" prefWidth="259.0" promptText="Phone Number" unFocusColor="RED" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="222.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </JFXTextField>
-                                    <JFXTextField fx:id="mycomp_code" labelFloat="true" layoutX="13.0" layoutY="159.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Code" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="160.0">
-                                       <font>
-                                          <Font name="Arial" size="13.0" />
-                                       </font>
-                                    </JFXTextField>
-                                    <JFXTextArea fx:id="mycomp_add" labelFloat="true" layoutX="14.0" layoutY="280.0" promptText="Company Address" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="280.0">
+                                    <JFXTextArea fx:id="mycomp_add" labelFloat="true" layoutX="13.0" layoutY="337.0" prefHeight="188.0" prefWidth="545.0" promptText="Company Address" unFocusColor="RED" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="337.0">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
@@ -326,12 +321,37 @@
                                           <MaterialDesignIconView accessibleRole="BUTTON" fill="#3f51b5" glyphName="PENCIL" size="30" />
                                        </graphic>
                                     </Label>
-                                    <Label fx:id="save_comp" contentDisplay="GRAPHIC_ONLY" disable="true" layoutX="536.0" layoutY="529.0" onMouseClicked="#save_in_comp" text="Label" visible="false" AnchorPane.rightAnchor="613.0" AnchorPane.topAnchor="529.0">
+                                    <Label fx:id="save_comp" contentDisplay="GRAPHIC_ONLY" layoutX="596.0" layoutY="67.0" onMouseClicked="#save_in_comp" text="Label" AnchorPane.rightAnchor="550.0" AnchorPane.topAnchor="67.0">
                                        <graphic>
                                           <MaterialDesignIconView accessibleRole="BUTTON" fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
                                        </graphic>
                                     </Label>
-                                    <JFXTextField fx:id="compgst" labelFloat="true" layoutX="302.0" layoutY="14.0" prefHeight="27.0" prefWidth="239.0" promptText="GST" AnchorPane.leftAnchor="302.0" AnchorPane.topAnchor="14.0" />
+                                    <JFXTextField fx:id="compgst" labelFloat="true" layoutX="13.0" layoutY="161.0" prefHeight="27.0" prefWidth="259.0" promptText="GST" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="161.0" />
+                                    <JFXTextField fx:id="mycomp_name1" labelFloat="true" layoutX="292.0" layoutY="97.0" prefHeight="29.0" prefWidth="259.0" promptText="Fax Number">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="mycomp_code1" labelFloat="true" layoutX="292.0" layoutY="160.0" prefHeight="29.0" prefWidth="259.0" promptText="Email ID">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="mycomp_ph1" labelFloat="true" layoutX="292.0" layoutY="222.0" prefHeight="29.0" prefWidth="259.0" promptText="Website">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="mycomp_ph2" labelFloat="true" layoutX="13.0" layoutY="285.0" prefHeight="29.0" prefWidth="259.0" promptText="Company Registration Code" unFocusColor="RED">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
+                                    <JFXTextField fx:id="mycomp_ph11" labelFloat="true" layoutX="292.0" layoutY="285.0" prefHeight="29.0" prefWidth="259.0" promptText="GST Registration Code" unFocusColor="RED">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </JFXTextField>
       
                                              </children>
                               </AnchorPane>

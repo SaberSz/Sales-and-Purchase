@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 05, 2018 at 08:46 PM
+-- Generation Time: Mar 05, 2018 at 11:22 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.22
 
@@ -89,7 +89,6 @@ CREATE TABLE `company` (
   `CmpName` varchar(40) NOT NULL,
   `Address` varchar(100) NOT NULL,
   `Phone` varchar(20) NOT NULL,
-  `cmpcode` varchar(2) NOT NULL,
   `GST` float NOT NULL DEFAULT '0',
   `Fax` varchar(20) DEFAULT NULL,
   `CompRegNo` varchar(40) NOT NULL,
@@ -102,9 +101,8 @@ CREATE TABLE `company` (
 -- Dumping data for table `company`
 --
 
-INSERT INTO `company` (`CmpName`, `Address`, `Phone`, `cmpcode`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website`) VALUES
-('AWIN ENGINEERING PTE LTD', 'No. 109, Tuas South Ave. 8, Singapore 637 037.', '+65 6778 8271', 'AE', 7, '+65 6265 7685', '201012187G', '201012187G', NULL, NULL),
-('STEEL COAT PTE LTD', 'No. 12, Tuas View Place, Singapore - 637864.', '+65 6265 9476', 'SC', 7, '+65 6265 7685', '201410749G', '201410749G', 'Enquires@steelcoat.com.sg', 'www.steelcoat.com.sg');
+INSERT INTO `company` (`CmpName`, `Address`, `Phone`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website`) VALUES
+('STEEL COAT PTE LTD', 'No. 12, Tuas View Place, Singapore - 637864.', '+65 6265 9476', 7, '+65 6265 7685', '201410749G', '201410749G', 'Enquires@steelcoat.com.sg', 'www.steelcoat.com.sg');
 
 -- --------------------------------------------------------
 
