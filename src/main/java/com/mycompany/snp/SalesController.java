@@ -491,10 +491,22 @@ public class SalesController implements Initializable {
 
     @FXML
     private void edit_in_comp(MouseEvent event) {
+        //save_comp
+        //edit_comp
+      save_comp.setDisable(false);
+       save_comp.setVisible(true);
+       System.out.println("fdsdfsdfsfeuglfiugoiufgliuegflsiuefg;soifgs;oi");
+     mycomp_name.setEditable(true);
+     mycomp_code.setEditable(true);
+     mycomp_ph.setEditable(true);
+        mycomp_add.setEditable(true);
+        compgst.setEditable(true);
+       
     }
 
     @FXML
     private void save_in_comp(MouseEvent event) {
+  
     }
     
      enum mths {
