@@ -506,7 +506,7 @@ public class SalesController implements Initializable {
        save_comp.setVisible(true);
        System.out.println("fdsdfsdfsfeuglfiugoiufgliuegflsiuefg;soifgs;oi");
      mycomp_name.setEditable(true);
-     mycomp_code.setEditable(true);
+  mycomp_code1.setEditable(true);
      mycomp_ph.setEditable(true);
         mycomp_add.setEditable(true);
         compgst.setEditable(true);
