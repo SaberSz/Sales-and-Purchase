@@ -499,7 +499,7 @@ public class SalesController implements Initializable {
 
     @FXML
     private void edit_in_comp(MouseEvent event) {
-
+  // now git pls no chutiyapa
         //save_comp
         //edit_comp
       save_comp.setDisable(false);
