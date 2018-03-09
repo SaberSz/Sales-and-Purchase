@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import java.io.IOException;
@@ -116,6 +117,8 @@ public class SalesController implements Initializable {
     private JFXTextField mycomp_ph2;
     @FXML
     private JFXTextField mycomp_ph11;
+    @FXML
+    private JFXToggleButton projcomp;
    
         public void enqpane(){
         
@@ -773,7 +776,8 @@ public class SalesController implements Initializable {
             }
                 else
             {
-                inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText())*0.07)* 100d) / 100d));//Math.round(value * 100000d) / 100000d
+                
+                inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText())*(Float.valueOf(comp_inv_gst)/100))* 100d) / 100d));//Math.round(value * 100000d) / 100000d
                 inv_amt.setText(String.valueOf(Float.valueOf(inv_total.getText())+Float.valueOf(inv_gst.getText())));
             }
             }
@@ -1389,6 +1393,7 @@ public class SalesController implements Initializable {
             
             while(rs.next())
             {
+                
                 users1.add(new AnalysisDT1(rs.getString(1),rs.getDate(2).toString(), rs.getString(3), rs.getString(4),rs.getString(5),rs.getString(6)));
             }
             rs.previous();
@@ -2855,6 +2860,16 @@ public class SalesController implements Initializable {
      HolidayCol.setSortable(false);
      remarkCol.setSortable(false);
      SNCol.setPrefWidth(50);
+    PosCol.setPrefWidth(200);
+      BeyondCol.setPrefWidth(200);
+     HolidayCol.setPrefWidth(200);
+     remarkCol.setPrefWidth(200);
+     NRCol.setPrefWidth(200);
+
+     
+     
+     
+     
         
         
            
@@ -2896,10 +2911,10 @@ public class SalesController implements Initializable {
      UtCol.setSortable(false);
      Total.setSortable(false);
      Item.setPrefWidth(50);
-     DESCOl.setPrefWidth(150); 
-     QtyCOl.setPrefWidth(100);
-     UtCol.setPrefWidth(150);
-     Total.setPrefWidth(50);
+     DESCOl.setPrefWidth(250); 
+     QtyCOl.setPrefWidth(200);
+     UtCol.setPrefWidth(250);
+     Total.setPrefWidth(100);
         
            
        
@@ -3183,8 +3198,10 @@ public class SalesController implements Initializable {
                       trc.add(new Person("","","","",""));
                       int i=0;
                       while(i<100){
+                          System.out.println("IN while loop");
                       Person p= trc.get(i);
                       if(p.getLastName().getText().trim().equalsIgnoreCase("")){
+                           System.out.println("done table awin quotation");
                           break;
                       }
                       else{
@@ -3342,13 +3359,15 @@ public class SalesController implements Initializable {
         //We will not require any combo box for selections here. 
         //That can be done in the quotation pane where if he wants to edit the quoataion draft  or even revise it.
         //to get the data from the table
-        String qo=Qno.getText();   
-        if (cmp.getValue()=="Awin"){
+        String qo=Qno.getText();
+        System.out.println(qo.substring(3,5));
+        if(qo.substring(3,5).equalsIgnoreCase("AE")){
+       // if (cmp.getValue()=="Awin"){
        //this is for awin table 
        
        Quotation_insert_into_awin_table(qo,table1);
         }
-        else
+        else if(qo.substring(3,5).equalsIgnoreCase("SC"))
         {
            //for steels table 
        Quotation_insert_into_steel(qo,table12);
@@ -3760,6 +3779,8 @@ public class SalesController implements Initializable {
              ps.setInt(1,PjNOs);
              rs =ps.executeQuery();
              while(rs.next()){
+                projcomp.setVisible(false);
+                 projcomp.setDisable(true);
                 PjNo.setText(rs.getString(2));
                 PrNo.setText(rs.getString(1));
                 EsVal.setText(rs.getString(3));
@@ -3776,7 +3797,8 @@ public class SalesController implements Initializable {
             }
             else{
                 //setEditable(true)
-                 
+                 projcomp.setVisible(false);
+                    projcomp.setDisable(true);
                 String sql1="SELECT IFNULL(MAX(`PjNo`)+1,1) as 'your value'  FROM `product` WHERE 1;";
              ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
             // ps.setInt(1,PjNOs);
@@ -3833,6 +3855,40 @@ public class SalesController implements Initializable {
              Utilities.AlertBox.notificationInfo("Sticky Buttons","The project information has already been saved.");
         }
     }
+    void insert_into_proj_table(boolean b){
+          try {
+            int pjno=Integer.parseInt(PjNo.getText());
+            int prno=Integer.parseInt(PrNo.getText());
+            int esval=Integer.parseInt(EsVal.getText());
+            String daterec= DateRec.getValue().toString();
+            String estrec= EstDate.getValue().toString();
+           // String qnum=qno_static;
+            String prodes=ProDes.getText();
+            
+            
+            
+            String sql="UPDATE `product` SET `PNo`=?,`Value`=?,`Date`=?,`EstDate`=?,`Des`=?,`Comp`=?,`Compdate`=? WHERE PJNO = ? ;";
+            PreparedStatement ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ps.setInt(1,prno);
+            
+            ps.setInt(2,esval);
+            ps.setString(3,daterec);
+            ps.setString(4,estrec);
+            ps.setString(5,prodes);
+            ps.setBoolean(6,b);
+             ps.setString(7,LocalDate.now().toString());
+              ps.setInt(8,pjno);
+            
+            
+            ps.executeUpdate();
+             
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+            Utilities.AlertBox.showErrorMessage(ex);
+             Utilities.AlertBox.notificationInfo("Sticky Buttons","The project information has already been saved.");
+        }
+    }
     
     
     
@@ -3842,24 +3898,12 @@ public class SalesController implements Initializable {
         if(edit_button_hit_in_PPane){
             try {
              
-                PreparedStatement ps;
-                String sql1="DELETE FROM `qprel` WHERE pjno=?;";
-                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-               ps.setInt(1,Integer.valueOf(PjNo.getText()));
-             
-       
-                ps.executeUpdate();
                 
-                sql1="DELETE FROM `product` WHERE pjno=?";
-                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-               ps.setInt(1,Integer.valueOf(PjNo.getText()));
-            
-                ps.executeUpdate();
-                insert_into_proj_table();
-                 Utilities.AlertBox.notificationInfo("Updated","The project information has  been updated.");
-            } catch (SQLException ex) {
-                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-                Utilities.AlertBox.showErrorMessage(ex);
+                String comp="";
+                boolean b= projcomp.isSelected();
+                insert_into_proj_table(b);
+                 Utilities.AlertBox.notificationInfo("Updated","The project information has been updated.");
+           
             }catch (Exception e) {
                 Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
                 Utilities.AlertBox.notificationWarn("Error","Error in input!");
@@ -3879,6 +3923,9 @@ public class SalesController implements Initializable {
           DateRec.setEditable(false);
           EstDate.setEditable(false);
           ProDes.setEditable(false);
+          edit_button_hit_in_PPane=false;
+           projcomp.setVisible(false);
+                 projcomp.setDisable(true);
         
     }
  static boolean edit_button_hit_in_PPane=false;
@@ -3892,6 +3939,8 @@ public class SalesController implements Initializable {
          DateRec.setEditable(true);
          EstDate.setEditable(true);
          ProDes.setEditable(true);
+         projcomp.setVisible(true);
+                 projcomp.setDisable(false);
             Utilities.AlertBox.notificationInfo("Edit mode","You're now in edit mode.");
     }
 
@@ -3939,7 +3988,7 @@ public class SalesController implements Initializable {
             cmp_del.getItems().clear();
             email_del.getItems().clear();
           
-            String sql="SELECT `Eqno` FROM `enquiry` WHERE 1 order by `Date` DESC ";
+            String sql="SELECT `Eqno` FROM `enquiry` WHERE 1 order by `Date1` DESC ";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ResultSet rs=stmt.executeQuery();
             while(rs.next()){
@@ -3973,7 +4022,7 @@ public class SalesController implements Initializable {
             }
          else {
              String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
-                        + "and email=? and cmpname=? and `Date`=? ";
+                        + "and email=? and cmpname=? and `Date1`=? ";
                PreparedStatement ps;
                 //
                 System.out.println("inside else block nice statements really.");
@@ -4180,8 +4229,8 @@ public class SalesController implements Initializable {
                 Utilities.AlertBox.notificationWarn("Error","Some of the fields seem to be empty");
             }
          else {
-             String sql="SELECT * FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
-                        + "and email=? and cmpname=? and `Date`=? ";
+             String sql="SELECT CID FROM `enquiry` e NATURAL JOIN `customer` c WHERE eqno=? "
+                        + "and email=? and cmpname=? and `Date1`=? ";
                PreparedStatement ps;
                 //
                 System.out.println("inside else block nice statements really.");
@@ -4195,7 +4244,7 @@ public class SalesController implements Initializable {
              while(rs.next()){
                  f=false;
                  System.out.println("rs not 0");
-                     
+                     String a =rs.getString(1);
                            PreparedStatement cs;
                            String sql008= "SELECT IFNULL(MAX(CAST(SUBSTRING(`Qno`,10,3) AS SIGNED))+1,1) as 'your value'  FROM `qoutation` WHERE 1;";
                             //SELECT IFNULL(MAX(CAST(SUBSTRING(`Qno`, CHAR_LENGTH(`Qno`)-2) AS SIGNED))+1,1) as 'your value'  FROM `qoutation` WHERE 1;
@@ -4239,7 +4288,7 @@ public class SalesController implements Initializable {
                                   compname=compname+dg+".Rev.0";
                                   Qno.setText(compname);
                                   PreparedStatement stmt;
-                                    Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
+                                   
 
     String suql = "INSERT INTO `qoutation`(`QNo`) VALUES (?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
@@ -4248,13 +4297,15 @@ public class SalesController implements Initializable {
 
                             String suql1 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
-                            stmt.setString(1,eno);
+                            stmt.setString(1,eqno_del1.getValue());
                             stmt.setString(2,compname);
-                            stmt.setString(3,Edate.getValue().toString());
-                            stmt.setString(4,compname1);
-                            stmt.setString(5,cid);
+                            
+                            stmt.setString(3,date_del1.getValue().toString());
+                            stmt.setString(4,cmp_del1.getValue());
+                            stmt.setInt(5,Integer.valueOf(a));
                             
                             stmt.executeUpdate();
+                             Utilities.AlertBox.notificationWarn("Quotation Number","Please make sure you that you have noted down the generated quotation number.");
                            }
                             
                            
@@ -4318,6 +4369,7 @@ public class SalesController implements Initializable {
         eq_delpane1.setVisible(false);
         eq_delpane1.setDisable(true); 
     }
+    String comp_inv_gst="";
 static int combopno;
     @FXML
     private void tick_in_invoice(MouseEvent event) {
@@ -4401,16 +4453,25 @@ static int combopno;
         dt=dt+inv_pno.getValue();
         
         dt=dt+"-";
-        if(compname.equalsIgnoreCase("AWIN")){
+        if(compname.equalsIgnoreCase("AE")){
             dt=dt+"AE";
+            String ss="SELECT `GST` FROM `company` WHERE cmpname like \"AWIN%\";";
+            ps= com.mycompany.snp.MainApp.conn.prepareStatement(ss);   
+               ResultSet ri=ps.executeQuery();
+               ri.next();
+               comp_inv_gst=ri.getString(1);
            
         }else{
             dt=dt+"SC";
-            
+            String ss="SELECT `GST` FROM `company` WHERE cmpname like \"STEEL%\";";
+            ps= com.mycompany.snp.MainApp.conn.prepareStatement(ss);   
+               ResultSet ri=ps.executeQuery();
+               ri.next();
+               comp_inv_gst=ri.getString(1);
         }
         dt=dt+"-INV-";
         
-          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`INo`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
+          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`INo`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE INO like \"%"+compname+"%\" ;";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);   
                ResultSet ri=ps.executeQuery();
                ri.next();
@@ -4507,7 +4568,8 @@ static int combopno;
 "                     i.`Salesperson`, i.`Acc No`, i.`Termofpay`, " +
 "                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email FROM " +
 "                    `invoice` i join pirel p on p.ino=i.ino join product " +
-"                     pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname " +
+"                     pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno "
+                    + "join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname " +
 "                    and e.cid=en.cid join customer c on c.cid=en.cid WHERE i.ino=? ";
                ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
                ps.setString(1,inv_invbox.getValue());
@@ -4543,6 +4605,7 @@ static int combopno;
                for(int o=0;o<20;o++){
                     data.add(new Person3("","","","",""));
                 }
+               inv_newtable.getColumns().clear();
                newInvoicePane_PriceBoxFill(inv_newtable, data);
               insideINVPane.setEffect(new ColorAdjust()); 
                
