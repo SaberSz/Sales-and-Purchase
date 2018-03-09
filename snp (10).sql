@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Mar 05, 2018 at 11:22 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost:3306
+-- Generation Time: Mar 09, 2018 at 05:34 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -66,21 +68,6 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `abc`
--- (See below for the actual view)
---
-DROP VIEW IF EXISTS `abc`;
-CREATE TABLE `abc` (
-`Eno` varchar(15)
-,`QNo` varchar(25)
-,`Date1` date
-,`Cmpname` varchar(10)
-,`CID` int(15)
-);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `company`
 --
 
@@ -102,7 +89,8 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`CmpName`, `Address`, `Phone`, `GST`, `Fax`, `CompRegNo`, `GSTRegNo`, `Email`, `Website`) VALUES
-('STEEL COAT PTE LTD', 'No. 12, Tuas View Place, Singapore - 637864.', '+65 6265 9476', 7, '+65 6265 7685', '201410749G', '201410749G', 'Enquires@steelcoat.com.sg', 'www.steelcoat.com.sg');
+('AWIN ENGINEERING PTE LTD', 'No. 109, Tuas South Ave. 8, Singapore 637 037.', '+65 6778 8271', 7, '+65 6265 768333', '201012187G', '201012187G', 'bubnows', 'gwgrw'),
+('STEEL COAT PTE LTD', 'No. 12, Tuas View Place, Singapore - 637865.', '+65 6265 9476', 8, '+65 6265 7685', '201410749G', '201410749G', 'Enquires@steelcoahello', 'www.steelcoat.com.sg');
 
 -- --------------------------------------------------------
 
@@ -567,15 +555,6 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 (3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2'),
 (3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.3');
 
--- --------------------------------------------------------
-
---
--- Structure for view `abc`
---
-DROP TABLE IF EXISTS `abc`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `abc`  AS  select `eqrel`.`Eno` AS `Eno`,`eqrel`.`QNo` AS `QNo`,`eqrel`.`Date1` AS `Date1`,`eqrel`.`Cmpname` AS `Cmpname`,`eqrel`.`CID` AS `CID` from `eqrel` ;
-
 --
 -- Indexes for dumped tables
 --
@@ -709,6 +688,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
