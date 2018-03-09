@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Mar 09, 2018 at 05:34 PM
--- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- Host: localhost:8889
+-- Generation Time: Mar 09, 2018 at 09:52 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -164,7 +162,8 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245),
 (51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', 2352424),
 (52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', 34534534),
-(53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', 4312431415);
+(53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', 4312431415),
+(54, 'banaglore', 'tom', 'tom@gmail.com', 123456789);
 
 -- --------------------------------------------------------
 
@@ -189,6 +188,7 @@ INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('11', '2018-01-30', 'Steels', 'verbgveb', 23),
 ('1223', '2018-01-11', 'Awin', 'hghhehnet', 15),
 ('1223', '2018-01-17', 'Awin', 'tegegewg', 33),
+('1234', '2018-02-08', 'Awin', '5 litres of oil', 54),
 ('1234554', '2018-02-18', 'Steels', 'HAPPY BIRTHDAY', 45),
 ('123456', '2018-01-15', 'Awin', 'bsfnfs bs', 40),
 ('132123', '2018-02-18', 'Steels', 'asfsdafadsf', 47),
@@ -258,6 +258,7 @@ CREATE TABLE `enquirybin` (
 INSERT INTO `enquirybin` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`, `Reason`, `delDate`) VALUES
 ('111', '2018-01-04', 'Awin', 'plis send', 9, 'yoga practice', '2018-03-01 18:01:48'),
 ('121', '2018-01-30', 'Awin', 'bgfrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', 7, 'lack of equipments', '2018-03-01 18:01:48'),
+('1234_r', '2018-03-09', 'Awin', '5 litres of oil', 54, 'not profitable', '2018-03-09 18:07:19'),
 ('kksdfugiudgdfgi', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48'),
 ('kkugiudgdfgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-10-01 18:01:48'),
 ('kkugiudgiu', '2018-03-12', 'awin', 'lklugluguig', 1, 'yoga', '2018-08-01 18:01:48'),
@@ -301,6 +302,12 @@ INSERT INTO `eqrel` (`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES
 ('34345', '18-AE-QT-034', '2018-02-15', 'Awin', 50),
 ('23423', '18-AE-QT-035.Rev.0', '2018-03-06', 'Awin', 52),
 ('23423', '18-AE-QT-035.Rev.1', '2018-03-06', 'Awin', 52),
+('1234', '18-AE-QT-045.Rev.0', '2018-02-08', 'AWIN', 54),
+('1234', '18-AE-QT-046.Rev.0', '2018-02-08', 'AWIN', 54),
+('1234', '18-AE-QT-047.Rev.0', '2018-02-08', 'AWIN', 54),
+('1234', '18-AE-QT-048.Rev.0', '2018-02-08', 'AWIN', 54),
+('1234', '18-AE-QT-049.Rev.0', '2018-02-08', 'AWIN', 54),
+('1234', '18-AE-QT-049.Rev.1', '2018-02-08', 'tom', 54),
 ('1234554', '18-SC-QT-026', '2018-02-18', 'Steels', 45),
 ('132123', '18-SC-QT-028', '2018-02-18', 'Steels', 47),
 ('132123', '18-SC-QT-028.Rev.1', '2018-02-18', 'Steels', 47),
@@ -332,8 +339,8 @@ CREATE TABLE `invoice` (
 --
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
-('1801-SC-INV-001', 2342342, '2018-03-05', NULL, 'sfgsdfgs', '435345', '23', 163964, 2506306, 1),
-('1801-SC-INV-002', 2342323, NULL, NULL, 'dkhdtk', '69865', '56', 163963, 0, 0);
+('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
+('1802-AE-INV-002', 20905, NULL, NULL, 'abcd', '345345', '40', 1463.35, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -356,9 +363,8 @@ CREATE TABLE `invoice_details` (
 --
 
 INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES
-(1, 'sfgsdfgs', '34', 45, 1530, '1801-SC-INV-001'),
-(1, 'dfgsdfg', '234', 2342, 548028, '1801-SC-INV-002'),
-(2, 'sdfsdf', '343', 2342, 803306, '1801-SC-INV-002');
+(1, 'apples', '3', 25, 75, '1801-AE-INV-001'),
+(2, 'asdf fdsf sadf', '37', 565, 20905, '1802-AE-INV-002');
 
 -- --------------------------------------------------------
 
@@ -377,8 +383,8 @@ CREATE TABLE `pirel` (
 --
 
 INSERT INTO `pirel` (`PjNo`, `INo`) VALUES
-(1, '1801-SC-INV-001'),
-(1, '1801-SC-INV-002');
+(1, '1801-AE-INV-001'),
+(2, '1802-AE-INV-002');
 
 -- --------------------------------------------------------
 
@@ -403,8 +409,9 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`, `Compdate`) VALUES
-('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 0, NULL),
-('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 1, '2018-03-03');
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 1, '2018-03-10'),
+('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 1, '2018-03-03'),
+('3456', 3, 3456778, '2018-03-09', '2018-03-15', 'creation of oil and memory.', 0, '2018-03-10');
 
 -- --------------------------------------------------------
 
@@ -446,12 +453,26 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-AE-QT-034', 0, '2018-03-01 19:09:54', 1, '2018-03-03'),
 ('18-AE-QT-035.Rev.0', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-AE-QT-035.Rev.1', 1, '2018-03-01 19:09:54', 1, '2018-03-03'),
+('18-AE-QT-036.Rev.0', 0, '2018-03-09 17:51:57', 0, NULL),
+('18-AE-QT-037.Rev.0', 0, '2018-03-09 17:52:40', 0, NULL),
+('18-AE-QT-038.Rev.0', 0, '2018-03-09 17:53:03', 0, NULL),
+('18-AE-QT-039.Rev.0', 0, '2018-03-09 17:54:52', 0, NULL),
+('18-AE-QT-040.Rev.0', 0, '2018-03-09 17:58:37', 0, NULL),
+('18-AE-QT-041.Rev.0', 0, '2018-03-09 17:59:36', 0, NULL),
+('18-AE-QT-042.Rev.0', 0, '2018-03-09 18:02:52', 0, NULL),
+('18-AE-QT-043.Rev.0', 0, '2018-03-09 18:07:43', 0, NULL),
+('18-AE-QT-044.Rev.0', 0, '2018-03-09 18:09:15', 0, NULL),
+('18-AE-QT-045.Rev.0', 0, '2018-03-09 18:28:18', 0, NULL),
+('18-AE-QT-046.Rev.0', 0, '2018-03-09 18:31:39', 0, NULL),
+('18-AE-QT-047.Rev.0', 0, '2018-03-09 18:40:21', 0, NULL),
+('18-AE-QT-048.Rev.0', 0, '2018-03-09 18:40:28', 0, NULL),
+('18-AE-QT-049.Rev.0', 0, '2018-03-09 18:51:20', 0, NULL),
+('18-AE-QT-049.Rev.1', 1, '2018-03-09 18:56:37', 0, '2018-03-09'),
 ('18-SC-QT-026', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.1', 1, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.2', 2, '2018-03-01 19:09:54', 0, NULL),
-('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-03-03'),
-('79797997', 0, '2018-03-04 12:42:16', 1, '2018-02-01');
+('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-03-03');
 
 -- --------------------------------------------------------
 
@@ -471,7 +492,8 @@ CREATE TABLE `qprel` (
 
 INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
 ('18-AE-QT-030.Rev.1', 1),
-('18-AE-QT-035.Rev.1', 2);
+('18-AE-QT-035.Rev.1', 2),
+('18-AE-QT-049.Rev.1', 3);
 
 -- --------------------------------------------------------
 
@@ -503,6 +525,8 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 (1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030.Rev.1'),
 (1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.0'),
 (1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.1'),
+(1, 'qwertyuia', 45, 6, 78, '18-AE-QT-049.Rev.0'),
+(1, 'qwertyuia', 45, 6, 79, '18-AE-QT-049.Rev.1'),
 (2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
 (2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
@@ -510,6 +534,8 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 (2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030'),
 (2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030.Rev.1'),
 (2, 'sdfgsdf', 4353, 34534, 435, '18-AE-QT-035.Rev.1'),
+(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.0'),
+(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.1'),
 (3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
 (3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
@@ -688,7 +714,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
