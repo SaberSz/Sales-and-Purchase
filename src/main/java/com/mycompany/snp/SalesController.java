@@ -594,6 +594,10 @@ public class SalesController implements Initializable {
        
 
     }
+
+    @FXML
+    private void Gen_Invoice(MouseEvent event) {
+    }
     
      enum mths {
             JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
