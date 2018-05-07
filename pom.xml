@@ -45,7 +45,7 @@
     <version>8.40.14</version>
 </dependency>
 
-<!--These are for iText7 -->
+    <!--These are for iText7 -->
 <dependency>
         <groupId>com.itextpdf</groupId>
         <artifactId>kernel</artifactId>
@@ -65,7 +65,21 @@
         <artifactId>layout</artifactId>
         <version>7.0.4</version>
     </dependency>
-    
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>forms</artifactId>
+        <version>7.0.4</version>
+    </dependency>
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>pdfa</artifactId>
+        <version>7.0.4</version>
+    </dependency>
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>pdftest</artifactId>
+        <version>7.0.4</version>
+    </dependency>
     <!-- iText 7 License Key Library -->
   <dependency>
     <groupId>com.itextpdf</groupId>
@@ -78,7 +92,10 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <mainClass>com.mycompany.snp.MainApp</mainClass>
+        
     </properties>
 
     <organization>

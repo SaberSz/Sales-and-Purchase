@@ -1,7 +1,9 @@
 com/mycompany/snp/SalesController$8.class
 com/mycompany/snp/SalesController$mths.class
 com/mycompany/snp/SalesDrawerController.class
+PdfGeneration/pdfQuotation.class
 com/mycompany/snp/SalesController$AnalysisDT2.class
+PdfGeneration/pdfQuotation$Header.class
 Utilities/Date.class
 com/mycompany/snp/Person3.class
 com/mycompany/snp/SalesController$1.class
@@ -16,10 +18,14 @@ com/mycompany/snp/SalesController$AnalysisDT3.class
 com/mycompany/snp/SalesController$7.class
 com/mycompany/snp/SalesController$9.class
 com/mycompany/snp/Person2.class
+PdfGeneration/pdfInvoice$PageXofY.class
 com/mycompany/snp/FXMLController.class
 com/mycompany/snp/SalesController$AnalysisDT1.class
 com/mycompany/snp/SalesController$5.class
 com/mycompany/snp/Person.class
 com/mycompany/snp/MainApp.class
 com/mycompany/snp/SalesController$3.class
+PdfGeneration/pdfQuotation$PageXofY.class
+PdfGeneration/pdfInvoice.class
+PdfGeneration/pdfInvoice$Header.class
 Utilities/AlertBox.class

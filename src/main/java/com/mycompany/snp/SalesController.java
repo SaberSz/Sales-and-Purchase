@@ -597,6 +597,11 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Gen_Invoice(MouseEvent event) {
+        if(Utilities.AlertBox.alertoption("Invoice PDF Generation", "Are you sure you want to generate the PDF file for this Invoice?", "Note that once the pdf is generated we assume that the generated PDF"
+                + " file is sent to the customer")){
+            
+            
+        }
     }
     
      enum mths {
@@ -2153,15 +2158,7 @@ public class SalesController implements Initializable {
       }
     
 }   
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
    public void prj_pie(String d){ 
        ResultSet rs;
           try{
@@ -2246,28 +2243,6 @@ public class SalesController implements Initializable {
 
     }
     
-
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
     public void prj_lc(String d){
                xaxis_pjlc.setLabel("Months");
         yaxis_pjlc.setLabel("Number of Projects");
@@ -2348,11 +2323,6 @@ public class SalesController implements Initializable {
         
         
     }
-
-    
-    
-    
-    
 
     public void prj_xedead(){
          JFXTreeTableColumn<AnalysisDT2, String> pjno = new JFXTreeTableColumn<>("Project Number");
@@ -3180,7 +3150,7 @@ public class SalesController implements Initializable {
 }
 
 
-       void Quotation_insert_into_awin_table(String qo,TableView<Person> tables){//method to insert quotaion details into database for awin
+ void Quotation_insert_into_awin_table(String qo,TableView<Person> tables){//method to insert quotaion details into database for awin
            PreparedStatement stmt;
            try{
 
@@ -3268,7 +3238,7 @@ public class SalesController implements Initializable {
        }
        
        
-       void Quotation_insert_into_steel(String qo,TableView<Person2> tables){//method to insert quotaion details into database for steel
+ void Quotation_insert_into_steel(String qo,TableView<Person2> tables){//method to insert quotaion details into database for steel
    
             PreparedStatement stmt;
              try{
@@ -3352,8 +3322,6 @@ public class SalesController implements Initializable {
     
              }
        
-       
-    
 
     @FXML
     private void Quotation_Save_Button_Clicked_inEnqPane(MouseEvent event) {
