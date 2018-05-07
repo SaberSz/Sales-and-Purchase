@@ -19,9 +19,9 @@ import javafx.stage.Stage;
 
 public class FXMLController implements Initializable {
 
-     public static String category = "";
-     
-     //FXML variables
+    public static String category = "";
+
+    //FXML variables
     @FXML
     private JFXTextField username;
     @FXML
@@ -30,58 +30,43 @@ public class FXMLController implements Initializable {
     private JFXComboBox<String> cate;
     @FXML
     private JFXButton LoginButton;
-    
-   
-    
-    
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-         cate.getItems().add("Sales");
-         cate.getItems().add("Purchase");
-    } 
+        cate.getItems().add("Sales");
+        cate.getItems().add("Purchase");
+    }
 
     @FXML
     private void LoginButtonHit(MouseEvent event) {
-        if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin")||true)
-        {
-            try{
-            category=cate.getValue();
-            if(category.equals("Sales")||true)
-            {
+        if (username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin") || true) {
+            try {
+                category = cate.getValue();
+                if (category.equals("Sales") || true) {
                     //switch to sales controller
                     System.out.println("Hello");
-                    Stage stage; 
+                    Stage stage;
                     Parent root;
-                    stage=(Stage)LoginButton.getScene().getWindow();
+                    stage = (Stage) LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Sales.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-            }
-            else if(category.equals("Production"))
-            {
-                //switch to production controller
-                System.out.println("Hello2");
-            }
-            else
-                {
-                  Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
+                } else if (category.equals("Production")) {
+                    //switch to production controller
+                    System.out.println("Hello2");
+                } else {
+                    Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
                 }
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
                 e.printStackTrace();
             }
+        } else {
+            Utilities.AlertBox.notificationWarn("Error", "Incorrect login credentials.");
         }
-        else
-                {
-                  Utilities.AlertBox.notificationWarn("Error", "Incorrect login credentials.");
-                }
     }
 
 }
-

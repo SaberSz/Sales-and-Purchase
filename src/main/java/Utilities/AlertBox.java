@@ -30,7 +30,6 @@ import org.controlsfx.control.Notifications;
 
 public class AlertBox {
 
-    
     public static void showErrorMessage(Exception ex) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error occured");
@@ -61,50 +60,53 @@ public class AlertBox {
         alert.getDialogPane().setExpandableContent(expContent);
         alert.showAndWait();
     }
-   
-    public static void notificationWarn(String title,String text){
-        Notifications n = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(7))
-                .position(Pos.CENTER);
-       //n.darkStyle();
-       n.showWarning();
-    }
-    public static void notificationInfo(String title,String text){
-        Notifications n = Notifications.create()
-                .title(title)
-                .text(text)
-                .graphic(null)
-                .hideAfter(Duration.seconds(7))
-                .position(Pos.CENTER);
-       n.darkStyle();
-       n.showInformation();
-    }
-    public static boolean alertoption(String title,String header,String content)
-    {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-alert.setTitle(title);
-alert.setHeaderText(header);
-alert.setContentText(content);
 
-Optional<ButtonType> result = alert.showAndWait();
+    public static void notificationWarn(String title, String text) {
+        Notifications n = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(null)
+                .hideAfter(Duration.seconds(7))
+                .position(Pos.CENTER);
+        //n.darkStyle();
+        n.showWarning();
+    }
+
+    public static void notificationInfo(String title, String text) {
+        Notifications n = Notifications.create()
+                .title(title)
+                .text(text)
+                .graphic(null)
+                .hideAfter(Duration.seconds(7))
+                .position(Pos.CENTER);
+        n.darkStyle();
+        n.showInformation();
+    }
+
+    public static boolean alertoption(String title, String header, String content) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
-    public static String alterchoice(String arr[],String Title,String Header,String Content){
+
+    public static String alterchoice(String arr[], String Title, String Header, String Content) {
         List<String> choices = new ArrayList<>();
-        for (String x : arr){
+        for (String x : arr) {
             choices.add(x);
-        } 
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(arr[0], choices);
-            dialog.setTitle(Title);
-            dialog.setHeaderText(Header);
-            dialog.setContentText(Content);
-            Optional<String> result = dialog.showAndWait();
-            if (result.isPresent()){
-                return result.get();
-            }            return "Cancel";
+        }
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(arr[0], choices);
+        dialog.setTitle(Title);
+        dialog.setHeaderText(Header);
+        dialog.setContentText(Content);
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return "Cancel";
 
     }
 
