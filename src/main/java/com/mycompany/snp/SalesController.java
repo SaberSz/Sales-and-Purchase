@@ -5,6 +5,7 @@
  */
 package com.mycompany.snp;
 
+import PdfGeneration.pdfInvoice;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDrawer;
@@ -51,6 +52,7 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.util.HashMap;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -587,8 +589,122 @@ public class SalesController implements Initializable {
     private void Gen_Invoice(MouseEvent event) {
         if (Utilities.AlertBox.alertoption("Invoice PDF Generation", "Are you sure you want to generate the PDF file for this Invoice?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
+            if (Invoice_Save_InvPane()) {
+                if (inv_cmp.getText().toLowerCase().equals("steels")) {
+                    try {
+                        HashMap<String, Object> hm = new HashMap<String, Object>();
+                        hm.put("Invoice Number", inv_no.getText());
+                        hm.put("Date", Utilities.Date.Date());
+                        hm.put("Salesperson", inv_sp.getText().trim());
+                        hm.put("Termofpay", inv_tum.getText().trim());
+                        hm.put("ProjectNo", Integer.valueOf(combopno).toString());
+                        hm.put("POno", inv_po.getText());
+                        String inv_to1[] = inv_to.getText().split("\\r?\\n");
+                        hm.put("toAddress", inv_to1);
+                        hm.put("Total", Double.valueOf(inv_total.getText()));
+                        hm.put("GST", Float.valueOf(inv_gst.getText()));
+                        ObservableList<Person3> trc;
+                        trc = FXCollections.observableArrayList(inv_newtable.getItems());
+                        hm.put("TableItems", trc);
+                        new PdfGeneration.pdfInvoice(hm);
+                    } catch (Exception e) {
+
+                        Utilities.AlertBox.showErrorMessage(e);
+
+                    }
+                }
+            }
 
         }
+    }
+
+    boolean Invoice_Save_InvPane() {
+        try {
+            if (inv_sp.getText().isEmpty() || inv_tum.getText().isEmpty() || inv_acc.getText().isEmpty()) {
+                Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+                return false;
+            } else {
+
+                try {
+
+                    String sql = "DELETE FROM `invoice` WHERE INo=?";
+
+                    PreparedStatement ps;
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                    ps.setString(1, inv_no.getText());
+                    ps.executeUpdate();
+
+                    String ql = "INSERT INTO `invoice`(`INo`, `Total_amt`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`) VALUES (?,?,?,?,?,?)";
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(ql);
+                    ps.setString(1, inv_no.getText());
+                    ps.setDouble(2, Double.valueOf(inv_total.getText()));
+                    //ps.setString(3,.getValue());//pdf generation date will be used.
+
+                    ps.setString(3, inv_sp.getText().trim());
+                    ps.setString(4, inv_acc.getText().trim());
+                    ps.setString(5, inv_tum.getText().trim());
+                    ps.setFloat(6, Float.valueOf(inv_gst.getText()));
+                    ps.executeUpdate();
+
+                    String sl = "INSERT INTO `pirel`(`PjNo`, `INo`) VALUES (?,?)";
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sl);
+                    ps.setString(2, inv_no.getText());
+                    ps.setInt(1, combopno);
+                    ps.executeUpdate();
+                    ObservableList<Person3> trc;
+                    trc = FXCollections.observableArrayList(inv_newtable.getItems());
+                    trc.add(new Person3("", "", "", "", ""));
+                    int i = 0;
+                    System.out.println("Hello");
+                    while (i < 20) {
+                        Person3 pe = trc.get(i);
+                        if (pe.getItemNo().getText().trim().equalsIgnoreCase("")) {
+                            System.out.println("HelloOut");
+                            break;
+                        } else {
+                            /* System.out.print(p.getFirstName().getText()+"\t");
+                        System.out.print(p.getLastName().getText()+"\t");
+                        System.out.print(p.getEmail().getText()+"\t");
+                        System.out.print(p.getRemark().getText()+"\t");
+                        System.out.println(p.getTotal().getText()+"\t");
+                             */
+
+                            String d = pe.getItemNo().getText();
+                            String q = pe.getDes().getText();
+                            String r = pe.getQty().getText();
+                            float s = Float.valueOf(pe.getUnitPrice().getText());
+                            double h = Double.valueOf(pe.getTotal().getText());
+                            String sq = "INSERT INTO `invoice_details`(`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES (?,?,?,?,?,?)";
+                            ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                            ps.setString(1, d);
+                            ps.setString(2, q);
+                            ps.setString(3, r);
+                            ps.setFloat(4, s);
+                            ps.setDouble(5, h);
+                            ps.setString(6, inv_no.getText());
+                            ps.executeUpdate();
+
+                        }
+                        i++;
+                    }
+                    Utilities.AlertBox.notificationInfo("Success", "Invoice details have been saved.");
+                    return true;
+
+                } catch (Exception e) {
+                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                    Utilities.AlertBox.showErrorMessage(e);
+                    Utilities.AlertBox.notificationWarn("Error", "Error in invoice generation");
+                    return false;
+                }
+
+            }
+        } catch (Exception e) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+            Utilities.AlertBox.showErrorMessage(e);
+            Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+            return false;
+        }
+
     }
 
     enum mths {
@@ -3832,89 +3948,7 @@ public class SalesController implements Initializable {
     private JFXTextField inv_amt;
         
          */
-        try {
-            if (inv_sp.getText().isEmpty() || inv_tum.getText().isEmpty() || inv_acc.getText().isEmpty()) {
-                Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
-            } else {
-
-                try {
-
-                    String sql = "DELETE FROM `invoice` WHERE INo=?";
-
-                    PreparedStatement ps;
-                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                    ps.setString(1, inv_no.getText());
-                    ps.executeUpdate();
-
-                    String ql = "INSERT INTO `invoice`(`INo`, `Total_amt`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`) VALUES (?,?,?,?,?,?)";
-                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(ql);
-                    ps.setString(1, inv_no.getText());
-                    ps.setDouble(2, Double.valueOf(inv_total.getText()));
-                    //ps.setString(3,.getValue());//pdf generation date will be used.
-
-                    ps.setString(3, inv_sp.getText().trim());
-                    ps.setString(4, inv_acc.getText().trim());
-                    ps.setString(5, inv_tum.getText().trim());
-                    ps.setFloat(6, Float.valueOf(inv_gst.getText()));
-                    ps.executeUpdate();
-
-                    String sl = "INSERT INTO `pirel`(`PjNo`, `INo`) VALUES (?,?)";
-                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sl);
-                    ps.setString(2, inv_no.getText());
-                    ps.setInt(1, combopno);
-                    ps.executeUpdate();
-                    ObservableList<Person3> trc;
-                    trc = FXCollections.observableArrayList(inv_newtable.getItems());
-                    trc.add(new Person3("", "", "", "", ""));
-                    int i = 0;
-                    System.out.println("Hello");
-                    while (i < 20) {
-                        Person3 pe = trc.get(i);
-                        if (pe.getItemNo().getText().trim().equalsIgnoreCase("")) {
-                            System.out.println("HelloOut");
-                            break;
-                        } else {
-                            /* System.out.print(p.getFirstName().getText()+"\t");
-                        System.out.print(p.getLastName().getText()+"\t");
-                        System.out.print(p.getEmail().getText()+"\t");
-                        System.out.print(p.getRemark().getText()+"\t");
-                        System.out.println(p.getTotal().getText()+"\t");
-                             */
-                            System.out.println("HelloIN");
-
-                            String d = pe.getItemNo().getText();
-                            String q = pe.getDes().getText();
-                            String r = pe.getQty().getText();
-                            float s = Float.valueOf(pe.getUnitPrice().getText());
-                            double h = Double.valueOf(pe.getTotal().getText());
-                            String sq = "INSERT INTO `invoice_details`(`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES (?,?,?,?,?,?)";
-                            ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
-                            ps.setString(1, d);
-                            ps.setString(2, q);
-                            ps.setString(3, r);
-                            ps.setFloat(4, s);
-                            ps.setDouble(5, h);
-                            ps.setString(6, inv_no.getText());
-                            ps.executeUpdate();
-                            System.out.println("HelloIn2");
-
-                        }
-                        i++;
-                    }
-                    Utilities.AlertBox.notificationInfo("Success", "Invoice details have been saved.");
-
-                } catch (Exception e) {
-                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
-                    Utilities.AlertBox.showErrorMessage(e);
-                    Utilities.AlertBox.notificationWarn("Error", "Error in invoice generation");
-                }
-
-            }
-        } catch (Exception e) {
-            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
-            Utilities.AlertBox.showErrorMessage(e);
-            Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
-        }
+        Invoice_Save_InvPane();
     }
 
     @FXML

@@ -47,23 +47,26 @@ import com.itextpdf.test.annotations.WrapToTest;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WrapToTest
-class pdfInvoice {
+public class pdfInvoice {
 
     static int pgnotot = 0;
     protected PdfFormXObject template;
     public static final String DEST = "results/chapter01/hello_world1.pdf";
 
-    public void pdfInvoice() throws IOException {
-        File file = new File(DEST);
+    public pdfInvoice(HashMap<String, Object> hm) throws IOException {
+        
+         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        createPdf(DEST);
+        createPdf(DEST,hm);
     }
 
-    public void createPdf(String dest) throws IOException {
+
+    public void createPdf(String dest,HashMap<String,Object> hm) throws IOException {
         //Initialize PDF writer
         PdfWriter writer = new PdfWriter(dest);
 
@@ -125,9 +128,9 @@ class pdfInvoice {
         Paragraph row2 = new Paragraph().add(p1).add(o1).add(p2).add(o1).add(p3);
         document.add(row2);
 
-        //Paragraph o2 = new Paragraph("\n");
+        Paragraph o2 = new Paragraph("\n");
         o1.setMarginLeft(17);//increase this value for increase in space
-        //document.add(o2);
+        document.add(o2);
 
         //table formation
         float[] columnWidths = {1, 3, 1, 1, 1};
