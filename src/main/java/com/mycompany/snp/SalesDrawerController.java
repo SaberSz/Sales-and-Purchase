@@ -24,33 +24,33 @@ public class SalesDrawerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     @FXML
     private void newEnqHit(MouseEvent event) {
-        SalesController.SD[0]=true;
+        SalesController.SD[0] = true;
         //new SalesController().enqpane();
         //SalesController.s.enqpane();
     }
 
     @FXML
     private void QoutHit(MouseEvent event) {
-        SalesController.SD[2]=true;
+        SalesController.SD[2] = true;
     }
 
     @FXML
     private void newPOHit(MouseEvent event) {
-        SalesController.SD[3]=true;
+        SalesController.SD[3] = true;
     }
 
     @FXML
     private void oldPOHit(MouseEvent event) {
-        SalesController.SD[4]=true;
+        SalesController.SD[4] = true;
     }
 
     @FXML
     private void InvoiceHit(MouseEvent event) {
-        SalesController.SD[5]=true;
+        SalesController.SD[5] = true;
     }
-    
+
 }

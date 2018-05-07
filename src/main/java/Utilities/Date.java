@@ -10,13 +10,13 @@ package Utilities;
  * @author rudolf
  */
 public class Date {
-    public static String Date()
-    {
+
+    public static String Date() {
         java.util.Date javaDate = new java.util.Date();
         long javaTime = javaDate.getTime();
         java.sql.Date sqlDate = new java.sql.Date(javaTime);
-        System.out.println(" DATE : " +sqlDate.toString());
+        System.out.println(" DATE : " + sqlDate.toString());
         return sqlDate.toString();
     }
-    
+
 }

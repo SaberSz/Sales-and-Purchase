@@ -8,77 +8,94 @@
     <packaging>jar</packaging>
     
     <repositories>
-    <repository>
-        <id>itext-releases</id>
-        <name>iText Repository - releases</name>
-        <url>https://repo.itextsupport.com/releases</url>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-    </repository>
-</repositories> 
+        <repository>
+            <id>itext-releases</id>
+            <name>iText Repository - releases</name>
+            <url>https://repo.itextsupport.com/releases</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories> 
 
- <dependencies>
+    <dependencies>
         <dependency>
             <groupId>com.jfoenix</groupId>
             <artifactId>jfoenix</artifactId>
             <version>8.0.1</version>
         </dependency>
         <dependency>
-  <groupId>de.jensd</groupId>
-  <artifactId>fontawesomefx</artifactId>
-  <version>8.9</version>
-</dependency>
-<dependency>
-    <groupId>commons-lang</groupId>
-    <artifactId>commons-lang</artifactId>
-    <version>3.7</version>
-</dependency>
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>5.1.5</version>
-</dependency>
-<dependency>
-    <groupId>org.controlsfx</groupId>
-    <artifactId>controlsfx</artifactId>
-    <version>8.40.14</version>
-</dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx</artifactId>
+            <version>8.9</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>3.7</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.14</version>
+        </dependency>
 
-<!--These are for iText7 -->
-<dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>kernel</artifactId>
-        <version>7.0.4</version>
-    </dependency>
+        <!--These are for iText7 -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>7.0.4</version>
+        </dependency>
 
-    <!-- always needed -->
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>io</artifactId>
-        <version>7.0.4</version>
-    </dependency>
+        <!-- always needed -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>7.0.4</version>
+        </dependency>
 
-    <!-- always needed -->
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>layout</artifactId>
-        <version>7.0.4</version>
-    </dependency>
-    
-    <!-- iText 7 License Key Library -->
-  <dependency>
-    <groupId>com.itextpdf</groupId>
-    <artifactId>itext-licensekey</artifactId>
-    <version>3.0.0</version>
-  </dependency>
+        <!-- always needed -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>7.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>forms</artifactId>
+            <version>7.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdfa</artifactId>
+            <version>7.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdftest</artifactId>
+            <version>7.0.4</version>
+        </dependency>
+        <!-- iText 7 License Key Library -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-licensekey</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
- </dependencies>
+    </dependencies>
     <name>SNP</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <mainClass>com.mycompany.snp.MainApp</mainClass>
+        
     </properties>
 
     <organization>
@@ -148,15 +165,15 @@
                     </execution>
                 </executions>  
             </plugin>
-             <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.3</version>
-            <configuration>
-                <source>1.8</source>
-                <target>1.8</target>
-            </configuration>
-        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

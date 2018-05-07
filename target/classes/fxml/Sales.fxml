@@ -178,7 +178,7 @@
                                       </yAxis>
                                     </BarChart>
                                     <PieChart fx:id="enq_pie" layoutX="703.0" layoutY="418.0" prefHeight="226.0" prefWidth="437.0" style="-fx-background-size: 5em; -fx-border-radius: 20em;" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="13.0" />
-                                    <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="677.0" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="14.0">
+                                    <LineChart fx:id="enq_line" layoutX="14.0" layoutY="380.0" prefHeight="241.0" prefWidth="665.0" style="-fx-background-color: rgb(146,156,213);" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="14.0">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="xaxis_lc" />
                                       </xAxis>
@@ -208,7 +208,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <LineChart fx:id="qno_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="16.0">
+                                    <LineChart fx:id="qno_line" layoutX="16.0" layoutY="379.0" prefHeight="235.0" prefWidth="662.0" style="-fx-background-color: rgb(146,156,213);" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="16.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_lc1" />
                                        </xAxis>
@@ -242,7 +242,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <LineChart fx:id="proj_line" layoutX="16.0" layoutY="379.0" prefHeight="240.0" prefWidth="662.0" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="16.0">
+                                    <LineChart fx:id="proj_line" layoutX="16.0" layoutY="379.0" prefHeight="240.0" prefWidth="662.0" style="-fx-background-color: rgb(146,156,213);" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="16.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_pjlc" />
                                        </xAxis>
@@ -276,7 +276,7 @@
                                           <Font name="Arial" size="13.0" />
                                        </font>
                                     </Label>
-                                    <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="254.0" prefWidth="662.0" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
+                                    <LineChart fx:id="inv_line" layoutX="16.0" layoutY="379.0" prefHeight="254.0" prefWidth="662.0" style="-fx-background-color: rgb(146,156,213);" stylesheets="@../styles/Styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="16.0">
                                        <xAxis>
                                           <CategoryAxis side="BOTTOM" fx:id="xaxis_inv" />
                                        </xAxis>
@@ -357,16 +357,8 @@
             </AnchorPane>
             <ScrollPane fx:id="InvoicePane" layoutX="-7.0" prefHeight="680.0" prefWidth="1209.0">
                <content>
-                  <AnchorPane prefHeight="678.0" prefWidth="1200.0">
+                  <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                      <children>
-                        <ImageView fitHeight="681.0" fitWidth="1193.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@Images/sales.jpg" />
-                           </image>
-                           <effect>
-                              <GaussianBlur />
-                           </effect>
-                        </ImageView>
                         <Label layoutX="20.0" layoutY="14.0" prefHeight="20.0" prefWidth="82.0" text="Invoice">
                            <font>
                               <Font name="Arial" size="20.0" />
@@ -421,7 +413,7 @@
                               <JFXTextField fx:id="inv_amt" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="935.0" layoutY="581.0" prefHeight="27.0" prefWidth="238.0" promptText="Amount Due" />
                               <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="1101.0" layoutY="711.0" onMouseClicked="#Invoice_Save_Button_Clicked_inInvPane" text="Save">
                                  <graphic>
-                                    <MaterialDesignIconView fill="#3f51b5" glyphName="CONTENT_SAVE" size="30" />
+                                    <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                                  </graphic>
                               </JFXButton>
                               <Label layoutX="1046.0" layoutY="716.0" onMouseClicked="#Gen_Invoice">
@@ -510,11 +502,11 @@
                   </AnchorPane>
                </content>
             </ScrollPane>
-            <ScrollPane fx:id="newEqPane" disable="true" hbarPolicy="NEVER" layoutX="-7.0" layoutY="-1.0" pannable="true" prefHeight="680.0" prefWidth="1209.0" visible="false">
+            <ScrollPane fx:id="newEqPane" disable="true" layoutX="-7.0" layoutY="-1.0" pannable="true" prefHeight="680.0" prefWidth="1209.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
                   <AnchorPane>
                      <children>
-                        <AnchorPane fx:id="eq_newpane" prefHeight="1677.0" prefWidth="1202.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
+                        <AnchorPane fx:id="eq_newpane" prefHeight="1677.0" prefWidth="1202.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="24.0" layoutY="72.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
                               <JFXTextField fx:id="ENo" labelFloat="true" layoutX="25.0" layoutY="151.0" prefHeight="27.0" prefWidth="236.0" promptText="Enquiry Number">
