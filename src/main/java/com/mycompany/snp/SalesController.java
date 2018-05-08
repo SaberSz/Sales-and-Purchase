@@ -590,7 +590,7 @@ public class SalesController implements Initializable {
         if (Utilities.AlertBox.alertoption("Invoice PDF Generation", "Are you sure you want to generate the PDF file for this Invoice?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
             if (Invoice_Save_InvPane()) {
-                if (inv_cmp.getText().toLowerCase().equals("steels")) {
+                if (inv_cmp.getText().toLowerCase().equals("steels")||true) {
                     try {
                         HashMap<String, Object> hm = new HashMap<String, Object>();
                         hm.put("Invoice Number", inv_no.getText());
@@ -599,10 +599,9 @@ public class SalesController implements Initializable {
                         hm.put("Termofpay", inv_tum.getText().trim());
                         hm.put("ProjectNo", Integer.valueOf(combopno).toString());
                         hm.put("POno", inv_po.getText());
-                        String inv_to1[] = inv_to.getText().split("\\r?\\n");
-                        hm.put("toAddress", inv_to1);
-                        hm.put("Total", Double.valueOf(inv_total.getText()));
-                        hm.put("GST", Float.valueOf(inv_gst.getText()));
+                        hm.put("toAddress", inv_to.getText());
+                        hm.put("Total", inv_total.getText());
+                        hm.put("GST", inv_gst.getText());
                         ObservableList<Person3> trc;
                         trc = FXCollections.observableArrayList(inv_newtable.getItems());
                         hm.put("TableItems", trc);
