@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person2.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\MainApp.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\FXMLController.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesDrawerController.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\DBMS\Connect.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\Date.java
+C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
+=======
 /Users/dylan/NetBeansProjects/SNP/src/main/java/PdfGeneration/pdfQuotation.java
 /Users/dylan/NetBeansProjects/SNP/src/main/java/Utilities/AlertBox.java
 /Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/FXMLController.java
@@ -10,3 +22,4 @@
 /Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person2.java
 /Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person.java
 /Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person3.java
+>>>>>>> 8f0a89598387d342584753a1076cd40abaff7133
