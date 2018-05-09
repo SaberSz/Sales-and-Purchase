@@ -1,71 +1,4 @@
 Manifest-Version: 1.0
-<<<<<<< HEAD
-Implementation-Title: ControlsFX
-Bundle-Description: High quality UI controls and other tools to comple
- ment the core JavaFX distribution
-Bundle-SymbolicName: org.controlsfx
-Implementation-Version: 8.40.14
-Bundle-ManifestVersion: 2
-Bnd-LastModified: 1506289333000
-Specification-Title: Java Version 8 Update 40
-Import-Package: com.sun.javafx.collections,com.sun.javafx.css,com.sun.
- javafx.css.converters,com.sun.javafx.event,com.sun.javafx.runtime,com
- .sun.javafx.scene.control,com.sun.javafx.scene.control.behavior,com.s
- un.javafx.scene.control.skin,com.sun.javafx.scene.text,com.sun.javafx
- .scene.traversal,com.sun.javafx.webkit,com.sun.webkit,javafx.animatio
- n,javafx.application,javafx.beans,javafx.beans.binding,javafx.beans.p
- roperty,javafx.beans.value,javafx.collections,javafx.collections.tran
- sformation,javafx.concurrent,javafx.css,javafx.event,javafx.geometry,
- javafx.scene,javafx.scene.chart,javafx.scene.control,javafx.scene.con
- trol.cell,javafx.scene.image,javafx.scene.input,javafx.scene.layout,j
- avafx.scene.media,javafx.scene.paint,javafx.scene.shape,javafx.scene.
- text,javafx.scene.transform,javafx.scene.web,javafx.stage,javafx.util
- ,javafx.util.converter,javax.swing,javax.swing.table
-Require-Capability: osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))"
-Tool: Bnd-3.2.0.201605172007
-Export-Package: org.controlsfx.control;uses:="javafx.beans.property,ja
- vafx.beans.value,javafx.collections,javafx.concurrent,javafx.css,java
- fx.event,javafx.geometry,javafx.scene,javafx.scene.control,javafx.sce
- ne.image,javafx.scene.input,javafx.scene.layout,javafx.scene.paint,ja
- vafx.scene.shape,javafx.stage,javafx.util,org.controlsfx.control.acti
- on,org.controlsfx.property.editor",org.controlsfx.control.action;uses
- :="javafx.beans,javafx.beans.property,javafx.collections,javafx.event
- ,javafx.scene,javafx.scene.control,javafx.scene.input,org.controlsfx.
- control",org.controlsfx.control.cell;uses:="javafx.scene.image,javafx
- .scene.media,javafx.scene.paint,org.controlsfx.control",org.controlsf
- x.control.decoration;uses:="javafx.collections,javafx.geometry,javafx
- .scene",org.controlsfx.control.spreadsheet;uses:="javafx.beans.proper
- ty,javafx.collections,javafx.event,javafx.scene,javafx.scene.control,
- javafx.util,javafx.util.converter",org.controlsfx.control.table;uses:
- ="javafx.beans.property,javafx.collections,javafx.collections.transfo
- rmation,javafx.scene,javafx.scene.control,javafx.util",org.controlsfx
- .control.table.model,org.controlsfx.control.textfield;uses:="javafx.b
- eans.property,javafx.event,javafx.scene,javafx.scene.control,javafx.u
- til",org.controlsfx.dialog;uses:="javafx.beans.property,javafx.collec
- tions,javafx.concurrent,javafx.scene,javafx.scene.control,javafx.scen
- e.text,javafx.util",org.controlsfx.glyphfont;uses:="javafx.beans.prop
- erty,javafx.scene.control,javafx.scene.paint,org.controlsfx.tools",or
- g.controlsfx.property;uses:="javafx.beans.value,javafx.collections,or
- g.controlsfx.control,org.controlsfx.property.editor",org.controlsfx.p
- roperty.editor;uses:="javafx.beans.value,javafx.scene,javafx.util,org
- .controlsfx.control",org.controlsfx.tools;uses:="javafx.beans.value,j
- avafx.scene,javafx.scene.control,javafx.scene.layout,javafx.scene.pai
- nt,javafx.stage,javafx.util",org.controlsfx.validation;uses:="javafx.
- beans.property,javafx.scene.control,org.controlsfx.validation.decorat
- ion",org.controlsfx.validation.decoration;uses:="javafx.scene,javafx.
- scene.control,org.controlsfx.control.decoration,org.controlsfx.valida
- tion"
-Bundle-Name: ControlsFX
-Bundle-Version: 8.40.14
-Private-Package: impl.build.transifex,impl.org.controlsfx,impl.org.con
- trolsfx.autocompletion,impl.org.controlsfx.behavior,impl.org.controls
- fx.i18n,impl.org.controlsfx.skin,impl.org.controlsfx.spreadsheet,impl
- .org.controlsfx.table,impl.org.controlsfx.tools,impl.org.controlsfx.t
- ools.rectangle,impl.org.controlsfx.tools.rectangle.change,impl.org.co
- ntrolsfx.version,impl.org.controlsfx.worldmap
-Created-By: 1.8.0_131 (Oracle Corporation)
-Specification-Version: 8.40.14
-=======
 Export-Package: ch.qos.logback.classic;version="1.1.3";uses:="ch.qos.l
  ogback.classic.spi,ch.qos.logback.classic.turbo,ch.qos.logback.core,c
  h.qos.logback.core.pattern,ch.qos.logback.core.spi,ch.qos.logback.cor
@@ -170,5 +103,4 @@ Import-Package: sun.reflect;resolution:=optional,javax.jms;resolution:
  ack.core.rolling;version="[1.1,2)"
 Originally-Created-By: Apache Maven Bundle Plugin
 Archiver-Version: Plexus Archiver
->>>>>>> 8f0a89598387d342584753a1076cd40abaff7133
 
