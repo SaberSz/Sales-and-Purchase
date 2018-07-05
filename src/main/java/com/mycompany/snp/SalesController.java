@@ -870,18 +870,22 @@ public class SalesController implements Initializable {
             }
         });
         inv_total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            try{
             if (!newValue.matches("\\d*")) {
                 inv_total.setText(newValue.replaceAll("[^\\d]", ""));
             } else {
-                if (inv_total.getText().equals("")) {
+                if (inv_total.getText().isEmpty()) {
                     inv_gst.setText("0");
                     inv_amt.setText("0");
 
                 } else {
-
                     inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText()) * (Float.valueOf(comp_inv_gst) / 100)) * 100d) / 100d));//Math.round(value * 100000d) / 100000d
                     inv_amt.setText(String.valueOf(Float.valueOf(inv_total.getText()) + Float.valueOf(inv_gst.getText())));
                 }
+            }
+            }
+            catch(Exception e){
+                
             }
         });
         /**
@@ -4082,7 +4086,7 @@ public class SalesController implements Initializable {
         eq_delpane1.setVisible(false);
         eq_delpane1.setDisable(true);
     }
-    String comp_inv_gst = "";
+    static String comp_inv_gst = "";
     static int combopno;
 
     @FXML
@@ -4271,7 +4275,7 @@ public class SalesController implements Initializable {
         ResultSet rs;
 
         try {
-
+            
             String sl = "SELECT i.`INo`, i.`Total_amt`, "
                     + "                     i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
                     + "                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email,i.`addedgst` FROM "
@@ -4298,6 +4302,7 @@ public class SalesController implements Initializable {
                 inv_amt.setText(total_and_gst.toString());
                 inv_to.setText(rs.getString(10) + "\n\n" + rs.getString(11) + "\n\n" + rs.getString(13) + "\n\n" + rs.getString(12));
             }
+            String compname=inv_cmp.getText();
             sl = "SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` i WHERE i.invno=?";
             ps = com.mycompany.snp.MainApp.conn.prepareStatement(sl);
             ps.setString(1, inv_invbox.getValue());
@@ -4315,6 +4320,20 @@ public class SalesController implements Initializable {
             inv_newtable.getColumns().clear();
             newInvoicePane_PriceBoxFill(inv_newtable, data);
             insideINVPane.setEffect(new ColorAdjust());
+            if (compname.equalsIgnoreCase("AE")||compname.equalsIgnoreCase("awin")) {
+                String ss = "SELECT `GST` FROM `company` WHERE cmpname like \"AWIN%\";";
+                ps = com.mycompany.snp.MainApp.conn.prepareStatement(ss);
+                ResultSet ri = ps.executeQuery();
+                ri.next();
+                comp_inv_gst = ri.getString(1);
+
+            } else {
+                String ss = "SELECT `GST` FROM `company` WHERE cmpname like \"STEEL%\";";
+                ps = com.mycompany.snp.MainApp.conn.prepareStatement(ss);
+                ResultSet ri = ps.executeQuery();
+                ri.next();
+                comp_inv_gst = ri.getString(1);
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);

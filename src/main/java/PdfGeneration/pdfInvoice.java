@@ -48,6 +48,7 @@ import com.mycompany.snp.Person3;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -77,10 +78,11 @@ public class pdfInvoice {
     public static String DEST = "results/Invoice/Steel/";
 
     public pdfInvoice(HashMap<String, Object> hm) throws IOException {
-
+        DEST = "results/Invoice/Steel/";
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        DEST = DEST + hm.get("Invoice Number")+".pdf";
+        DEST = DEST + hm.get("Invoice Number") + ".pdf";
+        System.out.println(DEST);
         createPdf(DEST, hm);
     }
 
@@ -147,7 +149,7 @@ public class pdfInvoice {
         Paragraph o2 = new Paragraph("\n");
         o1.setMarginLeft(17);//increase this value for increase in space
         document.add(o2);
-
+        DecimalFormat df = new DecimalFormat("#.00");
         //table formation
         float[] columnWidths = {1, 3, 1, 1, 1};
         Table table = new Table(columnWidths);
@@ -212,7 +214,7 @@ public class pdfInvoice {
         Cell tem = new Cell(1, 1)
                 .add(new Paragraph("Terms of payment:").setFont(f).setFontSize(8));
         Cell jo1 = new Cell(1, 1)
-                .add(new Paragraph((String) hm.get("Termofpay")).setFont(f1).setFontSize(8));
+                .add(new Paragraph((String) hm.get("Termofpay") + " days").setFont(f1).setFontSize(8));
         Cell kp = new Cell(1, 2).add(new Paragraph("Page No 1 of 1").setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8));
         in1.addCell(inv).addCell(d).addCell(so).addCell(sp).addCell(jo).addCell(pjo).addCell(pjno1)
                 .addCell(tem).addCell(jo1).addCell(kp);
@@ -236,34 +238,46 @@ public class pdfInvoice {
         table.addCell(new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Unit Price (SGD)").setFont(f).setFontSize(8))));
         table.addCell(new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Total Price (SGD)").setFont(f).setFontSize(8))));
         ObservableList<Person3> trc = (ObservableList) hm.get("TableItems");
-        ListIterator<Person3> li=trc.listIterator();
-        while(li.hasNext()){
-            Person3 pe=li.next();
-        table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getItemNo().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
-        table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getDes().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f1).setFontSize(8)));
-        table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getQty().getText()).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
-        table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$"+pe.getUnitPrice().getText()).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
-        table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$"+pe.getTotal().getText()).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
+        ListIterator<Person3> li = trc.listIterator();
+        int draw_constant = 28;
+        int draw_counter = -1;
+        while (li.hasNext()) {
+            Person3 pe = li.next();
+            if (pe.getItemNo().getText().isEmpty()) {
+                break;
+            }
+            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getItemNo().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getDes().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f1).setFontSize(8)));
+            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getQty().getText()).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
+            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$" + df.format(Double.valueOf(pe.getUnitPrice().getText()))).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
+            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$" + df.format(Double.valueOf(pe.getTotal().getText()))).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
+            draw_counter++;
         }
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < (4 - draw_counter); j++) {
             for (int i = 0; i < 5; i++) {
                 table.addCell(new Cell(1, 1).setPadding(12).add(new Paragraph().add(new Text("\t")).setTextAlignment(TextAlignment.CENTER).setFont(f1).setFontSize(8)));
             }
         }
+        //df.format(Double.valueOf(pe.getTotal().getText()));//pe.getUnitPrice().getText()
         Color magentaColor = new DeviceCmyk(0.f, 0.f, 0.f, 1.f);
 //        (Double.valueOf((Double)hm.get("Total"))
         //table.addCell(new Cell(1,3).add(ti).setBorder(Border.NO_BORDER).setPadding(0));
+
+        Double s1 = Utilities.NumUtil.round(Double.valueOf((Double) hm.get("Total")), 2);
+        Float s12 = Utilities.NumUtil.round(Float.valueOf((Float) hm.get("GST")), 2);
+        Double s123 = Utilities.NumUtil.round(Double.valueOf((Double) hm.get("Total") + (Float) hm.get("GST")), 2);
+
         Table t1 = new Table(new float[]{3, 2, 1});
         t1.setWidthPercent(100);
         PdfFont f2 = PdfFontFactory.createFont("arial-narrow/ARIALNBI.TTF", PdfEncodings.IDENTITY_H, true);
         t1.addCell(new Cell(3, 1).setVerticalAlignment(VerticalAlignment.MIDDLE).setWidth(250).add(new Paragraph("Note. Any discrepancy in the invoice or the time sheet shall be "
                 + "brought to our notice within 48 hours of submission of the invoice.").setFont(f2).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Total").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph(hm.get("Total").toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s1)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Add GST 7%").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph(hm.get("GST").toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s12)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Amount Due").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph(Double.valueOf((Double)hm.get("Total")+(Float)hm.get("GST")).toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s123)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
 
         Cell c = new Cell(1, 5).add(t1).setBorder(Border.NO_BORDER).setPadding(0);
 
@@ -285,10 +299,12 @@ public class pdfInvoice {
 
         System.out.println();
         System.out.println(pdf.getNumberOfPages());
-        PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
-        canvas.setStrokeColor(magentaColor)
-                .moveTo(55, 395).lineTo(550, 320).closePathStroke();
-
+        if (draw_counter < 4) {
+            PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
+            int yaxis = 413 - draw_constant * draw_counter;
+            canvas.setStrokeColor(magentaColor)
+                    .moveTo(55, yaxis).lineTo(546, 329).closePathStroke();//moveTo(55, 413).lineTo(546, 329).closePathStroke();//419-395
+        }
         /* Paragraph r1=new Paragraph("Offer").setTextAlignment(TextAlignment.RIGHT )
                 .setFont(PdfFontFactory.createFont("trebuchet-ms/trebucbd.ttf", PdfEncodings.IDENTITY_H, true))
                 .setFontSize(12);

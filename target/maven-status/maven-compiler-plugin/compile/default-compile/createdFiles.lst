@@ -28,4 +28,5 @@ com/mycompany/snp/SalesController$3.class
 PdfGeneration/pdfQuotation$PageXofY.class
 PdfGeneration/pdfInvoice.class
 PdfGeneration/pdfInvoice$Header.class
+Utilities/NumUtil.class
 Utilities/AlertBox.class
