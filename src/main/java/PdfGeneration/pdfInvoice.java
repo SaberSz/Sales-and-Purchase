@@ -80,7 +80,7 @@ public class pdfInvoice {
 
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        DEST = DEST + hm.get("Invoice Number");
+        DEST = DEST + hm.get("Invoice Number")+".pdf";
         createPdf(DEST, hm);
     }
 
@@ -251,7 +251,7 @@ public class pdfInvoice {
             }
         }
         Color magentaColor = new DeviceCmyk(0.f, 0.f, 0.f, 1.f);
-
+//        (Double.valueOf((Double)hm.get("Total"))
         //table.addCell(new Cell(1,3).add(ti).setBorder(Border.NO_BORDER).setPadding(0));
         Table t1 = new Table(new float[]{3, 2, 1});
         t1.setWidthPercent(100);
@@ -259,9 +259,9 @@ public class pdfInvoice {
         t1.addCell(new Cell(3, 1).setVerticalAlignment(VerticalAlignment.MIDDLE).setWidth(250).add(new Paragraph("Note. Any discrepancy in the invoice or the time sheet shall be "
                 + "brought to our notice within 48 hours of submission of the invoice.").setFont(f2).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Total").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph(Double.valueOf((Double)hm.get("Total")).toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+        t1.addCell(new Cell(1, 1).add(new Paragraph(hm.get("Total").toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Add GST 7%").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph(Float.valueOf((Float)hm.get("GST")).toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
+        t1.addCell(new Cell(1, 1).add(new Paragraph(hm.get("GST").toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
         t1.addCell(new Cell(1, 1).setWidth(191.3f).add(new Paragraph("Amount Due").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
         t1.addCell(new Cell(1, 1).add(new Paragraph(Double.valueOf((Double)hm.get("Total")+(Float)hm.get("GST")).toString()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
 

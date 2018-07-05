@@ -600,8 +600,8 @@ public class SalesController implements Initializable {
                         hm.put("ProjectNo", Integer.valueOf(combopno).toString());
                         hm.put("POno", inv_po.getText());
                         hm.put("toAddress", inv_to.getText());
-                        hm.put("Total", inv_total.getText());
-                        hm.put("GST", inv_gst.getText());
+                        hm.put("Total", Double.valueOf(inv_total.getText()));
+                        hm.put("GST", Float.valueOf(inv_gst.getText()));
                         ObservableList<Person3> trc;
                         trc = FXCollections.observableArrayList(inv_newtable.getItems());
                         hm.put("TableItems", trc);
@@ -4274,7 +4274,7 @@ public class SalesController implements Initializable {
 
             String sl = "SELECT i.`INo`, i.`Total_amt`, "
                     + "                     i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
-                    + "                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email FROM "
+                    + "                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email,i.`addedgst` FROM "
                     + "                    `invoice` i join pirel p on p.ino=i.ino join product "
                     + "                     pr on p.pjno=pr.pjno join qprel q on q.pjno=pr.pjno join eqrel e on e.qno=q.qno "
                     + "join enquiry en on e.eno=en.eqno and e.date1=en.date1 and e.cmpname=en.cmpname "
@@ -4285,6 +4285,7 @@ public class SalesController implements Initializable {
             while (rs.next()) {
                 inv_no.setText(rs.getString(1));
                 inv_total.setText(rs.getString(2));
+//                System.out.println("ashfsdlghsdoifhdsl/ks/dlgihd'godhgskdufhg;sdogysdlkghdsgkshdlg8sdyfgskldfhgldfgs.");
                 inv_sp.setText(rs.getString(3));
                 inv_acc.setText(rs.getString(4));
                 inv_tum.setText(rs.getString(5));
@@ -4292,6 +4293,9 @@ public class SalesController implements Initializable {
                 inv_qno.setText(rs.getString(7));
                 inv_cmp.setText(rs.getString(8));
                 combopno = rs.getInt(9);
+                inv_gst.setText(rs.getString(14));
+                Double total_and_gst = Double.valueOf(inv_total.getText())+Double.valueOf(inv_gst.getText());
+                inv_amt.setText(total_and_gst.toString());
                 inv_to.setText(rs.getString(10) + "\n\n" + rs.getString(11) + "\n\n" + rs.getString(13) + "\n\n" + rs.getString(12));
             }
             sl = "SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` i WHERE i.invno=?";
@@ -4314,6 +4318,8 @@ public class SalesController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+             Utilities.AlertBox.showErrorMessage(ex);
+            
         }
 
     }
