@@ -1,13 +1,13 @@
-D:\Github Repos\Sales-and-Purchase\src\main\java\DBMS\Connect.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\NumUtil.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\PdfGeneration\pdfQuotation.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\Date.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\FXMLController.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\PdfGeneration\pdfInvoice.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person2.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\MainApp.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
-D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesDrawerController.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/PdfGeneration/pdfQuotation.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/MainApp.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/SalesController.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/SalesDrawerController.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/DBMS/Connect.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person2.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/Utilities/NumUtil.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/Utilities/AlertBox.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/FXMLController.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/PdfGeneration/pdfInvoice.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/Utilities/Date.java
+/Users/dylan/NetBeansProjects/SNP/src/main/java/com/mycompany/snp/Person3.java

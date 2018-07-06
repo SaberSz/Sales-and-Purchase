@@ -421,6 +421,11 @@
                                     <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />
                                  </graphic>
                               </Label>
+                              <Label fx:id="Money_Paid" layoutX="986.0" layoutY="716.0" onMouseClicked="#Invoice_Amount_Paid">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="MONEY" size="30" />
+                                 </graphic>
+                              </Label>
                            </children>
                         </AnchorPane>
                         <Label fx:id="pno_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="305.0" layoutY="53.0" onMouseClicked="#tick_in_invoice" prefHeight="26.0" prefWidth="19.0" text="Label">

@@ -122,6 +122,8 @@ public class SalesController implements Initializable {
     private JFXTextField mycomp_ph11;
     @FXML
     private JFXToggleButton projcomp;
+    @FXML
+    private Label Money_Paid;
 
     public void enqpane() {
 
@@ -704,6 +706,10 @@ public class SalesController implements Initializable {
             return false;
         }
 
+    }
+
+    @FXML
+    private void Invoice_Amount_Paid(MouseEvent event) {
     }
 
     enum mths {

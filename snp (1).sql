@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 06, 2018 at 09:05 AM
+-- Generation Time: Jul 06, 2018 at 08:14 PM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -99,10 +99,10 @@ INSERT INTO `company` (`CmpName`, `Address`, `Phone`, `GST`, `Fax`, `CompRegNo`,
 DROP TABLE IF EXISTS `customer`;
 CREATE TABLE `customer` (
   `CID` int(15) NOT NULL,
-  `Address` varchar(100) NOT NULL,
-  `Name` varchar(20) NOT NULL,
+  `Address` varchar(200) NOT NULL,
+  `Name` varchar(100) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `phone` bigint(20) NOT NULL
+  `phone` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -110,60 +110,60 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
-(1, 'sdfasdfasdafd', 'asdfasdf', 'dfasdfa', 1234324),
-(2, 'sdasdasdasdasd', 'asdasdas', 'sadasdasa', 23423424),
-(3, 'dgdfgdfgdfgdfgdg', 'dfgdfgd', 'fdgdfgdg', 234234234),
-(4, 'sdfsdfsdfsdfs', 'fgdfgdfgd', 'gsfsdfsdf', 131312312),
-(5, 'sfsdfsdfsdfsdfsdf', 'sdfsdfsdf', 'xcfsdfsdfsd', 24324234),
-(6, 'bub road', 'bubby', 'bub@bgmail.com', 656357),
-(7, '9bullet street', '50cent', '50centgunshots@geg', 9999999),
-(8, 'bfdddddddddddddddd', 'pitbull', 'pitbulcardio@bdbeh', 5346536),
-(9, 'ndgbdbdggdn', 'vegan', 'veganrg34', 445365636),
-(10, 'jtyjrjrjryjryjj', '51cent', '51shots@chest', 10000000),
-(11, 'sdfgsdgf', 'dsfgsdfg', 'dsfgdfg', 324523),
-(12, 'asdfasdfas', 'sdfas', 'sadfsad', 34523),
-(13, 'sdfasdf', 'werwe', 'dfdsaf', 32423),
-(14, 'sdfsdfsfsdf', 'dsfsdf', 'sdfsdf', 345345),
-(15, 'bfdgbsbsfb', 'hetheh', 'gdbethttreff', 363566),
-(16, 'htrhheth', 'ttttt', 'hthetdjrygnfrn', 547563),
-(17, 'fewgvdvv.', 'jcole', 'bornsinner@gbe', 3424234),
-(18, 'fwebgwrwvw', 'eminem', 'afcewffaf', 2445245),
-(19, 'gerhbrefb', 'kendrick', 'gdbhdfb@bdfb', 242524551),
-(20, 'gfbebreb', 'chance', 'htehbeh3', 435325),
-(21, 'gsfhfsgs', 'gerrhew', 'fssnsns', 46356),
-(22, 'bsf', 'gfdbsgs', 'gsfgeh', 653737),
-(23, 'gegrererg', 'slim', 'gvefbebe', 324324),
-(24, 'htrhethe', 'hetheth', 'geethe', 5362462),
-(25, 'kykmymky', 'hhyttr', 'hgwrrw', 52452577),
-(26, 'jryjrjrjryj', 'grgwg', 'htehethjkuku', 5639368),
-(27, 'gewgwg', 'gwrgrw', 'etgergegr', 34232),
-(28, 'gyrjjeh', 'grgwgw', 'gegwgwg', 4542552),
-(29, 'gegrgegergerg', 'jerry', 'ergrergegrg', 4245234),
-(30, 'fvsbsbsbs', 'grsgsree', 'safaffffff', 32245),
-(31, 'bgbgsbsb', 'hjtjjry', 'bfdbfsbb', 563663),
-(32, 'vdsvvav', 'fsvsvs', 'vsdvsdvvsv', 3563563),
-(33, 'htehwthhwh', 'regrgwg', 'regrwwgwh', 4225225),
-(34, 'hethetheh', 'kuykilll', 'ththtehe', 3662626),
-(35, 'grwrwgwg', 'fegfqeg', 'gfrgbwrw', 4324552),
-(36, 'hethetheh', 'hethethe', 'ehethethe', 3466336),
-(37, 'htrneet', 'jryjr', 'hethethe', 4352452),
-(38, 'gwrgrw', 'rwbwbwb', 'erbewbwb', 542242),
-(39, 'kuyktnrnyry', 'hykkjjk', 'bdgnhkuyrjn', 43536398),
-(40, 'fmyrhmn', 'bfdngsns', 'fdngndgng', 6547754),
-(41, 'sdfsdfsdf', 'sdfsdf', 'sdfsdf', 234234),
-(42, 'asdfasdf', 'asdfasdf', 'asdasdaf', 345345),
-(43, 'mncmjc', 'nbmgkfk', 'hgjhghg', 87876767),
-(44, 'sadvsadvsadva', 'sdvsdvsd', 'vsvsadvasv', 32423423),
-(45, 'GOTHAM CITY', 'JOKER', 'JOKER@GMAIL.COM', 2342342),
-(46, 'sfdgsdfgsdfgsdfg', 'sdfgsdfgs', 'zadfgsdfgsdfg', 34534534),
-(47, 'asdfasdfasdfasdf', 'sadfasdfa', 'asdfasdfsdafa', 234234),
-(48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', 452525413),
-(49, 'bangalore', 'abc', 'abc@abc.com', 23453245),
-(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', 34245),
-(51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', 2352424),
-(52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', 34534534),
-(53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', 4312431415),
-(54, 'banaglore', 'tom', 'tom@gmail.com', 123456789);
+(1, 'sdfasdfasdafd', 'asdfasdf', 'dfasdfa', '1234324'),
+(2, 'sdasdasdasdasd', 'asdasdas', 'sadasdasa', '23423424'),
+(3, 'dgdfgdfgdfgdfgdg', 'dfgdfgd', 'fdgdfgdg', '234234234'),
+(4, 'sdfsdfsdfsdfs', 'fgdfgdfgd', 'gsfsdfsdf', '131312312'),
+(5, 'sfsdfsdfsdfsdfsdf', 'sdfsdfsdf', 'xcfsdfsdfsd', '24324234'),
+(6, 'bub road', 'bubby', 'bub@bgmail.com', '656357'),
+(7, '9bullet street', '50cent', '50centgunshots@geg', '9999999'),
+(8, 'bfdddddddddddddddd', 'pitbull', 'pitbulcardio@bdbeh', '5346536'),
+(9, 'ndgbdbdggdn', 'vegan', 'veganrg34', '445365636'),
+(10, 'jtyjrjrjryjryjj', '51cent', '51shots@chest', '10000000'),
+(11, 'sdfgsdgf', 'dsfgsdfg', 'dsfgdfg', '324523'),
+(12, 'asdfasdfas', 'sdfas', 'sadfsad', '34523'),
+(13, 'sdfasdf', 'werwe', 'dfdsaf', '32423'),
+(14, 'sdfsdfsfsdf', 'dsfsdf', 'sdfsdf', '345345'),
+(15, 'bfdgbsbsfb', 'hetheh', 'gdbethttreff', '363566'),
+(16, 'htrhheth', 'ttttt', 'hthetdjrygnfrn', '547563'),
+(17, 'fewgvdvv.', 'jcole', 'bornsinner@gbe', '3424234'),
+(18, 'fwebgwrwvw', 'eminem', 'afcewffaf', '2445245'),
+(19, 'gerhbrefb', 'kendrick', 'gdbhdfb@bdfb', '242524551'),
+(20, 'gfbebreb', 'chance', 'htehbeh3', '435325'),
+(21, 'gsfhfsgs', 'gerrhew', 'fssnsns', '46356'),
+(22, 'bsf', 'gfdbsgs', 'gsfgeh', '653737'),
+(23, 'gegrererg', 'slim', 'gvefbebe', '324324'),
+(24, 'htrhethe', 'hetheth', 'geethe', '5362462'),
+(25, 'kykmymky', 'hhyttr', 'hgwrrw', '52452577'),
+(26, 'jryjrjrjryj', 'grgwg', 'htehethjkuku', '5639368'),
+(27, 'gewgwg', 'gwrgrw', 'etgergegr', '34232'),
+(28, 'gyrjjeh', 'grgwgw', 'gegwgwg', '4542552'),
+(29, 'gegrgegergerg', 'jerry', 'ergrergegrg', '4245234'),
+(30, 'fvsbsbsbs', 'grsgsree', 'safaffffff', '32245'),
+(31, 'bgbgsbsb', 'hjtjjry', 'bfdbfsbb', '563663'),
+(32, 'vdsvvav', 'fsvsvs', 'vsdvsdvvsv', '3563563'),
+(33, 'htehwthhwh', 'regrgwg', 'regrwwgwh', '4225225'),
+(34, 'hethetheh', 'kuykilll', 'ththtehe', '3662626'),
+(35, 'grwrwgwg', 'fegfqeg', 'gfrgbwrw', '4324552'),
+(36, 'hethetheh', 'hethethe', 'ehethethe', '3466336'),
+(37, 'htrneet', 'jryjr', 'hethethe', '4352452'),
+(38, 'gwrgrw', 'rwbwbwb', 'erbewbwb', '542242'),
+(39, 'kuyktnrnyry', 'hykkjjk', 'bdgnhkuyrjn', '43536398'),
+(40, 'fmyrhmn', 'bfdngsns', 'fdngndgng', '6547754'),
+(41, 'sdfsdfsdf', 'sdfsdf', 'sdfsdf', '234234'),
+(42, 'asdfasdf', 'asdfasdf', 'asdasdaf', '345345'),
+(43, 'mncmjc', 'nbmgkfk', 'hgjhghg', '87876767'),
+(44, 'sadvsadvsadva', 'sdvsdvsd', 'vsvsadvasv', '32423423'),
+(45, 'GOTHAM CITY', 'JOKER', 'JOKER@GMAIL.COM', '2342342'),
+(46, 'sfdgsdfgsdfgsdfg', 'sdfgsdfgs', 'zadfgsdfgsdfg', '34534534'),
+(47, 'Loyang Offshore Supply Base\r\n25 Loyang Crescent\r\nTOPS Avenue 1, Block 103 #01-06 Singapore 508988', 'Aquatic Asia Pacific Pte Ltd', 'Aquatic@gamil.com', '+65 6778 8271 / +65 81899206'),
+(48, 'rwgrvsrbgtrbn4heb', 'yellapa', 'befberbeab@ge', '452525413'),
+(49, 'bangalore', 'abc', 'abc@abc.com', '23453245'),
+(50, 'adfavfvadfv', 'bgsbgb', 'vasvadfv', '34245'),
+(51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', '2352424'),
+(52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', '34534534'),
+(53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', '4312431415'),
+(54, 'banaglore', 'tom', 'tom@gmail.com', '123456789');
 
 -- --------------------------------------------------------
 
@@ -191,7 +191,7 @@ INSERT INTO `enquiry` (`Eqno`, `Date1`, `Cmpname`, `Subject`, `CID`) VALUES
 ('1234', '2018-02-08', 'Awin', '5 litres of oil', 54),
 ('1234554', '2018-02-18', 'Steels', 'HAPPY BIRTHDAY', 45),
 ('123456', '2018-01-15', 'Awin', 'bsfnfs bs', 40),
-('132123', '2018-02-18', 'Steels', 'asfsdafadsf', 47),
+('132123', '2018-02-18', 'Steels', 'Provision of Skilled Manpowers for Strcutrual Fabrication @ Aquatic Asia Pacific Yard at Loyang.', 47),
 ('1341', '2018-01-17', 'Awin', 'grwgwgw', 39),
 ('172', '2018-01-02', 'Awin', 'fsbvsbsfs', 18),
 ('2133', '2018-01-16', 'Awin', 'wrgvrww', 31),
@@ -555,37 +555,46 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `quotationdetails_steels`
+-- Table structure for table `QuotationDetails_Steels`
 --
 
-DROP TABLE IF EXISTS `quotationdetails_steels`;
-CREATE TABLE `quotationdetails_steels` (
-  `Sno` int(11) NOT NULL,
-  `Pos` varchar(1000) DEFAULT NULL,
+DROP TABLE IF EXISTS `QuotationDetails_Steels`;
+CREATE TABLE `QuotationDetails_Steels` (
+  `Sno` varchar(11) NOT NULL,
+  `Pos` varchar(150) NOT NULL DEFAULT '',
   `NormalRate` varchar(100) DEFAULT NULL,
   `BeyondNormalRate` varchar(100) DEFAULT NULL,
   `Holidays` varchar(100) DEFAULT NULL,
   `Remarks` varchar(2000) DEFAULT NULL,
-  `qno` varchar(25) NOT NULL
+  `qno` varchar(25) NOT NULL,
+  `RowOrder` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `quotationdetails_steels`
+-- Dumping data for table `QuotationDetails_Steels`
 --
 
-INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES
-(1, 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028'),
-(1, 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.1'),
-(1, 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2'),
-(1, 'dogg stylesssssssss', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.3'),
-(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028'),
-(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1'),
-(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2'),
-(2, 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.3'),
-(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028'),
-(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1'),
-(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2'),
-(3, 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.3');
+INSERT INTO `QuotationDetails_Steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`, `RowOrder`) VALUES
+('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.1', 1),
+('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2', 2),
+('1', 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028', 3),
+('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 159),
+('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 153),
+('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028', 6),
+('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1', 7),
+('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2', 8),
+('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 160),
+('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 154),
+('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028', 11),
+('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1', 12),
+('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2', 13),
+('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 161),
+('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 155),
+('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 162),
+('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 156),
+('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '3 x Normal Rate', '', '18-SC-QT-028.Rev.3', 163),
+('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 157),
+('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 158);
 
 --
 -- Indexes for dumped tables
@@ -672,11 +681,23 @@ ALTER TABLE `quotationdetails_awin`
   ADD KEY `qno` (`qno`);
 
 --
--- Indexes for table `quotationdetails_steels`
+-- Indexes for table `QuotationDetails_Steels`
 --
-ALTER TABLE `quotationdetails_steels`
-  ADD PRIMARY KEY (`Sno`,`qno`),
-  ADD KEY `qno` (`qno`);
+ALTER TABLE `QuotationDetails_Steels`
+  ADD PRIMARY KEY (`Sno`,`Pos`,`qno`),
+  ADD UNIQUE KEY `UniqueRow` (`RowOrder`),
+  ADD KEY `qno` (`qno`),
+  ADD KEY `Pos` (`Pos`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `QuotationDetails_Steels`
+--
+ALTER TABLE `QuotationDetails_Steels`
+  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
 
 --
 -- Constraints for dumped tables
@@ -716,9 +737,9 @@ ALTER TABLE `quotationdetails_awin`
   ADD CONSTRAINT `quotationdetails_awin_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `quotationdetails_steels`
+-- Constraints for table `QuotationDetails_Steels`
 --
-ALTER TABLE `quotationdetails_steels`
+ALTER TABLE `QuotationDetails_Steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
