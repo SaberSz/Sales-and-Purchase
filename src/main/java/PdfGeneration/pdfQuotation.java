@@ -32,11 +32,13 @@ import com.itextpdf.kernel.pdf.xobject.PdfFormXObject;
 import com.itextpdf.layout.Canvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
+import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.property.AreaBreakType;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
@@ -44,26 +46,35 @@ import com.itextpdf.layout.renderer.CellRenderer;
 import com.itextpdf.layout.renderer.DrawContext;
 import com.itextpdf.layout.renderer.TableRenderer;
 import com.itextpdf.test.annotations.WrapToTest;
+import com.mycompany.snp.Person2;
+import com.mycompany.snp.Person3;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.ObservableList;
 
 @WrapToTest
-class pdfQuotation {
+public class pdfQuotation {
 
     static int pgnotot = 0;
     protected PdfFormXObject template;
-    public static final String DEST = "results/chapter01/hello_world.pdf";
+    public static String DEST = "results/Quotation/Steel/";
 
-    public void pdfQuotation() throws IOException {
+    public  pdfQuotation(HashMap<String, Object> hm) throws IOException {
+
+        DEST = "results/Quotation/Steel/";
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        createPdf(DEST);
+        DEST = DEST + hm.get("Quotation Number") + ".pdf";
+        System.out.println(DEST);
+        createPdf(DEST, hm);
     }
 
-    public void createPdf(String dest) throws IOException {
+    public void createPdf(String dest, HashMap<String, Object> hm) throws IOException {
         //Initialize PDF writer
         PdfWriter writer = new PdfWriter(dest);
 
@@ -285,20 +296,19 @@ class pdfQuotation {
         Table q1 = new Table(new float[]{1, 1});
 
         //Paragraph q1=new Paragraph();
-        Paragraph q11 = new Paragraph().add("Aquatic Asia Pacific Pte Ltd\n"
-                + "Loyang Offshore Supply Base\n"
-                + "25 Loyang Crescent\n"
-                + "TOPS Avenue 1, Block 103 #01-06\n"
-                + "Singapore 508988")
+        Paragraph q11 = new Paragraph().add((String) hm.get("Customer Name") + "\n"
+                + (String) hm.get("toAddress") + "\n"
+                + "Phone: " + (String) hm.get("Customer Phone") + "\n"
+                + "Email: " + (String) hm.get("Customer Mail") + "\n")
                 .setTextAlignment(TextAlignment.LEFT).addStyle(arial).setFixedLeading(13);
         Cell q2 = new Cell(1, 1).add(q11).setBorder(Border.NO_BORDER).setPadding(0);
-        Text t = new Text("Our Quote:  18-SC-AA-QT- 001");
+        Text t = new Text("Our Quote:  " + (String) hm.get("Quotation Number"));
 
         Paragraph q12 = new Paragraph().add("Quoted By: Vijay\n"
                 + "Phone: +65 6778 8271 / +65 81899206\n"
                 + "Fax: +65 6265 7685\n"
                 + "email: vijay@steelcoat.com.sg\n"
-                + "Date:08.Jan.18\n").add(t)
+                + "Date:"+(String)hm.get("Date")+"\n").add(t)
                 .setTextAlignment(TextAlignment.RIGHT).addStyle(arial).setFixedLeading(13);
         t.setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true));
         Cell q21 = new Cell(1, 1).add(q12).setBorder(Border.NO_BORDER).setPadding(0);
@@ -311,7 +321,7 @@ class pdfQuotation {
         q3.add("Attention to Project Manager,\n\n"
                 + "Thank you for inviting us to quote for the above mentioned job. We are pleased to submit our quotation for your\n"
                 + "perusal and approval.\n"
-                + "Provision of Skilled Manpowers for Strcutrual Fabrication @ Aquatic Asia Pacific Yard at Loyang.\n").addStyle(arialn);
+                + ((String) hm.get("Subject")).trim() + "\n").addStyle(arialn);
 
         document.add(r1).add(q1).add(q3);
 
@@ -324,33 +334,57 @@ class pdfQuotation {
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Beyond Normal Hours and\n" + "Saturdays (S$)	").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Sundays and Public\n" + "Holidays (S$)").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Remarks").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-
-        t2.addCell(new Cell(1, 1).setPadding(0).setBorder(Border.NO_BORDER).add(new Paragraph("l")
+        int roman_counter=0;
+        String arr[] = {"l",
+            "ll",
+            "lll",
+            "lV",
+            "V",
+            "Vl",
+            "Vll",
+            "Vlll",
+            "lX",
+            "X", "Xl", "Xll", "Xll", "XlV", "XV", "XVl", "XVll", "XVll", "XVlll", "XlX", "XX"
+        };
+        t2.addCell(new Cell(1, 1).setPadding(0).setBorder(Border.NO_BORDER).add(new Paragraph(arr[roman_counter])
                 .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true))
                 .setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
         t2.startNewRow();
-        String arr[] = {"Skilled Fitter",
-            "Skilled /Certified Welder",
-            "Skilled Grinder / General Workers",
-            "Supervisor (Steel & Piping)",
-            "QC Inspector / Engineer (AWS)",
-            "Safety Supervisor"};
-        for (int i = 0; i < 6; i++) {
-
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setWidth(50.0f).setBorder(Border.NO_BORDER).add(new Paragraph(Integer.valueOf(i + 1).toString()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph(arr[i]).addStyle(arialn).setTextAlignment(TextAlignment.LEFT)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("$18.00").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("1.5 x Normal Rate").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("2 x Normal Rate").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-            t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-
+        roman_counter++;
+        ObservableList<Person2> trc = (ObservableList) hm.get("TableItems");
+        ListIterator<Person2> li = trc.listIterator();
+        int inti=-99;//inital SN value
+        boolean co=true;
+        while (li.hasNext()) {
+            Person2 pe = li.next();
+            if (pe.getSN().getText().isEmpty()) {
+                break;
+            }
+            if((inti+1==Integer.valueOf((String)pe.getSN().getText().trim()))||co){
+                inti=Integer.valueOf((String)pe.getSN().getText().trim());
+                //for(int l=0;l<2;l++){
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setWidth(50.0f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getSN().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getPosition().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.LEFT)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getNormalRate().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getBeyondNormalHours().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getHolidays().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getRemarks().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                //}
+                co=false;
+            }
+            else
+            {
+                t2.addCell(new Cell(1, 1).setPadding(0).setBorder(Border.NO_BORDER).add(new Paragraph(arr[roman_counter])
+                .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true))
+                .setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
+                 t2.startNewRow();
+                 roman_counter++;
+                 co=true;
+            }
         }
-        t2.addCell(new Cell(1, 1).setPadding(0).setBorder(Border.NO_BORDER).add(new Paragraph("ll")
-                .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true))
-                .setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
-        t2.startNewRow();
-        String arr1[] = {"Skilled / Certified Blaster",
+     
+       /* String arr1[] = {"Skilled / Certified Blaster",
             "Skilled / Certified Painter",
             "Painting Helper",
             "Power Tool Men",
@@ -365,7 +399,7 @@ class pdfQuotation {
             t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("2 x Normal Rate").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
             t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
 
-        }
+        }*/
         //t2.setWidthPercent(100);
         //document.add(t2);
         Paragraph p7 = new Paragraph("\nTerms & Condition.").addStyle(arialn);
@@ -377,21 +411,23 @@ class pdfQuotation {
             "Work Coordination by Acqatic at site",
             "PPE, Trasportaion & Lodging by Steel Coat Pte Ltd",
             "Invoice will be issued twice month and timecard to be released on every 15th and 30th/31st of the month.",
-            "Payment Terms : 30days from the date of invoice",
+            "Payment Terms : 30 days from the date of invoice",
             "Work order to be issued prior to commencement of works"};
         for (int i = 0; i < 7; i++) {
             t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
             t2.addCell(new Cell(1, 1).setWidth(50.0f).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph(Integer.valueOf(i + 1).toString()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
             t2.addCell(new Cell(1, 5).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph(arr3[i]).addStyle(arialn).setTextAlignment(TextAlignment.LEFT)));
         }
-        Image extralogo4 = new Image(ImageDataFactory.create("InvoiceSC/Picture5.jpg"));
+        Image extralogo4 = new Image(ImageDataFactory.create("InvoiceSC/Picture5.jpg"));//signature and stamp on page 1
         t2.setWidthPercent(100);
         t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").add(extralogo4)));
         extralogo4.scaleAbsolute(100f, 55f);
         document.add(t2);
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(p);
+        
         document.add(row2);
 //          document.add(o2);
 

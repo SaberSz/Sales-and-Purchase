@@ -110,4 +110,17 @@ public class AlertBox {
 
     }
 
+    public static String alterinput(String amount, String Title, String Header, String Content) {
+        TextInputDialog dialog = new TextInputDialog(amount);
+        dialog.setTitle(Title);
+        dialog.setHeaderText(Header);
+        dialog.setContentText(Content);
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            return result.get();
+        }
+        return "Cancel";
+    }
+
 }

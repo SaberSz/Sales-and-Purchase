@@ -590,7 +590,7 @@ public class SalesController implements Initializable {
         if (Utilities.AlertBox.alertoption("Invoice PDF Generation", "Are you sure you want to generate the PDF file for this Invoice?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
             if (Invoice_Save_InvPane()) {
-                if (inv_cmp.getText().toLowerCase().equals("steels")||true) {
+                if (inv_cmp.getText().toLowerCase().equals("steels") || true) {
                     try {
                         HashMap<String, Object> hm = new HashMap<String, Object>();
                         hm.put("Invoice Number", inv_no.getText());
@@ -870,22 +870,21 @@ public class SalesController implements Initializable {
             }
         });
         inv_total.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            try{
-            if (!newValue.matches("\\d*")) {
-                inv_total.setText(newValue.replaceAll("[^\\d]", ""));
-            } else {
-                if (inv_total.getText().isEmpty()) {
-                    inv_gst.setText("0");
-                    inv_amt.setText("0");
-
+            try {
+                if (!newValue.matches("\\d*")) {
+                    inv_total.setText(newValue.replaceAll("[^\\d]", ""));
                 } else {
-                    inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText()) * (Float.valueOf(comp_inv_gst) / 100)) * 100d) / 100d));//Math.round(value * 100000d) / 100000d
-                    inv_amt.setText(String.valueOf(Float.valueOf(inv_total.getText()) + Float.valueOf(inv_gst.getText())));
+                    if (inv_total.getText().isEmpty()) {
+                        inv_gst.setText("0");
+                        inv_amt.setText("0");
+
+                    } else {
+                        inv_gst.setText(String.valueOf(Math.round((Double.valueOf(inv_total.getText()) * (Float.valueOf(comp_inv_gst) / 100)) * 100d) / 100d));//Math.round(value * 100000d) / 100000d
+                        inv_amt.setText(String.valueOf(Float.valueOf(inv_total.getText()) + Float.valueOf(inv_gst.getText())));
+                    }
                 }
-            }
-            }
-            catch(Exception e){
-                
+            } catch (Exception e) {
+
             }
         });
         /**
@@ -2759,7 +2758,7 @@ public class SalesController implements Initializable {
         //return tables;
     }
 
-    TableColumn SNCol = new TableColumn("S.N");
+    TableColumn SNCol = new TableColumn("R.N/S.N");
     TableColumn PosCol = new TableColumn("Position");
     TableColumn NRCol = new TableColumn("Normal Rate/HR(S$) (Mon to Fri 8am to 5pm)");
     TableColumn BeyondCol = new TableColumn("Beyond Normal Hours and Saturdays (S$)");
@@ -3062,7 +3061,7 @@ public class SalesController implements Initializable {
         }
     }
 
-    void Quotation_insert_into_awin_table(String qo, TableView<Person> tables) {//method to insert quotaion details into database for awin
+    boolean Quotation_insert_into_awin_table(String qo, TableView<Person> tables) {//method to insert quotaion details into database for awin
         PreparedStatement stmt;
         try {
 
@@ -3127,15 +3126,17 @@ public class SalesController implements Initializable {
                 edit_button_hit_in_QPane = false;
                 table11.setEditable(false);
                 table111.setEditable(false);
+                return true;
             }
 
         } catch (Exception e) {
             Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
             Utilities.AlertBox.showErrorMessage(e);
         }
+        return false;
     }
 
-    void Quotation_insert_into_steel(String qo, TableView<Person2> tables) {//method to insert quotaion details into database for steel
+    boolean Quotation_insert_into_steel(String qo, TableView<Person2> tables) {//method to insert quotaion details into database for steel
 
         PreparedStatement stmt;
         try {
@@ -3170,14 +3171,15 @@ public class SalesController implements Initializable {
                     String s = p.getRemarks().getText();
                     String h = p.getHolidays().getText();
 
-                    System.out.println("the quotation no is " + qo);
-                    int no = Integer.parseInt(p.getSN().getText());
-
+                    String de=p.getSN().getText();
+                    
+                    //int no = Integer.parseInt(p.getSN().getText());
+                     System.out.println("the quotation no is " + de+"\t"+d+"\t"+q+"\t"+r+"\t"+h+"\t"+s);
                     try {//deleting befoehand just in case...
 
                         String suql1 = "INSERT INTO `quotationdetails_steels`(`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES (?,?,?,?,?,?,?)";
                         stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
-                        stmt.setInt(1, no);
+                        stmt.setString(1, de);
                         stmt.setString(2, d);
                         stmt.setString(3, q);
                         stmt.setString(4, r);
@@ -3198,12 +3200,14 @@ public class SalesController implements Initializable {
                 Utilities.AlertBox.notificationWarn("Blank Quotation", "The quotation box seems to be blank.");
             } else {
                 Utilities.AlertBox.notificationInfo("Done", "");
+                return true;
             }
 
         } catch (Exception e) {
             Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
             Utilities.AlertBox.showErrorMessage(e);
         }
+        return false;
 
     }
 
@@ -3230,7 +3234,7 @@ public class SalesController implements Initializable {
 
     }
 
-    void generate_Awin_Table(boolean input) {
+    boolean generate_Awin_Table(boolean input) {
         try {
             //here input is used to indicate if table is editable or not
             String qno = Qno1.getText();
@@ -3258,9 +3262,11 @@ public class SalesController implements Initializable {
             newEnquiryPane_PriceBoxFill_Awin(table11, data);
             table11.setEditable(false);
             table11.setEffect(new ColorAdjust());
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
 
     }
 
@@ -3277,7 +3283,7 @@ public class SalesController implements Initializable {
             table11.getItems().clear();
             table11.getColumns().clear();
             //fill details of Awin table
-            String sql1 = "SELECT * FROM `QuotationDetails_Awin` WHERE qno = ?";
+            String sql1 = "SELECT * FROM `QuotationDetails_Awin` WHERE qno = ? ORDER BY RowOrder";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
             stmt.setString(1, qno);
             ResultSet rs = stmt.executeQuery();
@@ -3305,7 +3311,7 @@ public class SalesController implements Initializable {
 
     }
 
-    void generate_Steels_Table(boolean input) {
+    boolean generate_Steels_Table(boolean input) {
         //here input is used to indicate if table is editable or not
         try {
             //Generate the Steels Quotation Table 
@@ -3318,7 +3324,7 @@ public class SalesController implements Initializable {
             table111.setEditable(false);
             table111.getItems().clear();
             table111.getColumns().clear();
-            String sql1 = "SELECT * FROM `QuotationDetails_Steels` WHERE qno = ?";
+            String sql1 = "SELECT * FROM `QuotationDetails_Steels` WHERE qno = ? ORDER BY RowOrder ASC";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
             stmt.setString(1, qno);
             ResultSet rs = stmt.executeQuery();
@@ -3332,10 +3338,12 @@ public class SalesController implements Initializable {
             newEnquiryPane_PriceBoxFill_Steels(table111, data);
             table111.setEffect(new ColorAdjust());
             //fill details of Steels Table
+            return true;
 
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
 
     }
 
@@ -3352,7 +3360,7 @@ public class SalesController implements Initializable {
             table111.setEditable(false);
             table111.getItems().clear();
             table111.getColumns().clear();
-            String sql1 = "SELECT * FROM `QuotationDetails_Steels` WHERE qno = ?";
+            String sql1 = "SELECT * FROM `QuotationDetails_Steels` WHERE qno = ? ORDER BY RowOrder ASC";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
             stmt.setString(1, qno);
             ResultSet rs = stmt.executeQuery();
@@ -3507,6 +3515,47 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
+        if (Utilities.AlertBox.alertoption("Quotation PDF Generation", "Are you sure you want to generate the PDF file for this Quotation?", "Note that once the pdf is generated we assume that the generated PDF"
+                + " file is sent to the customer")) {
+            String qno = Qno1.getText();
+            if (ECom1.getText().toLowerCase().equals("steels") || ECom1.getText().toLowerCase().equals("steel") || true) {
+                if (ECom1.getText().equals("Awin")) {
+                    Quotation_insert_into_awin_table(qno, table11);
+                    generate_Awin_Table(false);
+
+                }
+                if (Quotation_insert_into_steel(qno, table111) && generate_Steels_Table(false)) {
+                    //save the quotation first to the database and the  setting editable to false by regenerating the table
+                    try {
+                        HashMap<String, Object> hm = new HashMap<String, Object>();
+                        hm.put("Quotation Number", qno);
+                        hm.put("Date", Utilities.Date.Date());
+                        hm.put("Customer Name", CName1.getText().trim());
+                        hm.put("Customer Phone", CPhone1.getText().trim());
+                        hm.put("Customer Mail", Cmail1.getText().trim());
+                        hm.put("toAddress", Cadd1.getText());
+                        hm.put("Subject", EDes1.getText());
+                        ObservableList<Person2> trc;
+                        trc = FXCollections.observableArrayList(table111.getItems());
+                        hm.put("TableItems", trc);
+                        new PdfGeneration.pdfQuotation(hm);
+                        Utilities.AlertBox.notificationInfo("Done","Quotation Generation successful.");
+                    } catch (Exception e) {
+
+                        Utilities.AlertBox.showErrorMessage(e);
+
+                    }
+                }
+            } else {
+                //Awin Quotation generation
+                if (ECom1.getText().toLowerCase().equals("awin")) {
+                    if (Quotation_insert_into_awin_table(qno, table11) && generate_Awin_Table(false)) {
+
+                    }
+                }
+
+            }
+        }
     }
     static String revisedQno = "";
     static int revisedno;
@@ -4275,7 +4324,7 @@ public class SalesController implements Initializable {
         ResultSet rs;
 
         try {
-            
+
             String sl = "SELECT i.`INo`, i.`Total_amt`, "
                     + "                     i.`Salesperson`, i.`Acc No`, i.`Termofpay`, "
                     + "                     pr.pno,q.qno, e.cmpname,pr.pjno,c.name,c.address,c.phone,c.email,i.`addedgst` FROM "
@@ -4298,11 +4347,11 @@ public class SalesController implements Initializable {
                 inv_cmp.setText(rs.getString(8));
                 combopno = rs.getInt(9);
                 inv_gst.setText(rs.getString(14));
-                Double total_and_gst = Double.valueOf(inv_total.getText())+Double.valueOf(inv_gst.getText());
+                Double total_and_gst = Double.valueOf(inv_total.getText()) + Double.valueOf(inv_gst.getText());
                 inv_amt.setText(total_and_gst.toString());
                 inv_to.setText(rs.getString(10) + "\n\n" + rs.getString(11) + "\n\n" + rs.getString(13) + "\n\n" + rs.getString(12));
             }
-            String compname=inv_cmp.getText();
+            String compname = inv_cmp.getText();
             sl = "SELECT `Item/No`, `Descr`, `Qty`, `UnitPrice`, `total` FROM `invoice_details` i WHERE i.invno=?";
             ps = com.mycompany.snp.MainApp.conn.prepareStatement(sl);
             ps.setString(1, inv_invbox.getValue());
@@ -4320,7 +4369,7 @@ public class SalesController implements Initializable {
             inv_newtable.getColumns().clear();
             newInvoicePane_PriceBoxFill(inv_newtable, data);
             insideINVPane.setEffect(new ColorAdjust());
-            if (compname.equalsIgnoreCase("AE")||compname.equalsIgnoreCase("awin")) {
+            if (compname.equalsIgnoreCase("AE") || compname.equalsIgnoreCase("awin")) {
                 String ss = "SELECT `GST` FROM `company` WHERE cmpname like \"AWIN%\";";
                 ps = com.mycompany.snp.MainApp.conn.prepareStatement(ss);
                 ResultSet ri = ps.executeQuery();
@@ -4337,8 +4386,8 @@ public class SalesController implements Initializable {
 
         } catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-             Utilities.AlertBox.showErrorMessage(ex);
-            
+            Utilities.AlertBox.showErrorMessage(ex);
+
         }
 
     }
