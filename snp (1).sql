@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.3
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Mar 09, 2018 at 09:52 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.22
+-- Host: localhost
+-- Generation Time: Jul 06, 2018 at 09:05 AM
+-- Server version: 5.6.38
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -340,7 +340,8 @@ CREATE TABLE `invoice` (
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
 ('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
-('1802-AE-INV-002', 20905, NULL, NULL, 'abcd', '345345', '40', 1463.35, 0, 0);
+('1802-AE-INV-002', 20905, NULL, NULL, 'abcd', '345345', '40', 1463.35, 0, 0),
+('1804-SC-INV-001', 26814, NULL, NULL, 'Voma ha', '234523454', '30', 2145.12, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -364,7 +365,9 @@ CREATE TABLE `invoice_details` (
 
 INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES
 (1, 'apples', '3', 25, 75, '1801-AE-INV-001'),
-(2, 'asdf fdsf sadf', '37', 565, 20905, '1802-AE-INV-002');
+(1, 'Sand Blasting / Coating of AF SN63177', '1', 4469, 4469, '1804-SC-INV-001'),
+(2, 'asdf fdsf sadf', '37', 565, 20905, '1802-AE-INV-002'),
+(2, 'Sand Blasting / Coating of AF SN63178', '2', 4469, 8938, '1804-SC-INV-001');
 
 -- --------------------------------------------------------
 
@@ -384,7 +387,8 @@ CREATE TABLE `pirel` (
 
 INSERT INTO `pirel` (`PjNo`, `INo`) VALUES
 (1, '1801-AE-INV-001'),
-(2, '1802-AE-INV-002');
+(2, '1802-AE-INV-002'),
+(4, '1804-SC-INV-001');
 
 -- --------------------------------------------------------
 
@@ -409,9 +413,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`, `Compdate`) VALUES
-('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdghfgdhdfg', 1, '2018-03-10'),
+('456345', 1, 5466547, '2018-02-14', '2018-02-08', 'fsghfdgh apples', 0, '2018-07-06'),
 ('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 1, '2018-03-03'),
-('3456', 3, 3456778, '2018-03-09', '2018-03-15', 'creation of oil and memory.', 0, '2018-03-10');
+('3456', 3, 3456778, '2018-03-09', '2018-03-15', 'creation of oil and memory.', 0, '2018-03-10'),
+('345434', 4, 234234, '2018-07-02', '2018-07-27', 'apples and oranges for construction', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -493,7 +498,8 @@ CREATE TABLE `qprel` (
 INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
 ('18-AE-QT-030.Rev.1', 1),
 ('18-AE-QT-035.Rev.1', 2),
-('18-AE-QT-049.Rev.1', 3);
+('18-AE-QT-049.Rev.1', 3),
+('18-SC-QT-028.Rev.3', 4);
 
 -- --------------------------------------------------------
 
