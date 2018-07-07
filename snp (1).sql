@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 06, 2018 at 08:14 PM
+-- Generation Time: Jul 07, 2018 at 09:13 PM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -372,6 +372,20 @@ INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Invoice_Payments`
+--
+
+DROP TABLE IF EXISTS `Invoice_Payments`;
+CREATE TABLE `Invoice_Payments` (
+  `INo` varchar(15) NOT NULL,
+  `Amount` double NOT NULL DEFAULT '0',
+  `DatePaid` date NOT NULL,
+  `Late` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pirel`
 --
 
@@ -646,6 +660,12 @@ ALTER TABLE `invoice_details`
   ADD KEY `Invno` (`Invno`);
 
 --
+-- Indexes for table `Invoice_Payments`
+--
+ALTER TABLE `Invoice_Payments`
+  ADD PRIMARY KEY (`INo`);
+
+--
 -- Indexes for table `pirel`
 --
 ALTER TABLE `pirel`
@@ -715,6 +735,12 @@ ALTER TABLE `eqrel`
 --
 ALTER TABLE `invoice_details`
   ADD CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`Invno`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Invoice_Payments`
+--
+ALTER TABLE `Invoice_Payments`
+  ADD CONSTRAINT `invoice_payments_ibfk_1` FOREIGN KEY (`INo`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pirel`

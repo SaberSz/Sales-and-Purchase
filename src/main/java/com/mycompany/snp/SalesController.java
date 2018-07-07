@@ -608,6 +608,16 @@ public class SalesController implements Initializable {
                         trc = FXCollections.observableArrayList(inv_newtable.getItems());
                         hm.put("TableItems", trc);
                         new PdfGeneration.pdfInvoice(hm);
+                        //Update database that invoice has been generated
+                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=?";
+
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(4, inv_no.getText());
+                        ps.setString(1, Utilities.Date.Date());
+                        ps.setString(2, Utilities.Date.nextDate(Integer.valueOf(inv_tum.getText().trim())));
+                        ps.setInt(3, 1);
+                        ps.executeUpdate();
                     } catch (Exception e) {
 
                         Utilities.AlertBox.showErrorMessage(e);
@@ -710,6 +720,73 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Invoice_Amount_Paid(MouseEvent event) {
+        String amt, p, sq, due;
+        int amtadd, tot, paid;
+        PreparedStatement ps;
+        outer:
+        while (true) {
+            p = Utilities.AlertBox.alterinput("", "Verification", "Please enter the admin password", "Passsword");
+            if (p.equals("admin")) {
+                try {
+                    sq = "SELECT `Total_amt`,`Amount_paid`,`DueDate` FROM `invoice` WHERE `Ino`=?";
+
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                    ps.setString(1, inv_no.getText().trim());
+
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        tot = rs.getInt(1);
+                        paid = rs.getInt(2);
+                        due = rs.getString(3);
+                        inner:
+                        while (true) {
+                            amt = Utilities.AlertBox.alterinput((Integer.valueOf(tot - paid)).toString(), "Payment", "Amount for Invoice " + inv_no.getText(), "Enter the paid amount");
+                            if (amt.equals("Cancel")) {
+                                break outer;
+                            } else {
+                                try {
+                                    amtadd = Integer.parseInt(amt);
+                                    if (Utilities.AlertBox.alertoption("Confirmation", "Add $" + amtadd + " ?", "Are you sure you want to add $" + amtadd + " to the amount paid for Invoice " + inv_no.getText().trim() + " ?")) {
+                                        
+                                        sq = "UPDATE `invoice` SET `Amount_paid`=? WHERE `Ino`=?";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setInt(1, paid+amtadd);
+                                        ps.setString(2, inv_no.getText());
+                                        ps.executeUpdate();
+                                        
+                                        sq="INSERT INTO `Invoice_Payments`(`INo`, `Amount`, `DatePaid`, `Late`) VALUES (?,?,?,?)";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setInt(2, amtadd);
+                                        ps.setString(1, inv_no.getText());
+                                        ps.setString(3,Utilities.Date.Date());
+                                        ps.setLong(4,Utilities.Date.beforeOrAfter(due));
+                                        ps.executeUpdate();
+                                    } else {
+                                        continue inner;
+                                    }
+
+                                } catch (NumberFormatException e) {
+                                    Utilities.AlertBox.showErrorMessage(e);
+                                    Utilities.AlertBox.notificationWarn("Error","Please enter only Integers");
+                                    continue inner;
+                                }
+                            }
+
+                        }
+                    }
+                } catch (Exception e) {
+                    Utilities.AlertBox.showErrorMessage(e);
+                    continue;
+                }
+                break;
+            } else if (p.equals("Cancel")) {
+                break;
+            } else {
+                Utilities.AlertBox.notificationInfo("Incorrect Password", "There seems to be an error in the entered password");
+
+            }
+        }
+
     }
 
     enum mths {
@@ -3177,10 +3254,10 @@ public class SalesController implements Initializable {
                     String s = p.getRemarks().getText();
                     String h = p.getHolidays().getText();
 
-                    String de=p.getSN().getText();
-                    
+                    String de = p.getSN().getText();
+
                     //int no = Integer.parseInt(p.getSN().getText());
-                     System.out.println("the quotation no is " + de+"\t"+d+"\t"+q+"\t"+r+"\t"+h+"\t"+s);
+                    System.out.println("the quotation no is " + de + "\t" + d + "\t" + q + "\t" + r + "\t" + h + "\t" + s);
                     try {//deleting befoehand just in case...
 
                         String suql1 = "INSERT INTO `quotationdetails_steels`(`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES (?,?,?,?,?,?,?)";
@@ -3545,7 +3622,14 @@ public class SalesController implements Initializable {
                         trc = FXCollections.observableArrayList(table111.getItems());
                         hm.put("TableItems", trc);
                         new PdfGeneration.pdfQuotation(hm);
-                        Utilities.AlertBox.notificationInfo("Done","Quotation Generation successful.");
+                        Utilities.AlertBox.notificationInfo("Done", "Quotation Generation successful.");
+                        String sql = "UPDATE `qoutation` SET `Sent`=?,`Sentdate`=? WHERE `Qno`=?";
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(3, qno);
+                        ps.setString(2, Utilities.Date.Date());
+                        ps.setInt(1, 1);
+                        ps.executeUpdate();
                     } catch (Exception e) {
 
                         Utilities.AlertBox.showErrorMessage(e);
@@ -4198,6 +4282,8 @@ public class SalesController implements Initializable {
         }catch (SQLException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }*/
+        Money_Paid.setVisible(false);
+        Money_Paid.setDisable(true);
         try {
             PreparedStatement ps;
             String sl = "SELECT * from product p,qprel qp,eqrel er WHERE p.PjNo=qp.PjNo and qp.Qno=er.Qno and p.PjNo=?";
@@ -4274,6 +4360,7 @@ public class SalesController implements Initializable {
             inv_to.setText(nme + "\n\n" + add + "\n\n" + em + "\n\n" + phno);
         } catch (Exception e) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+            Utilities.AlertBox.showErrorMessage(e);
         }
         inv_newtable.getColumns().clear();
         inv_newtable.getItems().clear();
@@ -4325,7 +4412,8 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_out_invoice(MouseEvent event) {
-
+        Money_Paid.setVisible(true);
+        Money_Paid.setDisable(false);
         PreparedStatement ps;
         ResultSet rs;
 
