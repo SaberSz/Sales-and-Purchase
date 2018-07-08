@@ -442,7 +442,7 @@ public class pdfQuotation {
         t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph().add(new Text("M/S : Aquatic Asia Pacific Pte Ltd".toUpperCase()).setFontSize(9.5f)
                 .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true)))
                 .add("\nWe accept the terms and conditions").addStyle(arialn).setFontSize(9.5f)));
-        Image steelslogo1 = new Image(ImageDataFactory.create("/Users/dylan/Desktop/InvoiceSC/Picture1.jpg"));
+        Image steelslogo1 = new Image(ImageDataFactory.create("InvoiceSC/Picture1.jpg"));
         steelslogo1.scaleAbsolute(130f, 45f);
         t5.addCell(new Cell(1, 2).setBorder(Border.NO_BORDER).add(steelslogo1));
         t5.setWidthPercent(100);

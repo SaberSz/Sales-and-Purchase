@@ -43,7 +43,7 @@ public class FXMLController implements Initializable {
         if (username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin") || true) {
             try {
                 category = cate.getValue();
-                if (category.equals("Sales") || true) {
+                if (category.equals("Sales")) {
                     //switch to sales controller
                     System.out.println("Hello");
                     Stage stage;
@@ -54,8 +54,17 @@ public class FXMLController implements Initializable {
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-                } else if (category.equals("Production")) {
+                } else if (category.equals("Purchase")) {
                     //switch to production controller
+                    System.out.println("Hello Purchase");
+                    Stage stage;
+                    Parent root;
+                    stage = (Stage) LoginButton.getScene().getWindow();
+                    //load up OTHER FXML document
+                    root = FXMLLoader.load(getClass().getResource("/fxml/Purchase.fxml"));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
                     System.out.println("Hello2");
                 } else {
                     Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");

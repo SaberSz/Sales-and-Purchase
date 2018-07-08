@@ -761,12 +761,12 @@ public class SalesController implements Initializable {
                                         ps.setString(3,Utilities.Date.Date());
                                         ps.setLong(4,Utilities.Date.beforeOrAfter(due));
                                         ps.executeUpdate();
+                                        break outer;
                                     } else {
                                         continue inner;
                                     }
 
                                 } catch (NumberFormatException e) {
-                                    Utilities.AlertBox.showErrorMessage(e);
                                     Utilities.AlertBox.notificationWarn("Error","Please enter only Integers");
                                     continue inner;
                                 }
@@ -778,7 +778,7 @@ public class SalesController implements Initializable {
                     Utilities.AlertBox.showErrorMessage(e);
                     continue;
                 }
-                break;
+                break outer;
             } else if (p.equals("Cancel")) {
                 break;
             } else {
