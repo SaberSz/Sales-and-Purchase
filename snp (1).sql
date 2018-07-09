@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.0
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Jul 08, 2018 at 06:23 PM
--- Server version: 5.6.34-log
+-- Host: localhost
+-- Generation Time: Jul 09, 2018 at 07:40 PM
+-- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -446,6 +444,151 @@ INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Purchase_Enquiry`
+--
+
+DROP TABLE IF EXISTS `Purchase_Enquiry`;
+CREATE TABLE `Purchase_Enquiry` (
+  `Eqno` varchar(25) NOT NULL,
+  `edate` date NOT NULL,
+  `SID` int(15) NOT NULL,
+  `Subject` varchar(500) NOT NULL,
+  `Cmpname` varchar(10) NOT NULL,
+  `Type` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_eprel`
+--
+
+DROP TABLE IF EXISTS `Purchase_eprel`;
+CREATE TABLE `Purchase_eprel` (
+  `Eqno` varchar(25) NOT NULL,
+  `Pjno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_eqrel`
+--
+
+DROP TABLE IF EXISTS `Purchase_eqrel`;
+CREATE TABLE `Purchase_eqrel` (
+  `Eqno` varchar(25) NOT NULL,
+  `Qno` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_Invoice`
+--
+
+DROP TABLE IF EXISTS `Purchase_Invoice`;
+CREATE TABLE `Purchase_Invoice` (
+  `Ino` varchar(100) NOT NULL,
+  `AmtwoGST` double NOT NULL,
+  `PaymentTerm` int(11) NOT NULL,
+  `AmtwithGST` double NOT NULL,
+  `date_recv` date NOT NULL,
+  `paid` tinyint(4) NOT NULL DEFAULT '0',
+  `amtpaid` double NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_InvoicePayments`
+--
+
+DROP TABLE IF EXISTS `Purchase_InvoicePayments`;
+CREATE TABLE `Purchase_InvoicePayments` (
+  `Ino` varchar(100) NOT NULL,
+  `paidDate` date NOT NULL,
+  `amount` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_pirel`
+--
+
+DROP TABLE IF EXISTS `Purchase_pirel`;
+CREATE TABLE `Purchase_pirel` (
+  `Po_NO` varchar(25) NOT NULL,
+  `Ino` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_PO`
+--
+
+DROP TABLE IF EXISTS `Purchase_PO`;
+CREATE TABLE `Purchase_PO` (
+  `Po_NO` varchar(25) NOT NULL,
+  `Sentdate` date DEFAULT NULL,
+  `Description` varchar(200) DEFAULT NULL,
+  `RefNO` varchar(50) DEFAULT NULL,
+  `Total` double DEFAULT NULL,
+  `Sent` tinyint(4) NOT NULL DEFAULT '0',
+  `OrderNo` varchar(50) DEFAULT NULL,
+  `PaymentTerm` varchar(50) DEFAULT NULL,
+  `ShipmentMethod` varchar(10) DEFAULT NULL,
+  `ShipmentTerm` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_POTableDetails`
+--
+
+DROP TABLE IF EXISTS `Purchase_POTableDetails`;
+CREATE TABLE `Purchase_POTableDetails` (
+  `Po_NO` varchar(25) NOT NULL,
+  `No` int(11) NOT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  `Qty` varchar(10) DEFAULT NULL,
+  `Price` varchar(10) DEFAULT NULL,
+  `TotalAmt` varchar(10) DEFAULT NULL,
+  `Exclusion` varchar(500) DEFAULT NULL,
+  `Delivery` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_qprel`
+--
+
+DROP TABLE IF EXISTS `Purchase_qprel`;
+CREATE TABLE `Purchase_qprel` (
+  `Qno` varchar(100) NOT NULL,
+  `Po_NO` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_quotation`
+--
+
+DROP TABLE IF EXISTS `Purchase_quotation`;
+CREATE TABLE `Purchase_quotation` (
+  `Qno` varchar(100) NOT NULL,
+  `date_recv` date NOT NULL,
+  `location` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `qoutation`
 --
 
@@ -692,6 +835,71 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`PjNo`);
 
 --
+-- Indexes for table `Purchase_Enquiry`
+--
+ALTER TABLE `Purchase_Enquiry`
+  ADD PRIMARY KEY (`Eqno`),
+  ADD KEY `SID` (`SID`);
+
+--
+-- Indexes for table `Purchase_eprel`
+--
+ALTER TABLE `Purchase_eprel`
+  ADD PRIMARY KEY (`Eqno`,`Pjno`),
+  ADD KEY `Pjno` (`Pjno`);
+
+--
+-- Indexes for table `Purchase_eqrel`
+--
+ALTER TABLE `Purchase_eqrel`
+  ADD PRIMARY KEY (`Eqno`,`Qno`),
+  ADD KEY `Qno` (`Qno`);
+
+--
+-- Indexes for table `Purchase_Invoice`
+--
+ALTER TABLE `Purchase_Invoice`
+  ADD PRIMARY KEY (`Ino`);
+
+--
+-- Indexes for table `Purchase_InvoicePayments`
+--
+ALTER TABLE `Purchase_InvoicePayments`
+  ADD PRIMARY KEY (`Ino`);
+
+--
+-- Indexes for table `Purchase_pirel`
+--
+ALTER TABLE `Purchase_pirel`
+  ADD PRIMARY KEY (`Po_NO`,`Ino`),
+  ADD KEY `Ino` (`Ino`);
+
+--
+-- Indexes for table `Purchase_PO`
+--
+ALTER TABLE `Purchase_PO`
+  ADD PRIMARY KEY (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_POTableDetails`
+--
+ALTER TABLE `Purchase_POTableDetails`
+  ADD PRIMARY KEY (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_qprel`
+--
+ALTER TABLE `Purchase_qprel`
+  ADD PRIMARY KEY (`Qno`,`Po_NO`),
+  ADD KEY `Po_NO` (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_quotation`
+--
+ALTER TABLE `Purchase_quotation`
+  ADD PRIMARY KEY (`Qno`);
+
+--
 -- Indexes for table `qoutation`
 --
 ALTER TABLE `qoutation`
@@ -730,6 +938,7 @@ ALTER TABLE `quotationdetails_steels`
 --
 ALTER TABLE `quotationdetails_steels`
   MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
+
 --
 -- Constraints for dumped tables
 --
@@ -761,6 +970,40 @@ ALTER TABLE `pirel`
   ADD CONSTRAINT `pirel_ibfk_2` FOREIGN KEY (`PjNo`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `Purchase_Enquiry`
+--
+ALTER TABLE `Purchase_Enquiry`
+  ADD CONSTRAINT `purchase_enquiry_ibfk_1` FOREIGN KEY (`SID`) REFERENCES `customer` (`CID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_eprel`
+--
+ALTER TABLE `Purchase_eprel`
+  ADD CONSTRAINT `purchase_eprel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `Purchase_Enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_eprel_ibfk_2` FOREIGN KEY (`Pjno`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_eqrel`
+--
+ALTER TABLE `Purchase_eqrel`
+  ADD CONSTRAINT `purchase_eqrel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `Purchase_Enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_eqrel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `Purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_pirel`
+--
+ALTER TABLE `Purchase_pirel`
+  ADD CONSTRAINT `purchase_pirel_ibfk_1` FOREIGN KEY (`Ino`) REFERENCES `Purchase_Invoice` (`Ino`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_pirel_ibfk_2` FOREIGN KEY (`Po_NO`) REFERENCES `Purchase_PO` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_qprel`
+--
+ALTER TABLE `Purchase_qprel`
+  ADD CONSTRAINT `purchase_qprel_ibfk_1` FOREIGN KEY (`Po_NO`) REFERENCES `Purchase_PO` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `Purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `qprel`
 --
 ALTER TABLE `qprel`
@@ -778,7 +1021,6 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
