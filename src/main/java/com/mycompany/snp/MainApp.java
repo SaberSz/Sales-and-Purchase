@@ -14,6 +14,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        ConnectToDb();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
 
         Scene scene = new Scene(root);
@@ -22,6 +23,33 @@ public class MainApp extends Application {
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void ConnectToDb() {
+        // Create a Runnable
+        Runnable task = new Runnable() {
+            public void run() {
+                ConnectionThread();
+            }
+        };
+
+        // Run the task in a background thread
+        Thread backgroundThread = new Thread(task);
+        // Terminate the running thread if the application exits
+        backgroundThread.setDaemon(true);
+        // Start the thread
+        backgroundThread.start();
+    }
+
+    public void ConnectionThread() {
+
+        try {
+            conn = DBMS.Connect.ConnectDb();
+            //Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -33,7 +61,7 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        conn = DBMS.Connect.ConnectDb();
+
         launch(args);
     }
 

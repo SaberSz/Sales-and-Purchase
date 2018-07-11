@@ -23,7 +23,7 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" onMouseClicked="#Power_Button_Clicked" size="28" />
                </graphic>
             </Label>
-            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0" onMouseClicked="#Menu_Menu_ComboBox_Hit" prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
+            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0"  prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
             <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_RIGHT" layoutX="161.0" layoutY="32.0" size="30" />
             <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
          </children>
