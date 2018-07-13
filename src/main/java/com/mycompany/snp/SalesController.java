@@ -331,6 +331,8 @@ public class SalesController implements Initializable {
     @FXML
     private TableView<Person2> table111;
     @FXML
+    private TableView<Person3> table13;
+    @FXML
     private JFXComboBox<String> QnoBox1;
     @FXML
     private JFXTextField PjNo;
@@ -601,7 +603,7 @@ public class SalesController implements Initializable {
         if (Utilities.AlertBox.alertoption("Invoice PDF Generation", "Are you sure you want to generate the PDF file for this Invoice?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
             if (Invoice_Save_InvPane()) {
-                if (inv_cmp.getText().toLowerCase().equals("steels") || true) {
+                if (inv_cmp.getText().toLowerCase().equals("steels")) {
                     try {
                         HashMap<String, Object> hm = new HashMap<String, Object>();
                         hm.put("Invoice Number", inv_no.getText());
@@ -632,12 +634,35 @@ public class SalesController implements Initializable {
                         Utilities.AlertBox.showErrorMessage(e);
 
                     }
+                }else{
+                    
+                    //invoice generation for awin
+                     try {
+                        HashMap<String, Object> ha = new HashMap<String, Object>();
+                        ha.put("Invoice Number", inv_no.getText());
+                        ha.put("Date", Utilities.Date.Date());
+                        ha.put("Salesperson", inv_sp.getText().trim());
+                        ha.put("Termofpay", inv_tum.getText().trim());
+                        ha.put("ProjectNo", Integer.valueOf(combopno).toString());
+                        ha.put("POno", inv_po.getText());
+                        ha.put("toAddress", inv_to.getText());
+                        ha.put("Total", Double.valueOf(inv_total.getText()));
+                        ha.put("GST", Float.valueOf(inv_gst.getText()));
+                        ObservableList<Person3> trc;
+                        trc = FXCollections.observableArrayList(inv_newtable.getItems());
+                        ha.put("TableItems", trc);
+                        new awinpd(ha);
+                    } catch (Exception e) {
+
+                        Utilities.AlertBox.showErrorMessage(e);
+
+                    }
                 }
             }
 
         }
     }
-
+    
     boolean Invoice_Save_InvPane() {
         try {
             if (inv_sp.getText().isEmpty() || inv_tum.getText().isEmpty() || inv_acc.getText().isEmpty()) {
@@ -3642,7 +3667,7 @@ public class SalesController implements Initializable {
         if (Utilities.AlertBox.alertoption("Quotation PDF Generation", "Are you sure you want to generate the PDF file for this Quotation?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
             String qno = Qno1.getText();
-            if (ECom1.getText().toLowerCase().equals("steels") || ECom1.getText().toLowerCase().equals("steel") || true) {
+            if (ECom1.getText().toLowerCase().equals("steels")) {
                 if (ECom1.getText().equals("Awin")) {
                     Quotation_insert_into_awin_table(qno, table11);
                     generate_Awin_Table(false);
@@ -3681,7 +3706,25 @@ public class SalesController implements Initializable {
                 //Awin Quotation generation
                 if (ECom1.getText().toLowerCase().equals("awin")) {
                     if (Quotation_insert_into_awin_table(qno, table11) && generate_Awin_Table(false)) {
+                             try {
+                        HashMap<String, Object> hm = new HashMap<String, Object>();
+                        hm.put("Quotation Number", qno);
+                        hm.put("Date", Utilities.Date.Date());
+                        hm.put("Customer Name", CName1.getText().trim());
+                        hm.put("Customer Phone", CPhone1.getText().trim());
+                        hm.put("Customer Mail", Cmail1.getText().trim());
+                        hm.put("toAddress", Cadd1.getText());
+                        hm.put("Subject", EDes1.getText());
+                        ObservableList<Person3> trc;
+                        trc = FXCollections.observableArrayList(table13.getItems());
+                        hm.put("TableItems", trc);
+                        new awinqtepdf(hm);
+                        Utilities.AlertBox.notificationInfo("Done","Quotation Generation successful.");
+                    } catch (Exception e) {
 
+                        Utilities.AlertBox.showErrorMessage(e);
+
+                    }
                     }
                 }
 
