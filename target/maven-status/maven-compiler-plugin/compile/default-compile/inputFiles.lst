@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\awinpd.java
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
@@ -13,3 +14,19 @@ C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\FXMLCo
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\Date.java
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\awinqtepdf.java
 C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
+=======
+D:\Github Repos\Sales-and-Purchase\src\main\java\DBMS\Connect.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\NumUtil.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\PdfGeneration\pdfQuotation.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\Date.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\FXMLController.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\PdfGeneration\pdfInvoice.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person2.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\PurchaseController.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\MainApp.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
+D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesDrawerController.java
+>>>>>>> d0268bc772fd30fb2cefcc01dae567718552117a

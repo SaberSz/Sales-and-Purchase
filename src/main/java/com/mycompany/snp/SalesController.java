@@ -5,6 +5,10 @@
  */
 package com.mycompany.snp;
 
+import static DBMS.Connect.DB_URL;
+import static DBMS.Connect.PASS;
+import static DBMS.Connect.USER;
+import java.util.TimerTask;
 import PdfGeneration.pdfInvoice;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -52,7 +56,12 @@ import javafx.stage.Stage;
 import com.jfoenix.controls.JFXTreeTableView;
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Timer;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -610,6 +619,16 @@ public class SalesController implements Initializable {
                         trc = FXCollections.observableArrayList(inv_newtable.getItems());
                         hm.put("TableItems", trc);
                         new PdfGeneration.pdfInvoice(hm);
+                        //Update database that invoice has been generated
+                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=?";
+
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(4, inv_no.getText());
+                        ps.setString(1, Utilities.Date.Date());
+                        ps.setString(2, Utilities.Date.nextDate(Integer.valueOf(inv_tum.getText().trim())));
+                        ps.setInt(3, 1);
+                        ps.executeUpdate();
                     } catch (Exception e) {
 
                         Utilities.AlertBox.showErrorMessage(e);
@@ -735,6 +754,73 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Invoice_Amount_Paid(MouseEvent event) {
+        String amt, p, sq, due;
+        int amtadd, tot, paid;
+        PreparedStatement ps;
+        outer:
+        while (true) {
+            p = Utilities.AlertBox.alterinput("", "Verification", "Please enter the admin password", "Passsword");
+            if (p.equals("admin")) {
+                try {
+                    sq = "SELECT `Total_amt`,`Amount_paid`,`DueDate` FROM `invoice` WHERE `Ino`=?";
+
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                    ps.setString(1, inv_no.getText().trim());
+
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        tot = rs.getInt(1);
+                        paid = rs.getInt(2);
+                        due = rs.getString(3);
+                        inner:
+                        while (true) {
+                            amt = Utilities.AlertBox.alterinput((Integer.valueOf(tot - paid)).toString(), "Payment", "Amount for Invoice " + inv_no.getText(), "Enter the paid amount");
+                            if (amt.equals("Cancel")) {
+                                break outer;
+                            } else {
+                                try {
+                                    amtadd = Integer.parseInt(amt);
+                                    if (Utilities.AlertBox.alertoption("Confirmation", "Add $" + amtadd + " ?", "Are you sure you want to add $" + amtadd + " to the amount paid for Invoice " + inv_no.getText().trim() + " ?")) {
+
+                                        sq = "UPDATE `invoice` SET `Amount_paid`=? WHERE `Ino`=?";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setInt(1, paid + amtadd);
+                                        ps.setString(2, inv_no.getText());
+                                        ps.executeUpdate();
+
+                                        sq = "INSERT INTO `Invoice_Payments`(`INo`, `Amount`, `DatePaid`, `Late`) VALUES (?,?,?,?)";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setInt(2, amtadd);
+                                        ps.setString(1, inv_no.getText());
+                                        ps.setString(3, Utilities.Date.Date());
+                                        ps.setLong(4, Utilities.Date.beforeOrAfter(due));
+                                        ps.executeUpdate();
+                                        break outer;
+                                    } else {
+                                        continue inner;
+                                    }
+
+                                } catch (NumberFormatException e) {
+                                    Utilities.AlertBox.notificationWarn("Error", "Please enter only Integers");
+                                    continue inner;
+                                }
+                            }
+
+                        }
+                    }
+                } catch (Exception e) {
+                    Utilities.AlertBox.showErrorMessage(e);
+                    continue;
+                }
+                break outer;
+            } else if (p.equals("Cancel")) {
+                break;
+            } else {
+                Utilities.AlertBox.notificationInfo("Incorrect Password", "There seems to be an error in the entered password");
+
+            }
+        }
+
     }
 
     enum mths {
@@ -780,93 +866,217 @@ public class SalesController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        SalesDraw.setDisable(false);
-        SalesDraw.setVisible(true);
-        SalesDraw.toBack();
-        QoutPane.setDisable(true);
-        QoutPane.setVisible(false);
-        oldPOPane.setDisable(false);
-        oldPOPane.setVisible(true);
-        InvoicePane.setDisable(true);
-        InvoicePane.setVisible(false);
-        newPOPane.setDisable(true);
-        newPOPane.setVisible(false);
-        newEqPane.setDisable(true);
-        newEqPane.setVisible(false);
+    void initialSetups() {
 
-        inv_invbox.setDisable(true);
-        inv_invbox.setVisible(false);
-        inv_tick.setDisable(true);
-        inv_tick.setVisible(false);
-        pencilinv.setDisable(false);
-        pencilinv.setVisible(true);
-        plusinv.setDisable(true);
-        plusinv.setVisible(false);
+        Runnable task3 = new Runnable() {
+            public void run() {
 
-        cmp.getItems().add("Awin");
-        cmp.getItems().add("Steels");
-        mycmp_box.getItems().add("Awin");
-        mycmp_box.getItems().add("Steel");
+                runInitialSetUp3();
+            }
+        };
+        Thread backgroundThread3 = new Thread(task3);
+        backgroundThread3.setDaemon(true);
+        backgroundThread3.start();
+
+        Runnable task = new Runnable() {
+            public void run() {
+
+                runInitialSetUp1();
+            }
+        };
+        Runnable task2 = new Runnable() {
+            public void run() {
+
+                runInitialSetUp2();
+            }
+        };
+
+        Thread backgroundThread1 = new Thread(task);
+        backgroundThread1.setDaemon(true);
+        backgroundThread1.start();
+        Thread backgroundThread2 = new Thread(task2);
+        backgroundThread2.setDaemon(true);
+        backgroundThread2.start();
+
+    }
+
+    void runInitialSetUp1() {
+
         try {
-            String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
-            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                QnoBox.getItems().add(rs.getString(1));
-                QnoBox1.getItems().add(rs.getString(1));
-                System.out.println(rs.getString(1));
+            
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
 
-            }
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        ResultSet rs = stmt.executeQuery();
 
-            String sql1 = "SELECT PjNo FROM `product` WHERE 1 ";
-            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                int a = rs.getInt("PjNo");
-                inv_pno.getItems().add(a);
-            }
-            sql1 = "SELECT Ino FROM `invoice` WHERE 1 ";
-            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                String a = rs.getString(1);
-                inv_invbox.getItems().add(a);
+                        while (rs.next()) {
+                            QnoBox.getItems().add(rs.getString(1));
+                            QnoBox1.getItems().add(rs.getString(1));
+                            System.out.println(rs.getString(1));
+                        }
 
-            }
+                        String sql1 = "SELECT PjNo FROM `product` WHERE 1 ";
+                        stmt = conn.prepareStatement(sql1);
+                        rs = stmt.executeQuery();
+                        while (rs.next()) {
+                            int a = rs.getInt("PjNo");
+                            inv_pno.getItems().add(a);
+                        }
 
+                        sql1 = "SELECT Ino FROM `invoice` WHERE 1 ";
+                        stmt = conn.prepareStatement(sql1);
+                        rs = stmt.executeQuery();
+                        while (rs.next()) {
+                            String a = rs.getString(1);
+                            inv_invbox.getItems().add(a);
+
+                        }
+                        conn.close();
+                    } catch (SQLException e) {
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+                    }
+                }
+            });
+            
+            System.out.println("1 closed");
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
+    }
+
+    void runInitialSetUp2() {
+        try {
+            
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ResultSet rs;
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
+                        PreparedStatement ps;
+
+                        ps = conn.prepareStatement(suql);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            enq_year.getItems().add(rs.getString(1));
+
+                        }
+                        suql = "select distinct Date_format (Date, '%Y') FROM product where 1";
+
+                        ps = conn.prepareStatement(suql);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            enq_year2.getItems().add(rs.getString(1));
+
+                        }
+                        suql = "select distinct Date_format (Date, '%Y') FROM invoice where Date IS NOT NULL";
+
+                        ps = conn.prepareStatement(suql);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            enq_year21.getItems().add(rs.getString(1));
+
+                            suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
+                            PreparedStatement st;
+                            st = conn.prepareStatement(suql);
+                            rs = st.executeQuery();
+                            while (rs.next()) {
+                                enq_year1.getItems().add(rs.getString(1));
+                            }
+                        }
+                         conn.close();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+           
+            System.out.println("2 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void runInitialSetUp3() {
+
+        try {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    oldPOPane.setDisable(false);
+                    oldPOPane.setVisible(true);
+                    SalesDraw.setDisable(false);
+                    SalesDraw.setVisible(true);
+                    SalesDraw.toBack();
+                    QoutPane.setDisable(true);
+                    QoutPane.setVisible(false);
+                    InvoicePane.setDisable(true);
+                    InvoicePane.setVisible(false);
+                    newPOPane.setDisable(true);
+                    newPOPane.setVisible(false);
+                    newEqPane.setDisable(true);
+                    newEqPane.setVisible(false);
+                    inv_invbox.setDisable(true);
+                    inv_invbox.setVisible(false);
+                    inv_tick.setDisable(true);
+                    inv_tick.setVisible(false);
+                    pencilinv.setDisable(false);
+                    pencilinv.setVisible(true);
+                    plusinv.setDisable(true);
+                    plusinv.setVisible(false);
+                    cmp.getItems().add("Awin");
+                    cmp.getItems().add("Steels");
+                    mycmp_box.getItems().add("Awin");
+                    mycmp_box.getItems().add("Steel");
+                    table1.setEffect(new GaussianBlur(20));
+                    table12.setEffect(new GaussianBlur(20));
+                    table11.setEffect(new GaussianBlur(20));
+                    table111.setEffect(new GaussianBlur(20));
+                    insideINVPane.setEffect(new GaussianBlur(20));
+                    tock = true;
+                    action.getItems().add("Decline Enquiries");
+                    action.getItems().add("Enquiries for which Quotations are not generated");
+                    action.getItems().add("Enquires for which Quotations are generated");
+                    action11.getItems().add("Completed Projects");
+                    action11.getItems().add("Projects yet to be completed");
+                    action11.getItems().add("Projects that have exceeded the estimated deadline");
+                    action111.getItems().add("Invoices Generated but not paid.");
+                    action111.getItems().add("Invoices paid.");
+                    action111.getItems().add("Invoices that have not been generated yet.");
+                    action1.getItems().add("Accepted by customer");
+                    action1.getItems().add("Pending quotation");
+                    action1.getItems().add("Quotation waiting for customer's approval/ Project not started");
+                    action.setValue("Declined Enquiries");
+                    action1.setValue("Accepted by customer");
+                    enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
+                    enq_year21.setValue(String.valueOf(LocalDate.now().getYear()));
+                    enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
+                    enq_year2.setValue(String.valueOf(LocalDate.now().getYear()));
+                    action11.setValue("Completed Projects");
+                    action111.setValue("Invoices Generated but not paid.");
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        initialSetups();
         try {
             VBox box = FXMLLoader.load(getClass().getResource("/fxml/SalesDrawer.fxml"));
             System.out.println(2);
             SalesDraw.setSidePane(box);
-            /*  for (Node node: box.getChildren()){
-            if(node.getAccessibleText()!=null){
-                node.addEventHandler(MouseEvent.MOUSE_CLICKED,(e) ->{
-                    switch(node.getAccessibleText()){
-                        case "Dashboard" :dashpane();SalesDraw.close(); 
-      SalesDraw.toBack();break;
-                            
-                        case "Enquiry & Quotation" : enqpane();SalesDraw.close(); 
-      SalesDraw.toBack();break;
-                            
-                        case "Edit & Revise Quotation" : qoutpane();SalesDraw.close(); 
-      SalesDraw.toBack();break;
-                            
-                            
-                        case "Purchase Order" :   newpopane();SalesDraw.close(); 
-      SalesDraw.toBack();break;
-                            
-                        case "Invoice" :    invpane();SalesDraw.close(); 
-      SalesDraw.toBack();break;
-                    }
-                });
-            }
-        }*/
         } catch (IOException ex) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -886,13 +1096,6 @@ public class SalesController implements Initializable {
                 SalesDraw.open();
             }
         });
-        // newEnquiryPane_PriceBoxFill();
-        table1.setEffect(new GaussianBlur(20));
-        table12.setEffect(new GaussianBlur(20));
-        table11.setEffect(new GaussianBlur(20));
-        table111.setEffect(new GaussianBlur(20));
-        insideINVPane.setEffect(new GaussianBlur(20));
-        tock = true;
         mycmp_box.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -917,21 +1120,8 @@ public class SalesController implements Initializable {
             } catch (Exception e) {
 
             }
+
         });
-        /**
-         * inv_total.textProperty().addListener(new ChangeListener<String>() {
-         *
-         * @Override public void changed(ObservableValue<? extends String>
-         * observable, String oldValue, String newValue) { if
-         * (!newValue.matches("\\d*")) {
-         * inv_total.setText(newValue.replaceAll("[^\\d]", "")); } } });
-         */
-        action.getItems().add("Decline Enquiries");
-        action.getItems().add("Enquiries for which Quotations are not generated");
-        action.getItems().add("Enquires for which Quotations are generated");
-        action11.getItems().add("Completed Projects");
-        action11.getItems().add("Projects yet to be completed");
-        action11.getItems().add("Projects that have exceeded the estimated deadline");
         action.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -949,36 +1139,6 @@ public class SalesController implements Initializable {
                 }
             }
         });
-        ResultSet rs;
-        try {
-            String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
-            PreparedStatement ps;
-
-            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                enq_year.getItems().add(rs.getString(1));
-
-            }
-            suql = "select distinct Date_format (Date, '%Y') FROM product where 1";
-
-            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                enq_year2.getItems().add(rs.getString(1));
-
-            }
-            suql = "select distinct Date_format (Date, '%Y') FROM invoice where Date IS NOT NULL";
-
-            ps = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                enq_year21.getItems().add(rs.getString(1));
-
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         action11.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -998,9 +1158,6 @@ public class SalesController implements Initializable {
                 }
             }
         });
-        action111.getItems().add("Invoices Generated but not paid.");
-        action111.getItems().add("Invoices paid.");
-        action111.getItems().add("Invoices that have not been generated yet.");
         action111.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -1032,10 +1189,6 @@ public class SalesController implements Initializable {
             }
         });
 
-        action1.getItems().add("Accepted by customer");
-        action1.getItems().add("Pending quotation");
-        action1.getItems().add("Quotation waiting for customer's approval/ Project not started");
-
         action1.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -1053,21 +1206,6 @@ public class SalesController implements Initializable {
                 }
             }
         });
-
-        try {
-
-            String suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
-            PreparedStatement st;
-            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-            rs = st.executeQuery();
-            while (rs.next()) {
-                enq_year1.getItems().add(rs.getString(1));
-            }
-
-        } catch (Exception e) {
-            System.out.println(539);
-            Utilities.AlertBox.showErrorMessage(e);
-        }
 
         //label in piechart
         enq_year1.valueProperty().addListener(new ChangeListener<String>() {
@@ -1103,15 +1241,7 @@ public class SalesController implements Initializable {
 
         });
 
-        action.setValue("Declined Enquiries");
-        action1.setValue("Accepted by customer");
-        enq_year1.setValue(String.valueOf(LocalDate.now().getYear()));
-        enq_year21.setValue(String.valueOf(LocalDate.now().getYear()));
-        enq_year.setValue(String.valueOf(LocalDate.now().getYear()));
-        enq_year2.setValue(String.valueOf(LocalDate.now().getYear()));
-        action11.setValue("Completed Projects");
-        action111.setValue("Invoices Generated but not paid.");
-        threadtock();
+        dockThread();
     }
 
     public void qno_bar(String d) {
@@ -1905,15 +2035,6 @@ public class SalesController implements Initializable {
             this.custname = new SimpleStringProperty(c);
 
         }
-        /* public AnalysisDT3(String q ,String eno, String company,String su,String cuname){
-            this.qo = new SimpleStringProperty(q);
-            this.eno = new SimpleStringProperty(eno);
-            this.company= new SimpleStringProperty(company);
-            this.sub= new SimpleStringProperty(su);
-            this.custname=new SimpleStringProperty(cuname);
-       
-            
-        }*/
 
     }
 
@@ -2586,171 +2707,168 @@ public class SalesController implements Initializable {
 
         }
 
-        /* private AnalysisDT2(String string, String string0, String string1, String string2, String string3, String string4) {
-            this.enqno = new SimpleStringProperty(string);
-            this.comname = new SimpleStringProperty(string1);
-            this.cname = new SimpleStringProperty(string3);
-            this.Subdate= new SimpleStringProperty(string0);
-            this.sub= new SimpleStringProperty(string2);
-            this.qno=new SimpleStringProperty(string4);
-            
-        }*/
     }
 
-    public void threadtock() {
-        final java.util.Timer timer = new java.util.Timer();
-        final TimerTask delayedThreadStartTask;
-        delayedThreadStartTask = new TimerTask() {
+    void dockThread() {
+
+        Runnable task = new Runnable() {
             public void run() {
-                try {
-                    if (tock) {
-                        if (SD[0]) {
+                while (true) {
 
-                            QoutPane.setDisable(true);
-                            QoutPane.setVisible(false);
-                            oldPOPane.setDisable(true);
-                            oldPOPane.setVisible(false);
-                            InvoicePane.setDisable(true);
-                            InvoicePane.setVisible(false);
-                            newPOPane.setDisable(true);
-                            newPOPane.setVisible(false);
-                            newEqPane.setDisable(false);
-                            newEqPane.setVisible(true);
-
-                            // SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
-                            SD[0] = false;
-                        } else if (SD[2]) {
-
-                            QoutPane.setDisable(false);
-                            QoutPane.setVisible(true);
-                            oldPOPane.setDisable(true);
-                            oldPOPane.setVisible(false);
-                            InvoicePane.setDisable(true);
-                            InvoicePane.setVisible(false);
-                            newPOPane.setDisable(true);
-                            newPOPane.setVisible(false);
-                            newEqPane.setDisable(true);
-                            newEqPane.setVisible(false);
-                            try {
-                                QnoBox.getItems().clear();
-                                String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
-                                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                                ResultSet rs = stmt.executeQuery();
-                                while (rs.next()) {
-                                    QnoBox.getItems().add(rs.getString(1));
-                                    System.out.println(rs.getString(1));
-                                }
-                            } catch (Exception e) {
-
-                            }
-
-                            // SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
-                            SD[2] = false;
-                        } else if (SD[3]) {
-
-                            QoutPane.setDisable(true);
-                            QoutPane.setVisible(false);
-                            oldPOPane.setDisable(true);
-                            oldPOPane.setVisible(false);
-                            InvoicePane.setDisable(true);
-                            InvoicePane.setVisible(false);
-                            newPOPane.setDisable(false);
-                            newPOPane.setVisible(true);
-                            newEqPane.setDisable(true);
-                            newEqPane.setVisible(false);
-                            try {
-                                QnoBox1.getItems().clear();
-                                String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
-                                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                                ResultSet rs = stmt.executeQuery();
-                                while (rs.next()) {
-                                    QnoBox1.getItems().add(rs.getString(1));
-                                    System.out.println(rs.getString(1));
-                                }
-                            } catch (Exception e) {
-
-                            }
-
-                            //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
-                            SD[3] = false;
-                        } else if (SD[4]) {
-
-                            QoutPane.setDisable(true);
-                            QoutPane.setVisible(false);
-                            oldPOPane.setDisable(false);
-                            oldPOPane.setVisible(true);
-                            InvoicePane.setDisable(true);
-                            InvoicePane.setVisible(false);
-                            newPOPane.setDisable(true);
-                            newPOPane.setVisible(false);
-                            newEqPane.setDisable(true);
-                            newEqPane.setVisible(false);
-
-                            //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
-                            SD[4] = false;
-                        } else if (SD[5]) {
-
-                            SD[5] = false;
-                            QoutPane.setDisable(true);
-                            QoutPane.setVisible(false);
-                            oldPOPane.setDisable(true);
-                            oldPOPane.setVisible(false);
-                            InvoicePane.setDisable(false);
-                            InvoicePane.setVisible(true);
-                            newPOPane.setDisable(true);
-                            newPOPane.setVisible(false);
-                            newEqPane.setDisable(true);
-                            newEqPane.setVisible(false);
-
-                            try {
-
-                                String sql1 = "SELECT PjNo FROM `product` WHERE 1 ";
-                                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-                                ResultSet rs = stmt.executeQuery();
-                                inv_pno.getItems().clear();
-                                while (rs.next()) {
-                                    int a = rs.getInt("PjNo");
-                                    inv_pno.getItems().add(a);
-                                    SD[5] = false;
-                                }
-                                sql1 = "SELECT Ino FROM `invoice` WHERE 1 ";
-                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-                                rs = stmt.executeQuery();
-                                inv_invbox.getItems().clear();
-                                while (rs.next()) {
-                                    String a = rs.getString(1);
-                                    inv_invbox.getItems().add(a);
-                                }
-
-                            } catch (SQLException ex) {
-                                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                            //SalesHam.fireEvent(new Event(MouseEvent.MOUSE_PRESSED));
-                        } else {
-                            timer.cancel();  // Terminates this timer, discarding any currently scheduled tasks.
-                            timer.purge();   // Removes all cancelled tasks from this timer's task queue.
-                        }
-
-                        if (tock) {
-                            threadtock();
-                        }
-
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    runDockThread();
                 }
-
             }
-
         };
 
-        timer.schedule(delayedThreadStartTask, 1500);//0.5 second
+        Thread backgroundThread = new Thread(task);
+        backgroundThread.setDaemon(true);
+        backgroundThread.start();
     }
-    ;
- 
- //columns for table1
- TableColumn indexCol = new TableColumn("S. No.");
+
+    public void runDockThread() {
+
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+
+                    try {
+                        if (tock) {
+
+                            if (SD[0]) {
+
+                                QoutPane.setDisable(true);
+                                QoutPane.setVisible(false);
+                                oldPOPane.setDisable(true);
+                                oldPOPane.setVisible(false);
+                                InvoicePane.setDisable(true);
+                                InvoicePane.setVisible(false);
+                                newPOPane.setDisable(true);
+                                newPOPane.setVisible(false);
+                                newEqPane.setDisable(false);
+                                newEqPane.setVisible(true);
+
+                                SD[0] = false;
+                            } else if (SD[2]) {
+
+                                QoutPane.setDisable(false);
+                                QoutPane.setVisible(true);
+                                oldPOPane.setDisable(true);
+                                oldPOPane.setVisible(false);
+                                InvoicePane.setDisable(true);
+                                InvoicePane.setVisible(false);
+                                newPOPane.setDisable(true);
+                                newPOPane.setVisible(false);
+                                newEqPane.setDisable(true);
+                                newEqPane.setVisible(false);
+                                try {
+                                    QnoBox.getItems().clear();
+                                    String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
+                                    PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                                    ResultSet rs = stmt.executeQuery();
+                                    while (rs.next()) {
+                                        QnoBox.getItems().add(rs.getString(1));
+                                        System.out.println(rs.getString(1));
+                                    }
+                                } catch (Exception e) {
+
+                                }
+
+                                SD[2] = false;
+                            } else if (SD[3]) {
+
+                                QoutPane.setDisable(true);
+                                QoutPane.setVisible(false);
+                                oldPOPane.setDisable(true);
+                                oldPOPane.setVisible(false);
+                                InvoicePane.setDisable(true);
+                                InvoicePane.setVisible(false);
+                                newPOPane.setDisable(false);
+                                newPOPane.setVisible(true);
+                                newEqPane.setDisable(true);
+                                newEqPane.setVisible(false);
+                                try {
+                                    QnoBox1.getItems().clear();
+                                    String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
+                                    PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                                    ResultSet rs = stmt.executeQuery();
+                                    while (rs.next()) {
+                                        QnoBox1.getItems().add(rs.getString(1));
+                                        System.out.println(rs.getString(1));
+                                    }
+                                } catch (Exception e) {
+
+                                }
+
+                                SD[3] = false;
+                            } else if (SD[4]) {
+
+                                QoutPane.setDisable(true);
+                                QoutPane.setVisible(false);
+                                oldPOPane.setDisable(false);
+                                oldPOPane.setVisible(true);
+                                InvoicePane.setDisable(true);
+                                InvoicePane.setVisible(false);
+                                newPOPane.setDisable(true);
+                                newPOPane.setVisible(false);
+                                newEqPane.setDisable(true);
+                                newEqPane.setVisible(false);
+
+                                SD[4] = false;
+                            } else if (SD[5]) {
+
+                                SD[5] = false;
+                                QoutPane.setDisable(true);
+                                QoutPane.setVisible(false);
+                                oldPOPane.setDisable(true);
+                                oldPOPane.setVisible(false);
+                                InvoicePane.setDisable(false);
+                                InvoicePane.setVisible(true);
+                                newPOPane.setDisable(true);
+                                newPOPane.setVisible(false);
+                                newEqPane.setDisable(true);
+                                newEqPane.setVisible(false);
+
+                                try {
+
+                                    String sql1 = "SELECT PjNo FROM `product` WHERE 1 ";
+                                    PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                                    ResultSet rs = stmt.executeQuery();
+                                    inv_pno.getItems().clear();
+                                    while (rs.next()) {
+                                        int a = rs.getInt("PjNo");
+                                        inv_pno.getItems().add(a);
+                                        SD[5] = false;
+                                    }
+                                    sql1 = "SELECT Ino FROM `invoice` WHERE 1 ";
+                                    stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                                    rs = stmt.executeQuery();
+                                    inv_invbox.getItems().clear();
+                                    while (rs.next()) {
+                                        String a = rs.getString(1);
+                                        inv_invbox.getItems().add(a);
+                                    }
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            Thread.sleep(500);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //columns for table1
+    TableColumn indexCol = new TableColumn("S. No.");
     TableColumn desCol = new TableColumn("Description");
     TableColumn quantityCol = new TableColumn("Quantity");
     TableColumn unitCol = new TableColumn("Unit/(SGD)");
@@ -3202,10 +3320,10 @@ public class SalesController implements Initializable {
                     String s = p.getRemarks().getText();
                     String h = p.getHolidays().getText();
 
-                    String de=p.getSN().getText();
-                    
+                    String de = p.getSN().getText();
+
                     //int no = Integer.parseInt(p.getSN().getText());
-                     System.out.println("the quotation no is " + de+"\t"+d+"\t"+q+"\t"+r+"\t"+h+"\t"+s);
+                    System.out.println("the quotation no is " + de + "\t" + d + "\t" + q + "\t" + r + "\t" + h + "\t" + s);
                     try {//deleting befoehand just in case...
 
                         String suql1 = "INSERT INTO `quotationdetails_steels`(`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`) VALUES (?,?,?,?,?,?,?)";
@@ -3570,7 +3688,14 @@ public class SalesController implements Initializable {
                         trc = FXCollections.observableArrayList(table111.getItems());
                         hm.put("TableItems", trc);
                         new PdfGeneration.pdfQuotation(hm);
-                        Utilities.AlertBox.notificationInfo("Done","Quotation Generation successful.");
+                        Utilities.AlertBox.notificationInfo("Done", "Quotation Generation successful.");
+                        String sql = "UPDATE `qoutation` SET `Sent`=?,`Sentdate`=? WHERE `Qno`=?";
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(3, qno);
+                        ps.setString(2, Utilities.Date.Date());
+                        ps.setInt(1, 1);
+                        ps.executeUpdate();
                     } catch (Exception e) {
 
                         Utilities.AlertBox.showErrorMessage(e);
@@ -4190,57 +4315,8 @@ public class SalesController implements Initializable {
     @FXML
     private void tick_in_invoice(MouseEvent event) {
 
-
-        /*    
-=======
-              PreparedStatement ps;
-               ResultSet rs;
-               inv_pno.getItems().clear();
-        try {
-             
-               
->>>>>>> f7f8d55e2fab98543203565eef911fb67f92cbdd
-            String sl="SELECT * from product p,pirel pi,invoice id WHERE p.PjNo=pi.PjNo AND pi.INo=id.INo AND p.PjNo=?";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(sl);
-               ps.setInt(1,inv_pno.getValue());
-               rs=ps.executeQuery();
-               inv_tum.setText(rs.getString("Termofpay"));
-               inv_sp.setText(rs.getString("Salesperson"));
-               inv_acc.setText(rs.getString("Acc No"));
-               inv_to.setText(rs.getString("To:"));//1801-AE-inv-001 //;
-               String cn=rs.getString("Company");
-               String date=Utilities.Date.Date();
-               String dt=date.substring(2,5);
-               String d;
-              
-               
-               if(inv_pno.getValue()<10){
-         //dg=String.valueOf(dig);dg="00"+dg;
-        dt="0"+inv_pno;
-        }
-        else
-        dt=dt+inv_pno;
-        
-        dt=dt+"-";
-        if(cn.equalsIgnoreCase("AWIN")){
-            dt=dt+"AE";
-           
-        }else{
-            dt=dt+"SE";
-            
-        }
-        dt=dt+"-inv";
-        inv_cmp.setText(cn);
-          String ssl="SELECT IFNULL(MAX(CAST(SUBSTRING(`INo`, CHAR_LENGTH(`IN`)-2) AS SIGNED))+1,1) as 'your value'  FROM `invoice` WHERE 1";
-               ps= com.mycompany.snp.MainApp.conn.prepareStatement(ssl);
-               ResultSet ri=ps.executeQuery();
-               dt=dt+ri.getInt(1);
-               inv_no.setText(dt);
-               
-    
-        }catch (SQLException ex) {
-            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        Money_Paid.setVisible(false);
+        Money_Paid.setDisable(true);
         try {
             PreparedStatement ps;
             String sl = "SELECT * from product p,qprel qp,eqrel er WHERE p.PjNo=qp.PjNo and qp.Qno=er.Qno and p.PjNo=?";
@@ -4317,6 +4393,7 @@ public class SalesController implements Initializable {
             inv_to.setText(nme + "\n\n" + add + "\n\n" + em + "\n\n" + phno);
         } catch (Exception e) {
             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
+            Utilities.AlertBox.showErrorMessage(e);
         }
         inv_newtable.getColumns().clear();
         inv_newtable.getItems().clear();
@@ -4368,7 +4445,8 @@ public class SalesController implements Initializable {
 
     @FXML
     private void tick_out_invoice(MouseEvent event) {
-
+        Money_Paid.setVisible(true);
+        Money_Paid.setDisable(false);
         PreparedStatement ps;
         ResultSet rs;
 

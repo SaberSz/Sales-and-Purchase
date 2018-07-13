@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 06, 2018 at 08:14 PM
+-- Generation Time: Jul 09, 2018 at 07:40 PM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -341,7 +341,7 @@ CREATE TABLE `invoice` (
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
 ('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
 ('1802-AE-INV-002', 20905, NULL, NULL, 'abcd', '345345', '40', 1463.35, 0, 0),
-('1804-SC-INV-001', 26814, NULL, NULL, 'Voma ha', '234523454', '30', 2145.12, 0, 0);
+('1804-SC-INV-001', 26814, '2018-07-08', '2018-08-07', 'Voma ha', '234523454', '30', 2145.12, 5094, 1);
 
 -- --------------------------------------------------------
 
@@ -368,6 +368,29 @@ INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, 
 (1, 'Sand Blasting / Coating of AF SN63177', '1', 4469, 4469, '1804-SC-INV-001'),
 (2, 'asdf fdsf sadf', '37', 565, 20905, '1802-AE-INV-002'),
 (2, 'Sand Blasting / Coating of AF SN63178', '2', 4469, 8938, '1804-SC-INV-001');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `invoice_payments`
+--
+
+DROP TABLE IF EXISTS `invoice_payments`;
+CREATE TABLE `invoice_payments` (
+  `DateEntry` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `INo` varchar(15) NOT NULL,
+  `Amount` double NOT NULL DEFAULT '0',
+  `DatePaid` date NOT NULL,
+  `Late` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `invoice_payments`
+--
+
+INSERT INTO `invoice_payments` (`DateEntry`, `INo`, `Amount`, `DatePaid`, `Late`) VALUES
+('2018-07-08 18:01:31', '1804-SC-INV-001', 2681, '2018-07-08', 0),
+('2018-07-08 18:01:44', '1804-SC-INV-001', 2413, '2018-07-08', 0);
 
 -- --------------------------------------------------------
 
@@ -417,6 +440,151 @@ INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`,
 ('34534', 2, 345345, '2018-03-06', '2018-03-15', 'sdfgsdf[gisdfjgpsdfoghsdpfgoshsdasdfgaslkdfhgalsfiasgdflkuag', 1, '2018-03-03'),
 ('3456', 3, 3456778, '2018-03-09', '2018-03-15', 'creation of oil and memory.', 0, '2018-03-10'),
 ('345434', 4, 234234, '2018-07-02', '2018-07-27', 'apples and oranges for construction', 0, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_Enquiry`
+--
+
+DROP TABLE IF EXISTS `Purchase_Enquiry`;
+CREATE TABLE `Purchase_Enquiry` (
+  `Eqno` varchar(25) NOT NULL,
+  `edate` date NOT NULL,
+  `SID` int(15) NOT NULL,
+  `Subject` varchar(500) NOT NULL,
+  `Cmpname` varchar(10) NOT NULL,
+  `Type` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_eprel`
+--
+
+DROP TABLE IF EXISTS `Purchase_eprel`;
+CREATE TABLE `Purchase_eprel` (
+  `Eqno` varchar(25) NOT NULL,
+  `Pjno` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_eqrel`
+--
+
+DROP TABLE IF EXISTS `Purchase_eqrel`;
+CREATE TABLE `Purchase_eqrel` (
+  `Eqno` varchar(25) NOT NULL,
+  `Qno` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_Invoice`
+--
+
+DROP TABLE IF EXISTS `Purchase_Invoice`;
+CREATE TABLE `Purchase_Invoice` (
+  `Ino` varchar(100) NOT NULL,
+  `AmtwoGST` double NOT NULL,
+  `PaymentTerm` int(11) NOT NULL,
+  `AmtwithGST` double NOT NULL,
+  `date_recv` date NOT NULL,
+  `paid` tinyint(4) NOT NULL DEFAULT '0',
+  `amtpaid` double NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_InvoicePayments`
+--
+
+DROP TABLE IF EXISTS `Purchase_InvoicePayments`;
+CREATE TABLE `Purchase_InvoicePayments` (
+  `Ino` varchar(100) NOT NULL,
+  `paidDate` date NOT NULL,
+  `amount` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_pirel`
+--
+
+DROP TABLE IF EXISTS `Purchase_pirel`;
+CREATE TABLE `Purchase_pirel` (
+  `Po_NO` varchar(25) NOT NULL,
+  `Ino` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_PO`
+--
+
+DROP TABLE IF EXISTS `Purchase_PO`;
+CREATE TABLE `Purchase_PO` (
+  `Po_NO` varchar(25) NOT NULL,
+  `Sentdate` date DEFAULT NULL,
+  `Description` varchar(200) DEFAULT NULL,
+  `RefNO` varchar(50) DEFAULT NULL,
+  `Total` double DEFAULT NULL,
+  `Sent` tinyint(4) NOT NULL DEFAULT '0',
+  `OrderNo` varchar(50) DEFAULT NULL,
+  `PaymentTerm` varchar(50) DEFAULT NULL,
+  `ShipmentMethod` varchar(10) DEFAULT NULL,
+  `ShipmentTerm` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_POTableDetails`
+--
+
+DROP TABLE IF EXISTS `Purchase_POTableDetails`;
+CREATE TABLE `Purchase_POTableDetails` (
+  `Po_NO` varchar(25) NOT NULL,
+  `No` int(11) NOT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  `Qty` varchar(10) DEFAULT NULL,
+  `Price` varchar(10) DEFAULT NULL,
+  `TotalAmt` varchar(10) DEFAULT NULL,
+  `Exclusion` varchar(500) DEFAULT NULL,
+  `Delivery` varchar(200) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_qprel`
+--
+
+DROP TABLE IF EXISTS `Purchase_qprel`;
+CREATE TABLE `Purchase_qprel` (
+  `Qno` varchar(100) NOT NULL,
+  `Po_NO` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Purchase_quotation`
+--
+
+DROP TABLE IF EXISTS `Purchase_quotation`;
+CREATE TABLE `Purchase_quotation` (
+  `Qno` varchar(100) NOT NULL,
+  `date_recv` date NOT NULL,
+  `location` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -477,7 +645,7 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-SC-QT-028', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.1', 1, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.2', 2, '2018-03-01 19:09:54', 0, NULL),
-('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-03-03');
+('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-07-08');
 
 -- --------------------------------------------------------
 
@@ -555,11 +723,11 @@ INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `QuotationDetails_Steels`
+-- Table structure for table `quotationdetails_steels`
 --
 
-DROP TABLE IF EXISTS `QuotationDetails_Steels`;
-CREATE TABLE `QuotationDetails_Steels` (
+DROP TABLE IF EXISTS `quotationdetails_steels`;
+CREATE TABLE `quotationdetails_steels` (
   `Sno` varchar(11) NOT NULL,
   `Pos` varchar(150) NOT NULL DEFAULT '',
   `NormalRate` varchar(100) DEFAULT NULL,
@@ -571,30 +739,30 @@ CREATE TABLE `QuotationDetails_Steels` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `QuotationDetails_Steels`
+-- Dumping data for table `quotationdetails_steels`
 --
 
-INSERT INTO `QuotationDetails_Steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`, `RowOrder`) VALUES
+INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormalRate`, `Holidays`, `Remarks`, `qno`, `RowOrder`) VALUES
 ('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.1', 1),
 ('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2', 2),
 ('1', 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028', 3),
-('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 159),
-('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 153),
+('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 181),
+('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 175),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028', 6),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1', 7),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2', 8),
-('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 160),
-('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 154),
+('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 182),
+('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 176),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028', 11),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1', 12),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2', 13),
-('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 161),
-('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 155),
-('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 162),
-('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 156),
-('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '3 x Normal Rate', '', '18-SC-QT-028.Rev.3', 163),
-('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 157),
-('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 158);
+('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 183),
+('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 177),
+('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 184),
+('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 178),
+('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '3 x Normal Rate', '', '18-SC-QT-028.Rev.3', 185),
+('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 179),
+('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 180);
 
 --
 -- Indexes for dumped tables
@@ -646,6 +814,13 @@ ALTER TABLE `invoice_details`
   ADD KEY `Invno` (`Invno`);
 
 --
+-- Indexes for table `invoice_payments`
+--
+ALTER TABLE `invoice_payments`
+  ADD PRIMARY KEY (`DateEntry`,`INo`),
+  ADD KEY `INo` (`INo`);
+
+--
 -- Indexes for table `pirel`
 --
 ALTER TABLE `pirel`
@@ -658,6 +833,71 @@ ALTER TABLE `pirel`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`PjNo`);
+
+--
+-- Indexes for table `Purchase_Enquiry`
+--
+ALTER TABLE `Purchase_Enquiry`
+  ADD PRIMARY KEY (`Eqno`),
+  ADD KEY `SID` (`SID`);
+
+--
+-- Indexes for table `Purchase_eprel`
+--
+ALTER TABLE `Purchase_eprel`
+  ADD PRIMARY KEY (`Eqno`,`Pjno`),
+  ADD KEY `Pjno` (`Pjno`);
+
+--
+-- Indexes for table `Purchase_eqrel`
+--
+ALTER TABLE `Purchase_eqrel`
+  ADD PRIMARY KEY (`Eqno`,`Qno`),
+  ADD KEY `Qno` (`Qno`);
+
+--
+-- Indexes for table `Purchase_Invoice`
+--
+ALTER TABLE `Purchase_Invoice`
+  ADD PRIMARY KEY (`Ino`);
+
+--
+-- Indexes for table `Purchase_InvoicePayments`
+--
+ALTER TABLE `Purchase_InvoicePayments`
+  ADD PRIMARY KEY (`Ino`);
+
+--
+-- Indexes for table `Purchase_pirel`
+--
+ALTER TABLE `Purchase_pirel`
+  ADD PRIMARY KEY (`Po_NO`,`Ino`),
+  ADD KEY `Ino` (`Ino`);
+
+--
+-- Indexes for table `Purchase_PO`
+--
+ALTER TABLE `Purchase_PO`
+  ADD PRIMARY KEY (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_POTableDetails`
+--
+ALTER TABLE `Purchase_POTableDetails`
+  ADD PRIMARY KEY (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_qprel`
+--
+ALTER TABLE `Purchase_qprel`
+  ADD PRIMARY KEY (`Qno`,`Po_NO`),
+  ADD KEY `Po_NO` (`Po_NO`);
+
+--
+-- Indexes for table `Purchase_quotation`
+--
+ALTER TABLE `Purchase_quotation`
+  ADD PRIMARY KEY (`Qno`);
 
 --
 -- Indexes for table `qoutation`
@@ -681,9 +921,9 @@ ALTER TABLE `quotationdetails_awin`
   ADD KEY `qno` (`qno`);
 
 --
--- Indexes for table `QuotationDetails_Steels`
+-- Indexes for table `quotationdetails_steels`
 --
-ALTER TABLE `QuotationDetails_Steels`
+ALTER TABLE `quotationdetails_steels`
   ADD PRIMARY KEY (`Sno`,`Pos`,`qno`),
   ADD UNIQUE KEY `UniqueRow` (`RowOrder`),
   ADD KEY `qno` (`qno`),
@@ -694,10 +934,10 @@ ALTER TABLE `QuotationDetails_Steels`
 --
 
 --
--- AUTO_INCREMENT for table `QuotationDetails_Steels`
+-- AUTO_INCREMENT for table `quotationdetails_steels`
 --
-ALTER TABLE `QuotationDetails_Steels`
-  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=164;
+ALTER TABLE `quotationdetails_steels`
+  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
 
 --
 -- Constraints for dumped tables
@@ -717,11 +957,51 @@ ALTER TABLE `invoice_details`
   ADD CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`Invno`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `invoice_payments`
+--
+ALTER TABLE `invoice_payments`
+  ADD CONSTRAINT `invoice_payments_ibfk_1` FOREIGN KEY (`INo`) REFERENCES `invoice` (`INo`);
+
+--
 -- Constraints for table `pirel`
 --
 ALTER TABLE `pirel`
   ADD CONSTRAINT `pirel_ibfk_1` FOREIGN KEY (`INo`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `pirel_ibfk_2` FOREIGN KEY (`PjNo`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_Enquiry`
+--
+ALTER TABLE `Purchase_Enquiry`
+  ADD CONSTRAINT `purchase_enquiry_ibfk_1` FOREIGN KEY (`SID`) REFERENCES `customer` (`CID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_eprel`
+--
+ALTER TABLE `Purchase_eprel`
+  ADD CONSTRAINT `purchase_eprel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `Purchase_Enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_eprel_ibfk_2` FOREIGN KEY (`Pjno`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_eqrel`
+--
+ALTER TABLE `Purchase_eqrel`
+  ADD CONSTRAINT `purchase_eqrel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `Purchase_Enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_eqrel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `Purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_pirel`
+--
+ALTER TABLE `Purchase_pirel`
+  ADD CONSTRAINT `purchase_pirel_ibfk_1` FOREIGN KEY (`Ino`) REFERENCES `Purchase_Invoice` (`Ino`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_pirel_ibfk_2` FOREIGN KEY (`Po_NO`) REFERENCES `Purchase_PO` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Purchase_qprel`
+--
+ALTER TABLE `Purchase_qprel`
+  ADD CONSTRAINT `purchase_qprel_ibfk_1` FOREIGN KEY (`Po_NO`) REFERENCES `Purchase_PO` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `Purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `qprel`
@@ -737,9 +1017,9 @@ ALTER TABLE `quotationdetails_awin`
   ADD CONSTRAINT `quotationdetails_awin_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `QuotationDetails_Steels`
+-- Constraints for table `quotationdetails_steels`
 --
-ALTER TABLE `QuotationDetails_Steels`
+ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
