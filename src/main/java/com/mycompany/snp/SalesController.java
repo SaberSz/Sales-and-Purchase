@@ -3407,7 +3407,7 @@ public class SalesController implements Initializable {
             table11.getItems().clear();
             table11.getColumns().clear();
             //fill details of Awin table
-            String sql1 = "SELECT * FROM `QuotationDetails_Awin` WHERE qno = ? ORDER BY RowOrder";
+            String sql1 = "SELECT * FROM `QuotationDetails_Awin` WHERE qno = ? ";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
             stmt.setString(1, qno);
             ResultSet rs = stmt.executeQuery();
@@ -3439,7 +3439,7 @@ public class SalesController implements Initializable {
         //here input is used to indicate if table is editable or not
         try {
             //Generate the Steels Quotation Table 
-            String qno = QnoBox.getValue();
+            String qno = Qno1.getText();
             table11.setDisable(true);
             table11.setVisible(false);
             table11.setEditable(false);
@@ -3610,7 +3610,7 @@ public class SalesController implements Initializable {
                     stmt.setString(1, k);
                     stmt.setString(2, revisedQno);
                     stmt.setString(3, Edate1.getValue().toString());
-                    stmt.setString(4, CName1.getText());
+                    stmt.setString(4, ECom1.getText());
                     stmt.setInt(5, abc);
 
                     stmt.executeUpdate();
@@ -3699,6 +3699,7 @@ public class SalesController implements Initializable {
             edit_button_hit_in_QPane = false;
 
             try {
+                System.out.println("Inside Revision");
                 qnoforquery = Qno1.getText();
                 String qno = Qno1.getText();
                 String suql = "SELECT Qno,RevNo FROM `qoutation` WHERE qno= ? ;";
