@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.PurchaseController">
+<AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.PurchaseController">
    <children>
       <AnchorPane prefHeight="43.0" prefWidth="1200.0" style="-fx-background-color: #3F51B5;">
          <children>
@@ -23,19 +27,64 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" onMouseClicked="#Power_Button_Clicked" size="28" />
                </graphic>
             </Label>
-            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0"  prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
+            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0" prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
             <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_RIGHT" layoutX="161.0" layoutY="32.0" size="30" />
             <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
          </children>
       </AnchorPane>
-      <ScrollPane fx:id="EnquiryPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
+      <ScrollPane fx:id="EnquiryPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 5%, rgb(255,255,255));">
                <children>
-                  <Label layoutX="14.0" layoutY="14.0" prefHeight="43.0" prefWidth="124.0" text="Enquiry">
+                  <JFXButton buttonType="RAISED" layoutX="14.0" layoutY="14.0" onMouseClicked="#New_Enquiry_Pane_Clear_Components" prefHeight="30.0" prefWidth="167.0" style="-fx-background-color: #ffffff;" text="New Enquiry">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
+                  </JFXButton>
+                  <JFXTextField fx:id="ENo" editable="false" labelFloat="true" layoutX="14.0" layoutY="96.0" prefHeight="27.0" prefWidth="236.0" promptText="Enquiry Number">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXDatePicker fx:id="Edate" defaultColor="#3f51b5" layoutX="13.0" layoutY="169.0" prefHeight="27.0" prefWidth="238.0" promptText="Date of Enquiry Received" />
+                  <JFXComboBox fx:id="Type" layoutX="361.0" layoutY="169.0" prefHeight="27.0" prefWidth="232.0" promptText="Type of Enquiry" />
+                  <JFXTextArea fx:id="EDes" labelFloat="true" layoutX="13.0" layoutY="350.0" prefHeight="174.0" prefWidth="671.0" promptText="Description">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextArea>
+                  <JFXComboBox fx:id="cmp" layoutX="361.0" layoutY="243.0" prefHeight="27.0" prefWidth="237.0" promptText="Company" />
+                  <JFXComboBox fx:id="Epjno" layoutX="14.0" layoutY="243.0" prefHeight="27.0" prefWidth="236.0" promptText="Related Project Number" />
+                  <JFXTextField fx:id="CName" labelFloat="true" layoutX="813.0" layoutY="123.0" prefHeight="27.0" prefWidth="237.0" promptText="Supplier Name">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="CPhone" labelFloat="true" layoutX="813.0" layoutY="196.0" prefHeight="27.0" prefWidth="237.0" promptText="Phone Number">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="Cmail" labelFloat="true" layoutX="813.0" layoutY="256.0" prefHeight="27.0" prefWidth="237.0" promptText="Email">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextArea fx:id="Cadd" labelFloat="true" layoutX="813.0" layoutY="350.0" prefHeight="174.0" prefWidth="252.0" promptText="Address">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextArea>
+                  <Separator layoutX="754.0" layoutY="84.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="0.0" />
+                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1020.0" layoutY="569.0" onMouseClicked="#saveNewEnq" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
+                     </graphic>
+                  </Label>
+                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="960.0" layoutY="569.0" onMouseClicked="#delNewEnq" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="30" />
+                     </graphic>
                   </Label>
                </children>
             </AnchorPane>
@@ -67,7 +116,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="InvoicePaymentsPane1" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0">
+      <ScrollPane fx:id="InvoicePaymentsPane1" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
