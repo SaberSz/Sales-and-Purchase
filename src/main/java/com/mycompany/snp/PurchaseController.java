@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.mycompany.snp;
 
 import static DBMS.Connect.DB_URL;
@@ -13,13 +8,16 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
+import static com.mycompany.snp.SalesController.cid;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,11 +36,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * FXML Controller class
- *
- * @author dylan
- */
 public class PurchaseController implements Initializable {
 
     @FXML
@@ -56,13 +49,13 @@ public class PurchaseController implements Initializable {
     @FXML
     private JFXDatePicker Edate;
     @FXML
-    private JFXComboBox<?> Type;
+    private JFXComboBox<String> Type;
     @FXML
     private JFXTextArea EDes;
     @FXML
-    private JFXComboBox<?> cmp;
+    private JFXComboBox<String> cmp;
     @FXML
-    private JFXComboBox<?> Epjno;
+    private JFXComboBox<String> Epjno;
     @FXML
     private JFXTextField CName;
     @FXML
@@ -74,13 +67,13 @@ public class PurchaseController implements Initializable {
     @FXML
     private Label pencilinv;
     @FXML
-    private JFXComboBox<?> EnqSelect;
+    private JFXComboBox<String> EnqSelect;
     @FXML
     private Label inv_tick;
     @FXML
     private ScrollPane QuotationPane;
     @FXML
-    private JFXComboBox<?> EnqSelect1;
+    private JFXComboBox<String> EnqSelect1;
     @FXML
     private Label inv_tick1;
     @FXML
@@ -111,7 +104,6 @@ public class PurchaseController implements Initializable {
     private JFXTextArea Header;
     @FXML
     private JFXTextField PoTotal;
-
 
     /**
      * Initializes the controller class.
@@ -240,13 +232,93 @@ public class PurchaseController implements Initializable {
     @FXML
     private void New_Enquiry_Pane_Clear_Components(MouseEvent event) {
         //clear content in feilds of enquiry pane
+        ENo.clear();
+        ENo.setEditable(true);
+        Edate.valueProperty().set(null);
+        Edate.setEditable(true);
+        Type.getItems().clear();
+        EDes.clear();
+        EDes.setEditable(true);
+        CName.clear();
+        CName.setEditable(true);
+        Epjno.getItems().clear();
+        CPhone.clear();
+        CPhone.setEditable(true);
+        Cadd.clear();
+        Cadd.setEditable(true);
+        Cmail.clear();
+        Cmail.setEditable(true);                            //enq no format-    yy-cmpname-eq-001
+        cmp.getItems().clear();
     }
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
-        //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
+        
+    /*    //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
         // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
-    }
+        int[] a=new int[100000];
+        try {
+            if (ENo.getText().trim().equals("") || EDes.getText().trim().equals("") || cmp.getValue().trim().equals("") || Cmail.getText().equals("") || Cadd.getText().equals("") || Edate.getValue().equals("") || Epjno.getValue().trim().equals("") || CName.getText().trim().equals("")
+                    || CPhone.getText().trim().equals("")||Type.getValue().trim().equals("")) {
+                Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+            } else {
+            try {
+                    if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?"
+                            + "Please note these details are not editable")) {
+                        //The below code is used to fetch a CID with the same customer details. This is to see if the customer is already registered or not.
+
+                        String sql = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
+                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        stmt.setString(1, CName.getText().trim());
+                        stmt.setString(2, Cmail.getText().trim());
+                        stmt.setString(3, CPhone.getText().trim());
+                        stmt.setString(4, Cadd.getText().trim());
+                        ResultSet rs = stmt.executeQuery();
+
+                        if (rs.next()) {
+                            cid = rs.getString(1);
+                        } else {    
+                
+                
+            
+                String res = "";
+                String date = Utilities.Date.Date();
+                date = date.substring(2, 4);
+                System.out.println(date);
+                res += date;
+                if (cmp.getValue().equalsIgnoreCase("Awins")) {
+                    res += "-AE-EQ-";
+                } else {
+                    res += "-SC-EQ-";
+                }
+                     
+            try {
+                                String suql = "SELECT Eqno FROM `enquiry` WHERE 1";
+                                st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                                rs = st.executeQuery(suql);
+                                int i = 0, j = 0;
+                                while (rs.next()) {
+
+                                    mx = rs.getString("Qno");
+
+                                    mx1 = mx.substring(10, 12);
+                                    System.out.println("mx1 val:" + mx1);
+                                    mxval[i] = Integer.parseInt(mx1);
+                                    i++;
+                                }
+              int temp;
+              
+            } catch (SQLException exe) {
+                                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                                Utilities.AlertBox.showErrorMessage(exe);
+                            }
+
+         catch (NullPointerException e) {
+            Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+        }
+    }*/
+                    }
 
     @FXML
     private void delNewEnq(MouseEvent event) {
@@ -256,14 +328,25 @@ public class PurchaseController implements Initializable {
     @FXML
     private void Enq_edit_hit(MouseEvent event) {
         //show combo box for selection of the enquiry number
+        ENo.setEditable(false);
+        Edate.setEditable(false);
+        Type.setEditable(false);
+        EDes.setEditable(false);
+        CName.setEditable(false);
+        Epjno.setEditable(false);
+        CPhone.setEditable(false);
+        Cmail.setEditable(false);
+        Cadd.setEditable(false);
+        cmp.setEditable(false);
     }
 
     @FXML
     private void Selection_of_Enquiry_for_edit(MouseEvent event) {
         //retreive combo box values and retireve data if available from db
-        
+
     }
-     @FXML
+
+    @FXML
     void Attach_Quotation_Button_Clicked(MouseEvent event) {
 
     }
