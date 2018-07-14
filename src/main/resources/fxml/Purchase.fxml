@@ -5,11 +5,14 @@
 <?import com.jfoenix.controls.JFXDatePicker?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -32,7 +35,7 @@
             <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
          </children>
       </AnchorPane>
-      <ScrollPane fx:id="EnquiryPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
+      <ScrollPane fx:id="EnquiryPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 5%, rgb(255,255,255));">
                <children>
@@ -110,18 +113,73 @@
                         <Font name="Arial" size="20.0" />
                      </font>
                   </Label>
+                  <JFXComboBox fx:id="EnqSelect1" layoutX="14.0" layoutY="75.0" prefHeight="27.0" prefWidth="232.0" promptText="Enquiry Number" />
+                  <Label fx:id="inv_tick1" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="299.0" layoutY="74.0" onMouseClicked="#Selection_of_Enquiry_for_Quotation_Entry" prefHeight="26.0" prefWidth="19.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                     </graphic>
+                  </Label>
+                  <JFXTreeTableView fx:id="Table1" layoutX="722.0" layoutY="74.0" prefHeight="569.0" prefWidth="440.0" />
+                  <JFXTextField layoutX="14.0" layoutY="163.0" prefHeight="27.0" prefWidth="231.0" promptText="Quotation Number" />
+                  <JFXDatePicker defaultColor="#3f51b5" layoutX="14.0" layoutY="248.0" prefHeight="27.0" prefWidth="229.0" promptText="Date Quotation Received" />
+                  <JFXTextField editable="false" layoutX="14.0" layoutY="345.0" prefHeight="27.0" prefWidth="195.0" promptText="File Location" />
+                  <Label contentDisplay="GRAPHIC_ONLY" layoutX="218.0" layoutY="346.0" onMouseClicked="#Attach_Quotation_Button_Clicked" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="ATTACHMENT" size="25" />
+                     </graphic>
+                  </Label>
+                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="61.0" layoutY="477.0" onMouseClicked="#saveNewQuotation" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
+                     </graphic>
+                  </Label>
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
+      <ScrollPane fx:id="PurchaseOrderPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" vvalue="1.0">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
+            <AnchorPane fx:id="" minHeight="0.0" minWidth="0.0" prefHeight="985.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
                   <Label layoutX="14.0" layoutY="14.0" prefHeight="43.0" prefWidth="156.0" text="Purchase Order">
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
+                  </Label>
+                  <JFXComboBox fx:id="POqno" layoutX="21.0" layoutY="77.0" prefHeight="27.0" prefWidth="195.0" promptText="Quotation Number" />
+                  <Label fx:id="Potick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="264.0" layoutY="75.0" onMouseClicked="#Selection_of_Quotation_for_PO_Entry" prefHeight="26.0" prefWidth="19.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                     </graphic>
+                  </Label>
+                  <JFXTextArea fx:id="supplierInfo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="21.0" layoutY="212.0" prefHeight="188.0" prefWidth="547.0" promptText="To:">
+                     <font>
+                        <Font name="Arial" size="13.0" />
+                     </font>
+                  </JFXTextArea>
+                  <JFXTextField fx:id="POnumber" editable="false" labelFloat="true" layoutX="21.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Purchase Order Number" />
+                  <JFXTextField fx:id="Pjnumber" editable="false" labelFloat="true" layoutX="257.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Project Number" />
+                  <JFXTextField fx:id="ShipmentNumber" editable="false" labelFloat="true" layoutX="490.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Shipment Method" />
+                  <JFXTextField fx:id="ShipmentTerm" labelFloat="true" layoutX="722.0" layoutY="141.0" prefHeight="27.0" prefWidth="186.0" promptText="Shipment Term" />
+                  <JFXDatePicker fx:id="OrderDate" defaultColor="#3f51b5" layoutX="955.0" layoutY="141.0" promptText="Order Date" />
+                  <JFXTextField fx:id="Attn" editable="false" labelFloat="true" layoutX="588.0" layoutY="224.0" prefHeight="27.0" prefWidth="195.0" promptText="Attn." />
+                  <TableView fx:id="Table2" layoutX="21.0" layoutY="514.0" prefHeight="436.0" prefWidth="876.0">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                  </TableView>
+                  <JFXTextArea fx:id="Header" labelFloat="true" layoutX="23.0" layoutY="443.0" prefHeight="43.0" prefWidth="875.0" promptText="Header" />
+                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1034.0" layoutY="789.0" onMouseClicked="#SaveNewPO" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
+                     </graphic>
+                  </Label>
+                  <JFXTextField fx:id="PoTotal" editable="false" labelFloat="true" layoutX="927.0" layoutY="548.0" prefHeight="27.0" prefWidth="230.0" promptText="Total" />
+                  <Label layoutX="1091.0" layoutY="789.0" onMouseClicked="#Gen_PO">
+                     <graphic>
+                        <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />
+                     </graphic>
                   </Label>
                </children>
             </AnchorPane>

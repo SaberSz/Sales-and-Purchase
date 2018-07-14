@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableView;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -32,7 +33,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
@@ -43,17 +46,11 @@ import javafx.stage.Stage;
 public class PurchaseController implements Initializable {
 
     @FXML
-    private ScrollPane EnquiryPane;
-    @FXML
-    private ScrollPane QuotationPane;
-    @FXML
-    private ScrollPane PurchaseOrderPane;
-    @FXML
-    private ScrollPane InvoicePaymentsPane1;
-    @FXML
     private Label Power;
     @FXML
     private JFXComboBox<String> MainMenu;
+    @FXML
+    private ScrollPane EnquiryPane;
     @FXML
     private JFXTextField ENo;
     @FXML
@@ -80,6 +77,41 @@ public class PurchaseController implements Initializable {
     private JFXComboBox<?> EnqSelect;
     @FXML
     private Label inv_tick;
+    @FXML
+    private ScrollPane QuotationPane;
+    @FXML
+    private JFXComboBox<?> EnqSelect1;
+    @FXML
+    private Label inv_tick1;
+    @FXML
+    private JFXTreeTableView<?> Table1;
+    @FXML
+    private ScrollPane PurchaseOrderPane;
+    @FXML
+    private ScrollPane InvoicePaymentsPane1;
+    @FXML
+    private JFXComboBox<?> POqno;
+    @FXML
+    private Label Potick;
+    @FXML
+    private JFXTextArea supplierInfo;
+    @FXML
+    private JFXTextField Pjnumber;
+    @FXML
+    private JFXTextField ShipmentNumber;
+    @FXML
+    private JFXTextField ShipmentTerm;
+    @FXML
+    private JFXDatePicker OrderDate;
+    @FXML
+    private JFXTextField Attn;
+    @FXML
+    private TableView<?> Table2;
+    @FXML
+    private JFXTextArea Header;
+    @FXML
+    private JFXTextField PoTotal;
+
 
     /**
      * Initializes the controller class.
@@ -105,7 +137,7 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
-
+        initialSetups();
     }
 
     void ShowEnquiry() {
@@ -230,6 +262,32 @@ public class PurchaseController implements Initializable {
     private void Selection_of_Enquiry_for_edit(MouseEvent event) {
         //retreive combo box values and retireve data if available from db
         
+    }
+     @FXML
+    void Attach_Quotation_Button_Clicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void Selection_of_Enquiry_for_Quotation_Entry(MouseEvent event) {
+
+    }
+
+    @FXML
+    void saveNewQuotation(MouseEvent event) {
+
+    }
+
+    @FXML
+    private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
+    }
+
+    @FXML
+    private void SaveNewPO(MouseEvent event) {
+    }
+
+    @FXML
+    private void Gen_PO(MouseEvent event) {
     }
 
 }
