@@ -78,6 +78,8 @@ public class PurchaseController implements Initializable {
     private Label pencilinv;
     @FXML
     private JFXComboBox<?> EnqSelect;
+    @FXML
+    private Label inv_tick;
 
     /**
      * Initializes the controller class.
@@ -205,18 +207,29 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void New_Enquiry_Pane_Clear_Components(MouseEvent event) {
+        //clear content in feilds of enquiry pane
     }
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
+        //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
+        // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
     }
 
     @FXML
     private void delNewEnq(MouseEvent event) {
+        // delete a specific enquiry using input from alter box. ask the user to enter the enquiry number
     }
 
     @FXML
     private void Enq_edit_hit(MouseEvent event) {
+        //show combo box for selection of the enquiry number
+    }
+
+    @FXML
+    private void Selection_of_Enquiry_for_edit(MouseEvent event) {
+        //retreive combo box values and retireve data if available from db
+        
     }
 
 }

@@ -92,6 +92,11 @@
                      </graphic>
                   </Label>
                   <JFXComboBox fx:id="EnqSelect" layoutX="466.0" layoutY="39.0" prefHeight="27.0" prefWidth="232.0" promptText="Enquiry Number" />
+                  <Label fx:id="inv_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="742.0" layoutY="39.0" onMouseClicked="#Selection_of_Enquiry_for_edit" prefHeight="26.0" prefWidth="19.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                     </graphic>
+                  </Label>
                </children>
             </AnchorPane>
         </content>
