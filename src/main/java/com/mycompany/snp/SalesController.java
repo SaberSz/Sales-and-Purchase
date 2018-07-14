@@ -3705,32 +3705,47 @@ public class SalesController implements Initializable {
             } else {
                 //Awin Quotation generation
                 if (ECom1.getText().toLowerCase().equals("awin")) {
+                      System.out.println("entering beb");
                     if (Quotation_insert_into_awin_table(qno, table11) && generate_Awin_Table(false)) {
-                             try {
-                        HashMap<String, Object> hm = new HashMap<String, Object>();
-                        hm.put("Quotation Number", qno);
-                        hm.put("Date", Utilities.Date.Date());
-                        hm.put("Customer Name", CName1.getText().trim());
-                        hm.put("Customer Phone", CPhone1.getText().trim());
-                        hm.put("Customer Mail", Cmail1.getText().trim());
-                        hm.put("toAddress", Cadd1.getText());
-                        hm.put("Subject", EDes1.getText());
+                            
+                           try {
+                        HashMap<String, Object> ha = new HashMap<String, Object>();
+                        ha.put("Invoice Number", inv_no.getText());
+                        ha.put("Date", Utilities.Date.Date());
+                        ha.put("Salesperson", inv_sp.getText().trim());
+                        ha.put("Termofpay", inv_tum.getText().trim());
+                        ha.put("ProjectNo", Integer.valueOf(combopno).toString());
+                        ha.put("POno", inv_po.getText());
+                        ha.put("toAddress", inv_to.getText());
+                        ha.put("Total", Double.valueOf(inv_total.getText()));
+                        ha.put("GST", Float.valueOf(inv_gst.getText()));
                         ObservableList<Person3> trc;
-                        trc = FXCollections.observableArrayList(table13.getItems());
-                        hm.put("TableItems", trc);
-                        new awinqtepdf(hm);
+                        trc = FXCollections.observableArrayList(inv_newtable.getItems());
+                        ha.put("TableItems", trc);
+                        new awinqtepdf(ha);
+                     
                         Utilities.AlertBox.notificationInfo("Done","Quotation Generation successful.");
-                    } catch (Exception e) {
+                     
+                        String sql = "UPDATE `qoutation` SET `Sent`=?,`Sentdate`=? WHERE `Qno`=?";
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(3, qno);
+                        ps.setString(2, Utilities.Date.Date());
+                        ps.setInt(1, 1);
+                        ps.executeUpdate();
+                           }catch (Exception e) {
 
                         Utilities.AlertBox.showErrorMessage(e);
 
                     }
+                    } 
+                    } 
                     }
                 }
 
             }
-        }
-    }
+    
+    
     static String revisedQno = "";
     static int revisedno;
     static String qnoforquery = "";
