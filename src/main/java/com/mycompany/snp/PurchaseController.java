@@ -74,6 +74,10 @@ public class PurchaseController implements Initializable {
     private JFXTextField Cmail;
     @FXML
     private JFXTextArea Cadd;
+    @FXML
+    private Label pencilinv;
+    @FXML
+    private JFXComboBox<?> EnqSelect;
 
     /**
      * Initializes the controller class.
@@ -209,6 +213,10 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void delNewEnq(MouseEvent event) {
+    }
+
+    @FXML
+    private void Enq_edit_hit(MouseEvent event) {
     }
 
 }
