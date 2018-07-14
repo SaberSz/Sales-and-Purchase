@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 14, 2018 at 06:34 PM
+-- Generation Time: Jul 14, 2018 at 08:59 PM
 -- Server version: 5.6.38
 -- PHP Version: 7.2.1
 
@@ -343,7 +343,7 @@ CREATE TABLE `invoice` (
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
 ('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
-('1802-AE-INV-002', 20905, NULL, NULL, 'abcd', '345345', '40', 1463.35, 0, 0),
+('1802-AE-INV-002', 20905700, '2018-07-15', '2018-08-24', 'Sri Vidya', '345345', '40', 1463.35, 0, 1),
 ('1804-SC-INV-001', 26814, '2018-07-08', '2018-08-07', 'Voma ha', '234523454', '30', 2145.12, 5094, 1);
 
 -- --------------------------------------------------------
@@ -368,8 +368,8 @@ CREATE TABLE `invoice_details` (
 
 INSERT INTO `invoice_details` (`Item/No`, `Descr`, `Qty`, `UnitPrice`, `total`, `Invno`) VALUES
 (1, 'apples', '3', 25, 75, '1801-AE-INV-001'),
+(1, 'Provision for Supply of Manpower', '174', 18, 3132, '1802-AE-INV-002'),
 (1, 'Sand Blasting / Coating of AF SN63177', '1', 4469, 4469, '1804-SC-INV-001'),
-(2, 'asdf fdsf sadf', '37', 565, 20905, '1802-AE-INV-002'),
 (2, 'Sand Blasting / Coating of AF SN63178', '2', 4469, 8938, '1804-SC-INV-001');
 
 -- --------------------------------------------------------
