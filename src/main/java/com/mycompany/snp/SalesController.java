@@ -3883,7 +3883,13 @@ public class SalesController implements Initializable {
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     String PjNOs = rs.getString(1);
-                    PjNo.setText(PjNOs);
+                    String d= Utilities.Date.Date();
+                           String k=d.substring(d.indexOf('-')-2,d.indexOf('-'));
+                    if(Integer.valueOf(PjNOs)<10){
+                        k+="0";
+                    }
+                    k+=PjNOs;
+                    PjNo.setText(k);
                     PjNo.setEditable(false);
                     PrNo.setEditable(true);
                     EsVal.setEditable(true);
