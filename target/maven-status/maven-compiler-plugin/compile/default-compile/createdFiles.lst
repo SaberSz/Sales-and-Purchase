@@ -4,11 +4,13 @@ com\mycompany\snp\PurchaseController$8.class
 com\mycompany\snp\SalesController$15.class
 com\mycompany\snp\SalesController$mths.class
 com\mycompany\snp\Person2.class
+com\mycompany\snp\PurchaseController$13.class
 com\mycompany\snp\PurchaseController$5.class
 com\mycompany\snp\Person.class
 com\mycompany\snp\SalesController$3.class
 com\mycompany\snp\MainApp$1.class
 com\mycompany\snp\SalesController$16.class
+com\mycompany\snp\PurchaseController$10.class
 com\mycompany\snp\PurchaseController$7.class
 com\mycompany\snp\SalesController$AnalysisDT2.class
 PdfGeneration\pdfInvoice.class
@@ -31,6 +33,7 @@ com\mycompany\snp\PurchaseController$3.class
 PdfGeneration\pdfQuotation.class
 com\mycompany\snp\FXMLController.class
 PdfGeneration\pdfQuotation$PageXofY.class
+com\mycompany\snp\PurchaseController$11.class
 com\mycompany\snp\SalesController$13.class
 com\mycompany\snp\SalesController$8.class
 PdfGeneration\pdfInvoice$PageXofY.class
@@ -40,6 +43,7 @@ PdfGeneration\pdfInvoice$Header.class
 com\mycompany\snp\SalesController$4.class
 com\mycompany\snp\PurchaseController$2.class
 com\mycompany\snp\SalesController$11.class
+com\mycompany\snp\PurchaseController$12.class
 PdfGeneration\awinpd$PageXofY.class
 PdfGeneration\awinqtepdf.class
 com\mycompany\snp\SalesController$1.class
