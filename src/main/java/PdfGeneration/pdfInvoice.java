@@ -206,7 +206,7 @@ public class pdfInvoice {
         sp.add(new Paragraph("Salesperson:\n").setFont(f).setFontSize(8)
                 .add(new Text((String) hm.get("Salesperson")).setFont(f1).setFontSize(8)));
         Cell jo = new Cell(1, 1)
-                .add(new Paragraph("Our Job No:").setFont(f).setFontSize(8));
+                .add(new Paragraph("Our Job No: N/A.").setFont(f).setFontSize(8));
         Cell pjo = new Cell(1, 1)
                 .add(new Paragraph("Your Order Ref No:\nProject No:").setFont(f).setFontSize(8));
         Cell pjno1 = new Cell(1, 1)
