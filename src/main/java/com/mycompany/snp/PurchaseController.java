@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -111,7 +112,7 @@ public class PurchaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-
+   initialSetups();
         MainMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -129,9 +130,34 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
-        initialSetups();
+          Type.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue ov, String oldValue, String newValue) {
+
+                if (newValue.equals("Project Related")) {
+                    Epjno.setVisible(true);
+                    Epjno.setDisable(false);
+                    fill_relatedprojno_enquiry();
+                    
+                  
+
+                } else if (newValue.equals("Regular")) {
+                    Epjno.setVisible(false);
+                    Epjno.setDisable(true);
+                } 
+            }
+        });
+       
+         Epjno.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue ov, String oldValue, String newValue) {
+                 select_company_fill_combo_box(Integer.valueOf(newValue));
+            
+            }
+        });
     }
 
+   
     void ShowEnquiry() {
         EnquiryPane.setDisable(false);
         EnquiryPane.setVisible(true);
@@ -194,15 +220,17 @@ public class PurchaseController implements Initializable {
     void runInitialSetUp1() {
 
         try {
-
+           
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
+                    
                     MainMenu.getItems().add("Enquiry");
                     MainMenu.getItems().add("Quotation");
                     MainMenu.getItems().add("Purchase Order");
                     MainMenu.getItems().add("Invoice Payments");
                     MainMenu.setValue("Enquiry");
+                    
                 }
             });
 
@@ -250,19 +278,60 @@ public class PurchaseController implements Initializable {
         Cmail.setEditable(true);                            //enq no format-    yy-cmpname-eq-001
         cmp.getItems().clear();
     }
+    public void fill_relatedprojno_enquiry(){
+        try{
+            String sql = "Select PjNo from `product` where 1;";
+        
+                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);      
+                        ResultSet rs = stmt.executeQuery();
+                        
+                        while(rs.next()){
+                            Epjno.getItems().add(rs.getString("PjNo"));                        
+                        } 
+    }catch (SQLException exe) {
+                            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                            Utilities.AlertBox.showErrorMessage(exe);
+                        }
+        
+    }
+     void select_company_fill_combo_box(int newValue){
+            try{
+            String sql = "Select Qno from `qprel` where PjNo = ?;";
+                     
+                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);      
+                         stmt.setInt(1,newValue);
+                        ResultSet rs = stmt.executeQuery();
+                        rs.next(); 
+                        String a=rs.getString(1);
+                        if(a.contains("AE")){
+                            cmp.setValue("Awin");
+                        }else{
+                            cmp.setValue("Steel");
+                        }
+                        
+    }catch (SQLException exe) {
+                            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                            Utilities.AlertBox.showErrorMessage(exe);
+                        }
+        
+    }
+    
+    
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
-        
-    /*    //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
+        String mx;
+        //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
         // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
-        int[] a=new int[100000];
+        int[] a = new int[100000];
         try {
-            if (ENo.getText().trim().equals("") || EDes.getText().trim().equals("") || cmp.getValue().trim().equals("") || Cmail.getText().equals("") || Cadd.getText().equals("") || Edate.getValue().equals("") || Epjno.getValue().trim().equals("") || CName.getText().trim().equals("")
-                    || CPhone.getText().trim().equals("")||Type.getValue().trim().equals("")) {
+            if (Edate.getValue().toString().isEmpty() || cmp.getValue().isEmpty() || EDes.getText().trim().isEmpty()
+                    || CName.getText().trim().isEmpty() || CPhone.getText().trim().isEmpty() || Cmail.getText().trim().isEmpty() || Cadd.getText().trim().isEmpty()) {
                 Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
             } else {
-            try {
+                try {
                     if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?"
                             + "Please note these details are not editable")) {
                         //The below code is used to fetch a CID with the same customer details. This is to see if the customer is already registered or not.
@@ -274,51 +343,105 @@ public class PurchaseController implements Initializable {
                         stmt.setString(3, CPhone.getText().trim());
                         stmt.setString(4, Cadd.getText().trim());
                         ResultSet rs = stmt.executeQuery();
-
+                          
                         if (rs.next()) {
                             cid = rs.getString(1);
-                        } else {    
-                
-                
-            
-                String res = "";
-                String date = Utilities.Date.Date();
-                date = date.substring(2, 4);
-                System.out.println(date);
-                res += date;
-                if (cmp.getValue().equalsIgnoreCase("Awins")) {
-                    res += "-AE-EQ-";
-                } else {
-                    res += "-SC-EQ-";
-                }
-                     
-            try {
-                                String suql = "SELECT Eqno FROM `enquiry` WHERE 1";
-                                st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-                                rs = st.executeQuery(suql);
-                                int i = 0, j = 0;
-                                while (rs.next()) {
+                        } else {
+                            //The below code is used to add a new customer with a sequential CID number.
+                            String sql1 = "{ call insertCustomer(?,?,?,?)}";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                            stmt.setString(1, CName.getText().trim());
+                            stmt.setString(3, Cmail.getText().trim());
+                            stmt.setString(4, CPhone.getText().trim());
+                            stmt.setString(2, Cadd.getText().trim());
+                            stmt.executeQuery();
 
-                                    mx = rs.getString("Qno");
+                            //The below code is used to fetch the CID of newly added customer.
+                            String sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
+                            stmt.setString(1, CName.getText().trim());
+                            stmt.setString(2, Cmail.getText().trim());
+                            stmt.setString(3, CPhone.getText().trim());
+                            stmt.setString(4, Cadd.getText().trim());
+                            rs = stmt.executeQuery();
 
-                                    mx1 = mx.substring(10, 12);
-                                    System.out.println("mx1 val:" + mx1);
-                                    mxval[i] = Integer.parseInt(mx1);
-                                    i++;
-                                }
-              int temp;
-              
-            } catch (SQLException exe) {
-                                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-                                Utilities.AlertBox.showErrorMessage(exe);
+                            rs.next();
+                            cid = rs.getString(1);
+                        }
+
+                        String res = "";
+                        String date = Utilities.Date.Date();
+                        date = date.substring(2, 4);
+                        System.out.println(date);
+                        res += date;
+                        if (cmp.getValue().equalsIgnoreCase("Awins")) {
+                            res += "-AE-EQ-";
+                        } else {
+                            res += "-SC-EQ-";
+                        }
+                        String mx1;int temp;
+                        int[] mxval = new int[100000];
+                        try {
+                            String suql = "SELECT Eqno FROM `purchase_enquiry` WHERE 1";
+                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                            rs = stmt.executeQuery(suql);
+                            if(!rs.next()){
+                                temp=1;
+                            }else{
+                            int i = 0, j = 0;
+                            while (rs.next()) {
+
+                                mx = rs.getString(1);
+
+                                mx1 = mx.substring(9, 12);
+                                System.out.println("mx1 val:" + mx1);
+                                mxval[i] = Integer.parseInt(mx1);
+                                i++;
                             }
-
-         catch (NullPointerException e) {
+                      
+                            //bubble sorted the array and picked the last element to obtain the max value
+                           Arrays.sort(mxval);
+                            temp = mxval[i];
+                            System.out.println(temp);
+                            }
+                            temp++;
+                            String te=String.valueOf(temp);
+                             if (temp < 10) {
+                                    te = "00" + temp;
+                                } else if (temp >= 10 && temp < 100) {
+                                    te="0";
+                                } else {
+                                    te="";
+                                }
+                             te+=temp;
+                             System.out.println("te="+te);
+                            
+                        } catch (SQLException exe) {
+                            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                            Utilities.AlertBox.showErrorMessage(exe);
+                        }
+                        //inserting into enquiry table
+                       /*String sql3 = "INSERT INTO `purchase_enquiry`(`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`,`Type`) VALUES (?,?,?,?,?,?)";
+                        stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
+                        stmt.setString(1, String(ENo);
+                        stmt.setString(2, Edate.getValue().toString());
+                        stmt.setString(3, cmp.getValue());
+                        stmt.setString(4, EDes.getText().trim());
+                        stmt.setString(5, cid);
+                        stmt.executeUpdate();
+*/
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+                    Utilities.AlertBox.notificationWarn("Error", "Please make sure you have entered all the details correctly.");
+                    Utilities.AlertBox.showErrorMessage(ex);
+                }
+            }
+        } catch (NullPointerException e) {
             Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
         }
-    }*/
-                    }
+    }
 
     @FXML
     private void delNewEnq(MouseEvent event) {
