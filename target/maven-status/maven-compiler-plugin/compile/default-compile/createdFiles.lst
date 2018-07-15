@@ -1,4 +1,29 @@
 com\mycompany\snp\SalesController$AnalysisDT3.class
+<<<<<<< HEAD
+=======
+PdfGeneration\pdfQuotation$Header.class
+com\mycompany\snp\SalesController$15.class
+com\mycompany\snp\SalesController$mths.class
+com\mycompany\snp\Person2.class
+com\mycompany\snp\PurchaseController$5.class
+com\mycompany\snp\Person.class
+com\mycompany\snp\SalesController$3.class
+com\mycompany\snp\MainApp$1.class
+com\mycompany\snp\SalesController$16.class
+com\mycompany\snp\PurchaseController$7.class
+com\mycompany\snp\SalesController$AnalysisDT2.class
+PdfGeneration\pdfInvoice.class
+com\mycompany\snp\SalesController$6.class
+com\mycompany\snp\SalesController$9.class
+Utilities\NumUtil.class
+PdfGeneration\awinqtepdf$Header.class
+com\mycompany\snp\SalesController$12.class
+com\mycompany\snp\Person3.class
+com\mycompany\snp\PurchaseController$4.class
+com\mycompany\snp\SalesController$2.class
+Utilities\AlertBox.class
+com\mycompany\snp\PurchaseController$1.class
+>>>>>>> 6ca45b4c28f4217ff3415746d393f9ed9c76e051
 com\mycompany\snp\SalesController$10.class
 com\mycompany\snp\SalesController$5.class
 com\mycompany\snp\SalesController$15.class
@@ -23,6 +48,7 @@ com\mycompany\snp\SalesController$12.class
 com\mycompany\snp\Person3.class
 com\mycompany\snp\SalesController$2.class
 com\mycompany\snp\SalesController$AnalysisDT.class
+com\mycompany\snp\PurchaseController$6.class
 com\mycompany\snp\SalesController$14.class
 com\mycompany\snp\SalesController$AnalysisDT1.class
 com\mycompany\snp\SalesController$7.class
