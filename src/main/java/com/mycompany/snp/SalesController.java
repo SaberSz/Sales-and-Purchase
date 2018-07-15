@@ -916,8 +916,8 @@ public class SalesController implements Initializable {
                 public void run() {
 
                     try {
-                        //Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                        Connection conn = com.mycompany.snp.MainApp.conn;
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        //Connection conn = com.mycompany.snp.MainApp.conn;
                         String sql = "SELECT `Qno` FROM `qoutation` WHERE 1";
                         PreparedStatement stmt = conn.prepareStatement(sql);
                         ResultSet rs = stmt.executeQuery();
@@ -945,7 +945,7 @@ public class SalesController implements Initializable {
 
                         }
                         System.out.println("1 done");
-                        //conn.close();
+                        conn.close();
                     } catch (SQLException e) {
                         Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, e);
                     }
@@ -967,8 +967,8 @@ public class SalesController implements Initializable {
                 public void run() {
                     ResultSet rs;
                     try {
-                        //Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                        Connection conn = com.mycompany.snp.MainApp.conn;
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        //Connection conn = com.mycompany.snp.MainApp.conn;
                         String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
                         PreparedStatement ps;
 
@@ -1003,7 +1003,7 @@ public class SalesController implements Initializable {
 
                         }
                         System.out.println("1 done");
-                        //conn.close();
+                        conn.close();
                     } catch (SQLException ex) {
                         Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -3253,7 +3253,7 @@ public class SalesController implements Initializable {
                      */
 
                     String d = p.getLastName().getText();
-                    int q = Integer.parseInt(p.getEmail().getText());
+                    //int q = Integer.parseInt(p.getEmail().getText());
                     int r = Integer.parseInt(p.getRemark().getText());
                     long s = Long.parseLong(p.getTotal().getText());
 
@@ -3266,7 +3266,7 @@ public class SalesController implements Initializable {
                         stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                         stmt.setInt(1, no);
                         stmt.setString(2, d);
-                        stmt.setInt(3, q);
+                        stmt.setString(3, p.getEmail().getText().trim());
                         stmt.setInt(4, r);
                         stmt.setLong(5, s);
                         stmt.setString(6, qo);
@@ -3680,9 +3680,7 @@ public class SalesController implements Initializable {
                 + " file is sent to the customer")) {
             String qno = Qno1.getText();
             if (ECom1.getText().toLowerCase().equals("steels")) {
-                if (ECom1.getText().equals("Awin")) {
-
-                }
+                System.out.println("Generating Steel Quote");
                 if (Quotation_insert_into_steel(qno, table111) && generate_Steels_Table(false)) {
                     //save the quotation first to the database and the  setting editable to false by regenerating the table
                     try {
@@ -3712,40 +3710,38 @@ public class SalesController implements Initializable {
 
                     }
                 }
-            } else {
-                //Awin Quotation generation
-                if (ECom1.getText().toLowerCase().equals("awin")) {
-                    System.out.println("entering beb");
-                    if (Quotation_insert_into_awin_table(qno, table11) && generate_Awin_Table(false)) {
+            } else if (ECom1.getText().equalsIgnoreCase("awin")) {
+                System.out.println("Generating awin Quote");
+                if (Quotation_insert_into_awin_table(qno, table11) && generate_Awin_Table(false)) {
 
-                        try {
-                            HashMap<String, Object> hm = new HashMap<String, Object>();
-                            hm.put("Quotation Number", qno);
-                            hm.put("Date", Utilities.Date.Date());
-                            hm.put("Customer Name", CName1.getText().trim());
-                            hm.put("Customer Phone", CPhone1.getText().trim());
-                            hm.put("Customer Mail", Cmail1.getText().trim());
-                            hm.put("toAddress", Cadd1.getText());
-                            hm.put("Subject", EDes1.getText());
-                            ObservableList<Person> trc;
-                            trc = FXCollections.observableArrayList(table11.getItems());
-                            hm.put("TableItems", trc);
-                            new PdfGeneration.pdfQuotation(hm);
-                            Utilities.AlertBox.notificationInfo("Done", "Quotation Generation successful.");
-                            String sql = "UPDATE `qoutation` SET `Sent`=?,`Sentdate`=? WHERE `Qno`=?";
-                            PreparedStatement ps;
-                            ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                            ps.setString(3, qno);
-                            ps.setString(2, Utilities.Date.Date());
-                            ps.setInt(1, 1);
-                            ps.executeUpdate();
-                        } catch (Exception e) {
+                    try {
+                        HashMap<String, Object> hm = new HashMap<String, Object>();
+                        hm.put("Quotation Number", qno);
+                        hm.put("Date", Utilities.Date.Date());
+                        hm.put("Customer Name", CName1.getText().trim());
+                        hm.put("Customer Phone", CPhone1.getText().trim());
+                        hm.put("Customer Mail", Cmail1.getText().trim());
+                        hm.put("toAddress", Cadd1.getText());
+                        hm.put("Subject", EDes1.getText());
+                        ObservableList<Person> trc;
+                        trc = FXCollections.observableArrayList(table11.getItems());
+                        hm.put("TableItems", trc);
+                        new PdfGeneration.awinqtepdf(hm);
+                        Utilities.AlertBox.notificationInfo("Done", "Quotation Generation successful.");
+                        String sql = "UPDATE `qoutation` SET `Sent`=?,`Sentdate`=? WHERE `Qno`=?";
+                        PreparedStatement ps;
+                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        ps.setString(3, qno);
+                        ps.setString(2, Utilities.Date.Date());
+                        ps.setInt(1, 1);
+                        ps.executeUpdate();
+                    } catch (Exception e) {
 
-                            Utilities.AlertBox.showErrorMessage(e);
+                        Utilities.AlertBox.showErrorMessage(e);
 
-                        }
                     }
                 }
+
             }
         }
 

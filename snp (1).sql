@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 14, 2018 at 08:59 PM
--- Server version: 5.6.38
+-- Host: localhost:3306
+-- Generation Time: Jul 15, 2018 at 05:55 PM
+-- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -343,8 +345,8 @@ CREATE TABLE `invoice` (
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
 ('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
-('1802-AE-INV-002', 20905700, '2018-07-15', '2018-08-24', 'Sri Vidya', '345345', '40', 1463.35, 0, 1),
-('1804-SC-INV-001', 26814, '2018-07-08', '2018-08-07', 'Voma ha', '234523454', '30', 2145.12, 5094, 1);
+('1802-AE-INV-002', 209057777, '2018-07-15', '2018-08-24', 'Sri Vidya', '345345', '40', 1463.35, 0, 1),
+('1804-SC-INV-001', 268147, '2018-07-15', '2018-08-14', 'Voma ha', '234523454', '30', 2145.12, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -629,7 +631,7 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-AE-QT-034', 0, '2018-03-01 19:09:54', 1, '2018-03-03'),
 ('18-AE-QT-035.Rev.0', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-AE-QT-035.Rev.1', 1, '2018-03-01 19:09:54', 1, '2018-03-03'),
-('18-AE-QT-035.Rev.2', 2, '2018-07-13 22:49:47', 0, NULL),
+('18-AE-QT-035.Rev.2', 2, '2018-07-13 22:49:47', 1, '2018-07-15'),
 ('18-AE-QT-036.Rev.0', 0, '2018-03-09 17:51:57', 0, NULL),
 ('18-AE-QT-037.Rev.0', 0, '2018-03-09 17:52:40', 0, NULL),
 ('18-AE-QT-038.Rev.0', 0, '2018-03-09 17:53:03', 0, NULL),
@@ -650,7 +652,7 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-SC-QT-028.Rev.1', 1, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.2', 2, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-07-08'),
-('18-SC-QT-028.Rev.4', 4, '2018-07-13 22:33:57', 0, NULL),
+('18-SC-QT-028.Rev.4', 4, '2018-07-13 22:33:57', 1, '2018-07-15'),
 ('18-SC-QT-028.Rev.5', 5, '2018-07-13 22:40:22', 0, NULL);
 
 -- --------------------------------------------------------
@@ -685,7 +687,7 @@ DROP TABLE IF EXISTS `quotationdetails_awin`;
 CREATE TABLE `quotationdetails_awin` (
   `Sno` int(11) NOT NULL,
   `Des` varchar(1000) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
+  `quantity` varchar(20) DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
   `total` bigint(20) DEFAULT NULL,
   `qno` varchar(25) NOT NULL
@@ -696,39 +698,38 @@ CREATE TABLE `quotationdetails_awin` (
 --
 
 INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES
-(0, 'dsfgsdfgsdfgsdfg', 34534, 34534, 345345, '18-AE-QT-025'),
-(1, 'sdfgsdsdfgsdsdfg', 345345, 345345, 345345, '18-AE-QT-025'),
-(1, 'bub send plssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029'),
-(1, 'bub send pussylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.1'),
-(1, 'bub send pucciylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.2'),
-(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030'),
-(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030.Rev.1'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.0'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.1'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.2'),
-(1, 'qwertyuia', 45, 6, 78, '18-AE-QT-049.Rev.0'),
-(1, 'qwertyuia', 45, 6, 79, '18-AE-QT-049.Rev.1'),
-(2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.2'),
-(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030'),
-(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030.Rev.1'),
-(2, 'sdfgsdf', 4353, 34534, 435, '18-AE-QT-035.Rev.1'),
-(2, 'Helllo', 4353, 34534, 4356, '18-AE-QT-035.Rev.2'),
-(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.0'),
-(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.1'),
-(3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.2'),
-(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030'),
-(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030.Rev.1'),
-(3, 'sdasdas', 23423, 2342342, 34, '18-AE-QT-035.Rev.1'),
-(3, 'sdasdas', 23423, 2342342, 34, '18-AE-QT-035.Rev.2'),
-(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.1'),
-(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.2'),
-(4, 'dsgfdf', 3456, 6543634, 45645, '18-AE-QT-030');
+(0, 'dsfgsdfgsdfgsdfg', '34534', 34534, 345345, '18-AE-QT-025'),
+(1, 'sdfgsdsdfgsdsdfg', '345345', 345345, 345345, '18-AE-QT-025'),
+(1, 'bub send plssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029'),
+(1, 'bub send pussylssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029.Rev.1'),
+(1, 'bub send pucciylssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029.Rev.2'),
+(1, 'dfgdsfg', '3453', 345, 565, '18-AE-QT-030'),
+(1, 'dfgdsfg', '3453', 345, 565, '18-AE-QT-030.Rev.1'),
+(1, 'ewrtwe', '345', 3453, 34, '18-AE-QT-035.Rev.0'),
+(1, 'ewrtwe', '345', 3453, 34, '18-AE-QT-035.Rev.1'),
+(1, 'Chute - Blasting & Painting\n\nScope of Work:\nChute - Topside \"sliding part\" entire surface to be blast at SA2.5 and applictaion of two coat painiting system as per Aquatic painting spec.\nChute external - side wall and undesr side will be spot blast at SA2.5 and application of two caot painting system as per Aquatic painting spec.\n\n02 Nos of base frame will be blast at SA2.5 and application of two coat painting system as per Aquatic painiting spec', '01 Lots', 2760, 2670, '18-AE-QT-035.Rev.2'),
+(1, 'qwertyuia', '45', 6, 78, '18-AE-QT-049.Rev.0'),
+(1, 'qwertyuia', '45', 6, 79, '18-AE-QT-049.Rev.1'),
+(2, 'dsfgdfgdfg', '345345345', 345345345, 345345345, '18-AE-QT-025'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029.Rev.1'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029.Rev.2'),
+(2, 'dfgsfdg', '43534', 345, 3245, '18-AE-QT-030'),
+(2, 'dfgsfdg', '43534', 345, 3245, '18-AE-QT-030.Rev.1'),
+(2, 'sdfgsdf', '4353', 34534, 435, '18-AE-QT-035.Rev.1'),
+(2, 'Chute - Transportation\nTransportation to and from Loyang Crescent to Tuas \"40ft Trailer\".\nLoading / Unloading at Aquatic yard by client.\nloading / Unloading at Awin eEng yard by Awin Eng.', '2', 200, 400, '18-AE-QT-035.Rev.2'),
+(2, 'rtyu', '5', 67, 78, '18-AE-QT-049.Rev.0'),
+(2, 'rtyu', '5', 67, 78, '18-AE-QT-049.Rev.1'),
+(3, 'sdfgsdfgsdfgsdf', '34534534', 34534534, 34534534, '18-AE-QT-025'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029.Rev.1'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029.Rev.2'),
+(3, 'sdfas', '3454', 34534, 45634, '18-AE-QT-030'),
+(3, 'sdfas', '3454', 34534, 45634, '18-AE-QT-030.Rev.1'),
+(3, 'sdasdas', '23423', 2342342, 34, '18-AE-QT-035.Rev.1'),
+(4, 'doog', '4', 535, 543255, '18-AE-QT-029.Rev.1'),
+(4, 'doog', '4', 535, 543255, '18-AE-QT-029.Rev.2'),
+(4, 'dsgfdf', '3456', 6543634, 45645, '18-AE-QT-030');
 
 -- --------------------------------------------------------
 
@@ -757,43 +758,43 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 ('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2', 2),
 ('1', 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028', 3),
 ('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 291),
-('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 313),
+('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 335),
 ('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 324),
 ('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 285),
-('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 307),
+('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 329),
 ('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 318),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028', 6),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1', 7),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2', 8),
 ('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 292),
-('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 314),
+('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 336),
 ('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 325),
 ('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 286),
-('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 308),
+('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 330),
 ('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 319),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028', 11),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1', 12),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2', 13),
 ('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 293),
-('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 315),
+('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 337),
 ('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 326),
 ('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 287),
-('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 309),
+('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 331),
 ('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 320),
 ('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 294),
-('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 316),
+('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 338),
 ('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', 'Power', '18-SC-QT-028.Rev.5', 327),
 ('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 288),
-('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 310),
+('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 332),
 ('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 321),
 ('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', '', '18-SC-QT-028.Rev.3', 295),
-('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.4', 317),
+('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.4', 339),
 ('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.5', 328),
 ('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 289),
-('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 311),
+('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 333),
 ('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 322),
 ('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 290),
-('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 312),
+('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 334),
 ('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 323);
 
 --
@@ -849,7 +850,7 @@ ALTER TABLE `invoice_details`
 -- Indexes for table `invoice_payments`
 --
 ALTER TABLE `invoice_payments`
-  ADD PRIMARY KEY (`DateEntry`,`INo`),
+  ADD PRIMARY KEY (`DateEntry`) USING BTREE,
   ADD KEY `INo` (`INo`);
 
 --
@@ -969,8 +970,7 @@ ALTER TABLE `quotationdetails_steels`
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --
 ALTER TABLE `quotationdetails_steels`
-  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=329;
-
+  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=340;
 --
 -- Constraints for dumped tables
 --
@@ -987,12 +987,6 @@ ALTER TABLE `eqrel`
 --
 ALTER TABLE `invoice_details`
   ADD CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`Invno`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `invoice_payments`
---
-ALTER TABLE `invoice_payments`
-  ADD CONSTRAINT `invoice_payments_ibfk_1` FOREIGN KEY (`INo`) REFERENCES `invoice` (`INo`);
 
 --
 -- Constraints for table `pirel`
@@ -1053,6 +1047,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
