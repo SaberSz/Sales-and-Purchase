@@ -17,11 +17,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
+
 import java.util.Arrays;
-=======
+
 import java.time.LocalDate;
->>>>>>> 6ca45b4c28f4217ff3415746d393f9ed9c76e051
+
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -116,7 +116,7 @@ public class PurchaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-   initialSetups();
+        initialSetups();
         MainMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -134,7 +134,8 @@ public class PurchaseController implements Initializable {
                 }
             }
         });
-          Type.valueProperty().addListener(new ChangeListener<String>() {
+        try{
+        Type.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
 
@@ -142,26 +143,26 @@ public class PurchaseController implements Initializable {
                     Epjno.setVisible(true);
                     Epjno.setDisable(false);
                     fill_relatedprojno_enquiry();
-                    
-                  
 
                 } else if (newValue.equals("Regular")) {
                     Epjno.setVisible(false);
                     Epjno.setDisable(true);
-                } 
+                }
             }
         });
-       
-         Epjno.valueProperty().addListener(new ChangeListener<String>() {
+
+        Epjno.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
-                 select_company_fill_combo_box(Integer.valueOf(newValue));
-            
+                select_company_fill_combo_box(Integer.parseInt(newValue));
+
             }
         });
+        }catch(NullPointerException e){
+            
+        }
     }
-
-   
+    
     void ShowEnquiry() {
         EnquiryPane.setDisable(false);
         EnquiryPane.setVisible(true);
@@ -226,24 +227,22 @@ public class PurchaseController implements Initializable {
     void runInitialSetUp1() {
 
         try {
-           
+
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
-                    
+
                     MainMenu.getItems().add("Enquiry");
                     MainMenu.getItems().add("Quotation");
                     MainMenu.getItems().add("Purchase Order");
                     MainMenu.getItems().add("Invoice Payments");
                     MainMenu.setValue("Enquiry");
-<<<<<<< HEAD
-                    
-=======
+
                     Type.getItems().add("Project Related");
                     Type.getItems().add("Regular");
                     cmp.getItems().add("Awin");
                     cmp.getItems().add("Steel");
->>>>>>> 6ca45b4c28f4217ff3415746d393f9ed9c76e051
+
                 }
             });
 
@@ -290,61 +289,60 @@ public class PurchaseController implements Initializable {
         Cmail.clear();
         Cmail.setEditable(true);                            //enq no format-    yy-cmpname-eq-001
         cmp.getItems().clear();
-        edit_in_Enquiry_hit=false;
+        edit_in_Enquiry_hit = false;
         EnqSelect.setDisable(true);
         EnqSelect.setVisible(false);
     }
-    public void fill_relatedprojno_enquiry(){
-        try{
+
+    public void fill_relatedprojno_enquiry() {
+        try {
+            Epjno.getItems().clear();
             String sql = "Select PjNo from `product` where 1;";
-        
-                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);      
-                        ResultSet rs = stmt.executeQuery();
-                        
-                        while(rs.next()){
-                            Epjno.getItems().add(rs.getString("PjNo"));                        
-                        } 
-    }catch (SQLException exe) {
-                            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-                            Utilities.AlertBox.showErrorMessage(exe);
-                        }
-        
+
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Epjno.getItems().add(rs.getString("PjNo"));
+            }
+        } catch (SQLException exe) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+            Utilities.AlertBox.showErrorMessage(exe);
+        }
+
     }
-     void select_company_fill_combo_box(int newValue){
-            try{
+
+    void select_company_fill_combo_box(int newValue) {
+        try {
             String sql = "Select Qno from `qprel` where PjNo = ?;";
-                     
-                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);      
-                         stmt.setInt(1,newValue);
-                        ResultSet rs = stmt.executeQuery();
-                        rs.next(); 
-                        String a=rs.getString(1);
-                        if(a.contains("AE")){
-                            cmp.setValue("Awin");
-                        }else{
-                            cmp.setValue("Steel");
-                        }
-                        
-    }catch (SQLException exe) {
-                            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-                            Utilities.AlertBox.showErrorMessage(exe);
-                        }
-        
+
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            stmt.setInt(1, newValue);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            String a = rs.getString(1);
+            if (a.contains("AE")) {
+                cmp.setValue("Awin");
+            } else {
+                cmp.setValue("Steel");
+            }
+
+        } catch (SQLException exe) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+            Utilities.AlertBox.showErrorMessage(exe);
+        }
+
     }
-    
-    
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
-<<<<<<< HEAD
+
         String mx;
         //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
-=======
 
-        /*    //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
->>>>>>> 6ca45b4c28f4217ff3415746d393f9ed9c76e051
+        //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
         // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
         int[] a = new int[100000];
         try {
@@ -364,7 +362,7 @@ public class PurchaseController implements Initializable {
                         stmt.setString(3, CPhone.getText().trim());
                         stmt.setString(4, Cadd.getText().trim());
                         ResultSet rs = stmt.executeQuery();
-                          
+
                         if (rs.next()) {
                             cid = rs.getString(1);
                         } else {
@@ -400,50 +398,51 @@ public class PurchaseController implements Initializable {
                         } else {
                             res += "-SC-EQ-";
                         }
-                        String mx1;int temp;
+                        String mx1;
+                        int temp;
                         int[] mxval = new int[100000];
                         try {
                             String suql = "SELECT Eqno FROM `purchase_enquiry` WHERE 1";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                             rs = stmt.executeQuery(suql);
-                            if(!rs.next()){
-                                temp=1;
-                            }else{
-                            int i = 0, j = 0;
-                            while (rs.next()) {
+                            if (!rs.next()) {
+                                temp = 1;
+                            } else {
+                                int i = 0, j = 0;
+                                while (rs.next()) {
 
-                                mx = rs.getString(1);
+                                    mx = rs.getString(1);
 
-                                mx1 = mx.substring(9, 12);
-                                System.out.println("mx1 val:" + mx1);
-                                mxval[i] = Integer.parseInt(mx1);
-                                i++;
-                            }
-                      
-                            //bubble sorted the array and picked the last element to obtain the max value
-                           Arrays.sort(mxval);
-                            temp = mxval[i];
-                            System.out.println(temp);
+                                    mx1 = mx.substring(9, 12);
+                                    System.out.println("mx1 val:" + mx1);
+                                    mxval[i] = Integer.parseInt(mx1);
+                                    i++;
+                                }
+
+                                //bubble sorted the array and picked the last element to obtain the max value
+                                Arrays.sort(mxval);
+                                temp = mxval[i];
+                                System.out.println(temp);
                             }
                             temp++;
-                            String te=String.valueOf(temp);
-                             if (temp < 10) {
-                                    te = "00" + temp;
-                                } else if (temp >= 10 && temp < 100) {
-                                    te="0";
-                                } else {
-                                    te="";
-                                }
-                             te+=temp;
-                             System.out.println("te="+te);
-                            
+                            String te = String.valueOf(temp);
+                            if (temp < 10) {
+                                te = "00" + temp;
+                            } else if (temp >= 10 && temp < 100) {
+                                te = "0";
+                            } else {
+                                te = "";
+                            }
+                            te += temp;
+                            System.out.println("te=" + te);
+
                         } catch (SQLException exe) {
                             Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
                             Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
                             Utilities.AlertBox.showErrorMessage(exe);
                         }
                         //inserting into enquiry table
-                       /*String sql3 = "INSERT INTO `purchase_enquiry`(`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`,`Type`) VALUES (?,?,?,?,?,?)";
+                        /*String sql3 = "INSERT INTO `purchase_enquiry`(`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`,`Type`) VALUES (?,?,?,?,?,?)";
                         stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
                         stmt.setString(1, String(ENo);
                         stmt.setString(2, Edate.getValue().toString());
@@ -451,7 +450,8 @@ public class PurchaseController implements Initializable {
                         stmt.setString(4, EDes.getText().trim());
                         stmt.setString(5, cid);
                         stmt.executeUpdate();
-*/
+                         */
+
                     }
                 } catch (SQLException ex) {
                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -462,14 +462,12 @@ public class PurchaseController implements Initializable {
         } catch (NullPointerException e) {
             Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
         }
-<<<<<<< HEAD
-=======
-    }*/
->>>>>>> 6ca45b4c28f4217ff3415746d393f9ed9c76e051
+
     }
 
-    @FXML
-    private void delNewEnq(MouseEvent event) {
+
+@FXML
+        private void delNewEnq(MouseEvent event) {
         // delete a specific enquiry using input from alter box. ask the user to enter the enquiry number
         String entered = Utilities.AlertBox.alterinput("", "Delete Enquiry", "Enter the Enquiry number of the enquiry to be deleted", "Enquiry Number");
         if (entered.equals("Cancel")) {
@@ -495,7 +493,7 @@ public class PurchaseController implements Initializable {
     }
     static boolean edit_in_Enquiry_hit=false;
     @FXML
-    private void Enq_edit_hit(MouseEvent event) {
+        private void Enq_edit_hit(MouseEvent event) {
         //show combo box for selection of the enquiry number
         edit_in_Enquiry_hit=true;
         Eqnuiry_Edit_Threads();
@@ -531,7 +529,7 @@ public class PurchaseController implements Initializable {
 
             Platform.runLater(new Runnable() {
                 @Override
-                public void run() {
+        public void run() {
                     EnqSelect.setDisable(false);
                     EnqSelect.setVisible(true);
                     inv_tick.setDisable(false);
@@ -561,7 +559,7 @@ public class PurchaseController implements Initializable {
 
             Platform.runLater(new Runnable() {
                 @Override
-                public void run() {
+        public void run() {
                     try {
                         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                         String sql = "SELECT `Eqno`  FROM `purchase_enquiry` WHERE 1 ORDER BY `edate` DESC;";
@@ -569,9 +567,12 @@ public class PurchaseController implements Initializable {
                         ResultSet rs = stmt.executeQuery();
                         while (rs.next()) {
                             EnqSelect.getItems().add(rs.getString(1));
-                        }
+                        
+
+}
                     } catch (SQLException ex) {
-                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(PurchaseController.class
+.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             });
@@ -584,7 +585,7 @@ public class PurchaseController implements Initializable {
     }
 
     @FXML
-    private void Selection_of_Enquiry_for_edit(MouseEvent event) {
+        private void Selection_of_Enquiry_for_edit(MouseEvent event) {
         //retireve data if available from db
         try {
             String eqno = EnqSelect.getValue();
@@ -622,10 +623,13 @@ public class PurchaseController implements Initializable {
                     CPhone.setText(rs.getString(4));
                     Cmail.setText(rs.getString(3));
                     Cadd.setText(rs.getString(1));
-                }
+                
+
+}
 
             } catch (SQLException ex) {
-                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PurchaseController.class
+.getName()).log(Level.SEVERE, null, ex);
                 Utilities.AlertBox.showErrorMessage(ex);
             }
 
@@ -651,15 +655,15 @@ public class PurchaseController implements Initializable {
     }
 
     @FXML
-    private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
+        private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
     }
 
     @FXML
-    private void SaveNewPO(MouseEvent event) {
+        private void SaveNewPO(MouseEvent event) {
     }
 
     @FXML
-    private void Gen_PO(MouseEvent event) {
+        private void Gen_PO(MouseEvent event) {
     }
 
 }
