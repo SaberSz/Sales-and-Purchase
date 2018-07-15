@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -141,6 +142,8 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(false);
         PurchaseOrderPane.setVisible(false);
         InvoicePaymentsPane1.setVisible(false);
+        EnqSelect.setDisable(true);
+        EnqSelect.setVisible(false);
     }
 
     void ShowQuotation() {
@@ -203,6 +206,10 @@ public class PurchaseController implements Initializable {
                     MainMenu.getItems().add("Purchase Order");
                     MainMenu.getItems().add("Invoice Payments");
                     MainMenu.setValue("Enquiry");
+                    Type.getItems().add("Project Related");
+                    Type.getItems().add("Regular");
+                    cmp.getItems().add("Awin");
+                    cmp.getItems().add("Steel");
                 }
             });
 
@@ -249,12 +256,15 @@ public class PurchaseController implements Initializable {
         Cmail.clear();
         Cmail.setEditable(true);                            //enq no format-    yy-cmpname-eq-001
         cmp.getItems().clear();
+        edit_in_Enquiry_hit=false;
+        EnqSelect.setDisable(true);
+        EnqSelect.setVisible(false);
     }
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
-        
-    /*    //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
+
+        /*    //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
         // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
         int[] a=new int[100000];
         try {
@@ -318,31 +328,172 @@ public class PurchaseController implements Initializable {
             Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
         }
     }*/
-                    }
+    }
 
     @FXML
     private void delNewEnq(MouseEvent event) {
         // delete a specific enquiry using input from alter box. ask the user to enter the enquiry number
-    }
+        String entered = Utilities.AlertBox.alterinput("", "Delete Enquiry", "Enter the Enquiry number of the enquiry to be deleted", "Enquiry Number");
+        if (entered.equals("Cancel")) {
 
+        } else {
+            try {
+
+                String sql = "Delete FROM `purchase_enquiry` WHERE Eqno=?;";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, entered);
+                int no = stmt.executeUpdate();
+                if (no != 0) {
+                    Utilities.AlertBox.notificationInfo("Success", "Enquiry " + entered + " deleted.");
+                } else {
+                    Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Enquiry " + entered + " not found.");
+                }
+
+            } catch (SQLException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    static boolean edit_in_Enquiry_hit=false;
     @FXML
     private void Enq_edit_hit(MouseEvent event) {
         //show combo box for selection of the enquiry number
-        ENo.setEditable(false);
-        Edate.setEditable(false);
-        Type.setEditable(false);
-        EDes.setEditable(false);
-        CName.setEditable(false);
-        Epjno.setEditable(false);
-        CPhone.setEditable(false);
-        Cmail.setEditable(false);
-        Cadd.setEditable(false);
-        cmp.setEditable(false);
+        edit_in_Enquiry_hit=true;
+        Eqnuiry_Edit_Threads();
+    }
+
+    void Eqnuiry_Edit_Threads() {
+
+        Runnable task1 = new Runnable() {
+            public void run() {
+
+                runEqnuiry_Edit_Threads1();
+            }
+        };
+        Runnable task2 = new Runnable() {
+            public void run() {
+
+                runEqnuiry_Edit_Threads2();
+            }
+        };
+
+        Thread backgroundThread1 = new Thread(task1);
+        backgroundThread1.setDaemon(true);
+        backgroundThread1.start();
+        Thread backgroundThread2 = new Thread(task2);
+        backgroundThread2.setDaemon(true);
+        backgroundThread2.start();
+
+    }
+
+    void runEqnuiry_Edit_Threads1() {
+
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    EnqSelect.setDisable(false);
+                    EnqSelect.setVisible(true);
+                    inv_tick.setDisable(false);
+                    inv_tick.setVisible(true);
+                    ENo.setEditable(false);
+                    Edate.setEditable(false);
+                    Type.setEditable(false);
+                    EDes.setEditable(false);
+                    CName.setEditable(false);
+                    Epjno.setEditable(false);
+                    CPhone.setEditable(false);
+                    Cmail.setEditable(false);
+                    Cadd.setEditable(false);
+                    cmp.setEditable(false);
+                }
+            });
+
+            System.out.println("1 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    void runEqnuiry_Edit_Threads2() {
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        String sql = "SELECT `Eqno`  FROM `purchase_enquiry` WHERE 1 ORDER BY `edate` DESC;";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        ResultSet rs = stmt.executeQuery();
+                        while (rs.next()) {
+                            EnqSelect.getItems().add(rs.getString(1));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
+            System.out.println("1 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
     private void Selection_of_Enquiry_for_edit(MouseEvent event) {
-        //retreive combo box values and retireve data if available from db
+        //retireve data if available from db
+        try {
+            String eqno = EnqSelect.getValue();
+            String sql = "SELECT `Eqno`, `edate`,`Subject`, `Cmpname`,`Type`,`SID` FROM `purchase_enquiry` WHERE `Eqno`=? ";
+            String cid = "";
+            ResultSet rs;
+            try {
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, eqno);
+                rs = stmt.executeQuery();
+                ENo.setEditable(false);
+                Edate.setEditable(true);
+                Type.setEditable(true);
+                EDes.setEditable(true);
+                CName.setEditable(true);
+                Epjno.setEditable(true);
+                CPhone.setEditable(true);
+                Cmail.setEditable(true);
+                Cadd.setEditable(true);
+                cmp.setEditable(true);
+                while (rs.next()) {
+                    Edate.setValue(LocalDate.parse(rs.getString(2)));
+                    ENo.setText(rs.getString(1));
+                    EDes.setText(rs.getString(3));
+                    cmp.setValue(rs.getString(4));
+                    Type.setValue(rs.getString(5));
+                    cid = rs.getString(6);
+                }
+                sql = "SELECT  `Address`, `Name`, `email`, `phone` FROM `customer` WHERE `CID`=?";
+                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, cid);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    CName.setText(rs.getString(2));
+                    CPhone.setText(rs.getString(4));
+                    Cmail.setText(rs.getString(3));
+                    Cadd.setText(rs.getString(1));
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+
+        } catch (NullPointerException e) {
+            Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Please select an enquiry from the Dropdown Box.");
+        }
 
     }
 
