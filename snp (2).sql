@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 15, 2018 at 05:55 PM
+-- Generation Time: Jul 17, 2018 at 07:48 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -41,7 +41,7 @@ WHERE eqno=eq and cid=@cd and cmpname=cmp and Date1=dates;
 END$$
 
 DROP PROCEDURE IF EXISTS `insertCustomer`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(20), IN `addr` VARCHAR(100), IN `mail` VARCHAR(30), IN `ph` BIGINT(20))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(100), IN `addr` VARCHAR(200), IN `mail` VARCHAR(100), IN `ph` BIGINT(100))  MODIFIES SQL DATA
     COMMENT 'Insert into Customer table'
 BEGIN
 select max(k.CID)+1 into @x
@@ -103,7 +103,7 @@ CREATE TABLE `customer` (
   `CID` int(15) NOT NULL,
   `Address` varchar(200) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `phone` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -165,7 +165,27 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', '2352424'),
 (52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', '34534534'),
 (53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', '4312431415'),
-(54, 'banaglore', 'tom', 'tom@gmail.com', '123456789');
+(54, 'banaglore', 'tom', 'tom@gmail.com', '123456789'),
+(55, 'Alder Street, Compton\nHong Kong', 'Food Suppliers', 'food@big.com', '12343222'),
+(56, 'Apollo Pharma,\n221 B,\nBaker Street,\nLondon', 'Apollo  Pharmacy', 'apollo@gmail.com', '12321231'),
+(57, 'sjfhkjsdhf!@#$$%^&*\'select\"', 'awin', 'absdhs.vcc@ssd.com', '8989894'),
+(58, 'judkduyfuyfoiyfoiyfyutfdkfuyfuyf', 'fuykfuyfuy', 'cghjkhgfdkuyf', '58768976'),
+(59, 'Awin', 'Awin', 'Awin', '95858'),
+(60, 'Hallo Babi', 'Amon', 'amanda@gmail.com', '9874189658'),
+(61, 'baker street\nlondon', 'food boy', 'sdfdsfasd', '12312312'),
+(62, 'asdASDAEDEdeadE', 'aesfasefa', 'adasdasd', '2324234'),
+(63, 'Delhi Noida India', 'Ar India', 'abc.AirIndia@gmail.com', '123234233414'),
+(64, 'asdasdasdasd', 'awdawd', 'awdadwa', '12312312'),
+(65, 'waefawefawefawefa', 'awefawef', 'sfsfwsfawwsef', '2342342'),
+(66, 'dfgsdfgsdfgsdgsdgs', 'sdfgsdfgsfsdf', 'dfgsdfgs', '2344532452'),
+(67, 'dfgsdfgsdfgsdgsdgcvxbs', 'sdfgsdfgsfsddfgdff', 'dfgsdfgscvb', '2344532452435'),
+(68, 'dfgsdfgsdfgsdgsdgcvxbsasfd', 'sdfgsdfgsfsddfgdffsdfg', 'dfgsdfgscvbsdfa', '2344532452'),
+(69, 'sdasdasdadad', 'asdasda', 'adsdasdasda', '23423423'),
+(70, 'fsfdasdfasdfas', 'asefasef', 'safsadfasf', '234234'),
+(71, 'mats', 'mats', 'mats', '1231231'),
+(72, 'matter', 'matter', 'matter', '1231231'),
+(73, 'dxfg dxfgxdnf', 'fctymt', 'dxfgnxdffng', '345345'),
+(74, 'zsdfzsdfzdsfsdf', 'zxdfzf', 'zfszdfzsdf', '23123');
 
 -- --------------------------------------------------------
 
@@ -462,6 +482,26 @@ CREATE TABLE `purchase_enquiry` (
   `Type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `purchase_enquiry`
+--
+
+INSERT INTO `purchase_enquiry` (`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`, `Type`) VALUES
+('18-AE-EQ-001', '2018-07-17', 55, 'Apples and Oranges for that daily Vitamuin A and Vitamin C', 'Awin', 'Project Related'),
+('18-AE-EQ-002', '2018-07-17', 66, 'sddrhsfdhbsdfgsdfgsdfg', 'Awin', 'Regular'),
+('18-AE-EQ-003', '2018-07-18', 68, 'sddrhsfdhbsdfgsdfgsdfgcbcgfdgdfgfdfg', 'Awin', 'Project Related'),
+('18-AE-EQ-005', '2018-07-18', 70, 'safasefasefaewf', 'Awin', 'Project Related'),
+('18-AE-EQ-006', '2018-07-18', 71, 'cSDcSCsdcSD', 'Awin', 'Project Related'),
+('18-AE-EQ-007', '2018-07-18', 72, 'sfgdfdgdsg', 'Awin', 'Regular'),
+('18-AE-EQ-008', '2018-07-18', 73, 'xftgyhxfymhfdt', 'Awin', 'Project Related'),
+('18-AE-EQ-009', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
+('18-AE-EQ-010', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
+('18-AE-EQ-011', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Regular'),
+('18-SC-EQ-002', '2018-07-17', 62, 'wedawedawegawesefawefwaegwgfas', 'Steel', 'Regular'),
+('18-SC-EQ-003', '2018-07-17', 67, 'sddrhsfdhbsdfgsdfgsdfgcbc', 'Steel', 'Project Related'),
+('18-SC-EQ-004', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Project Related'),
+('18-SC-EQ-005', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Regular');
+
 -- --------------------------------------------------------
 
 --
@@ -473,6 +513,21 @@ CREATE TABLE `purchase_eprel` (
   `Eqno` varchar(25) NOT NULL,
   `Pjno` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_eprel`
+--
+
+INSERT INTO `purchase_eprel` (`Eqno`, `Pjno`) VALUES
+('18-AE-EQ-005', 1),
+('18-AE-EQ-006', 1),
+('18-AE-EQ-009', 2),
+('18-AE-EQ-010', 2),
+('18-AE-EQ-001', 3),
+('18-AE-EQ-003', 3),
+('18-AE-EQ-008', 3),
+('18-SC-EQ-003', 4),
+('18-SC-EQ-004', 4);
 
 -- --------------------------------------------------------
 
