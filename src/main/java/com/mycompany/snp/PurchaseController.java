@@ -111,6 +111,14 @@ public class PurchaseController implements Initializable {
     private JFXTextArea Header;
     @FXML
     private JFXTextField PoTotal;
+    @FXML
+    private JFXTextField QNo;
+    @FXML
+    private JFXDatePicker Date_Qno;
+    @FXML
+    private JFXTextField Location_QNo;
+    @FXML
+    private JFXTextField POnumber;
 
     /**
      * Initializes the controller class.
