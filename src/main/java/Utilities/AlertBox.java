@@ -88,7 +88,7 @@ public class AlertBox {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-
+        
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }
