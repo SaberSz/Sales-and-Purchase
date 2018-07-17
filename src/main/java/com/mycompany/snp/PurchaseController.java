@@ -153,16 +153,14 @@ public class PurchaseController implements Initializable {
             Epjno.valueProperty().addListener(new ChangeListener<String>() {
                 @Override
                 public void changed(ObservableValue ov, String oldValue, String newValue) {
-<<<<<<< HEAD
                     try {
                         select_company_fill_combo_box(Integer.parseInt(newValue));
                     } catch (NumberFormatException ne) {
 
                     }
-=======
                     select_company_fill_combo_box(Integer.parseInt(newValue));
 
->>>>>>> 398302c37edc92af1fffd1493e52c1fb9bd6bfc5
+
                 }
             });
         } catch (NullPointerException e) {
@@ -302,16 +300,12 @@ public class PurchaseController implements Initializable {
         edit_in_Enquiry_hit = false;
         EnqSelect.setDisable(true);
         EnqSelect.setVisible(false);
-<<<<<<< HEAD
         Type.getItems().add("Project Related");
         Type.getItems().add("Regular");
         cmp.getItems().add("Awin");
         cmp.getItems().add("Steel");
-
-=======
         inv_tick.setDisable(true);
         inv_tick.setVisible(false);
->>>>>>> 398302c37edc92af1fffd1493e52c1fb9bd6bfc5
     }
 
     public void fill_relatedprojno_enquiry() {
@@ -484,28 +478,14 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void saveNewEnq(MouseEvent event) {
-        String cid;
+        
         if (edit_in_Enquiry_hit == false) {
-            String mx;
+    
             //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
             //enq no format-    yy-cmpname-eq-001
             //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
             // there will be 2 conditions one where you updaet an existing enquiry and another to insert a new enquiry 
-            int[] a = new int[100000];
-            try {
-                if (Edate.getValue().toString().isEmpty() || cmp.getValue().isEmpty() || EDes.getText().trim().isEmpty()
-                        || CName.getText().trim().isEmpty() || CPhone.getText().trim().isEmpty() || Cmail.getText().trim().isEmpty() || Cadd.getText().trim().isEmpty()) {
-                    Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
-                } else {
-                    try {
-                        if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?"
-                                + "Please note these details are not editable")) {
-                            //The below code is used to fetch a CID with the same customer details. This is to see if the customer is already registered or not.
 
-<<<<<<< HEAD
-                            String sql = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
-                            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-=======
         String mx,cid;
         //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
 
@@ -518,22 +498,21 @@ public class PurchaseController implements Initializable {
                 Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
             } else {
                 try {
-                    if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?"
-                    )) {
+                    if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?")) {
                         //The below code is used to fetch a CID with the same customer details. This is to see if the customer is already registered or not.
 
                         String sql = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
-                        PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                         stmt.setString(1, CName.getText().trim());
                         stmt.setString(2, Cmail.getText().trim());
                         stmt.setString(3, CPhone.getText().trim());
                         stmt.setString(4, Cadd.getText().trim());
                         ResultSet rs = stmt.executeQuery();
-
                         if (rs.next()) {
-                            cid = rs.getString(1);
+                     cid = rs.getString(1);
+                        
                         } else {
-                            //The below code is used to add a new customer with a sequential CID number.
+                         try{   //The below code is used to add a new customer with a sequential CID number.
                             String sql1 = "{ call insertCustomer(?,?,?,?)}";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                             stmt.setString(1, CName.getText().trim());
@@ -545,18 +524,17 @@ public class PurchaseController implements Initializable {
                             //The below code is used to fetch the CID of newly added customer.
                             String sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
                             stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
->>>>>>> 398302c37edc92af1fffd1493e52c1fb9bd6bfc5
                             stmt.setString(1, CName.getText().trim());
                             stmt.setString(2, Cmail.getText().trim());
                             stmt.setString(3, CPhone.getText().trim());
                             stmt.setString(4, Cadd.getText().trim());
-                            ResultSet rs = stmt.executeQuery();
+                            rs = stmt.executeQuery();
 
                             if (rs.next()) {
                                 cid = rs.getString(1);
                             } else {
                                 //The below code is used to add a new customer with a sequential CID number.
-                                String sql1 = "{ call insertCustomer(?,?,?,?)}";
+                                 sql1 = "{ call insertCustomer(?,?,?,?)}";
                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                                 stmt.setString(1, CName.getText().trim());
                                 stmt.setString(3, Cmail.getText().trim());
@@ -565,7 +543,7 @@ public class PurchaseController implements Initializable {
                                 stmt.executeQuery();
 
                                 //The below code is used to fetch the CID of newly added customer.
-                                String sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
+                                 sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
                                 stmt.setString(1, CName.getText().trim());
                                 stmt.setString(2, Cmail.getText().trim());
@@ -659,33 +637,34 @@ public class PurchaseController implements Initializable {
                                 Utilities.AlertBox.showErrorMessage(exe);
                             }
                         }
-                    }  catch (SQLException ex) {
+                      catch (SQLException ex) {
                         Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                         Utilities.AlertBox.notificationWarn("Error", "Please make sure you have entered all the details correctly.");
                         Utilities.AlertBox.showErrorMessage(ex);
                     }
             }
-        }catch (NullPointerException e) {
+        }
+                }catch (NullPointerException e) {
                 Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
             }
 
     }
 
-<<<<<<< HEAD
+
     
     
 
-else {
+
+    }catch (NullPointerException e) {
+            Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+        }
+        }else {
             //run_enquiry
         }
     }
 
-    @FXML
-        private void delNewEnq(MouseEvent event) {
-=======
-    @FXML
+   
     private void delNewEnq(MouseEvent event) {
->>>>>>> 398302c37edc92af1fffd1493e52c1fb9bd6bfc5
         // delete a specific enquiry using input from alter box. ask the user to enter the enquiry number
         String entered = Utilities.AlertBox.alterinput("", "Delete Enquiry", "Enter the Enquiry number of the enquiry to be deleted", "Enquiry Number");
         if (entered.equals("Cancel")) {
