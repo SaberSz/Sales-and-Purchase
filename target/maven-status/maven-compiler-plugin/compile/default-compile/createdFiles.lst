@@ -23,6 +23,7 @@ com\mycompany\snp\Person3.class
 com\mycompany\snp\PurchaseController$4.class
 com\mycompany\snp\SalesController$2.class
 Utilities\AlertBox.class
+com\mycompany\snp\PurchaseController$14.class
 com\mycompany\snp\PurchaseController$1.class
 com\mycompany\snp\SalesController$10.class
 com\mycompany\snp\SalesController$5.class
@@ -42,6 +43,7 @@ PdfGeneration\awinpd.class
 PdfGeneration\pdfInvoice$Header.class
 com\mycompany\snp\SalesController$4.class
 com\mycompany\snp\PurchaseController$2.class
+com\mycompany\snp\PurchaseController$15.class
 com\mycompany\snp\SalesController$11.class
 com\mycompany\snp\PurchaseController$12.class
 PdfGeneration\awinpd$PageXofY.class
