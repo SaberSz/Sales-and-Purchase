@@ -201,6 +201,15 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(true);
         PurchaseOrderPane.setVisible(false);
         InvoicePaymentsPane1.setVisible(false);
+        Runnable task2 = new Runnable() {
+            public void run() {
+
+                runQuotation_Threads2();
+            }
+        };
+        Thread backgroundThread2 = new Thread(task2);
+        backgroundThread2.setDaemon(true);
+        backgroundThread2.start();
     }
 
     void ShowPurchaseOrder() {
@@ -871,11 +880,14 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void saveNewQuotation(MouseEvent event) {
-
+        
     }
-
+    
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
+        String eqno=EnqSelect1.getValue();
+        
+        
     }
 
     @FXML
