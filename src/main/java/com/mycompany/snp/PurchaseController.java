@@ -3,14 +3,19 @@ package com.mycompany.snp;
 import static DBMS.Connect.DB_URL;
 import static DBMS.Connect.PASS;
 import static DBMS.Connect.USER;
+import Utilities.Date;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+
 import com.jfoenix.controls.RecursiveTreeItem;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+
+import java.io.File;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -50,7 +55,10 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javax.swing.JFileChooser;
 
 public class PurchaseController implements Initializable {
 
@@ -911,16 +919,26 @@ public class PurchaseController implements Initializable {
         }
 
     }
+    static String f="Unknown";
 
     @FXML
     void Attach_Quotation_Button_Clicked(MouseEvent event) {
+
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(new ExtensionFilter("PDF Files", "*.pdf"));
+        File selectedFile = fc.showOpenDialog(null);
+
+        if (selectedFile != null) {
+            f = selectedFile.getAbsolutePath();
+            Location_QNo.setText(f);
+        }
 
     }
 
     @FXML
     void Selection_of_Enquiry_for_Quotation_Entry(MouseEvent event) {
         try {
-            if (EnqSelect1.getValue().isEmpty()) {
+            if (!EnqSelect1.getValue().isEmpty()) {
                 String eqno = EnqSelect1.getValue();
                 Location_QNo.setText("Unknown");
                 Gen_Table_in_QuotationPane(eqno);
@@ -947,7 +965,7 @@ public class PurchaseController implements Initializable {
 
         try {
 
-            String suql = "SELECT p.`Qno`, `date_recv`, `location` FROM `purchase_quotation` as p join `purchase_eqrel` as q WHERE q.Eqno = ?;";
+            String suql = "SELECT p.`Qno`, `date_recv`, `location` FROM `purchase_quotation` as p  WHERE p.Eqno = ?;";
 
             PreparedStatement st;
             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
@@ -986,7 +1004,8 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void delQuotation(MouseEvent event) {
-        String no[] = new String[100];
+        String no[];
+        ArrayList<String> a= new ArrayList();
         String entered = Utilities.AlertBox.alterinput("", "Delete Quotation", "Enter the Enquiry number of the quotation to be deleted", "Enquiry Number");
         if (entered.equals("Cancel")) {
 
@@ -999,12 +1018,16 @@ public class PurchaseController implements Initializable {
                 ResultSet rs = stmt.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                    no[i] = rs.getString(1);
+                    System.out.println("Inside "+i);
+                    a.add(rs.getString(1));
+                    //no[i] = rs.getString(1);
+                    i++;
                 }
-                if (i == 0) {
+                no=new String[i];
+                if (i == 0||a.size()==0) {
                     Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Either Enquiry " + entered + " doesn't have any Quoations or it doesn't exist.");
                 } else {
-                    String alter = Utilities.AlertBox.alterchoice(no, "Delete Quotation", "Choose the Quotation you wish to delete", "Quotation Number :");
+                    String alter = Utilities.AlertBox.alterchoice(a.toArray(no), "Delete Quotation", "Choose the Quotation you wish to delete", "Quotation Number :");
                     if (alter == "Cancel") {
 
                     } else {
@@ -1030,6 +1053,39 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void saveNewQuotation(MouseEvent event) {
+        /*
+            private JFXTextField QNo;
+    @FXML
+    private JFXDatePicker Date_Qno;
+    @FXML
+    private JFXTextField Location_QNo;
+    @FXML
+    private JFXTextField POnumber;
+         */
+        String q = QNo.getText();
+        String date = Date_Qno.getValue().toString();
+        if (EnqSelect1.getValue().isEmpty()) {
+            Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+        } else {
+
+            try {
+                String sql = "INSERT INTO `purchase_quotation`(`Qno`, `date_recv`, `location`, `EQno`) VALUES (?,?,?,?);";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, q);
+                stmt.setString(2, date);
+                stmt.setString(3, f);
+                stmt.setString(4, EnqSelect1.getValue());
+                stmt.executeUpdate();
+                Gen_Quotation_Table_After_Save(EnqSelect1.getValue());
+                Utilities.AlertBox.notificationInfo("Success", "The Quotation details have been saved");
+                
+
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+        }
     }
 
     void Gen_Quotation_Table_After_Save(String eqno) {
