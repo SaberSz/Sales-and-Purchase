@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 17, 2018 at 07:48 PM
+-- Generation Time: Jul 17, 2018 at 10:15 PM
 -- Server version: 5.6.34-log
--- PHP Version: 7.2.1
+-- PHP Version: 7.1.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -41,7 +41,7 @@ WHERE eqno=eq and cid=@cd and cmpname=cmp and Date1=dates;
 END$$
 
 DROP PROCEDURE IF EXISTS `insertCustomer`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(100), IN `addr` VARCHAR(200), IN `mail` VARCHAR(100), IN `ph` BIGINT(100))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(100), IN `addr` VARCHAR(200), IN `mail` VARCHAR(100), IN `ph` VARCHAR(100))  MODIFIES SQL DATA
     COMMENT 'Insert into Customer table'
 BEGIN
 select max(k.CID)+1 into @x
@@ -185,7 +185,11 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (71, 'mats', 'mats', 'mats', '1231231'),
 (72, 'matter', 'matter', 'matter', '1231231'),
 (73, 'dxfg dxfgxdnf', 'fctymt', 'dxfgnxdffng', '345345'),
-(74, 'zsdfzsdfzdsfsdf', 'zxdfzf', 'zfszdfzsdf', '23123');
+(74, 'zsdfzsdfzdsfsdf', 'zxdfzf', 'zfszdfzsdf', '23123'),
+(75, 'mi a1 street', 'mr y', 'efeavqefqvqvqvqv', '235234344'),
+(76, 'feqfeqfeqfqe', 'mr z', 'feqfqefqemrz', '2341343'),
+(77, 'vadvdavadvad', 'dvavfsvfsbsb', 'rwvvvadva', '34324'),
+(78, 'vadvdavadvad', 'kabab', 'rwvvvadva', '34324dcacfea+');
 
 -- --------------------------------------------------------
 
@@ -497,10 +501,14 @@ INSERT INTO `purchase_enquiry` (`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`, `T
 ('18-AE-EQ-009', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
 ('18-AE-EQ-010', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
 ('18-AE-EQ-011', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Regular'),
+('18-AE-EQ-012', '2018-07-06', 75, 'befbwbwb', 'Awin', 'Project Related'),
+('18-AE-EQ-013', '2018-07-12', 76, 'dcacadca', 'Awin', 'Project Related'),
+('18-AE-EQ-014', '2018-07-03', 77, 'dcadvdvvda', 'Awin', 'Project Related'),
 ('18-SC-EQ-002', '2018-07-17', 62, 'wedawedawegawesefawefwaegwgfas', 'Steel', 'Regular'),
 ('18-SC-EQ-003', '2018-07-17', 67, 'sddrhsfdhbsdfgsdfgsdfgcbc', 'Steel', 'Project Related'),
 ('18-SC-EQ-004', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Project Related'),
-('18-SC-EQ-005', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Regular');
+('18-SC-EQ-005', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Regular'),
+('18-SC-EQ-006', '2018-07-02', 78, 'dcadvdvvdavadvav', 'Steel', 'Regular');
 
 -- --------------------------------------------------------
 
@@ -521,25 +529,16 @@ CREATE TABLE `purchase_eprel` (
 INSERT INTO `purchase_eprel` (`Eqno`, `Pjno`) VALUES
 ('18-AE-EQ-005', 1),
 ('18-AE-EQ-006', 1),
+('18-AE-EQ-013', 1),
 ('18-AE-EQ-009', 2),
 ('18-AE-EQ-010', 2),
+('18-AE-EQ-014', 2),
 ('18-AE-EQ-001', 3),
 ('18-AE-EQ-003', 3),
 ('18-AE-EQ-008', 3),
+('18-AE-EQ-012', 3),
 ('18-SC-EQ-003', 4),
 ('18-SC-EQ-004', 4);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `purchase_eqrel`
---
-
-DROP TABLE IF EXISTS `purchase_eqrel`;
-CREATE TABLE `purchase_eqrel` (
-  `Eqno` varchar(25) NOT NULL,
-  `Qno` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -643,8 +642,17 @@ DROP TABLE IF EXISTS `purchase_quotation`;
 CREATE TABLE `purchase_quotation` (
   `Qno` varchar(100) NOT NULL,
   `date_recv` date NOT NULL,
-  `location` varchar(100) NOT NULL
+  `location` varchar(100) NOT NULL,
+  `EQno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_quotation`
+--
+
+INSERT INTO `purchase_quotation` (`Qno`, `date_recv`, `location`, `EQno`) VALUES
+('213', '2018-07-17', 'C:\\Users\\Admin\\Desktop\\pdf files\\hello_world.pdf', '18-AE-EQ-011'),
+('5421', '2018-07-30', 'C:\\Users\\Admin\\Desktop\\pdf files\\cns.pdf', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
 
@@ -937,13 +945,6 @@ ALTER TABLE `purchase_eprel`
   ADD KEY `Pjno` (`Pjno`);
 
 --
--- Indexes for table `purchase_eqrel`
---
-ALTER TABLE `purchase_eqrel`
-  ADD PRIMARY KEY (`Eqno`,`Qno`),
-  ADD KEY `Qno` (`Qno`);
-
---
 -- Indexes for table `purchase_invoice`
 --
 ALTER TABLE `purchase_invoice`
@@ -985,7 +986,8 @@ ALTER TABLE `purchase_qprel`
 -- Indexes for table `purchase_quotation`
 --
 ALTER TABLE `purchase_quotation`
-  ADD PRIMARY KEY (`Qno`);
+  ADD PRIMARY KEY (`Qno`,`EQno`),
+  ADD KEY `rqef` (`EQno`);
 
 --
 -- Indexes for table `qoutation`
@@ -1064,13 +1066,6 @@ ALTER TABLE `purchase_eprel`
   ADD CONSTRAINT `purchase_eprel_ibfk_2` FOREIGN KEY (`Pjno`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `purchase_eqrel`
---
-ALTER TABLE `purchase_eqrel`
-  ADD CONSTRAINT `purchase_eqrel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `purchase_eqrel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Constraints for table `purchase_pirel`
 --
 ALTER TABLE `purchase_pirel`
@@ -1083,6 +1078,12 @@ ALTER TABLE `purchase_pirel`
 ALTER TABLE `purchase_qprel`
   ADD CONSTRAINT `purchase_qprel_ibfk_1` FOREIGN KEY (`Po_NO`) REFERENCES `purchase_po` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `purchase_quotation`
+--
+ALTER TABLE `purchase_quotation`
+  ADD CONSTRAINT `rqef` FOREIGN KEY (`EQno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `qprel`

@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.PurchaseController">
+<AnchorPane id="AnchorPane" prefHeight="724.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.snp.PurchaseController">
    <children>
       <AnchorPane prefHeight="43.0" prefWidth="1200.0" style="-fx-background-color: #3F51B5;">
          <children>
@@ -104,7 +104,7 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <ScrollPane fx:id="QuotationPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
+      <ScrollPane fx:id="QuotationPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
@@ -120,9 +120,9 @@
                      </graphic>
                   </Label>
                   <JFXTreeTableView fx:id="Table1" layoutX="722.0" layoutY="74.0" prefHeight="569.0" prefWidth="440.0" />
-                  <JFXTextField layoutX="14.0" layoutY="163.0" prefHeight="27.0" prefWidth="231.0" promptText="Quotation Number" />
-                  <JFXDatePicker defaultColor="#3f51b5" layoutX="14.0" layoutY="248.0" prefHeight="27.0" prefWidth="229.0" promptText="Date Quotation Received" />
-                  <JFXTextField editable="false" layoutX="14.0" layoutY="345.0" prefHeight="27.0" prefWidth="195.0" promptText="File Location" />
+                  <JFXTextField fx:id="QNo" layoutX="14.0" layoutY="163.0" prefHeight="27.0" prefWidth="231.0" promptText="Quotation Number" />
+                  <JFXDatePicker fx:id="Date_Qno" defaultColor="#3f51b5" layoutX="14.0" layoutY="248.0" prefHeight="27.0" prefWidth="229.0" promptText="Date Quotation Received" />
+                  <JFXTextField fx:id="Location_QNo" editable="false" layoutX="14.0" layoutY="345.0" prefHeight="27.0" prefWidth="195.0" promptText="File Location" />
                   <Label contentDisplay="GRAPHIC_ONLY" layoutX="218.0" layoutY="346.0" onMouseClicked="#Attach_Quotation_Button_Clicked" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="ATTACHMENT" size="25" />
@@ -137,7 +137,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PurchaseOrderPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" vvalue="1.0">
+      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
          <content>
             <AnchorPane fx:id="" minHeight="0.0" minWidth="0.0" prefHeight="985.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>

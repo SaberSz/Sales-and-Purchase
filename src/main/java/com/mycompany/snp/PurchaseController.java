@@ -3,11 +3,13 @@ package com.mycompany.snp;
 import static DBMS.Connect.DB_URL;
 import static DBMS.Connect.PASS;
 import static DBMS.Connect.USER;
+import Utilities.Date;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTreeTableView;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -41,7 +43,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javax.swing.JFileChooser;
 
 public class PurchaseController implements Initializable {
 
@@ -591,7 +596,7 @@ public class PurchaseController implements Initializable {
                                     stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
                                     stmt.setString(1, CName.getText().trim());
                                     stmt.setString(2, Cmail.getText().trim());
-                                    stmt.setString(3, CPhone.getText().trim());
+                                    stmt.setString(3, CPhone.getText().trim().toString());
                                     stmt.setString(4, Cadd.getText().trim());
                                     rs = stmt.executeQuery();
 
@@ -628,7 +633,7 @@ public class PurchaseController implements Initializable {
                                         System.out.println("mx1 val:" + mx1);
                                         mxval.add(Integer.parseInt(mx1));
                                         i++;
-                                       
+
                                     }
                                     if (i == 0) {
 
@@ -638,7 +643,7 @@ public class PurchaseController implements Initializable {
                                     }else{
                                          temp = Collections.max(mxval);
                                     }
-                                    
+
 
                                     System.out.println("temp val after db fetch before inc" + temp);
                                     temp++;
@@ -837,7 +842,7 @@ public class PurchaseController implements Initializable {
         }
 
     }
-    
+
     @FXML
     private void Selection_of_Enquiry_for_edit(MouseEvent event) {
         //retireve data if available from db
@@ -909,24 +914,66 @@ public class PurchaseController implements Initializable {
         }
 
     }
-
+static String f;
     @FXML
     void Attach_Quotation_Button_Clicked(MouseEvent event) {
-
+       
+ FileChooser fc = new FileChooser();
+         fc.getExtensionFilters().addAll(new ExtensionFilter("PDF Files","*.pdf"));
+         File selectedFile = fc.showOpenDialog(null);
+           
+         if(selectedFile!=null)
+         {
+            f= selectedFile.getAbsolutePath();
+            Location_QNo.setText(f);
+         }
+         
     }
-    
+
     @FXML
     void Selection_of_Enquiry_for_Quotation_Entry(MouseEvent event) {
           String eqno=EnqSelect1.getValue();
     }
 
     @FXML
-    void saveNewQuotation(MouseEvent event) {
+    void saveNewQuotation(MouseEvent event) throws SQLException {
+        /*
+            private JFXTextField QNo;
+    @FXML
+    private JFXDatePicker Date_Qno;
+    @FXML
+    private JFXTextField Location_QNo;
+    @FXML
+    private JFXTextField POnumber;
+        */
+        String q=QNo.getText();
+        String date=Date_Qno.getValue().toString();
+     if (EnqSelect1.getValue().isEmpty()){
+         Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
+     }else{
+       
+ 
+        try{
+        String sql="INSERT INTO `purchase_quotation`(`Qno`, `date_recv`, `location`, `EQno`) VALUES (?,?,?,?);";
+               PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1,q);
+                stmt.setString(2,date);
+                stmt.setString(3,f);
+                stmt.setString(4,EnqSelect1.getValue());
+                stmt.executeUpdate();
+            Utilities.AlertBox.notificationInfo("Success", "The Quotation details have been saved");
+
+        }catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+    }
     }
 
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
-      
+
     }
 
     @FXML
