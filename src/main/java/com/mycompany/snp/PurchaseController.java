@@ -7,7 +7,10 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import com.jfoenix.controls.RecursiveTreeItem;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.CallableStatement;
@@ -29,8 +32,12 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,6 +46,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -84,7 +93,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private Label inv_tick1;
     @FXML
-    private JFXTreeTableView<?> Table1;
+    private JFXTreeTableView<AnalysisDT1> Table1;
     @FXML
     private ScrollPane PurchaseOrderPane;
     @FXML
@@ -175,8 +184,6 @@ public class PurchaseController implements Initializable {
 
                     }
 
-
-
                 }
             });
         } catch (NullPointerException e) {
@@ -209,7 +216,7 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(true);
         PurchaseOrderPane.setVisible(false);
         InvoicePaymentsPane1.setVisible(false);
-          Runnable task2 = new Runnable() {
+        Runnable task2 = new Runnable() {
             public void run() {
 
                 runQuotation_Threads();
@@ -220,7 +227,8 @@ public class PurchaseController implements Initializable {
         backgroundThread1.setDaemon(true);
         backgroundThread1.start();
     }
-     void runQuotation_Threads() {
+
+    void runQuotation_Threads() {
         try {
 
             Platform.runLater(new Runnable() {
@@ -249,7 +257,6 @@ public class PurchaseController implements Initializable {
         }
 
     }
-
 
     void ShowPurchaseOrder() {
         EnquiryPane.setDisable(true);
@@ -542,7 +549,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private void saveNewEnq(MouseEvent event) {
         System.out.println("Enter saveNewNeq");
-        String cid="";
+        String cid = "";
         if (!edit_in_Enquiry_hit) {
             String mx;
             //save the new enquiry and generate the enquiry number. Make sure to inform the user about the generated enquiry numbe. make enquiry pane fields uneditable
@@ -557,11 +564,10 @@ public class PurchaseController implements Initializable {
                 } else {
                     System.out.println("Enter saveNewNeq non edit");
                     try {
-                         System.out.println("Enter saveNewNeq non edit try block");
+                        System.out.println("Enter saveNewNeq non edit try block");
                         if (Utilities.AlertBox.alertoption("Alert!", "Are you Sure?", "Are you sure you wnat to save the entered enquiry details?")) {
 
                             //The below code is used to fetch a CID with the same customer details. This is to see if the customer is already registered or not.
-
                             String sql = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
                             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                             stmt.setString(1, CName.getText().trim());
@@ -576,123 +582,121 @@ public class PurchaseController implements Initializable {
                                 String sql1 = "";
 //
                                 String sql2 = "";
-                                    //The below code is used to add a new customer with a sequential CID number.
-                                    System.out.println("New Customer");
-                                    sql1 = "{ call insertCustomer(?,?,?,?)}";
-                                    stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-                                    stmt.setString(1, CName.getText().trim());
-                                    stmt.setString(3, Cmail.getText().trim());
-                                    stmt.setString(4, CPhone.getText().trim());
-                                    stmt.setString(2, Cadd.getText().trim());
-                                    stmt.executeQuery();
+                                //The below code is used to add a new customer with a sequential CID number.
+                                System.out.println("New Customer");
+                                sql1 = "{ call insertCustomer(?,?,?,?)}";
+                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                                stmt.setString(1, CName.getText().trim());
+                                stmt.setString(3, Cmail.getText().trim());
+                                stmt.setString(4, CPhone.getText().trim());
+                                stmt.setString(2, Cadd.getText().trim());
+                                stmt.executeQuery();
 
-                                    //The below code is used to fetch the CID of newly added customer.
-                                    sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
-                                    stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
-                                    stmt.setString(1, CName.getText().trim());
-                                    stmt.setString(2, Cmail.getText().trim());
-                                    stmt.setString(3, CPhone.getText().trim());
-                                    stmt.setString(4, Cadd.getText().trim());
-                                    rs = stmt.executeQuery();
+                                //The below code is used to fetch the CID of newly added customer.
+                                sql2 = "Select CID from customer where name = ? and email = ? and phone = ? and address = ? ; ";
+                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
+                                stmt.setString(1, CName.getText().trim());
+                                stmt.setString(2, Cmail.getText().trim());
+                                stmt.setString(3, CPhone.getText().trim());
+                                stmt.setString(4, Cadd.getText().trim());
+                                rs = stmt.executeQuery();
 
-                                    rs.next();
-                                    cid = rs.getString(1);
-                                }
-                                System.out.println("cid value is "+cid);
-                                String res = "";
-                                String date = Utilities.Date.Date();
-                                date = date.substring(2, 4);
-                                System.out.println(date);
-                                res += date;
-                                if (cmp.getValue().equalsIgnoreCase("Awin")) {
-                                    res += "-AE-EQ-";
-                                } else {
-                                    res += "-SC-EQ-";
-                                }
-                                String mx1;
-                                int temp;
-                                ArrayList<Integer> mxval = new ArrayList();
-                                //int[] mxval = new int[100000];
-                                try {
-                                    String suql = "SELECT Eqno FROM `purchase_enquiry` WHERE `Cmpname` = '" + cmp.getValue().trim() + "' ;";
-                                    stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
-                                    //stmt.setString(1,cmp.getValue().trim());
-                                    rs = stmt.executeQuery(suql);
-
-                                    int i = 0, j = 0;
-                                    while (rs.next()) {
-
-                                        mx = rs.getString(1);
-
-                                        mx1 = mx.substring(9, 12);//18-AE-EQ-001
-                                        System.out.println("mx1 val:" + mx1);
-                                        mxval.add(Integer.parseInt(mx1));
-                                        i++;
-                                       
-                                    }
-                                    if (i == 0) {
-
-                                        temp = 1;
-                                        System.out.println("temp val=" + temp);
-
-                                    }else{
-                                         temp = Collections.max(mxval);
-                                    }
-                                    
-
-                                    System.out.println("temp val after db fetch before inc" + temp);
-                                    temp++;
-
-                                    System.out.println("temp val after inc=" + temp);
-                                    String te = "";
-                                    if (temp < 10) {
-                                        te += "00";
-                                    } else if (temp >= 10 && temp < 100) {
-                                        te = "0";
-                                    } else {
-                                        te = "";
-                                    }
-                                    te += String.valueOf(temp);
-                                    System.out.println("res out=" + res);
-                                    res += te;
-                                    ENo.setText(res);
-                                    String sql3 = "INSERT INTO `purchase_enquiry`(`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`,`Type`) VALUES (?,?,?,?,?,?)";
-                                    stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
-                                    stmt.setString(1, res);
-                                    stmt.setString(2, Edate.getValue().toString());
-                                    stmt.setString(3, cid);
-                                    stmt.setString(4, EDes.getText().trim());
-                                    stmt.setString(5, cmp.getValue());
-                                    stmt.setString(6, Type.getValue());
-                                    stmt.executeUpdate();
-                                    System.out.println(res + " entered into Purchase_Enquiry");
-                                    String sql4;
-                                    if (Type.getValue() == "Project Related") {
-                                        try {
-                                            sql4 = "INSERT INTO `purchase_eprel`(`Eqno`,`PjNo`) VALUES (?,?)";
-                                            try {
-                                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql4);
-                                                stmt.setString(1, res);
-                                                stmt.setString(2, Epjno.getValue().trim());
-                                                stmt.executeUpdate();
-                                                System.out.println(res + " entered into Purchase_eqrel");
-                                            } catch (SQLException ex) {
-                                                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
-                                            }
-
-                                        } catch (NullPointerException e) {
-
-                                        }
-                                    }
-                                    Utilities.AlertBox.notificationInfo("Success", "Enquiry details saved. Your Enquiry number is :" + res);
-
-                                } catch (SQLException exe) {
-                                    Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
-                                    Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-                                    Utilities.AlertBox.showErrorMessage(exe);
-                                }
+                                rs.next();
+                                cid = rs.getString(1);
                             }
+                            System.out.println("cid value is " + cid);
+                            String res = "";
+                            String date = Utilities.Date.Date();
+                            date = date.substring(2, 4);
+                            System.out.println(date);
+                            res += date;
+                            if (cmp.getValue().equalsIgnoreCase("Awin")) {
+                                res += "-AE-EQ-";
+                            } else {
+                                res += "-SC-EQ-";
+                            }
+                            String mx1;
+                            int temp;
+                            ArrayList<Integer> mxval = new ArrayList();
+                            //int[] mxval = new int[100000];
+                            try {
+                                String suql = "SELECT Eqno FROM `purchase_enquiry` WHERE `Cmpname` = '" + cmp.getValue().trim() + "' ;";
+                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                                //stmt.setString(1,cmp.getValue().trim());
+                                rs = stmt.executeQuery(suql);
 
+                                int i = 0, j = 0;
+                                while (rs.next()) {
+
+                                    mx = rs.getString(1);
+
+                                    mx1 = mx.substring(9, 12);//18-AE-EQ-001
+                                    System.out.println("mx1 val:" + mx1);
+                                    mxval.add(Integer.parseInt(mx1));
+                                    i++;
+
+                                }
+                                if (i == 0) {
+
+                                    temp = 1;
+                                    System.out.println("temp val=" + temp);
+
+                                } else {
+                                    temp = Collections.max(mxval);
+                                }
+
+                                System.out.println("temp val after db fetch before inc" + temp);
+                                temp++;
+
+                                System.out.println("temp val after inc=" + temp);
+                                String te = "";
+                                if (temp < 10) {
+                                    te += "00";
+                                } else if (temp >= 10 && temp < 100) {
+                                    te = "0";
+                                } else {
+                                    te = "";
+                                }
+                                te += String.valueOf(temp);
+                                System.out.println("res out=" + res);
+                                res += te;
+                                ENo.setText(res);
+                                String sql3 = "INSERT INTO `purchase_enquiry`(`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`,`Type`) VALUES (?,?,?,?,?,?)";
+                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
+                                stmt.setString(1, res);
+                                stmt.setString(2, Edate.getValue().toString());
+                                stmt.setString(3, cid);
+                                stmt.setString(4, EDes.getText().trim());
+                                stmt.setString(5, cmp.getValue());
+                                stmt.setString(6, Type.getValue());
+                                stmt.executeUpdate();
+                                System.out.println(res + " entered into Purchase_Enquiry");
+                                String sql4;
+                                if (Type.getValue() == "Project Related") {
+                                    try {
+                                        sql4 = "INSERT INTO `purchase_eprel`(`Eqno`,`PjNo`) VALUES (?,?)";
+                                        try {
+                                            stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql4);
+                                            stmt.setString(1, res);
+                                            stmt.setString(2, Epjno.getValue().trim());
+                                            stmt.executeUpdate();
+                                            System.out.println(res + " entered into Purchase_eqrel");
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+
+                                    } catch (NullPointerException e) {
+
+                                    }
+                                }
+                                Utilities.AlertBox.notificationInfo("Success", "Enquiry details saved. Your Enquiry number is :" + res);
+
+                            } catch (SQLException exe) {
+                                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                                Utilities.AlertBox.showErrorMessage(exe);
+                            }
+                        }
 
                     } catch (SQLException ex) {
                         Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -837,7 +841,7 @@ public class PurchaseController implements Initializable {
         }
 
     }
-    
+
     @FXML
     private void Selection_of_Enquiry_for_edit(MouseEvent event) {
         //retireve data if available from db
@@ -877,26 +881,24 @@ public class PurchaseController implements Initializable {
                     Cmail.setText(rs.getString(3));
                     Cadd.setText(rs.getString(1));
                 }
-                sql="SELECT  `Pjno` FROM `purchase_eprel` WHERE `Eqno` = ?";
+                sql = "SELECT  `Pjno` FROM `purchase_eprel` WHERE `Eqno` = ?";
                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                 stmt.setString(1, eqno);
                 rs = stmt.executeQuery();
-                boolean flag=false;
+                boolean flag = false;
                 {
-                    while(rs.next()){
-                        flag=true;
+                    while (rs.next()) {
+                        flag = true;
                         Epjno.setValue(rs.getString(1));
                         Epjno.setDisable(!flag);
                         Epjno.setVisible(flag);
 
                     }
-                    if(!flag){
+                    if (!flag) {
                         Epjno.setDisable(!flag);
                         Epjno.setVisible(flag);
                     }
                 }
-
-
 
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
@@ -914,19 +916,155 @@ public class PurchaseController implements Initializable {
     void Attach_Quotation_Button_Clicked(MouseEvent event) {
 
     }
-    
+
     @FXML
     void Selection_of_Enquiry_for_Quotation_Entry(MouseEvent event) {
-          String eqno=EnqSelect1.getValue();
+        try {
+            if (EnqSelect1.getValue().isEmpty()) {
+                String eqno = EnqSelect1.getValue();
+                Location_QNo.setText("Unknown");
+                Gen_Table_in_QuotationPane(eqno);
+            }
+        } catch (NullPointerException e) {
+            Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Enquiry number not chosen.");
+        }
+    }
+
+    void Gen_Table_in_QuotationPane(String eqno) {
+        JFXTreeTableColumn<AnalysisDT1, String> subjec = new JFXTreeTableColumn<>("Quotation Number");
+        subjec.setPrefWidth(200);
+        subjec.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT1, String> param) -> param.getValue().getValue().qo);
+
+        JFXTreeTableColumn<AnalysisDT1, String> cod = new JFXTreeTableColumn<>(" Date Received");
+        cod.setPrefWidth(100);
+        cod.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT1, String> param) -> param.getValue().getValue().dates);
+
+        JFXTreeTableColumn<AnalysisDT1, String> attende = new JFXTreeTableColumn<>("File Location");
+        attende.setPrefWidth(200);
+        attende.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT1, String> param) -> param.getValue().getValue().loc);
+
+        ObservableList<AnalysisDT1> users1 = FXCollections.observableArrayList();
+
+        try {
+
+            String suql = "SELECT p.`Qno`, `date_recv`, `location` FROM `purchase_quotation` as p join `purchase_eqrel` as q WHERE q.Eqno = ?;";
+
+            PreparedStatement st;
+            st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+            st.setString(1, eqno);
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                users1.add(new AnalysisDT1(rs.getString(1), rs.getDate(2).toString(), rs.getString(3)));
+            }
+            Table1.getColumns().clear();
+            final TreeItem<AnalysisDT1> root = new RecursiveTreeItem<AnalysisDT1>(users1, RecursiveTreeObject::getChildren);
+            Table1.getColumns().setAll(subjec, cod, attende);
+            Table1.setRoot(root);
+            Table1.setShowRoot(false);
+        } catch (SQLException e) {
+            Utilities.AlertBox.notificationWarn("Error", "We are currently facing some problems. Please let us resolve them and get back to you");
+            Utilities.AlertBox.showErrorMessage(e);
+        }
+    }
+
+    class AnalysisDT1 extends RecursiveTreeObject<AnalysisDT1> {
+
+        //this inner class is used for the enquiry tab on the dashboard
+        StringProperty qo;
+        StringProperty dates;
+        StringProperty loc;
+
+        public AnalysisDT1(String q, String dates, String loc) {
+            this.qo = new SimpleStringProperty(q);
+            this.dates = new SimpleStringProperty(dates);
+            this.loc = new SimpleStringProperty(loc);
+        }
+
+    }
+
+    @FXML
+    private void delQuotation(MouseEvent event) {
+        String no[] = new String[100];
+        String entered = Utilities.AlertBox.alterinput("", "Delete Quotation", "Enter the Enquiry number of the quotation to be deleted", "Enquiry Number");
+        if (entered.equals("Cancel")) {
+
+        } else {
+            try {
+
+                String sql = "Select QNo FROM `purchase_quotation` WHERE Eqno=?;";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, entered);
+                ResultSet rs = stmt.executeQuery();
+                int i = 0;
+                while (rs.next()) {
+                    no[i] = rs.getString(1);
+                }
+                if (i == 0) {
+                    Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Either Enquiry " + entered + " doesn't have any Quoations or it doesn't exist.");
+                } else {
+                    String alter = Utilities.AlertBox.alterchoice(no, "Delete Quotation", "Choose the Quotation you wish to delete", "Quotation Number :");
+                    if (alter == "Cancel") {
+
+                    } else {
+                        sql = "Delete FROM `purchase_quotation` WHERE Qno=? AND EQno = ? ;";
+                        stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        stmt.setString(1, alter);
+                        stmt.setString(2, entered);
+                        int k = stmt.executeUpdate();
+                        if (k != 0) {
+                            Utilities.AlertBox.notificationInfo("Success", "Quotation " + alter + " deleted.");
+                        } else {
+                            Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Please try again.");
+                        }
+                    }
+                }
+
+            } catch (SQLException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @FXML
     void saveNewQuotation(MouseEvent event) {
     }
 
+    void Gen_Quotation_Table_After_Save(String eqno) {
+        Runnable task2 = new Runnable() {
+            public void run() {
+                runGen_Quotation_Table_After_Save(eqno);
+
+            }
+        };
+
+        Thread backgroundThread1 = new Thread(task2);
+        backgroundThread1.setDaemon(true);
+        backgroundThread1.start();
+    }
+
+    void runGen_Quotation_Table_After_Save(String eqno) {
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    Gen_Table_in_QuotationPane(eqno);
+                }
+            });
+
+            System.out.println("1 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
-      
+
     }
 
     @FXML

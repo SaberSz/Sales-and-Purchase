@@ -16,6 +16,7 @@ com\mycompany\snp\SalesController$AnalysisDT2.class
 PdfGeneration\pdfInvoice.class
 com\mycompany\snp\SalesController$6.class
 com\mycompany\snp\SalesController$9.class
+com\mycompany\snp\PurchaseController$AnalysisDT1.class
 Utilities\NumUtil.class
 PdfGeneration\awinqtepdf$Header.class
 com\mycompany\snp\SalesController$12.class

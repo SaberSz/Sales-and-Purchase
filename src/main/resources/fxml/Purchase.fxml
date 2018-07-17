@@ -133,6 +133,11 @@
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
                   </Label>
+                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="390.0" layoutY="477.0" onMouseClicked="#delQuotation" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="30" />
+                     </graphic>
+                  </Label>
                </children>
             </AnchorPane>
          </content>
