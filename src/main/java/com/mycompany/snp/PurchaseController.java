@@ -1211,11 +1211,11 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
-         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno 
+         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno
           String res="";String projn="",cmps="";
           String da=Utilities.Date.Date().substring(2,5);
           Table2.setEditable(true);
-          
+
            try {
                 String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from "
                         + "`purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c "
@@ -1240,7 +1240,7 @@ public class PurchaseController implements Initializable {
                     res+=rs.getString(2)+"-PO-";
                     cmps=rs.getString(2);
               }
-              
+
               supplierInfo.setText(toname+"\n"+toaddr);
                 String mx1;String mx;
                             int temp;
@@ -1250,7 +1250,7 @@ public class PurchaseController implements Initializable {
                                 if(cmps.equals("AWIN"))
                                  suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%AE%'";
                                 else
-                                 suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%SC%'";  
+                                 suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%SC%'";
                                 stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                                 rs = stmt.executeQuery(suql);
                                 int x;String v="";
@@ -1261,7 +1261,7 @@ public class PurchaseController implements Initializable {
                                     mxval.add(Integer.parseInt(v));
                                     i++;
                                 }
-                                                               
+
                                 if (i == 0) {
 
                                     temp = 0;
@@ -1276,7 +1276,7 @@ public class PurchaseController implements Initializable {
 
                                 System.out.println("projn val after inc=" + projn);
                                 String te = "";
-                             
+
                                 if (temp < 10) {
                                     te += "00";
                                 } else if (temp >= 10 && temp < 100) {
@@ -1296,9 +1296,8 @@ public class PurchaseController implements Initializable {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
 
                 Utilities.AlertBox.showErrorMessage(ex);
-            } 
-    
-              
+            }
+
     }
 
     TableColumn uomCol = new TableColumn("UOM");
