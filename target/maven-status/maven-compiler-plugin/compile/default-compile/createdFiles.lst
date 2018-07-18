@@ -4,6 +4,7 @@ com\mycompany\snp\PurchaseController$8.class
 com\mycompany\snp\SalesController$15.class
 com\mycompany\snp\SalesController$mths.class
 com\mycompany\snp\PurchaseController$16.class
+com\mycompany\snp\PurchaseController$23.class
 com\mycompany\snp\Person2.class
 com\mycompany\snp\PurchaseController$13.class
 com\mycompany\snp\PurchaseController$5.class
@@ -18,6 +19,7 @@ PdfGeneration\pdfInvoice.class
 com\mycompany\snp\PurchaseController$17.class
 com\mycompany\snp\SalesController$6.class
 com\mycompany\snp\SalesController$9.class
+com\mycompany\snp\PurchaseController$22.class
 com\mycompany\snp\PurchaseController$AnalysisDT1.class
 Utilities\NumUtil.class
 PdfGeneration\awinqtepdf$Header.class
