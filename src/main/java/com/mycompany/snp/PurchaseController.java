@@ -115,13 +115,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private JFXTextField Pjnumber;
     @FXML
-    private JFXTextField ShipmentNumber;
-    @FXML
-    private JFXTextField ShipmentTerm;
-    @FXML
     private JFXDatePicker OrderDate;
-    @FXML
-    private JFXTextField Attn;
     @FXML
     private TableView<?> Table2;
     @FXML
@@ -136,6 +130,14 @@ public class PurchaseController implements Initializable {
     private JFXTextField Location_QNo;
     @FXML
     private JFXTextField POnumber;
+    @FXML
+    private JFXTextField paymentTerms;
+    @FXML
+    private JFXDatePicker OrderDate1;
+    @FXML
+    private JFXTextField PoTotal1;
+    @FXML
+    private JFXTextField PoTotal11;
 
     /**
      * Initializes the controller class.

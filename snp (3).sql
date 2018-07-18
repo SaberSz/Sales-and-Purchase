@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 17, 2018 at 10:15 PM
+-- Generation Time: Jul 18, 2018 at 06:58 PM
 -- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -593,13 +593,12 @@ CREATE TABLE `purchase_po` (
   `Po_NO` varchar(25) NOT NULL,
   `Sentdate` date DEFAULT NULL,
   `Description` varchar(200) DEFAULT NULL,
-  `RefNO` varchar(50) DEFAULT NULL,
+  `DeliveryDate` date DEFAULT NULL,
   `Total` double DEFAULT NULL,
   `Sent` tinyint(4) NOT NULL DEFAULT '0',
-  `OrderNo` varchar(50) DEFAULT NULL,
+  `SubTotal` double DEFAULT NULL,
   `PaymentTerm` varchar(50) DEFAULT NULL,
-  `ShipmentMethod` varchar(10) DEFAULT NULL,
-  `ShipmentTerm` varchar(10) DEFAULT NULL
+  `GST` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -611,13 +610,12 @@ CREATE TABLE `purchase_po` (
 DROP TABLE IF EXISTS `purchase_potabledetails`;
 CREATE TABLE `purchase_potabledetails` (
   `Po_NO` varchar(25) NOT NULL,
-  `No` int(11) NOT NULL,
-  `Description` varchar(100) DEFAULT NULL,
-  `Qty` varchar(10) DEFAULT NULL,
+  `UOM` varchar(100) DEFAULT NULL,
+  `Description` varchar(10000) DEFAULT NULL,
+  `Qty` varchar(100) DEFAULT NULL,
   `Price` varchar(10) DEFAULT NULL,
   `TotalAmt` varchar(10) DEFAULT NULL,
-  `Exclusion` varchar(500) DEFAULT NULL,
-  `Delivery` varchar(200) DEFAULT NULL
+  `Discount` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -629,7 +627,8 @@ CREATE TABLE `purchase_potabledetails` (
 DROP TABLE IF EXISTS `purchase_qprel`;
 CREATE TABLE `purchase_qprel` (
   `Qno` varchar(100) NOT NULL,
-  `Po_NO` varchar(25) NOT NULL
+  `Po_NO` varchar(25) NOT NULL,
+  `Eqno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -642,7 +641,7 @@ DROP TABLE IF EXISTS `purchase_quotation`;
 CREATE TABLE `purchase_quotation` (
   `Qno` varchar(100) NOT NULL,
   `date_recv` date NOT NULL,
-  `location` varchar(100) NOT NULL,
+  `location` varchar(1000) NOT NULL,
   `EQno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -651,7 +650,9 @@ CREATE TABLE `purchase_quotation` (
 --
 
 INSERT INTO `purchase_quotation` (`Qno`, `date_recv`, `location`, `EQno`) VALUES
+('123123123', '2018-07-18', 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '18-AE-EQ-011'),
 ('213', '2018-07-17', 'C:\\Users\\Admin\\Desktop\\pdf files\\hello_world.pdf', '18-AE-EQ-011'),
+('23423', '2018-07-11', 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-014 (Aquatic).pdf', '18-AE-EQ-011'),
 ('5421', '2018-07-30', 'C:\\Users\\Admin\\Desktop\\pdf files\\cns.pdf', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
@@ -979,8 +980,9 @@ ALTER TABLE `purchase_potabledetails`
 -- Indexes for table `purchase_qprel`
 --
 ALTER TABLE `purchase_qprel`
-  ADD PRIMARY KEY (`Qno`,`Po_NO`),
-  ADD KEY `Po_NO` (`Po_NO`);
+  ADD PRIMARY KEY (`Qno`,`Po_NO`,`Eqno`),
+  ADD KEY `Po_NO` (`Po_NO`),
+  ADD KEY `Eqno` (`Eqno`);
 
 --
 -- Indexes for table `purchase_quotation`
@@ -1077,7 +1079,8 @@ ALTER TABLE `purchase_pirel`
 --
 ALTER TABLE `purchase_qprel`
   ADD CONSTRAINT `purchase_qprel_ibfk_1` FOREIGN KEY (`Po_NO`) REFERENCES `purchase_po` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_qprel_ibfk_3` FOREIGN KEY (`Eqno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `purchase_quotation`
