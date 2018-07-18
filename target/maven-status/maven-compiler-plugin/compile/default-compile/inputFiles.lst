@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 D:\Github Repos\Sales-and-Purchase\src\main\java\DBMS\Connect.java
 D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
 D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\NumUtil.java
@@ -16,21 +15,3 @@ D:\Github Repos\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
 D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\MainApp.java
 D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
 D:\Github Repos\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesDrawerController.java
-=======
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\PurchaseController.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesController.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\AlertBox.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\SalesDrawerController.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\DBMS\Connect.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\NumUtil.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\PdfGeneration\awinqtepdf.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\PdfGeneration\pdfQuotation.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person2.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\MainApp.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\PdfGeneration\awinpd.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\PdfGeneration\pdfInvoice.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\FXMLController.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\Utilities\Date.java
-C:\Users\Admin\Desktop\Sales-and-Purchase\src\main\java\com\mycompany\snp\Person3.java
->>>>>>> 54324c8ffed806fd44a0442eb15dff39a50ab547
