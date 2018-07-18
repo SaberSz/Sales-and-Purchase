@@ -34,8 +34,10 @@ Utilities\Date.class
 com\mycompany\snp\SalesController$17.class
 PdfGeneration\awinqtepdf$PageXofY.class
 com\mycompany\snp\PurchaseController$3.class
+com\mycompany\snp\Person4.class
 PdfGeneration\pdfQuotation.class
 com\mycompany\snp\FXMLController.class
+com\mycompany\snp\PurchaseController$21.class
 PdfGeneration\pdfQuotation$PageXofY.class
 com\mycompany\snp\PurchaseController$11.class
 com\mycompany\snp\SalesController$13.class
@@ -44,6 +46,7 @@ com\mycompany\snp\PurchaseController$18.class
 PdfGeneration\pdfInvoice$PageXofY.class
 PdfGeneration\awinpd$Header.class
 PdfGeneration\awinpd.class
+com\mycompany\snp\PurchaseController$20.class
 PdfGeneration\pdfInvoice$Header.class
 com\mycompany\snp\SalesController$4.class
 com\mycompany\snp\PurchaseController$2.class
