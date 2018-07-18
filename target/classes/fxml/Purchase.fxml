@@ -142,11 +142,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-<<<<<<< HEAD
-      <ScrollPane fx:id="PurchaseOrderPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" vvalue="1.0">
-=======
       <ScrollPane fx:id="PurchaseOrderPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0">
->>>>>>> 47c7c19663c6645b44f86d06dc44792a6d8ed4c2
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="985.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
@@ -168,12 +164,7 @@
                   </JFXTextArea>
                   <JFXTextField fx:id="POnumber" editable="false" labelFloat="true" layoutX="21.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Purchase Order Number" />
                   <JFXTextField fx:id="Pjnumber" editable="false" labelFloat="true" layoutX="257.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Project Number" />
-<<<<<<< HEAD
-                  <JFXTextField fx:id="paymentTerms" editable="false" labelFloat="true" layoutX="490.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Payment Terms" />
-                  <JFXDatePicker fx:id="OrderDate" defaultColor="#3f51b5" layoutX="955.0" layoutY="141.0" promptText="Order Date" />
-=======
                   <JFXTextField fx:id="paymentTerms" labelFloat="true" layoutX="490.0" layoutY="141.0" prefHeight="31.0" prefWidth="414.0" promptText="Payment Terms" />
->>>>>>> 47c7c19663c6645b44f86d06dc44792a6d8ed4c2
                   <TableView fx:id="Table2" layoutX="21.0" layoutY="514.0" prefHeight="436.0" prefWidth="876.0">
                     <columns>
                       <TableColumn prefWidth="75.0" text="C1" />
@@ -192,16 +183,10 @@
                         <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />
                      </graphic>
                   </Label>
-<<<<<<< HEAD
-                  <JFXDatePicker fx:id="OrderDate1" defaultColor="#3f51b5" layoutX="722.0" layoutY="141.0" promptText="Delivery by" />
-                  <JFXTextField fx:id="PoTotal1" editable="false" labelFloat="true" layoutX="927.0" layoutY="603.0" prefHeight="27.0" prefWidth="230.0" promptText="GST" />
-                  <JFXTextField fx:id="PoTotal11" editable="false" labelFloat="true" layoutX="927.0" layoutY="668.0" prefHeight="27.0" prefWidth="230.0" promptText="Total" />
-=======
                   <JFXDatePicker fx:id="OrderDate1" defaultColor="#3f51b5" layoutX="952.0" layoutY="141.0" promptText="Delivery by" />
                   <JFXTextField fx:id="PoTotal1" editable="false" labelFloat="true" layoutX="927.0" layoutY="603.0" prefHeight="27.0" prefWidth="230.0" promptText="GST" />
                   <JFXTextField fx:id="PoTotal11" editable="false" labelFloat="true" layoutX="927.0" layoutY="668.0" prefHeight="27.0" prefWidth="230.0" promptText="Total" />
                   <JFXTextField fx:id="GSTRate" labelFloat="true" layoutX="957.0" layoutY="459.0" prefHeight="27.0" prefWidth="195.0" promptText="GST Rate" />
->>>>>>> 47c7c19663c6645b44f86d06dc44792a6d8ed4c2
                </children>
             </AnchorPane>
          </content>

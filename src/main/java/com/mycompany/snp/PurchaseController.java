@@ -1211,7 +1211,87 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
+         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno 
+          String res="";String projn="";
+          String da=Utilities.Date.Date().substring(2,5);
+          Table2.setEditable(true);
+          
+           try {
+                String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,s.Name,s.Address from `purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c where q.EQno = e.EQno and e.EQno = ep.EQno and q.Qno=? and e.SID=c.CID";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1,POqno.getValue());
+                ResultSet rs=stmt.executeQuery();
+      String toname="";String toaddr="";
+              while(rs.next()){
+                   res+=da;
+                  projn=rs.getString(4);
+                  toname=rs.getString(5);
+                    toaddr=rs.getString(6);
+                    if(rs.getString(3).equals("Regular")){
+                        res+="CONS-";
+                    }else{
+                        res+=rs.getString(3)+"-";
+                    }
+                    res+=rs.getString(2)+"-PO-";  
+              }
+              
+              supplierInfo.setText(toname+"\n"+toaddr);
+                String mx1;String mx;
+                            int temp;
+                            ArrayList<Integer> mxval = new ArrayList();
+                            String suql;
+                            try {
+                                if(rs.getString(2).equals("AWIN"))
+                                 suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%AE%'";
+                                else
+                                 suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%SC%'";  
+                                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                                rs = stmt.executeQuery(suql);
+                                int x;String v="";
+                                int i = 0, j = 0;
+                                while (rs.next()) {
+                                    x=rs.getString(1).lastIndexOf("-");
+                                    v=rs.getString(1).substring(x+1,rs.getString(1).length());
+                                    mxval.add(Integer.parseInt(v));
+                                    i++;
+                                }
+                                                               
+                                if (i == 0) {
 
+                                    temp = 0;
+                                    System.out.println("temp val=" + temp);
+
+                                } else {
+                                    temp = Collections.max(mxval);
+                                }
+
+                                System.out.println("temp val after db fetch before inc" + temp);
+                                temp++;
+
+                                System.out.println("temp val after inc=" + temp);
+                                String te = "";
+                             
+                                if (temp < 10) {
+                                    te += "00";
+                                } else if (temp >= 10 && temp < 100) {
+                                    te = "0";
+                                } else {
+                                    te = "";
+                                }
+                                    te += String.valueOf(temp);
+                                    res+=te;
+                                    POnumber.setText(res);
+                                    Pjnumber.setText(projn);
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                Utilities.AlertBox.showErrorMessage(ex);}
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                Utilities.AlertBox.showErrorMessage(ex);
+            } 
+    
               
     }
 
