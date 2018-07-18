@@ -50,9 +50,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -115,9 +117,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private JFXTextField Pjnumber;
     @FXML
-    private JFXDatePicker OrderDate;
-    @FXML
-    private TableView<?> Table2;
+    private TableView<Person4> Table2;
     @FXML
     private JFXTextArea Header;
     @FXML
@@ -138,6 +138,10 @@ public class PurchaseController implements Initializable {
     private JFXTextField PoTotal1;
     @FXML
     private JFXTextField PoTotal11;
+    @FXML
+    private JFXTextField GSTRate;
+
+    static String comp_inv_gst = "0";
 
     /**
      * Initializes the controller class.
@@ -146,6 +150,7 @@ public class PurchaseController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         initialSetups();
+
         MainMenu.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue ov, String oldValue, String newValue) {
@@ -195,6 +200,38 @@ public class PurchaseController implements Initializable {
                     }
 
                 }
+            });
+            PoTotal.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                try {
+                    if (!newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
+                        PoTotal.setText(newValue.replaceAll("[^\\d.]", ""));
+                    } else {
+                        if (PoTotal.getText().isEmpty()) {
+                            PoTotal1.setText("0");
+                            PoTotal11.setText("0");
+
+                        } else {
+                            PoTotal1.setText(String.valueOf(Math.round((Double.valueOf(PoTotal.getText()) * (Float.valueOf(comp_inv_gst) / 100)) * 100d) / 100d));//Math.round(value * 100000d) / 100000d
+                            PoTotal11.setText(String.valueOf(Float.valueOf(PoTotal.getText()) + Float.valueOf(PoTotal1.getText())));
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+
+            });
+
+            GSTRate.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                try {
+                    if (!newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
+                        GSTRate.setText(newValue.replaceAll("[^\\d.]", ""));
+                        comp_inv_gst = GSTRate.getText();
+                    }
+
+                } catch (Exception e) {
+
+                }
+
             });
         } catch (NullPointerException e) {
 
@@ -277,6 +314,7 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(false);
         PurchaseOrderPane.setVisible(true);
         InvoicePaymentsPane1.setVisible(false);
+        PO_Tabel_Generation();
     }
 
     void ShowInvoice() {
@@ -921,7 +959,7 @@ public class PurchaseController implements Initializable {
         }
 
     }
-    static String f="Unknown";
+    static String f = "Unknown";
 
     @FXML
     void Attach_Quotation_Button_Clicked(MouseEvent event) {
@@ -1007,7 +1045,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private void delQuotation(MouseEvent event) {
         String no[];
-        ArrayList<String> a= new ArrayList();
+        ArrayList<String> a = new ArrayList();
         String entered = Utilities.AlertBox.alterinput("", "Delete Quotation", "Enter the Enquiry number of the quotation to be deleted", "Enquiry Number");
         if (entered.equals("Cancel")) {
 
@@ -1020,13 +1058,13 @@ public class PurchaseController implements Initializable {
                 ResultSet rs = stmt.executeQuery();
                 int i = 0;
                 while (rs.next()) {
-                    System.out.println("Inside "+i);
+                    System.out.println("Inside " + i);
                     a.add(rs.getString(1));
                     //no[i] = rs.getString(1);
                     i++;
                 }
-                no=new String[i];
-                if (i == 0||a.size()==0) {
+                no = new String[i];
+                if (i == 0 || a.size() == 0) {
                     Utilities.AlertBox.notificationWarn("Opps something went wrong :(", "Either Enquiry " + entered + " doesn't have any Quoations or it doesn't exist.");
                 } else {
                     String alter = Utilities.AlertBox.alterchoice(a.toArray(no), "Delete Quotation", "Choose the Quotation you wish to delete", "Quotation Number :");
@@ -1080,7 +1118,6 @@ public class PurchaseController implements Initializable {
                 stmt.executeUpdate();
                 Gen_Quotation_Table_After_Save(EnqSelect1.getValue());
                 Utilities.AlertBox.notificationInfo("Success", "The Quotation details have been saved");
-                
 
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1125,8 +1162,275 @@ public class PurchaseController implements Initializable {
 
     }
 
+    TableColumn uomCol = new TableColumn("UOM");
+    TableColumn desCol = new TableColumn("Description");
+    TableColumn quantityCol = new TableColumn("Quantity");
+    TableColumn unitCol = new TableColumn("Unit Price");
+    TableColumn totalCol = new TableColumn("Total");
+    TableColumn DiscountCol = new TableColumn("Discount");
+
+    void PO_Tabel_Generation(ObservableList<Person4> data) {
+        uomCol.setSortable(false);
+        desCol.setSortable(false);
+        quantityCol.setSortable(false);
+        unitCol.setSortable(false);
+        totalCol.setSortable(false);
+        DiscountCol.setSortable(false);
+        uomCol.setPrefWidth(50);
+        desCol.setPrefWidth(150);
+        quantityCol.setPrefWidth(100);
+        unitCol.setPrefWidth(150);
+        totalCol.setPrefWidth(50);
+        DiscountCol.setPrefWidth(50);
+
+        Table2.getColumns().addAll(desCol, uomCol, quantityCol, unitCol, DiscountCol, totalCol);
+
+        uomCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("UOM")
+        );
+        desCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Des")
+        );
+        quantityCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Qty")
+        );
+
+        unitCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("UnitPrice")
+        );
+        totalCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Total")
+        );
+        DiscountCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Discount")
+        );
+
+        Table2.setItems(data);
+
+    }
+
+    void PO_Tabel_Generation() {
+        Table2.getColumns().clear();
+        uomCol.setSortable(false);
+        desCol.setSortable(false);
+        quantityCol.setSortable(false);
+        unitCol.setSortable(false);
+        totalCol.setSortable(false);
+        DiscountCol.setSortable(false);
+        uomCol.setPrefWidth(50);
+        desCol.setPrefWidth(150);
+        quantityCol.setPrefWidth(100);
+        unitCol.setPrefWidth(150);
+        totalCol.setPrefWidth(50);
+        DiscountCol.setPrefWidth(50);
+
+        Table2.getColumns().addAll(desCol, uomCol, quantityCol, unitCol, DiscountCol, totalCol);
+
+        uomCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("UOM")
+        );
+        desCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Des")
+        );
+        quantityCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Qty")
+        );
+
+        unitCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("UnitPrice")
+        );
+        totalCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Total")
+        );
+        DiscountCol.setCellValueFactory(
+                new PropertyValueFactory<Person, String>("Discount")
+        );
+
+    }
+
+    boolean PO_Table_Insert_into_Database(Connection conn) {
+        PreparedStatement stmt;
+        try {
+
+            //first deleting quotations details of the particular qno
+            String suqdel = "DELETE FROM `purchase_potabledetails` WHERE `po_NO`= ? ;";
+            String pono = POnumber.getText();
+            stmt = conn.prepareStatement(suqdel);
+            stmt.setString(1, POnumber.getText());
+            stmt.executeUpdate();
+
+            ObservableList<Person4> trc;
+            trc = FXCollections.observableArrayList(Table2.getItems());
+            trc.add(new Person4("", "", "", "", "", ""));
+            int i = 0;
+            while (i < 100) {
+                System.out.println("IN while loop");
+                Person4 p = trc.get(i);
+                if (p.getDes().getText().trim().equalsIgnoreCase("")) {
+                    System.out.println("done table PO");
+                    break;
+                } else {
+                    String uom = p.getUOM().getText();
+                    String qty = p.getQty().getText();
+                    String up = p.getUnitPrice().getText();
+                    String d = p.getDes().getText();
+                    String Dis = p.getDiscount().getText();
+                    String tot = p.getTotal().getText();
+
+                    try {
+
+                        //first deleting quotations details of the particular qno
+                        String suql1 = "INSERT INTO `purchase_potabledetails`(`Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`,"
+                                + " `Discount`) VALUES (?,?,?,?,?,?,?)";
+                        stmt = conn.prepareStatement(suql1);
+                        stmt.setString(1, pono);
+                        stmt.setString(2, uom);
+                        stmt.setString(3, d);
+                        stmt.setString(4, qty);
+                        stmt.setString(5, up);
+                        stmt.setString(6, tot);
+                        stmt.setString(7, Dis);
+                        stmt.executeUpdate();
+
+                    } catch (SQLException exe) {
+                        Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                        Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                        Utilities.AlertBox.showErrorMessage(exe);
+                    }
+
+                }
+                i++;
+            }
+            conn.close();
+            if (i == 0) {
+                Utilities.AlertBox.notificationWarn("Blank Purchaser Order", "The purchase order table seems to be blank");
+
+            } else {
+                Utilities.AlertBox.notificationInfo("Success", "Your Purchase Order was saved successfully!");
+                Table2.setEditable(false);
+                return true;
+
+            }
+
+        } catch (Exception e) {
+
+            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+            Utilities.AlertBox.showErrorMessage(e);
+        }
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    boolean PO_Pane_Insert_into_Database(Connection conn) {
+        PreparedStatement stmt;//paymentTerms
+//OrderDate1
+//OrderDate
+//Header
+//PoTotal
+//PoTotal1
+//PoTotal11
+        try {
+            if (POnumber.getText().trim().equals("") || paymentTerms.getText().trim().equals("") || Header.getText().trim().equals("")
+                    || PoTotal1.getText().trim().equals("") || PoTotal11.getText().trim().equals("")) {
+
+                String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `DeliveryDate`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
+                        + " VALUES (?,?,?,?,?,?,?)";
+                String s2 = "";
+
+                try {
+                    s2 = OrderDate1.getValue().toString();
+                } catch (NullPointerException e) {
+
+                }
+
+                stmt = conn.prepareStatement(suqdel);
+                stmt.setString(1, POnumber.getText());
+                stmt.setString(2, Header.getText());
+                stmt.setString(3, s2);
+                stmt.setString(4, PoTotal11.getText());
+                stmt.setString(5, PoTotal.getText());
+                stmt.setString(6, paymentTerms.getText());
+                stmt.setString(7, PoTotal1.getText());
+                stmt.executeUpdate();
+                Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
+            }
+        } catch (SQLException e) {
+            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+            Utilities.AlertBox.showErrorMessage(e);
+
+        } catch (NullPointerException e) {
+
+        }
+        return false;
+    }
+
+    void runPO_Pane_Threads1() {
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        PO_Table_Insert_into_Database(conn);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
+            System.out.println("1 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    void runPO_Pane_Threads2() {
+        try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        PO_Pane_Insert_into_Database(conn);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+
+            System.out.println("1 closed");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     private void SaveNewPO(MouseEvent event) {
+        Runnable task1 = new Runnable() {
+            public void run() {
+
+                runPO_Pane_Threads2();
+            }
+        };
+        Runnable task2 = new Runnable() {
+            public void run() {
+
+                runPO_Pane_Threads1();
+            }
+        };
+
+        Thread backgroundThread1 = new Thread(task1);
+        backgroundThread1.setDaemon(true);
+        backgroundThread1.start();
+        Thread backgroundThread2 = new Thread(task2);
+        backgroundThread2.setDaemon(true);
+        backgroundThread2.start();
     }
 
     @FXML
