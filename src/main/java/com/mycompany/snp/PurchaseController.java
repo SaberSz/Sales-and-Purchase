@@ -1412,6 +1412,7 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void SaveNewPO(MouseEvent event) {
+
         Runnable task1 = new Runnable() {
             public void run() {
 
@@ -1431,6 +1432,8 @@ public class PurchaseController implements Initializable {
         Thread backgroundThread2 = new Thread(task2);
         backgroundThread2.setDaemon(true);
         backgroundThread2.start();
+
+        //save button
     }
 
     @FXML
