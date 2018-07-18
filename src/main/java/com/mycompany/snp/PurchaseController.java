@@ -1212,27 +1212,33 @@ public class PurchaseController implements Initializable {
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
          //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno 
-          String res="";String projn="";
+          String res="";String projn="",cmps="";
           String da=Utilities.Date.Date().substring(2,5);
           Table2.setEditable(true);
           
            try {
-                String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,s.Name,s.Address from `purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c where q.EQno = e.EQno and e.EQno = ep.EQno and q.Qno=? and e.SID=c.CID";
+                String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from "
+                        + "`purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c "
+                        + "where q.EQno = e.EQno and e.EQno = ep.EQno and q.Qno=? and e.SID=c.CID";
                 PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                stmt.setString(1,POqno.getValue());
+                 System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + POqno.getValue().substring(0, POqno.getValue().indexOf(':')-2));
+                stmt.setString(1,POqno.getValue().substring(0, POqno.getValue().indexOf(':')-1));
                 ResultSet rs=stmt.executeQuery();
       String toname="";String toaddr="";
               while(rs.next()){
-                   res+=da;
+                    System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + res);
                   projn=rs.getString(4);
                   toname=rs.getString(5);
                     toaddr=rs.getString(6);
                     if(rs.getString(3).equals("Regular")){
+                        res+=da;
                         res+="CONS-";
                     }else{
-                        res+=rs.getString(3)+"-";
+                        res+=projn;
+                        res+="-";
                     }
-                    res+=rs.getString(2)+"-PO-";  
+                    res+=rs.getString(2)+"-PO-";
+                    cmps=rs.getString(2);
               }
               
               supplierInfo.setText(toname+"\n"+toaddr);
@@ -1241,7 +1247,7 @@ public class PurchaseController implements Initializable {
                             ArrayList<Integer> mxval = new ArrayList();
                             String suql;
                             try {
-                                if(rs.getString(2).equals("AWIN"))
+                                if(cmps.equals("AWIN"))
                                  suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%AE%'";
                                 else
                                  suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%SC%'";  
@@ -1265,10 +1271,10 @@ public class PurchaseController implements Initializable {
                                     temp = Collections.max(mxval);
                                 }
 
-                                System.out.println("temp val after db fetch before inc" + temp);
+                                System.out.println("res val after db fetch before inc" + res);
                                 temp++;
 
-                                System.out.println("temp val after inc=" + temp);
+                                System.out.println("projn val after inc=" + projn);
                                 String te = "";
                              
                                 if (temp < 10) {
