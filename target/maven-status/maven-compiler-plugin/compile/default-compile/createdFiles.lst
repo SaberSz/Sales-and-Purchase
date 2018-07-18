@@ -40,6 +40,7 @@ PdfGeneration\pdfQuotation$PageXofY.class
 com\mycompany\snp\PurchaseController$11.class
 com\mycompany\snp\SalesController$13.class
 com\mycompany\snp\SalesController$8.class
+com\mycompany\snp\PurchaseController$18.class
 PdfGeneration\pdfInvoice$PageXofY.class
 PdfGeneration\awinpd$Header.class
 PdfGeneration\awinpd.class
@@ -56,6 +57,7 @@ com\mycompany\snp\SalesDrawerController.class
 DBMS\Connect.class
 com\mycompany\snp\SalesController.class
 com\mycompany\snp\PurchaseController.class
+com\mycompany\snp\PurchaseController$19.class
 com\mycompany\snp\SalesController$AnalysisDT.class
 com\mycompany\snp\PurchaseController$6.class
 com\mycompany\snp\PurchaseController$9.class

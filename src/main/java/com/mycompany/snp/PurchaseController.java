@@ -107,7 +107,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private ScrollPane InvoicePaymentsPane1;
     @FXML
-    private JFXComboBox<?> POqno;
+    private JFXComboBox<String> POqno;
     @FXML
     private Label Potick;
     @FXML
@@ -236,6 +236,7 @@ public class PurchaseController implements Initializable {
         Thread backgroundThread1 = new Thread(task2);
         backgroundThread1.setDaemon(true);
         backgroundThread1.start();
+        
     }
 
     void runQuotation_Threads() {
@@ -267,6 +268,44 @@ public class PurchaseController implements Initializable {
         }
 
     }
+     
+     
+    void show_poquot_threads(){
+         try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        String sql = "Select q.Qno, c.Name from `purchase_quotation` q, `purchase_enquiry` e, `customer` c where q.Eqno=e.Eqno and e.SID=c.CID";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        ResultSet rs = stmt.executeQuery();
+                        POqno.getItems().clear();
+                        while (rs.next()) {
+                            POqno.getItems().add(rs.getString(1)+" : "+rs.getString(2));
+
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                    }
+                }
+            });
+
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+     }
+     
+     
+     
+     
+     
+     
+     
+     
 
     void ShowPurchaseOrder() {
         EnquiryPane.setDisable(true);
@@ -277,6 +316,16 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(false);
         PurchaseOrderPane.setVisible(true);
         InvoicePaymentsPane1.setVisible(false);
+         Runnable task2 = new Runnable() {
+            public void run() {
+               show_poquot_threads();
+               
+            }
+        };
+
+        Thread backgroundThread3 = new Thread(task2);
+        backgroundThread3.setDaemon(true);
+        backgroundThread3.start();
     }
 
     void ShowInvoice() {
@@ -1123,6 +1172,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
 
+              
     }
 
     @FXML
