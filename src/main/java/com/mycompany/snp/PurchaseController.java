@@ -1359,38 +1359,6 @@ public class PurchaseController implements Initializable {
                 System.out.println("res val after db fetch before inc" + res);
                 temp++;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                if (temp < 10) {
-                                    te += "00";
-                                } else if (temp >= 10 && temp < 100) {
-                                    te = "0";
-                                } else {
-                                    te = "";
-                                }
-                                    te += String.valueOf(temp);
-                                    res+=te;
-                                    POnumber.setText(res);
-                                   
-            } catch (SQLException ex) {
-                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
-=======
-                System.out.println("projn val after inc=" + projn);
-                String te = "";
->>>>>>> cb0b54df6a6089f9dc29423c8d99a6ef8d09b15d
-
-                if (temp < 10) {
-                    te += "00";
-                } else if (temp >= 10 && temp < 100) {
-                    te = "0";
-                } else {
-                    te = "";
-                }
-                te += String.valueOf(temp);
-                res += te;
-                POnumber.setText(res);
-                Pjnumber.setText(projn);
-=======
                 System.out.println("projn val after inc=" + projn);
                 String te = "";
 
@@ -1415,7 +1383,6 @@ public class PurchaseController implements Initializable {
                 GSTRate.clear();
                 comp_inv_gst = "0";
 
->>>>>>> 4cce21baaeca5aef09d7803f541ebf327a2726f6
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
 
