@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 18, 2018 at 06:58 PM
+-- Generation Time: Jul 19, 2018 at 09:33 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -601,6 +601,13 @@ CREATE TABLE `purchase_po` (
   `GST` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `purchase_po`
+--
+
+INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`) VALUES
+('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05);
+
 -- --------------------------------------------------------
 
 --
@@ -609,6 +616,7 @@ CREATE TABLE `purchase_po` (
 
 DROP TABLE IF EXISTS `purchase_potabledetails`;
 CREATE TABLE `purchase_potabledetails` (
+  `RC` int(11) NOT NULL,
   `Po_NO` varchar(25) NOT NULL,
   `UOM` varchar(100) DEFAULT NULL,
   `Description` varchar(10000) DEFAULT NULL,
@@ -617,6 +625,14 @@ CREATE TABLE `purchase_potabledetails` (
   `TotalAmt` varchar(10) DEFAULT NULL,
   `Discount` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_potabledetails`
+--
+
+INSERT INTO `purchase_potabledetails` (`RC`, `Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`) VALUES
+(8, '18CONS-AE-PO-001', 'asdf', 'sdcsdca', '23', '23434', '415016.14', '23'),
+(9, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23');
 
 -- --------------------------------------------------------
 
@@ -974,7 +990,8 @@ ALTER TABLE `purchase_po`
 -- Indexes for table `purchase_potabledetails`
 --
 ALTER TABLE `purchase_potabledetails`
-  ADD PRIMARY KEY (`Po_NO`);
+  ADD PRIMARY KEY (`RC`,`Po_NO`),
+  ADD KEY `RC` (`RC`);
 
 --
 -- Indexes for table `purchase_qprel`
@@ -1025,6 +1042,11 @@ ALTER TABLE `quotationdetails_steels`
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT for table `purchase_potabledetails`
+--
+ALTER TABLE `purchase_potabledetails`
+  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --
