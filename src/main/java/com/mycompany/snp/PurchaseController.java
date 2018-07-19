@@ -234,6 +234,10 @@ public class PurchaseController implements Initializable {
                     if (!newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
                         GSTRate.setText(newValue.replaceAll("[^\\d.]", ""));
                         comp_inv_gst = GSTRate.getText();
+                        System.out.println("comp_inv_gst : " + comp_inv_gst);
+                    } else if (newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
+                        comp_inv_gst = GSTRate.getText();
+                        System.out.println("comp_inv_gst" + comp_inv_gst);
                     }
 
                 } catch (Exception e) {
@@ -367,7 +371,7 @@ public class PurchaseController implements Initializable {
         tickPO2.setVisible(false);
         plusPO.setDisable(true);
         plusPO.setVisible(false);
-
+        Table2.getColumns().clear();
         POqno.setDisable(false);
         POqno.setVisible(true);
         Potick.setDisable(false);
@@ -375,8 +379,7 @@ public class PurchaseController implements Initializable {
         editPO.setDisable(false);
         editPO.setVisible(true);
 
-        PO_Tabel_Generation();
-
+        //PO_Tabel_Generation();
     }
 
     void ShowInvoice() {
@@ -1091,7 +1094,7 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Select_Purchase_Order_Number_For_Edit(MouseEvent event) {
-        
+
     }
 
     @FXML
@@ -1109,8 +1112,17 @@ public class PurchaseController implements Initializable {
         Potick.setVisible(false);
         editPO.setDisable(true);
         editPO.setVisible(false);
-    }
 
+        POnumber.clear();
+        Header.clear();
+        OrderDate1.setValue(null);
+        PoTotal11.clear();
+        PoTotal.clear();
+        paymentTerms.clear();
+        PoTotal1.clear();
+        GSTRate.clear();
+        comp_inv_gst = "0";
+    }
 
     @FXML
     private void Add_Purchase_Order(MouseEvent event) {
@@ -1127,6 +1139,16 @@ public class PurchaseController implements Initializable {
         Potick.setVisible(true);
         editPO.setDisable(false);
         editPO.setVisible(true);
+
+        POnumber.clear();
+        Header.clear();
+        OrderDate1.setValue(null);
+        PoTotal11.clear();
+        PoTotal.clear();
+        paymentTerms.clear();
+        PoTotal1.clear();
+        GSTRate.clear();
+        comp_inv_gst = "0";
     }
 
     class AnalysisDT1 extends RecursiveTreeObject<AnalysisDT1> {
@@ -1264,15 +1286,15 @@ public class PurchaseController implements Initializable {
         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno
         String res = "";
         String projn = "", cmps = "";
-        String da = Utilities.Date.Date().substring(2, 5);
+        String da = Utilities.Date.Date().substring(2, 4);
         Table2.setEditable(true);
 
         try {
-            String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from "
-                    + "`purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c "
-                    + "where q.EQno = e.EQno and e.EQno = ep.EQno and q.Qno=? and e.SID=c.CID";
+            String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from \n"
+                    + "`purchase_quotation` q Join `purchase_enquiry` e ON q.EQno = e.EQno  JOIN `customer` c ON e.SID=c.CID  LEFT OUTER JOIN `purchase_eprel` ep ON e.EQno = ep.EQno \n"
+                    + "where q.Qno=?";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 2));
+            //System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + POqno.getValue().substring(0, POqno.getValue().indexOf(':')-2));
             stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
             ResultSet rs = stmt.executeQuery();
             String toname = "";
@@ -1285,12 +1307,20 @@ public class PurchaseController implements Initializable {
                 if (rs.getString(3).equals("Regular")) {
                     res += da;
                     res += "CONS-";
+                    Pjnumber.setText(res.substring(0, res.length() - 1));
                 } else {
                     res += projn;
                     res += "-";
+                    Pjnumber.setText(projn);
                 }
-                res += rs.getString(2) + "-PO-";
+                if (rs.getString(2).equals("Awin")) {
+                    res += "AE";
+                } else {
+                    res += "SC";
+                }
+                res += "-PO-";
                 cmps = rs.getString(2);
+
             }
 
             supplierInfo.setText(toname + "\n" + toaddr);
@@ -1300,7 +1330,7 @@ public class PurchaseController implements Initializable {
             ArrayList<Integer> mxval = new ArrayList();
             String suql;
             try {
-                if (cmps.equals("AWIN")) {
+                if (cmps.equalsIgnoreCase("AWIN")) {
                     suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%AE%'";
                 } else {
                     suql = "SELECT Po_NO,PaymentTerm FROM `purchase_po` WHERE Po_NO LIKE '%SC%'";
@@ -1342,7 +1372,17 @@ public class PurchaseController implements Initializable {
                 te += String.valueOf(temp);
                 res += te;
                 POnumber.setText(res);
-                Pjnumber.setText(projn);
+                PO_Table_for_Entry_of_data(100);
+                POnumber.clear();
+                Header.clear();
+                OrderDate1.setValue(null);
+                PoTotal11.clear();
+                PoTotal.clear();
+                paymentTerms.clear();
+                PoTotal1.clear();
+                GSTRate.clear();
+                comp_inv_gst = "0";
+
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -1353,7 +1393,6 @@ public class PurchaseController implements Initializable {
 
             Utilities.AlertBox.showErrorMessage(ex);
         }
-
     }
 
     TableColumn uomCol = new TableColumn("UOM");
@@ -1364,6 +1403,7 @@ public class PurchaseController implements Initializable {
     TableColumn DiscountCol = new TableColumn("Discount");
 
     void PO_Tabel_Generation(ObservableList<Person4> data) {
+        Table2.getColumns().clear();
         uomCol.setSortable(false);
         desCol.setSortable(false);
         quantityCol.setSortable(false);
@@ -1536,14 +1576,19 @@ public class PurchaseController implements Initializable {
 //PoTotal
 //PoTotal1
 //PoTotal11
+        System.out.println("Inside function");
         try {
             if (POnumber.getText().trim().equals("") || paymentTerms.getText().trim().equals("") || Header.getText().trim().equals("")
                     || PoTotal1.getText().trim().equals("") || PoTotal11.getText().trim().equals("")) {
-
+                Utilities.AlertBox.notificationWarn("Error", "Somer fields are left blank!");
+            } else {
+                System.out.println("Inside if");
                 String s2 = "";
 
                 try {
+
                     s2 = OrderDate1.getValue().toString();
+                    System.out.println("Delivery given");
                     String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `DeliveryDate`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
                             + " VALUES (?,?,?,?,?,?,?)";
                     stmt = conn.prepareStatement(suqdel);
@@ -1558,6 +1603,7 @@ public class PurchaseController implements Initializable {
                 } catch (NullPointerException e) {
                     String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
                             + " VALUES (?,?,?,?,?,?)";
+                    System.out.println("Delivery not given");
                     stmt = conn.prepareStatement(suqdel);
                     stmt.setString(1, POnumber.getText());
                     stmt.setString(2, Header.getText());
@@ -1567,15 +1613,17 @@ public class PurchaseController implements Initializable {
                     stmt.setString(6, PoTotal1.getText());
                     stmt.executeUpdate();
                 }
-
+                System.out.println("Outside try");
                 Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
+                return true;
             }
         } catch (SQLException e) {
             Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
             Utilities.AlertBox.showErrorMessage(e);
 
         } catch (NullPointerException e) {
-
+            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+            Utilities.AlertBox.showErrorMessage(e);
         }
         return false;
     }
@@ -1609,7 +1657,9 @@ public class PurchaseController implements Initializable {
                 public void run() {
                     try {
                         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        System.out.println("Entering function");
                         PO_Pane_Insert_into_Database(conn);
+                        System.out.println("Leaving function");
                     } catch (SQLException ex) {
                         Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
                     }

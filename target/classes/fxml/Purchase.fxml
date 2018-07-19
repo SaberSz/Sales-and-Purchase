@@ -177,7 +177,7 @@
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
                   </Label>
-                  <JFXTextField fx:id="PoTotal" editable="false" labelFloat="true" layoutX="927.0" layoutY="548.0" prefHeight="27.0" prefWidth="230.0" promptText="Sub-Total" />
+                  <JFXTextField fx:id="PoTotal" labelFloat="true" layoutX="927.0" layoutY="548.0" prefHeight="27.0" prefWidth="230.0" promptText="Sub-Total" />
                   <Label layoutX="1091.0" layoutY="789.0" onMouseClicked="#Gen_PO">
                      <graphic>
                         <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />

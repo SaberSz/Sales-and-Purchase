@@ -91,10 +91,10 @@ public class Person4 {
 
         this.Discount.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             if (!newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
-                this.UnitPrice.setText(newValue.replaceAll("[^\\d.]", ""));
-                this.c = this.UnitPrice.getText();
+                this.Discount.setText(newValue.replaceAll("[^\\d.]", ""));
+                this.c = this.Discount.getText();
             }
-            if(this.UnitPrice.getText().isEmpty()){
+            if(this.Discount.getText().isEmpty()){
                 this.c="0";
             }
             if (this.c.equals("0")) {
