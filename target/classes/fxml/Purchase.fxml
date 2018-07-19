@@ -187,6 +187,22 @@
                   <JFXTextField fx:id="PoTotal1" editable="false" labelFloat="true" layoutX="927.0" layoutY="603.0" prefHeight="27.0" prefWidth="230.0" promptText="GST" />
                   <JFXTextField fx:id="PoTotal11" editable="false" labelFloat="true" layoutX="927.0" layoutY="668.0" prefHeight="27.0" prefWidth="230.0" promptText="Total" />
                   <JFXTextField fx:id="GSTRate" labelFloat="true" layoutX="957.0" layoutY="459.0" prefHeight="27.0" prefWidth="195.0" promptText="GST Rate" />
+                  <JFXComboBox fx:id="PO_Select" focusColor="#3f51b5" labelFloat="true" layoutX="504.0" layoutY="77.0" prefHeight="27.0" prefWidth="240.0" promptText="Purchase Order Number" />
+                  <Label fx:id="tickPO2" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="796.0" layoutY="78.0" onMouseClicked="#Select_Purchase_Order_Number_For_Edit" prefHeight="26.0" prefWidth="19.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
+                     </graphic>
+                  </Label>
+                  <Label fx:id="editPO" contentDisplay="GRAPHIC_ONLY" layoutX="1106.0" layoutY="63.0" onMouseClicked="#Edit_An_Existing_Purchase_Order" prefHeight="20.0" prefWidth="24.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
+                     </graphic>
+                  </Label>
+                  <Label fx:id="plusPO" contentDisplay="GRAPHIC_ONLY" layoutX="1064.0" layoutY="60.0" onMouseClicked="#Add_Purchase_Order" prefHeight="20.0" prefWidth="24.0" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="PLUS" size="30" />
+                     </graphic>
+                  </Label>
                </children>
             </AnchorPane>
          </content>
