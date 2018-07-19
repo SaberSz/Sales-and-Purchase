@@ -1213,15 +1213,15 @@ public class PurchaseController implements Initializable {
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
          //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno
           String res="";String projn="",cmps="";
-          String da=Utilities.Date.Date().substring(2,5);
+          String da=Utilities.Date.Date().substring(2,4);
           Table2.setEditable(true);
 
            try {
-                String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from "
-                        + "`purchase_quotation` q, `purchase_enquiry` e, `purchase_eprel` ep,`customer` c "
-                        + "where q.EQno = e.EQno and e.EQno = ep.EQno and q.Qno=? and e.SID=c.CID";
+                String sql = "Select q.Qno, e.Cmpname, e.Type, ep.Pjno,c.Name,c.Address from \n" +
+"`purchase_quotation` q Join `purchase_enquiry` e ON q.EQno = e.EQno  JOIN `customer` c ON e.SID=c.CID  LEFT OUTER JOIN `purchase_eprel` ep ON e.EQno = ep.EQno \n" +
+"where q.Qno=?";
                 PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                 System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + POqno.getValue().substring(0, POqno.getValue().indexOf(':')-2));
+                 //System.out.println("res val afugcliucfcfpouofvv[ipg'piter db fetch before inc" + POqno.getValue().substring(0, POqno.getValue().indexOf(':')-2));
                 stmt.setString(1,POqno.getValue().substring(0, POqno.getValue().indexOf(':')-1));
                 ResultSet rs=stmt.executeQuery();
       String toname="";String toaddr="";
@@ -1233,12 +1233,19 @@ public class PurchaseController implements Initializable {
                     if(rs.getString(3).equals("Regular")){
                         res+=da;
                         res+="CONS-";
+                        Pjnumber.setText(res.substring(0,res.length()-1));
                     }else{
                         res+=projn;
                         res+="-";
+                        Pjnumber.setText(projn);
                     }
-                    res+=rs.getString(2)+"-PO-";
+                    if(rs.getString(2).equals("Awin"))
+                        res+="AE";
+                    else
+                        res+="SC";
+                    res+="-PO-";
                     cmps=rs.getString(2);
+                     
               }
 
               supplierInfo.setText(toname+"\n"+toaddr);
@@ -1287,7 +1294,7 @@ public class PurchaseController implements Initializable {
                                     te += String.valueOf(temp);
                                     res+=te;
                                     POnumber.setText(res);
-                                    Pjnumber.setText(projn);
+                                   
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
 
