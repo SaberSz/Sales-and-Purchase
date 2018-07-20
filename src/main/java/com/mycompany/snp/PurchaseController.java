@@ -1121,18 +1121,25 @@ public class PurchaseController implements Initializable {
     @FXML
     private void Select_Purchase_Order_Number_For_Edit(MouseEvent event) {
    try{
+       POnumber.setText(PO_Select.getValue());
    String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
-                        + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno ";
+                        + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno where po.Po_NO=?";
                 PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                stmt1.setString(1, POnumber.getText());
                 ResultSet rs1 = stmt1.executeQuery();
                 if (rs1.next()) {
+                    if(!rs1.getString(1).equals("")){
+                        
                     Pjnumber.setText(rs1.getString(1));
+                    }else{
+                        Pjnumber.setText(Utilities.Date.Date().substring(2, 5)+"CONS");
+                    }
                     paymentTerms.setText(rs1.getString(2));
-                    OrderDate1.setValue(LocalDate.parse(rs1.getString(2)));
+                    OrderDate1.setValue(LocalDate.parse(rs1.getString(3)));
                     Header.setText(rs1.getString(4));
                 } else {
 
-                    throw new SQLException();
+                 
                 }
                 /*  String sql2 = "Select * from `purchase_potabledetails` where Po_NO=?";
                   PreparedStatement stmt2 = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
@@ -1153,7 +1160,7 @@ public class PurchaseController implements Initializable {
                 comp_inv_gst = GSTRate.getText();
                 PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
                 PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
-                PoTotal11.setText(String.valueOf(rs3.getDouble(3)));
+                PoTotal.setText(String.valueOf(rs3.getDouble(3)));
    } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
             Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1175,7 +1182,7 @@ public class PurchaseController implements Initializable {
         Potick.setVisible(false);
         editPO.setDisable(true);
         editPO.setVisible(false);
-
+        PO_Select.getItems().clear();
         POnumber.clear();
         Header.clear();
         OrderDate1.setValue(null);
@@ -1186,12 +1193,12 @@ public class PurchaseController implements Initializable {
         GSTRate.clear();
         comp_inv_gst = "0";
         try {
-            String sql = "SELECT Po_NO FROM `purchase_po` WHERE 1 ";
+            String sql = "SELECT Po_NO FROM `purchase_po` WHERE 1 Order BY DeliveryDate DESC;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PO_Select.getItems().add(rs.getString(1));
-                POnumber.setText(rs.getString(1));
+               // 
                 
             }
         } catch (SQLException ex) {
