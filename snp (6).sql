@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 20, 2018 at 09:26 PM
+-- Generation Time: Jul 20, 2018 at 11:03 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -598,16 +598,17 @@ CREATE TABLE `purchase_po` (
   `Sent` tinyint(4) NOT NULL DEFAULT '0',
   `SubTotal` double DEFAULT NULL,
   `PaymentTerm` varchar(50) DEFAULT NULL,
-  `GST` double DEFAULT NULL
+  `GST` double DEFAULT NULL,
+  `Rate` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_po`
 --
 
-INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`) VALUES
-('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05),
-('4-SC-PO-001', NULL, 'fgfhdfghdfgh', '2018-07-31', 153720.8, 0, 34544, '345', 119176.8);
+INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`, `Rate`) VALUES
+('18CONS-AE-PO-001', NULL, 'ertyyertheryhyry', '2018-07-26', 453959.44, 0, 387999.5, '30', 65959.92, 17),
+('4-SC-PO-001', NULL, 'fgfhdfghdfgh', '2018-07-31', 61125.18, 0, 34534, '30', 26591.18, NULL);
 
 -- --------------------------------------------------------
 
@@ -632,9 +633,8 @@ CREATE TABLE `purchase_potabledetails` (
 --
 
 INSERT INTO `purchase_potabledetails` (`RC`, `Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`) VALUES
-(8, '18CONS-AE-PO-001', 'asdf', 'sdcsdca', '23', '23434', '415016.14', '23'),
-(9, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23'),
-(15, '4-SC-PO-001', '', 'd', '', '', '', '');
+(16, '4-SC-PO-001', 'dfg', 'ddgsrdfg', '3', '3453', '6836.94', '34'),
+(18, '18CONS-AE-PO-001', 'fgh', 'fghjfgjfg', '10', '45647', '387999.5', '15');
 
 -- --------------------------------------------------------
 
@@ -654,6 +654,7 @@ CREATE TABLE `purchase_qprel` (
 --
 
 INSERT INTO `purchase_qprel` (`Qno`, `Po_NO`, `Eqno`) VALUES
+('213', '18CONS-AE-PO-001', '18-AE-EQ-011'),
 ('5421', '4-SC-PO-001', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
@@ -1055,7 +1056,7 @@ ALTER TABLE `quotationdetails_steels`
 -- AUTO_INCREMENT for table `purchase_potabledetails`
 --
 ALTER TABLE `purchase_potabledetails`
-  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --

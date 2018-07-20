@@ -223,13 +223,13 @@
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
                   </Label>
-                  <JFXTextField fx:id="Inv_no" labelFloat="true" layoutX="12.0" layoutY="163.0" prefHeight="31.0" prefWidth="214.0" promptText="Invoice Number" />
+                  <JFXTextField fx:id="Inv_no" labelFloat="true" layoutX="12.0" layoutY="163.0" prefHeight="31.0" prefWidth="225.0" promptText="Invoice Number" />
                   <JFXTextField fx:id="inv_loc" labelFloat="true" layoutX="12.0" layoutY="416.0" prefHeight="31.0" prefWidth="229.0" promptText="File Location" />
-                  <JFXDatePicker defaultColor="#3f51b5" layoutX="17.0" layoutY="250.0" prefHeight="31.0" prefWidth="213.0" promptText="Date Received" />
-                  <JFXDatePicker defaultColor="#3f51b5" layoutX="276.0" layoutY="250.0" prefHeight="31.0" prefWidth="225.0" promptText="Payment Due Date" />
-                  <JFXTextField fx:id="inv_amt" labelFloat="true" layoutX="276.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="Amount to be paid" />
+                  <JFXDatePicker defaultColor="#3f51b5" layoutX="17.0" layoutY="250.0" prefHeight="31.0" prefWidth="233.0" promptText="Date Received" />
+                  <JFXDatePicker defaultColor="#3f51b5" layoutX="293.0" layoutY="250.0" prefHeight="31.0" prefWidth="225.0" promptText="Payment Due Date" />
+                  <JFXTextField fx:id="inv_amt" labelFloat="true" layoutX="293.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="Amount to be paid" />
                   <JFXTextField fx:id="inv_amt1" labelFloat="true" layoutX="17.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="GST Amount" />
-                  <JFXToggleButton fx:id="TogglePaid" layoutX="276.0" layoutY="402.0" text="Paid ?" toggleColor="#3f51b5" toggleLineColor="#718ae8" />
+                  <JFXToggleButton fx:id="TogglePaid" layoutX="291.0" layoutY="402.0" text="Paid ?" toggleColor="#3f51b5" toggleLineColor="#718ae8" />
                   <JFXTreeTableView fx:id="table3" layoutX="600.0" layoutY="57.0" prefHeight="573.0" prefWidth="548.0" />
                   <JFXTextField fx:id="filter_inv" layoutX="600.0" layoutY="20.0" prefHeight="31.0" prefWidth="219.0" promptText="Filter" />
                   <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="82.0" layoutY="522.0" onMouseClicked="#Invoice_Save_Button_Clicked_in_Invoice_Pane" text="Save">
@@ -255,6 +255,11 @@
                   <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="276.0" layoutY="527.0" onMouseClicked="#Delete_Invoice_Selected_By_ComboBox" text="Label" textFill="RED">
                      <graphic>
                         <MaterialDesignIconView fill="RED" glyphName="DELETE" size="30" />
+                     </graphic>
+                  </Label>
+                  <Label contentDisplay="GRAPHIC_ONLY" layoutX="241.0" layoutY="419.0" onMouseClicked="#Attach_Invoice_Button_Clicked" text="Label">
+                     <graphic>
+                        <MaterialDesignIconView fill="#3f51b5" glyphName="ATTACHMENT" size="25" />
                      </graphic>
                   </Label>
                </children>
