@@ -150,6 +150,32 @@ public class PurchaseController implements Initializable {
     private Label editPO;
     @FXML
     private Label plusPO;
+    @FXML
+    private JFXComboBox<?> PO_inv;
+    @FXML
+    private Label POtick_inv;
+    @FXML
+    private JFXTextField Inv_no;
+    @FXML
+    private JFXTextField inv_loc;
+    @FXML
+    private JFXTextField inv_amt;
+    @FXML
+    private JFXTextField inv_amt1;
+    @FXML
+    private JFXTreeTableView<?> table3;
+
+    @FXML
+    private JFXTextField filter_inv;
+
+    @FXML
+    private Label Money_Paid;
+
+    @FXML
+    private Label Inv_pen;
+
+    @FXML
+    private Label inv_plus;
 
     /**
      * Initializes the controller class.
@@ -1151,6 +1177,10 @@ public class PurchaseController implements Initializable {
         comp_inv_gst = "0";
     }
 
+    @FXML
+    private void Selection_of_PO_for_Invoice_Entry(MouseEvent event) {
+    }
+
     class AnalysisDT1 extends RecursiveTreeObject<AnalysisDT1> {
 
         //this inner class is used for the enquiry tab on the dashboard
@@ -1284,6 +1314,15 @@ public class PurchaseController implements Initializable {
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno
+        POnumber.clear();
+        Header.clear();
+        OrderDate1.setValue(null);
+        PoTotal11.clear();
+        PoTotal.clear();
+        paymentTerms.clear();
+        PoTotal1.clear();
+        GSTRate.clear();
+        comp_inv_gst = "0";
         String res = "";
         String projn = "", cmps = "";
         String da = Utilities.Date.Date().substring(2, 4);
@@ -1373,15 +1412,6 @@ public class PurchaseController implements Initializable {
                 res += te;
                 POnumber.setText(res);
                 PO_Table_for_Entry_of_data(100);
-                POnumber.clear();
-                Header.clear();
-                OrderDate1.setValue(null);
-                PoTotal11.clear();
-                PoTotal.clear();
-                paymentTerms.clear();
-                PoTotal1.clear();
-                GSTRate.clear();
-                comp_inv_gst = "0";
 
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
@@ -1613,6 +1643,23 @@ public class PurchaseController implements Initializable {
                     stmt.setString(6, PoTotal1.getText());
                     stmt.executeUpdate();
                 }
+                String suqdel = "SELECT p.EQno FROM purchase_quotation p join purchase_enquiry q on p.EQno=q.Eqno"
+                        + " Join customer c on q.SID=c.CID where p.Qno=? AND c.Name=?";
+                stmt = conn.prepareStatement(suqdel);
+
+                stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
+                stmt.setString(2, POqno.getValue().substring(POqno.getValue().indexOf(':') + 2, POqno.getValue().length()));
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+
+                    suqdel = "INSERT INTO `purchase_qprel`(`Qno`, `Po_NO`, `Eqno`) VALUES (?,?,?)";
+                    System.out.println("Delivery not given");
+                    stmt = conn.prepareStatement(suqdel);
+                    stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
+                    stmt.setString(2, POnumber.getText());
+                    stmt.setString(3, rs.getString(1));
+                    stmt.executeUpdate();
+                }
                 System.out.println("Outside try");
                 Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
                 return true;
@@ -1700,6 +1747,31 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Gen_PO(MouseEvent event) {
+    }
+
+    @FXML
+    void Add_a_New_Invoice_for_PO(MouseEvent event) {
+
+    }
+
+    @FXML
+    void Delete_Invoice_Selected_By_ComboBox(MouseEvent event) {
+
+    }
+
+    @FXML
+    void Edit_An_Existing_Invoice_for_PO(MouseEvent event) {
+
+    }
+
+    @FXML
+    void Invoice_Amount_Paid(MouseEvent event) {
+
+    }
+
+    @FXML
+    void Invoice_Save_Button_Clicked_in_Invoice_Pane(MouseEvent event) {
+
     }
 
 }
