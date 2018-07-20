@@ -1094,7 +1094,44 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Select_Purchase_Order_Number_For_Edit(MouseEvent event) {
+   try{
+   String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
+                        + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno ";
+                PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+                ResultSet rs1 = stmt1.executeQuery();
+                if (rs1.next()) {
+                    Pjnumber.setText(rs1.getString(1));
+                    paymentTerms.setText(rs1.getString(2));
+                    OrderDate1.setValue(LocalDate.parse(rs1.getString(2)));
+                    Header.setText(rs1.getString(4));
+                } else {
 
+                    throw new SQLException();
+                }
+                /*  String sql2 = "Select * from `purchase_potabledetails` where Po_NO=?";
+                  PreparedStatement stmt2 = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
+                  stmt2.setString(1,POnumber.getText());
+                  ResultSet rs2=stmt2.executeQuery();
+                  while(rs.next()){
+                      
+                     
+                      
+                  }*/
+                String sql3 = "Select GST,Total,SubTotal from `purchase_po` WHERE Po_NO=?";
+                PreparedStatement stmt3 = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
+                stmt3.setString(1, POnumber.getText());
+                ResultSet rs3 = stmt3.executeQuery();
+                rs3.next();
+                Double res = (rs3.getDouble(1) / rs3.getDouble(2)) * 100;;
+                GSTRate.setText(String.valueOf(res));
+                comp_inv_gst = GSTRate.getText();
+                PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
+                PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
+                PoTotal11.setText(String.valueOf(rs3.getDouble(3)));
+   } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML
@@ -1122,6 +1159,20 @@ public class PurchaseController implements Initializable {
         PoTotal1.clear();
         GSTRate.clear();
         comp_inv_gst = "0";
+        try {
+            String sql = "SELECT Po_NO FROM `purchase_po` WHERE 1 ";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                PO_Select.getItems().add(rs.getString(1));
+                POnumber.setText(rs.getString(1));
+                
+            }
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     @FXML
@@ -1283,6 +1334,15 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Selection_of_Quotation_for_PO_Entry(MouseEvent event) {
+        POnumber.clear();
+        Header.clear();
+        OrderDate1.setValue(null);
+        PoTotal11.clear();
+        PoTotal.clear();
+        paymentTerms.clear();
+        PoTotal1.clear();
+        GSTRate.clear();
+        comp_inv_gst = "0";
         //proj-cmpname-PO-seqno or proj(cons)-cmpname-PO-seqno
         String res = "";
         String projn = "", cmps = "";
@@ -1373,15 +1433,6 @@ public class PurchaseController implements Initializable {
                 res += te;
                 POnumber.setText(res);
                 PO_Table_for_Entry_of_data(100);
-                POnumber.clear();
-                Header.clear();
-                OrderDate1.setValue(null);
-                PoTotal11.clear();
-                PoTotal.clear();
-                paymentTerms.clear();
-                PoTotal1.clear();
-                GSTRate.clear();
-                comp_inv_gst = "0";
 
             } catch (SQLException ex) {
                 Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
