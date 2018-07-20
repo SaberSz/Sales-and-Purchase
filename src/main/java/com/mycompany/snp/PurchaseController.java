@@ -4,6 +4,7 @@ import static DBMS.Connect.DB_URL;
 import static DBMS.Connect.PASS;
 import static DBMS.Connect.USER;
 import Utilities.Date;
+import static Utilities.NumUtil.round;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextArea;
@@ -1120,55 +1121,63 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Select_Purchase_Order_Number_For_Edit(MouseEvent event) {
-   try{
-       POnumber.setText(PO_Select.getValue());
-   String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
-                        + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno where po.Po_NO=?";
-                PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-                stmt1.setString(1, POnumber.getText());
-                ResultSet rs1 = stmt1.executeQuery();
-                if (rs1.next()) {
-                    if(!rs1.getString(1).equals("")){
-                        
-                    Pjnumber.setText(rs1.getString(1));
-                    }else{
-                        Pjnumber.setText(Utilities.Date.Date().substring(2, 5)+"CONS");
-                    }
-                    paymentTerms.setText(rs1.getString(2));
-                    OrderDate1.setValue(LocalDate.parse(rs1.getString(3)));
-                    Header.setText(rs1.getString(4));
-                } else {
+        try {
+            POnumber.setText(PO_Select.getValue());
+            String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
+                    + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno where po.Po_NO=?";
+            PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+            stmt1.setString(1, POnumber.getText());
+            ResultSet rs1 = stmt1.executeQuery();
+            if (rs1.next()) {
+                if (!rs1.getString(1).equals("")) {
 
-                 
+                    Pjnumber.setText(rs1.getString(1));
+                } else {
+                    Pjnumber.setText(Utilities.Date.Date().substring(2, 5) + "CONS");
                 }
-                /*  String sql2 = "Select * from `purchase_potabledetails` where Po_NO=?";
+                paymentTerms.setText(rs1.getString(2));
+                OrderDate1.setValue(LocalDate.parse(rs1.getString(3)));
+                Header.setText(rs1.getString(4));
+            } else {
+
+            }
+            /*  String sql2 = "Select * from `purchase_potabledetails` where Po_NO=?";
                   PreparedStatement stmt2 = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
                   stmt2.setString(1,POnumber.getText());
                   ResultSet rs2=stmt2.executeQuery();
-                  while(rs.next()){
-                      
-                     
-                      
+                  while(rs.next()){ 
                   }*/
-                String sql3 = "Select GST,Total,SubTotal from `purchase_po` WHERE Po_NO=?";
-                PreparedStatement stmt3 = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
-                stmt3.setString(1, POnumber.getText());
-                ResultSet rs3 = stmt3.executeQuery();
-                rs3.next();
-                Double res = (rs3.getDouble(1) / rs3.getDouble(2)) * 100;;
-                GSTRate.setText(String.valueOf(res));
-                comp_inv_gst = GSTRate.getText();
-                PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
-                PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
-                PoTotal.setText(String.valueOf(rs3.getDouble(3)));
-   } catch (SQLException ex) {
+            String sql3 = "Select GST,Total,SubTotal from `purchase_po` WHERE Po_NO=?";
+            PreparedStatement stmt3 = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
+            stmt3.setString(1, POnumber.getText());
+            ResultSet rs3 = stmt3.executeQuery();
+            rs3.next();
+            Double res = (rs3.getDouble(1) / rs3.getDouble(2)) * 100;;
+            GSTRate.setText(String.valueOf(round(res, 2)));
+            comp_inv_gst = GSTRate.getText();
+            PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
+            PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
+            PoTotal.setText(String.valueOf(rs3.getDouble(3)));
+
+            String sql4 = "Select c.Name,c.Address from `customer` c,`purchase_po` po,"
+                    + "`purchase_qprel` qp,`purchase_enquiry` pe"
+                    + " where po.Po_NO=? and po.Po_NO=qp.Po_NO and qp.Eqno=pe. Eqno and pe.SID=c.CID";
+            PreparedStatement stmt4 = com.mycompany.snp.MainApp.conn.prepareStatement(sql4);
+            stmt4.setString(1, POnumber.getText());
+            ResultSet rs4 = stmt4.executeQuery();
+            rs4.next();
+            supplierInfo.setText(rs4.getString(1) + "\n" + rs4.getString(2));
+
+        } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
             Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    static boolean edit_bttn = false;
 
     @FXML
     private void Edit_An_Existing_Purchase_Order(MouseEvent event) {
+        edit_bttn = true;
         PO_Select.setDisable(false);
         PO_Select.setVisible(true);
         tickPO2.setDisable(false);
@@ -1198,8 +1207,8 @@ public class PurchaseController implements Initializable {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PO_Select.getItems().add(rs.getString(1));
-               // 
-                
+                // 
+
             }
         } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
@@ -1237,6 +1246,7 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Selection_of_PO_for_Invoice_Entry(MouseEvent event) {
+
     }
 
     class AnalysisDT1 extends RecursiveTreeObject<AnalysisDT1> {
@@ -1673,71 +1683,129 @@ public class PurchaseController implements Initializable {
 //PoTotal
 //PoTotal1
 //PoTotal11
-        System.out.println("Inside function");
-        try {
-            if (POnumber.getText().trim().equals("") || paymentTerms.getText().trim().equals("") || Header.getText().trim().equals("")
-                    || PoTotal1.getText().trim().equals("") || PoTotal11.getText().trim().equals("")) {
-                Utilities.AlertBox.notificationWarn("Error", "Somer fields are left blank!");
-            } else {
-                System.out.println("Inside if");
-                String s2 = "";
+        if (edit_bttn == true) {
 
-                try {
+            System.out.println("Inside function");
 
-                    s2 = OrderDate1.getValue().toString();
-                    System.out.println("Delivery given");
-                    String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `DeliveryDate`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
-                            + " VALUES (?,?,?,?,?,?,?)";
-                    stmt = conn.prepareStatement(suqdel);
-                    stmt.setString(1, POnumber.getText());
-                    stmt.setString(2, Header.getText());
-                    stmt.setString(3, s2);
-                    stmt.setString(4, PoTotal11.getText());
-                    stmt.setString(5, PoTotal.getText());
-                    stmt.setString(6, paymentTerms.getText());
-                    stmt.setString(7, PoTotal1.getText());
-                    stmt.executeUpdate();
-                } catch (NullPointerException e) {
-                    String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
-                            + " VALUES (?,?,?,?,?,?)";
-                    System.out.println("Delivery not given");
-                    stmt = conn.prepareStatement(suqdel);
-                    stmt.setString(1, POnumber.getText());
-                    stmt.setString(2, Header.getText());
-                    stmt.setString(3, PoTotal11.getText());
-                    stmt.setString(4, PoTotal.getText());
-                    stmt.setString(5, paymentTerms.getText());
-                    stmt.setString(6, PoTotal1.getText());
-                    stmt.executeUpdate();
+            try {
+                if (POnumber.getText().trim().equals("") || paymentTerms.getText().trim().equals("") || Header.getText().trim().equals("")
+                        || PoTotal1.getText().trim().equals("") || PoTotal11.getText().trim().equals("")) {
+                    Utilities.AlertBox.notificationWarn("Error", "Somer fields are left blank!");
+                } else {
+                    System.out.println("Inside if");
+                    String s2 = "";
+
+                    try {
+
+                        s2 = OrderDate1.getValue().toString();
+                        System.out.println("Delivery given");
+                      String suqdel="UPDATE `purchase_po` SET `Description`=?,`DeliveryDate`=?,`Total`=?,`SubTotal`=?,`PaymentTerm`=?"
+                              + ",`GST`=? WHERE `Po_NO`=?";
+                        stmt = conn.prepareStatement(suqdel);
+                        stmt.setString(7, POnumber.getText());
+                        stmt.setString(1, Header.getText());
+                        stmt.setString(2, s2);
+                        stmt.setString(3, PoTotal11.getText());
+                        stmt.setString(4, PoTotal.getText());
+                        stmt.setString(5, paymentTerms.getText());
+                        stmt.setString(6, PoTotal1.getText());
+                        stmt.executeUpdate();
+                    } catch (NullPointerException e) {
+                         String suqdel="UPDATE `purchase_po` SET `Description`=?,`Total`=?,`SubTotal`=?,`PaymentTerm`=?"
+                              + ",`GST`=? WHERE `Po_NO`=?";
+                        System.out.println("Delivery not given");
+                        stmt = conn.prepareStatement(suqdel);
+                        stmt.setString(6, POnumber.getText());
+                        stmt.setString(1, Header.getText());
+                        stmt.setString(2, PoTotal11.getText());
+                        stmt.setString(3, PoTotal.getText());
+                        stmt.setString(4, paymentTerms.getText());
+                        stmt.setString(5, PoTotal1.getText());
+                        stmt.executeUpdate();
+                    }
+                  
+                    System.out.println("Outside try");
+                    Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
+                    //edit_bttn=false;
+                    return true;
                 }
-                String suqdel = "SELECT p.EQno FROM purchase_quotation p join purchase_enquiry q on p.EQno=q.Eqno"
-                        + " Join customer c on q.SID=c.CID where p.Qno=? AND c.Name=?";
-                stmt = conn.prepareStatement(suqdel);
+            } catch (SQLException e) {
+                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                Utilities.AlertBox.showErrorMessage(e);
 
-                stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
-                stmt.setString(2, POqno.getValue().substring(POqno.getValue().indexOf(':') + 2, POqno.getValue().length()));
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-
-                    suqdel = "INSERT INTO `purchase_qprel`(`Qno`, `Po_NO`, `Eqno`) VALUES (?,?,?)";
-                    System.out.println("Delivery not given");
-                    stmt = conn.prepareStatement(suqdel);
-                    stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
-                    stmt.setString(2, POnumber.getText());
-                    stmt.setString(3, rs.getString(1));
-                    stmt.executeUpdate();
-                }
-                System.out.println("Outside try");
-                Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
-                return true;
+            } catch (NullPointerException e) {
+                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                Utilities.AlertBox.showErrorMessage(e);
             }
-        } catch (SQLException e) {
-            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-            Utilities.AlertBox.showErrorMessage(e);
+        } else {
 
-        } catch (NullPointerException e) {
-            Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
-            Utilities.AlertBox.showErrorMessage(e);
+            System.out.println("Inside function");
+
+            try {
+                if (POnumber.getText().trim().equals("") || paymentTerms.getText().trim().equals("") || Header.getText().trim().equals("")
+                        || PoTotal1.getText().trim().equals("") || PoTotal11.getText().trim().equals("")) {
+                    Utilities.AlertBox.notificationWarn("Error", "Somer fields are left blank!");
+                } else {
+                    System.out.println("Inside if");
+                    String s2 = "";
+
+                    try {
+
+                        s2 = OrderDate1.getValue().toString();
+                        System.out.println("Delivery given");
+                        String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `DeliveryDate`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
+                                + " VALUES (?,?,?,?,?,?,?)";
+                        stmt = conn.prepareStatement(suqdel);
+                        stmt.setString(1, POnumber.getText());
+                        stmt.setString(2, Header.getText());
+                        stmt.setString(3, s2);
+                        stmt.setString(4, PoTotal11.getText());
+                        stmt.setString(5, PoTotal.getText());
+                        stmt.setString(6, paymentTerms.getText());
+                        stmt.setString(7, PoTotal1.getText());
+                        stmt.executeUpdate();
+                    } catch (NullPointerException e) {
+                        String suqdel = "INSERT INTO `purchase_po`(`Po_NO`, `Description`, `Total`, `SubTotal`, `PaymentTerm`, `GST`)"
+                                + " VALUES (?,?,?,?,?,?)";
+                        System.out.println("Delivery not given");
+                        stmt = conn.prepareStatement(suqdel);
+                        stmt.setString(1, POnumber.getText());
+                        stmt.setString(2, Header.getText());
+                        stmt.setString(3, PoTotal11.getText());
+                        stmt.setString(4, PoTotal.getText());
+                        stmt.setString(5, paymentTerms.getText());
+                        stmt.setString(6, PoTotal1.getText());
+                        stmt.executeUpdate();
+                    }
+                    String suqdel = "SELECT p.EQno FROM purchase_quotation p join purchase_enquiry q on p.EQno=q.Eqno"
+                            + " Join customer c on q.SID=c.CID where p.Qno=? AND c.Name=?";
+                    stmt = conn.prepareStatement(suqdel);
+
+                    stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
+                    stmt.setString(2, POqno.getValue().substring(POqno.getValue().indexOf(':') + 2, POqno.getValue().length()));
+                    ResultSet rs = stmt.executeQuery();
+                    if (rs.next()) {
+
+                        suqdel = "INSERT INTO `purchase_qprel`(`Qno`, `Po_NO`, `Eqno`) VALUES (?,?,?)";
+                        System.out.println("Delivery not given");
+                        stmt = conn.prepareStatement(suqdel);
+                        stmt.setString(1, POqno.getValue().substring(0, POqno.getValue().indexOf(':') - 1));
+                        stmt.setString(2, POnumber.getText());
+                        stmt.setString(3, rs.getString(1));
+                        stmt.executeUpdate();
+                    }
+                    System.out.println("Outside try");
+                    Utilities.AlertBox.notificationInfo("Success", "Details of the Purchase Order have been saved.");
+                    return true;
+                }
+            } catch (SQLException e) {
+                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                Utilities.AlertBox.showErrorMessage(e);
+
+            } catch (NullPointerException e) {
+                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                Utilities.AlertBox.showErrorMessage(e);
+            }
         }
         return false;
     }
