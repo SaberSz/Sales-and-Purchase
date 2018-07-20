@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 19, 2018 at 09:33 PM
+-- Generation Time: Jul 20, 2018 at 09:26 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -606,7 +606,8 @@ CREATE TABLE `purchase_po` (
 --
 
 INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`) VALUES
-('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05);
+('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05),
+('4-SC-PO-001', NULL, 'fgfhdfghdfgh', '2018-07-31', 153720.8, 0, 34544, '345', 119176.8);
 
 -- --------------------------------------------------------
 
@@ -632,7 +633,8 @@ CREATE TABLE `purchase_potabledetails` (
 
 INSERT INTO `purchase_potabledetails` (`RC`, `Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`) VALUES
 (8, '18CONS-AE-PO-001', 'asdf', 'sdcsdca', '23', '23434', '415016.14', '23'),
-(9, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23');
+(9, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23'),
+(15, '4-SC-PO-001', '', 'd', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -646,6 +648,13 @@ CREATE TABLE `purchase_qprel` (
   `Po_NO` varchar(25) NOT NULL,
   `Eqno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_qprel`
+--
+
+INSERT INTO `purchase_qprel` (`Qno`, `Po_NO`, `Eqno`) VALUES
+('5421', '4-SC-PO-001', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
 
@@ -1046,7 +1055,7 @@ ALTER TABLE `quotationdetails_steels`
 -- AUTO_INCREMENT for table `purchase_potabledetails`
 --
 ALTER TABLE `purchase_potabledetails`
-  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --
