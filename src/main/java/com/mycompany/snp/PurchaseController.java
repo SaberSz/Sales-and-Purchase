@@ -1120,48 +1120,52 @@ public class PurchaseController implements Initializable {
 
     @FXML
     private void Select_Purchase_Order_Number_For_Edit(MouseEvent event) {
-   try{
-       POnumber.setText(PO_Select.getValue());
-   String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
-                        + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno where po.Po_NO=?";
-                PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
-                stmt1.setString(1, POnumber.getText());
-                ResultSet rs1 = stmt1.executeQuery();
-                if (rs1.next()) {
-                    if(!rs1.getString(1).equals("")){
-                        
-                    Pjnumber.setText(rs1.getString(1));
-                    }else{
-                        Pjnumber.setText(Utilities.Date.Date().substring(2, 5)+"CONS");
-                    }
-                    paymentTerms.setText(rs1.getString(2));
-                    OrderDate1.setValue(LocalDate.parse(rs1.getString(3)));
-                    Header.setText(rs1.getString(4));
-                } else {
+        try {
+            POnumber.setText(PO_Select.getValue());
+            String sql1 = "Select ep.Pjno,po.PaymentTerm,po.DeliveryDate,po.Description from `purchase_po` po Join `purchase_qprel` qp on po.Po_NO=qp.Po_NO"
+                    + " LEFT OUTER JOIN `purchase_eprel` ep on qp.Eqno=ep.Eqno where po.Po_NO=?";
+            PreparedStatement stmt1 = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
+            stmt1.setString(1, POnumber.getText());
+            ResultSet rs1 = stmt1.executeQuery();
+            if (rs1.next()) {
+                if (!rs1.getString(1).equals("")) {
 
-                 
+                    Pjnumber.setText(rs1.getString(1));
+                } else {
+                    Pjnumber.setText(Utilities.Date.Date().substring(2, 5) + "CONS");
                 }
-                /*  String sql2 = "Select * from `purchase_potabledetails` where Po_NO=?";
-                  PreparedStatement stmt2 = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
-                  stmt2.setString(1,POnumber.getText());
-                  ResultSet rs2=stmt2.executeQuery();
-                  while(rs.next()){
-                      
-                     
-                      
-                  }*/
-                String sql3 = "Select GST,Total,SubTotal from `purchase_po` WHERE Po_NO=?";
-                PreparedStatement stmt3 = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
-                stmt3.setString(1, POnumber.getText());
-                ResultSet rs3 = stmt3.executeQuery();
-                rs3.next();
-                Double res = (rs3.getDouble(1) / rs3.getDouble(2)) * 100;;
-                GSTRate.setText(String.valueOf(res));
-                comp_inv_gst = GSTRate.getText();
-                PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
-                PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
-                PoTotal.setText(String.valueOf(rs3.getDouble(3)));
-   } catch (SQLException ex) {
+                paymentTerms.setText(rs1.getString(2));
+                OrderDate1.setValue(LocalDate.parse(rs1.getString(3)));
+                Header.setText(rs1.getString(4));
+            } else {
+
+            }
+            String sql2 = "Select  `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`"
+                    + " from `purchase_potabledetails` where Po_NO=? ORDER BY `RC` ASC";
+            PreparedStatement stmt2 = com.mycompany.snp.MainApp.conn.prepareStatement(sql2);
+            stmt2.setString(1, POnumber.getText());
+            ResultSet rs2 = stmt2.executeQuery();
+            ObservableList<Person4> trc = FXCollections.observableArrayList();
+            while (rs2.next()) {
+                trc.add(new Person4(rs2.getString(2), rs2.getString(1),
+                        rs2.getString(3), rs2.getString(4), rs2.getString(6), rs2.getString(5)));
+
+            }
+            Table2.getItems().clear();
+            PO_Tabel_Generation(trc);
+            
+            String sql3 = "Select GST,Total,SubTotal from `purchase_po` WHERE Po_NO=?";
+            PreparedStatement stmt3 = com.mycompany.snp.MainApp.conn.prepareStatement(sql3);
+            stmt3.setString(1, POnumber.getText());
+            ResultSet rs3 = stmt3.executeQuery();
+            rs3.next();
+            Double res = (rs3.getDouble(1) / rs3.getDouble(2)) * 100;;
+            GSTRate.setText(String.valueOf(res));
+            comp_inv_gst = GSTRate.getText();
+            PoTotal11.setText(String.valueOf(rs3.getDouble(2)));
+            PoTotal1.setText(String.valueOf(rs3.getDouble(1)));
+            PoTotal.setText(String.valueOf(rs3.getDouble(3)));
+        } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
             Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1198,8 +1202,8 @@ public class PurchaseController implements Initializable {
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PO_Select.getItems().add(rs.getString(1));
-               // 
-                
+                // 
+
             }
         } catch (SQLException ex) {
             Utilities.AlertBox.showErrorMessage(ex);
@@ -1580,6 +1584,7 @@ public class PurchaseController implements Initializable {
     }
 
     void PO_Table_for_Entry_of_data(int times) {
+        
         ObservableList<Person4> data;
         data = FXCollections.observableArrayList();
         for (int o = 0; o < times; o++) {
