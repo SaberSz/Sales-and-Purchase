@@ -225,8 +225,8 @@
                   </Label>
                   <JFXTextField fx:id="Inv_no" labelFloat="true" layoutX="12.0" layoutY="163.0" prefHeight="31.0" prefWidth="225.0" promptText="Invoice Number" />
                   <JFXTextField fx:id="inv_loc" labelFloat="true" layoutX="12.0" layoutY="416.0" prefHeight="31.0" prefWidth="229.0" promptText="File Location" />
-                  <JFXDatePicker defaultColor="#3f51b5" layoutX="17.0" layoutY="250.0" prefHeight="31.0" prefWidth="233.0" promptText="Date Received" />
-                  <JFXDatePicker defaultColor="#3f51b5" layoutX="293.0" layoutY="250.0" prefHeight="31.0" prefWidth="225.0" promptText="Payment Due Date" />
+                  <JFXDatePicker fx:id="inv_date_recv" defaultColor="#3f51b5" layoutX="17.0" layoutY="250.0" prefHeight="31.0" prefWidth="233.0" promptText="Date Received" />
+                  <JFXDatePicker fx:id="inv_date_due" defaultColor="#3f51b5" layoutX="293.0" layoutY="250.0" prefHeight="31.0" prefWidth="225.0" promptText="Payment Due Date" />
                   <JFXTextField fx:id="inv_amt" labelFloat="true" layoutX="293.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="Amount to be paid" />
                   <JFXTextField fx:id="inv_amt1" labelFloat="true" layoutX="17.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="GST Amount" />
                   <JFXToggleButton fx:id="TogglePaid" layoutX="291.0" layoutY="402.0" text="Paid ?" toggleColor="#3f51b5" toggleLineColor="#718ae8" />
