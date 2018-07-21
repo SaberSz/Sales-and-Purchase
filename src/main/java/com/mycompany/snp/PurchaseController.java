@@ -153,7 +153,7 @@ public class PurchaseController implements Initializable {
     @FXML
     private Label plusPO;
     @FXML
-    private JFXComboBox<?> PO_inv;
+    private JFXComboBox<String> PO_inv;
     @FXML
     private Label POtick_inv;
     @FXML
@@ -413,6 +413,16 @@ public class PurchaseController implements Initializable {
     }
 
     void ShowInvoice() {
+          Runnable task3 = new Runnable() {
+            public void run() {
+                show_showpos_threads();
+
+            }
+        };
+
+        Thread backgroundThread3 = new Thread(task3);
+        backgroundThread3.setDaemon(true);
+        backgroundThread3.start();
         EnquiryPane.setDisable(true);
         EnquiryPane.setVisible(false);
         QuotationPane.setDisable(true);
@@ -421,7 +431,34 @@ public class PurchaseController implements Initializable {
         QuotationPane.setVisible(false);
         PurchaseOrderPane.setVisible(false);
         InvoicePaymentsPane1.setVisible(true);
+       
     }
+ void show_showpos_threads(){
+         try {
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+                        String sql = "SELECT Po_NO FROM `purchase_po` WHERE 1";
+                        PreparedStatement stmt = conn.prepareStatement(sql);
+                        ResultSet rs = stmt.executeQuery();
+                        PO_inv.getItems().clear();
+                        while (rs.next()) {
+                            PO_inv.getItems().add(rs.getString(1));
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }      
+     }
 
     void initialSetups() {
 
@@ -1958,6 +1995,27 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void Invoice_Save_Button_Clicked_in_Invoice_Pane(MouseEvent event) {
+        try {
+            String sql = "INSERT INTO `purchase_invoice`(`Ino`, `AmtwoGST`, `AmtwithGST`, `date_recv`, `paid`, `amtpaid`, `Location`, `PayDueDate`) VALUES "
+                    + "(?,?,?,?,?,?,?,?,?);";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                        stmt.setString(1, Inv_no.getText());
+                        stmt.setString(2, inv_amt1.getText());
+                        stmt.setString(3, inv_amt.getText());
+                        stmt.setString(5, paymentTerms.getText());
+                        stmt.setString(6, PoTotal1.getText());
+                        stmt.setString(7, GSTRate.getText());
+                        stmt.executeUpdate();
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                PO_Select.getItems().add(rs.getString(1));
+                // 
+
+            }
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

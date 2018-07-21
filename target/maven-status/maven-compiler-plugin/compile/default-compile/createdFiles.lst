@@ -14,6 +14,7 @@ com\mycompany\snp\MainApp$1.class
 com\mycompany\snp\SalesController$16.class
 com\mycompany\snp\PurchaseController$10.class
 com\mycompany\snp\PurchaseController$7.class
+com\mycompany\snp\PurchaseController$25.class
 com\mycompany\snp\SalesController$AnalysisDT2.class
 PdfGeneration\pdfInvoice.class
 com\mycompany\snp\PurchaseController$17.class
@@ -70,3 +71,4 @@ com\mycompany\snp\SalesController$14.class
 com\mycompany\snp\SalesController$AnalysisDT1.class
 com\mycompany\snp\SalesController$7.class
 com\mycompany\snp\MainApp.class
+com\mycompany\snp\PurchaseController$24.class
