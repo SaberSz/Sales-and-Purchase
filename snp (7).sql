@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 21, 2018 at 11:34 PM
+-- Generation Time: Jul 22, 2018 at 11:48 AM
 -- Server version: 5.6.34-log
--- PHP Version: 7.1.5
+-- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -622,16 +622,17 @@ CREATE TABLE `purchase_po` (
   `Sent` tinyint(4) NOT NULL DEFAULT '0',
   `SubTotal` double DEFAULT NULL,
   `PaymentTerm` varchar(50) DEFAULT NULL,
-  `GST` double DEFAULT NULL
+  `GST` double DEFAULT NULL,
+  `Rate` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `purchase_po`
 --
 
-INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`) VALUES
-('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05),
-('4-SC-PO-001', NULL, 'fgfhdfghdfgh', '2018-07-31', 153720.8, 0, 34544, '345', 119176.8);
+INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`, `Rate`) VALUES
+('18CONS-AE-PO-001', NULL, 'ASDAssdaSDasd', '2018-07-24', 289585.06, 0, 235435, 'sfdsadas', 54150.05, '7'),
+('4-SC-PO-001', NULL, 'fgfhdfghdfgh', '2018-07-31', 153720.8, 0, 34544, '345', 119176.8, '8');
 
 -- --------------------------------------------------------
 
@@ -658,7 +659,9 @@ CREATE TABLE `purchase_potabledetails` (
 INSERT INTO `purchase_potabledetails` (`RC`, `Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`) VALUES
 (8, '18CONS-AE-PO-001', 'asdf', 'sdcsdca', '23', '23434', '415016.14', '23'),
 (9, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23'),
-(15, '4-SC-PO-001', '', 'd', '', '', '', '');
+(15, '4-SC-PO-001', '', 'd', '', '', '', ''),
+(16, '18CONS-AE-PO-002', 'sdfg', 'adsrgsdfgsdfgsdfg\nsdfgsedrfgsdr\ngsdfg\nsdrgsdrgsdrfgs\n\nsdrfgsdrgfsdgsrg', '2', '23434', '44993.28', '4'),
+(17, '18CONS-AE-PO-002', 'sdfg', 'dsdfgsdfgsdfgsd\nfgsdfgsdfgs\ndffgsdffgsersetr\ntsertesrt', '3', '23424', '70272.0', '');
 
 -- --------------------------------------------------------
 
@@ -1081,7 +1084,7 @@ ALTER TABLE `quotationdetails_steels`
 -- AUTO_INCREMENT for table `purchase_potabledetails`
 --
 ALTER TABLE `purchase_potabledetails`
-  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --
