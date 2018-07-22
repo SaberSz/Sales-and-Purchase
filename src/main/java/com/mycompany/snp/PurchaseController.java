@@ -452,6 +452,8 @@ public class PurchaseController implements Initializable {
         inv_plus.setDisable(true);
         inv_del.setVisible(false);
         inv_del.setDisable(true);
+        edit_btn_hit = false;
+        table3.getColumns().clear();
     }
 
     void show_showpos_threads() {
@@ -1354,6 +1356,8 @@ public class PurchaseController implements Initializable {
         StringProperty amtpaid;
         StringProperty payduedate;
         StringProperty latey;
+        StringProperty supps;
+        StringProperty pono;
 
         public AnalysisDT2(String ino, String daterecv, String totalamt, String paid, String amtpaid, String payduedate, String late) {
             this.ino = new SimpleStringProperty(ino);
@@ -1365,77 +1369,21 @@ public class PurchaseController implements Initializable {
             this.latey = new SimpleStringProperty(late);
         }
 
-    }
-
-    void Generate_Invoice_Table() {
-        JFXTreeTableColumn<AnalysisDT2, String> subjec = new JFXTreeTableColumn<>("Invoice Number");
-        subjec.setPrefWidth(100);
-        subjec.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().ino);
-
-        JFXTreeTableColumn<AnalysisDT2, String> cod = new JFXTreeTableColumn<>("Date Received");
-        cod.setPrefWidth(90);
-        cod.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().daterecv);
-
-        JFXTreeTableColumn<AnalysisDT2, String> attende = new JFXTreeTableColumn<>("Total Amount");
-        attende.setPrefWidth(100);
-        attende.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().totalamt);
-
-        JFXTreeTableColumn<AnalysisDT2, String> atte = new JFXTreeTableColumn<>("Paid");
-        atte.setPrefWidth(75);
-        atte.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().paid);
-
-        JFXTreeTableColumn<AnalysisDT2, String> attender = new JFXTreeTableColumn<>("Amount Paid");
-        attender.setPrefWidth(90);
-        attender.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().amtpaid);
-
-        JFXTreeTableColumn<AnalysisDT2, String> attendety = new JFXTreeTableColumn<>("Pay DueDate");
-        attendety.setPrefWidth(90);
-        attendety.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().payduedate);
-
-        JFXTreeTableColumn<AnalysisDT2, String> attendetyr = new JFXTreeTableColumn<>("LATE");
-        attendetyr.setPrefWidth(75);
-        attendetyr.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().latey);
-        String paid, amtpaid, late;
-
-        ObservableList<AnalysisDT2> users2 = FXCollections.observableArrayList();
-        try {
-
-            String sql = "Select  pi.Ino,pi.date_recv,pi.AmtwithGST, pi.paid, pi.amtpaid,pi.PayDueDate FROM"
-                    + " `purchase_invoice` pi,`purchase_pirel` pp where pi.Ino=pp.Ino and pp.Po_NO=?";
-            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            stmt.setString(1, PO_inv.getValue());
-            ResultSet rs = stmt.executeQuery();
-            late = "NA";
-            while (rs.next()) {
-                if (rs.getString(4).equals("0")) {
-                    try {
-                        late = Utilities.Date.beforeOrAfter(rs.getString(6)) == 0 ? "Not Late" : "Late";
-                        users2.add(new AnalysisDT2(rs.getString(1), rs.getString(2), rs.getString(3), "No", rs.getString(5), rs.getString(6), late));
-                    } catch (ParseException ex) {
-                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                } else {
-                    users2.add(new AnalysisDT2(rs.getString(1), rs.getString(2), rs.getString(3), "Yes", rs.getString(5), rs.getString(6), late));
-                }
-            }
-        } catch (SQLException e) {
-
+        public AnalysisDT2(String ino, String pono, String supps, String daterecv, String totalamt, String paid, String amtpaid, String payduedate, String late) {
+            this.ino = new SimpleStringProperty(ino);
+            this.supps = new SimpleStringProperty(supps);
+            this.pono = new SimpleStringProperty(pono);
+            this.daterecv = new SimpleStringProperty(daterecv);
+            this.totalamt = new SimpleStringProperty(totalamt);
+            this.paid = new SimpleStringProperty(paid);
+            this.amtpaid = new SimpleStringProperty(amtpaid);
+            this.payduedate = new SimpleStringProperty(payduedate);
+            this.latey = new SimpleStringProperty(late);
         }
-        table3.getColumns().clear();
-        final TreeItem<AnalysisDT2> root1 = new RecursiveTreeItem<AnalysisDT2>(users2, RecursiveTreeObject::getChildren);
-        table3.getColumns().setAll(subjec, cod, attende, atte, attender, attendety, attendetyr);
-        table3.setRoot(root1);
-        table3.setShowRoot(false);
-        filter_inv.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            table3.setPredicate((TreeItem<AnalysisDT2> t) -> {
-                Boolean flag = t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().latey.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().paid.getValue().toUpperCase().contains(newValue.toUpperCase());
-
-                return flag;
-            });
-        });
 
     }
+
+    static String loc = "UNKNOWN";
 
     @FXML
     private void Selection_of_PO_for_Invoice_Entry(MouseEvent event) {
@@ -1444,14 +1392,62 @@ public class PurchaseController implements Initializable {
         inv_date_due.setValue(null);
         inv_amt1.clear();
         inv_amt.clear();
+
         inv_del.setVisible(false);
         inv_del.setDisable(true);
 
         inv_loc.clear();
         TogglePaid.setSelected(false);
-        Generate_Invoice_Table();
+
+        inv_loc.setText(loc);
+        if (edit_btn_hit == false) {
+            Generate_Invoice_Table();
+            inv_del.setVisible(false);
+            inv_del.setDisable(true);
+
+        } else {
+            Fill_invoice_details_in_edit_mode();
+            System.out.print("me im printy boi");
+            inv_del.setVisible(!false);
+            inv_del.setDisable(!true);
+
+        }
     }
-    static String loc = "UNKNOWN";
+
+    public void Fill_invoice_details_in_edit_mode() {
+//        /Select date_recv,PayDueDate,AmtwithGST,AmtwoGST from `purchase_invoice` where Ino=?
+        System.out.print("me im printy boi2");
+        try {
+            Double gstamtt;
+            String invno = PO_inv.getValue();
+            int indexreq = invno.indexOf(':');
+            String actinvno = invno.substring(0, indexreq);
+            System.out.println(invno);
+            String sql = "Select date_recv,PayDueDate,AmtwithGST,AmtwoGST,Location,paid from `purchase_invoice` where Ino=?";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            stmt.setString(1, actinvno);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                System.out.print("me im printy boi3");
+                gstamtt = Double.valueOf(rs.getString(3)) - Double.valueOf(rs.getString(4));
+                inv_amt1.setText(String.valueOf(gstamtt));
+                inv_amt.setText(rs.getString(3));
+                Inv_no.setText(actinvno.trim());
+                inv_date_due.setValue(LocalDate.parse(rs.getString(2)));
+                inv_date_recv.setValue(LocalDate.parse(rs.getString(1)));
+                inv_loc.setText(rs.getString(5));
+                if (rs.getString(6).equals("0")) {
+                    TogglePaid.setSelected(false);
+                } else {
+                    TogglePaid.setSelected(!false);
+                }
+
+            }
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void Attach_Invoice_Button_Clicked(MouseEvent event) {
@@ -2192,6 +2188,33 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void Add_a_New_Invoice_for_PO(MouseEvent event) {
+        Runnable task3 = new Runnable() {
+            public void run() {
+                show_showpos_threads();
+
+            }
+        };
+
+        Thread backgroundThread3 = new Thread(task3);
+        backgroundThread3.setDaemon(true);
+        backgroundThread3.start();
+        edit_btn_hit = false;
+        inv_plus.setVisible(!true);
+        inv_plus.setDisable(!false);
+        Inv_pen.setVisible(!false);
+        Inv_pen.setDisable(!true);
+        PO_inv.setPromptText("Purchase Order Number");
+        Inv_no.clear();
+        inv_date_recv.setValue(null);
+        inv_date_due.setValue(null);
+        inv_amt1.clear();
+        inv_amt.clear();
+        inv_loc.clear();
+        TogglePaid.setSelected(false);
+        inv_del.setVisible(!true);
+        inv_del.setDisable(!false);
+        Money_Paid.setVisible(false);
+        Money_Paid.setDisable(true);
 
     }
 
@@ -2210,7 +2233,7 @@ public class PurchaseController implements Initializable {
                 Generate_Table_Invoices_in_Invoice_Pane();
                 PO_inv.getItems().clear();
                 //update the box
-
+                invoice_Combo();
                 Inv_no.clear();
                 inv_date_recv.setValue(null);
                 inv_date_due.setValue(null);
@@ -2225,71 +2248,420 @@ public class PurchaseController implements Initializable {
             }
         }
     }
+    static boolean edit_btn_hit = false;
 
     @FXML
     void Edit_An_Existing_Invoice_for_PO(MouseEvent event) {
-        
+        inv_plus.setVisible(true);
+        inv_plus.setDisable(false);
+        Inv_pen.setVisible(false);
+        Inv_pen.setDisable(true);
+        edit_btn_hit = true;
+        PO_inv.setPromptText("Invoice Number");
+        Inv_no.clear();
+        inv_date_recv.setValue(null);
+        inv_date_due.setValue(null);
+        inv_amt1.clear();
+        inv_amt.clear();
+        inv_loc.clear();
+        TogglePaid.setSelected(false);
+        invoice_Combo();
+        inv_del.setVisible(true);
+        inv_del.setDisable(false);
+        Money_Paid.setVisible(!false);
+        Money_Paid.setDisable(!true);
+        Generate_Table_Invoices_in_Invoice_Pane();
+    }
+
+    void invoice_Combo() {
+
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            String sql = "Select  CONCAT(pi.Ino,' : ',c.`Name`) AS np  FROM\n"
+                    + "`purchase_invoice` pi JOIN `purchase_pirel` pp \n"
+                    + "on pi.Ino=pp.Ino  \n"
+                    + "JOiN `purchase_qprel` qp \n"
+                    + "ON pp.`Po_NO`=qp.`Po_NO` \n"
+                    + "Join `purchase_enquiry` ep \n"
+                    + "ON ep.`Eqno`=qp.`Eqno` \n"
+                    + "JOin `customer` c \n"
+                    + "on c.`CID`=ep.`SID` \n"
+                    + "where 1;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            PO_inv.getItems().clear();
+            while (rs.next()) {
+                PO_inv.getItems().add(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     @FXML
 
     void Invoice_Save_Button_Clicked_in_Invoice_Pane(MouseEvent event) {
-        
         boolean ef = false;
         if (Inv_no.getText().trim().isEmpty() || inv_amt.getText().trim().isEmpty() || inv_amt1.getText().trim().isEmpty()
                 || inv_date_recv.getValue().toString().isEmpty() || inv_date_due.getValue().toString().isEmpty() || inv_loc.getText().trim().isEmpty()) {
             Utilities.AlertBox.notificationWarn("Error", "Some of the fields seem to be empty");
         } else {
-            try {
-                String sql = "INSERT INTO `purchase_invoice`(`Ino`, `AmtwoGST`, `AmtwithGST`, `date_recv`, `paid`, `Location`, `PayDueDate`,`amtpaid`) VALUES "
-                        + "(?,?,?,?,?,?,?,?);";
-                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                Double wogst = Double.valueOf(inv_amt.getText()) - Double.valueOf((inv_amt1.getText()));
-                stmt.setString(1, Inv_no.getText());
-                stmt.setString(2, String.valueOf(wogst));
-                stmt.setString(3, inv_amt.getText());
-                stmt.setString(4, inv_date_recv.getValue().toString());
-                if (TogglePaid.isSelected()) {
-                    ef = true;
-                    stmt.setInt(5, 1);
-                    stmt.setDouble(8, Double.valueOf(inv_amt.getText()));
-                } else {
-                    stmt.setInt(5, 0);
-                    stmt.setDouble(8, 0);
-                }
-                stmt.setString(6, loc);
-                stmt.setString(7, inv_date_due.getValue().toString());
-                stmt.executeUpdate();
-                String sqlll = "INSERT INTO `purchase_pirel`(`Po_NO`, `Ino`) VALUES (?,?)";
-                PreparedStatement stmttt = com.mycompany.snp.MainApp.conn.prepareStatement(sqlll);
-                stmttt.setString(1, PO_inv.getValue());
-                stmttt.setString(2, Inv_no.getText());
-                stmttt.executeUpdate();
-                if (ef) {
-                    try {
-                        String ssql = "INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`,`Late`) VALUES (?,?,?,?)";
-                        PreparedStatement stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(ssql);
-                        stmtql.setString(1, Inv_no.getText());
-                        stmtql.setString(2, String.valueOf(Utilities.Date.Date()));
-                        stmtql.setDouble(3, Double.valueOf(inv_amt.getText()));
-                        if (Date.beforeOrAfter(inv_date_due.getValue().toString()) != 0) {
-                            stmtql.setInt(4, 1);
-                        } else {
-                            stmtql.setInt(4, 0);
-                        }
-                        stmtql.executeUpdate();
+            if (!edit_btn_hit) {
+                try {
+                    String sql = "INSERT INTO `purchase_invoice`(`Ino`, `AmtwoGST`, `AmtwithGST`, `date_recv`, `paid`, `Location`, `PayDueDate`,`amtpaid`) VALUES "
+                            + "(?,?,?,?,?,?,?,?);";
+                    PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                    Double wogst = Double.valueOf(inv_amt.getText()) - Double.valueOf((inv_amt1.getText()));
+                    stmt.setString(1, Inv_no.getText());
+                    stmt.setString(2, String.valueOf(wogst));
+                    stmt.setString(3, inv_amt.getText());
+                    stmt.setString(4, inv_date_recv.getValue().toString());
+                    if (TogglePaid.isSelected()) {
+                        ef = true;
+                        stmt.setInt(5, 1);
+                        stmt.setDouble(8, Double.valueOf(inv_amt.getText()));
+                    } else {
+                        stmt.setInt(5, 0);
+                        stmt.setDouble(8, 0);
+                    }
+                    stmt.setString(6, loc);
+                    stmt.setString(7, inv_date_due.getValue().toString());
+                    stmt.executeUpdate();
+                    String sqlll = "INSERT INTO `purchase_pirel`(`Po_NO`, `Ino`) VALUES (?,?)";
+                    PreparedStatement stmttt = com.mycompany.snp.MainApp.conn.prepareStatement(sqlll);
+                    stmttt.setString(1, PO_inv.getValue());
+                    stmttt.setString(2, Inv_no.getText());
+                    stmttt.executeUpdate();
+                    if (ef) {
+                        try {
+                            String ssql = "INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`,`Late`) VALUES (?,?,?,?)";
+                            PreparedStatement stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(ssql);
+                            stmtql.setString(1, Inv_no.getText());
+                            stmtql.setString(2, String.valueOf(Utilities.Date.Date()));
+                            stmtql.setDouble(3, Double.valueOf(inv_amt.getText()));
+                            if (Date.beforeOrAfter(inv_date_due.getValue().toString()) != 0) {
+                                stmtql.setInt(4, 1);
+                            } else {
+                                stmtql.setInt(4, 0);
+                            }
+                            stmtql.executeUpdate();
 
+                        } catch (ParseException ex) {
+                            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    Utilities.AlertBox.notificationInfo("Success", "Purchase Information was saved successfully!");
+                    Generate_Invoice_Table();
+                } catch (SQLException ex) {
+                    Utilities.AlertBox.showErrorMessage(ex);
+                    Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            } else {
+                try {
+                    String x = "";
+                    if (TogglePaid.isSelected()) {
+                        ef = true;
+
+                        x = ",`amtpaid`= " + inv_amt.getText();//stmt.setDouble(8, Double.valueOf(inv_amt.getText()));
+                    } else {
+
+                        x = "";
+                    }
+                    String sql = "Update `purchase_invoice` SET `Ino`=?, `AmtwoGST`=?, `AmtwithGST`=?, `date_recv`=?, `paid`=?, `Location`=?, `PayDueDate`=?" + x + "where `Ino`=?";
+                    PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                    Double wogst = Double.valueOf(inv_amt.getText()) - Double.valueOf((inv_amt1.getText()));
+                    stmt.setString(1, Inv_no.getText());
+                    stmt.setString(2, String.valueOf(wogst));
+                    stmt.setString(3, inv_amt.getText());
+                    stmt.setString(4, inv_date_recv.getValue().toString());
+                    if (ef) {
+                        stmt.setInt(5, 1);
+                    } else {
+                        stmt.setInt(5, 0);
+                    }
+                    stmt.setString(6, loc);
+                    stmt.setString(7, inv_date_due.getValue().toString());
+                    stmt.setString(8, PO_inv.getValue().toString().substring(0, PO_inv.getValue().toString().indexOf(":") - 1));
+                    stmt.executeUpdate();
+                    String sqlll = "Update `purchase_pirel` Set  `Ino`=? where `INo`=?";
+                    PreparedStatement stmttt = com.mycompany.snp.MainApp.conn.prepareStatement(sqlll);
+                    stmttt.setString(1, Inv_no.getText());
+                    stmttt.setString(2, PO_inv.getValue().toString().substring(0, PO_inv.getValue().toString().indexOf(":") - 1));
+                    stmttt.executeUpdate();
+                    if (ef) {
+                        try {
+                            String sq = "Select sum(amount) from `purchase_invoicepayments` where `Ino`= ? ";
+                            PreparedStatement stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                            stmtql.setString(1, Inv_no.getText());
+                            ResultSet rs=stmtql.executeQuery();
+                            if (rs.next()) {
+                                
+                                String ssql = "INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`,`Late`) VALUES (?,?,?,?)";
+                                stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(ssql);
+                                stmtql.setString(1, Inv_no.getText());
+                                stmtql.setString(2, String.valueOf(Utilities.Date.Date()));
+                                stmtql.setDouble(3, Double.valueOf(inv_amt.getText())-rs.getDouble(1));
+                                if (Date.beforeOrAfter(inv_date_due.getValue().toString()) != 0) {
+                                    stmtql.setInt(4, 1);
+                                } else {
+                                    stmtql.setInt(4, 0);
+                                }
+                                stmtql.executeUpdate();
+                            }
+                        } catch (ParseException ex) {
+                            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    Utilities.AlertBox.notificationInfo("Success", "Purchase Invoice Information was updated successfully!");
+                    Generate_Table_Invoices_in_Invoice_Pane();
+                    invoice_Combo();
+                } catch (SQLException ex) {
+                    Utilities.AlertBox.showErrorMessage(ex);
+                    Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        }
+    }
+
+    @FXML
+    void Invoice_Amount_Paid(MouseEvent event) {
+        String amt, p, sq, due;
+        double amtadd, tot, paid;
+        PreparedStatement ps;
+        outer:
+        while (true) {
+            p = Utilities.AlertBox.alterinput("", "Verification", "Please enter the admin password", "Passsword");
+            if (p.equals("admin")) {
+                try {
+                    sq = "SELECT `AmtwithGST`, "
+                            + "`amtpaid`,`PayDueDate` FROM `purchase_invoice` WHERE `Ino`=?";
+
+                    ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                    ps.setString(1, Inv_no.getText().trim());
+
+                    ResultSet rs = ps.executeQuery();
+                    if (rs.next()) {
+                        tot = rs.getInt(1);
+                        paid = rs.getInt(2);
+                        due = rs.getString(3);
+                        inner:
+                        while (true) {
+                            amt = Utilities.AlertBox.alterinput((Double.valueOf(tot - paid)).toString(), "Payment", "Amount for Invoice " + Inv_no.getText(), "Enter the paid amount");
+                            if (amt.equals("Cancel")) {
+                                break outer;
+                            } else {
+                                try {
+                                    amtadd = Double.parseDouble(amt);
+                                    if (Utilities.AlertBox.alertoption("Confirmation", "Add $" + amtadd + " ?", "Are you sure you want to add $" + amtadd + " to the amount paid for Invoice " + Inv_no.getText().trim() + " ?")) {
+
+                                        int no = 0;
+                                        if ((amtadd + paid) >= tot) {
+                                            no = 1;
+                                        }
+                                        sq = "UPDATE `purchase_invoice` SET"
+                                                + "`paid`= ?,`amtpaid`= ? WHERE `Ino`=?;";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setInt(1, no);
+                                        ps.setDouble(2, paid + amtadd);
+                                        ps.setString(3, Inv_no.getText().trim());
+                                        ps.executeUpdate();
+
+                                        sq = "INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`, `Late`) VALUES (?,?,?,?)";
+                                        ps = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
+                                        ps.setDouble(3, amtadd);
+                                        ps.setString(1, Inv_no.getText().trim());
+                                        ps.setString(2, Utilities.Date.Date());
+                                        ps.setInt(4, (int) Utilities.Date.beforeOrAfter(due));
+                                        ps.executeUpdate();
+                                        break outer;
+                                    } else {
+                                        continue inner;
+                                    }
+
+                                } catch (NumberFormatException e) {
+                                    Utilities.AlertBox.notificationWarn("Error", "Please enter only Integers");
+                                    continue inner;
+                                }
+                            }
+
+                        }
+                    }
+                } catch (Exception e) {
+                    Utilities.AlertBox.showErrorMessage(e);
+                    continue;
+                }
+                break outer;
+
+            } else if (p.equals("Cancel")) {
+                break;
+            } else {
+                Utilities.AlertBox.notificationInfo("Incorrect Password", "There seems to be an error in the entered password");
+
+            }
+        }
+        Generate_Table_Invoices_in_Invoice_Pane();
+
+    }
+
+    void Generate_Table_Invoices_in_Invoice_Pane() {
+        JFXTreeTableColumn<AnalysisDT2, String> subjec = new JFXTreeTableColumn<>("Invoice Number");
+        subjec.setPrefWidth(100);
+        subjec.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().ino);
+
+        JFXTreeTableColumn<AnalysisDT2, String> pono = new JFXTreeTableColumn<>("Purchase Order");
+        pono.setPrefWidth(100);
+        pono.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().pono);
+
+        JFXTreeTableColumn<AnalysisDT2, String> supps = new JFXTreeTableColumn<>("Supplier");
+        supps.setPrefWidth(75);
+        supps.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().supps);
+
+        JFXTreeTableColumn<AnalysisDT2, String> cod = new JFXTreeTableColumn<>("Date Received");
+        cod.setPrefWidth(90);
+        cod.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().daterecv);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attende = new JFXTreeTableColumn<>("Total Amount");
+        attende.setPrefWidth(100);
+        attende.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().totalamt);
+
+        JFXTreeTableColumn<AnalysisDT2, String> atte = new JFXTreeTableColumn<>("Paid");
+        atte.setPrefWidth(75);
+        atte.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().paid);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attender = new JFXTreeTableColumn<>("Amount Paid");
+        attender.setPrefWidth(90);
+        attender.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().amtpaid);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attendety = new JFXTreeTableColumn<>("Pay DueDate");
+        attendety.setPrefWidth(90);
+        attendety.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().payduedate);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attendetyr = new JFXTreeTableColumn<>("LATE");
+        attendetyr.setPrefWidth(75);
+        attendetyr.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().latey);
+        String paid, amtpaid, late;
+
+        ObservableList<AnalysisDT2> users2 = FXCollections.observableArrayList();
+        try {
+
+            String sql = "Select  pi.Ino,pi.date_recv,pi.AmtwithGST, pi.paid, pi.amtpaid,pi.PayDueDate,pp.Po_NO,c.`Name` FROM "
+                    + "`purchase_invoice` pi JOIN `purchase_pirel` pp "
+                    + "on pi.Ino=pp.Ino  "
+                    + "JOiN `purchase_qprel` qp "
+                    + "ON pp.`Po_NO`=qp.`Po_NO` "
+                    + "Join `purchase_enquiry` ep "
+                    + "ON ep.`Eqno`=qp.`Eqno` "
+                    + "JOin `customer` c "
+                    + "on c.`CID`=ep.`SID` "
+                    + "where 1 ";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            //stmt.setString(1, PO_inv.getValue());
+            ResultSet rs = stmt.executeQuery();
+            late = "NA";
+            while (rs.next()) {
+                late = "NA";
+                if (rs.getString(4).equals("0")) {
+
+                    try {
+                        late = Utilities.Date.beforeOrAfter(rs.getString(6)) == 0 ? "Not Late" : "Late";
+                        users2.add(new AnalysisDT2(rs.getString(1), rs.getString(7), rs.getString(8), rs.getString(2), rs.getString(3), "No", rs.getString(5), rs.getString(6), late));
                     } catch (ParseException ex) {
                         Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
                     }
+
+                } else {
+                    users2.add(new AnalysisDT2(rs.getString(1), rs.getString(7), rs.getString(8), rs.getString(2),
+                            rs.getString(3), "Yes", rs.getString(5), rs.getString(6), late));
                 }
-                Utilities.AlertBox.notificationInfo("Success", "Purchase Information was saved successfully!");
-                Generate_Invoice_Table();
-            } catch (SQLException ex) {
-                Utilities.AlertBox.showErrorMessage(ex);
-                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (SQLException e) {
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        table3.getColumns().clear();
+        final TreeItem<AnalysisDT2> root1 = new RecursiveTreeItem<AnalysisDT2>(users2, RecursiveTreeObject::getChildren);
+        table3.getColumns().setAll(subjec, pono, supps, cod, attende, atte, attender, attendety, attendetyr);
+        table3.setRoot(root1);
+        table3.setShowRoot(false);
+        filter_inv.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            table3.setPredicate((TreeItem<AnalysisDT2> t) -> {
+                Boolean flag = t.getValue().pono.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().supps.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().latey.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().paid.getValue().toUpperCase().contains(newValue.toUpperCase());
+
+                return flag;
+            });
+        });
+    }
+
+    void Generate_Invoice_Table() {
+        JFXTreeTableColumn<AnalysisDT2, String> subjec = new JFXTreeTableColumn<>("Invoice Number");
+        subjec.setPrefWidth(100);
+        subjec.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().ino);
+
+        JFXTreeTableColumn<AnalysisDT2, String> cod = new JFXTreeTableColumn<>("Date Received");
+        cod.setPrefWidth(90);
+        cod.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().daterecv);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attende = new JFXTreeTableColumn<>("Total Amount");
+        attende.setPrefWidth(100);
+        attende.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().totalamt);
+
+        JFXTreeTableColumn<AnalysisDT2, String> atte = new JFXTreeTableColumn<>("Paid");
+        atte.setPrefWidth(75);
+        atte.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().paid);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attender = new JFXTreeTableColumn<>("Amount Paid");
+        attender.setPrefWidth(90);
+        attender.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().amtpaid);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attendety = new JFXTreeTableColumn<>("Pay DueDate");
+        attendety.setPrefWidth(90);
+        attendety.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().payduedate);
+
+        JFXTreeTableColumn<AnalysisDT2, String> attendetyr = new JFXTreeTableColumn<>("LATE");
+        attendetyr.setPrefWidth(75);
+        attendetyr.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().latey);
+        String paid, amtpaid, late;
+
+        ObservableList<AnalysisDT2> users2 = FXCollections.observableArrayList();
+        try {
+
+            String sql = "Select  pi.Ino,pi.date_recv,pi.AmtwithGST, pi.paid, pi.amtpaid,pi.PayDueDate FROM"
+                    + " `purchase_invoice` pi,`purchase_pirel` pp where pi.Ino=pp.Ino and pp.Po_NO=?";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            stmt.setString(1, PO_inv.getValue());
+            ResultSet rs = stmt.executeQuery();
+            late = "NA";
+            while (rs.next()) {
+                late = "NA";
+                if (rs.getString(4).equals("0")) {
+                    try {
+                        late = Utilities.Date.beforeOrAfter(rs.getString(6)) == 0 ? "Not Late" : "Late";
+                        users2.add(new AnalysisDT2(rs.getString(1), rs.getString(2), rs.getString(3), "No", rs.getString(5), rs.getString(6), late));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                } else {
+                    users2.add(new AnalysisDT2(rs.getString(1), rs.getString(2), rs.getString(3), "Yes", rs.getString(5), rs.getString(6), late));
+                }
+            }
+        } catch (SQLException e) {
 
         }
+        table3.getColumns().clear();
+        final TreeItem<AnalysisDT2> root1 = new RecursiveTreeItem<AnalysisDT2>(users2, RecursiveTreeObject::getChildren);
+        table3.getColumns().setAll(subjec, cod, attende, atte, attender, attendety, attendetyr);
+        table3.setRoot(root1);
+        table3.setShowRoot(false);
+        filter_inv.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+            table3.setPredicate((TreeItem<AnalysisDT2> t) -> {
+                Boolean flag = t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().latey.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().paid.getValue().toUpperCase().contains(newValue.toUpperCase());
+
+                return flag;
+            });
+        });
+
     }
 }
