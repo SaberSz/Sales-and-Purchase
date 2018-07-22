@@ -51,8 +51,9 @@ public class Person4 {
             if (newValue.matches("^\\d*\\.?\\d+|\\d+\\.?\\d*$")) {
                 this.a = newValue;
 
-            } else if (newValue.matches("^(\\s).+")) {
+            } else if (newValue.matches("^(\\S).+")) {
                 this.a = "1";
+                System.out.println("Its a string");
             } else {
                 this.a = "0";
             }

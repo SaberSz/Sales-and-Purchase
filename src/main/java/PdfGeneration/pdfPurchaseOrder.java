@@ -65,13 +65,13 @@ public class pdfPurchaseOrder {
 
     static int pgnotot = 0;
     protected PdfFormXObject template;
-    public static String DEST = "results/Invoice/Steel/";
+    public static String DEST = "results/PurchaseOrder/Steel/";
 
     public pdfPurchaseOrder(HashMap<String, Object> hm) throws IOException {
         if (hm.get("Company").toString() == "Steel") {
-            DEST = "results/Invoice/Steel/";
+            DEST = "results/PurchaseOrder/Steel/";
         } else {
-            DEST = "results/Invoice/Awin/";
+            DEST = "results/PurchaseOrder/Awin/";
         }
         DEST += hm.get("Purchase Order Number").toString().replace('.', '-') + ".pdf";
         File file = new File(DEST);
@@ -100,20 +100,40 @@ public class pdfPurchaseOrder {
         // Initialize document
         Document document = new Document(pdf, PageSize.A4);
         document.setMargins(18, 26, 36, 36);
-
+        Image steelslogo = null;
         String Steeladd = "InvoiceSC/SteelLogo.png";
-        String Awinadd = "InvoiceSC/AwinLogo.pn";
+        String Awinadd = "InvoiceSC/AwinLogo.png";
         String path = "";
-        if (hm.get("company").toString() == "Steel") {
+        String cadd = "Awin Engineering Pte. Ltd.\n"
+                + "Regd. office: No. 12, Tuas View Place, Singapore. 637864\n"
+                + "Works: No. 109, Tuas South Avenue 8,\n"
+                + "Singapore. 637037\n"
+                + "Co. Regd. No. 201012187G\n"
+                + "GST Regd. No. 201012187G\n";
+        String cadd1 = "No. 12, Tuas View Place, Singapore - 637864.\n"
+                + "No.109 Tuas South Ave.8 Singapore - 637037.\n"
+                + "Tel: +65 6265 9476 Fax: +65 6265 7685.\n"
+                + "Email: Enquires@steelcoat.com.sg\n"
+                + "Website: www.steelcoat.com.sg\n"
+                + "Co. Reg No: 201410749G\n"
+                + "GST. Reg No: 201410749G\n";
+        String adds = "";
+        System.out.println(hm.get("Company").toString());
+        if (hm.get("Company").toString() == "Steel") {
             path = Steeladd;
+            adds = cadd1;
+            steelslogo = new Image(ImageDataFactory.create(path));
+            steelslogo.scaleAbsolute(215f, 85f);
         } else {
             path = Awinadd;
+            adds = cadd;
+            steelslogo = new Image(ImageDataFactory.create(path));
+            steelslogo.scaleAbsolute(177f, 115f);
         }
-        Image steelslogo = new Image(ImageDataFactory.create(path));
+
         Image extralogo3 = new Image(ImageDataFactory.create("InvoiceSC/Picture5.jpg"));
 
-        steelslogo.scaleAbsolute(215f, 85f);//177f,115f for Awin
-
+        // steelslogo.scaleAbsolute(215f, 85f);//177f,115f for Awin
         //for space
         Paragraph o1 = new Paragraph(" ");
         o1.setMarginLeft(17);//increase this value for increase in space
@@ -133,6 +153,7 @@ public class pdfPurchaseOrder {
         tbeg.setWidthPercent(100);
         tbeg.addCell(new Cell().add(head).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.LEFT));
         tbeg.addCell(new Cell().add(new Paragraph().add(steelslogo).setTextAlignment(TextAlignment.RIGHT)).setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT));
+        document.add(tbeg);
         document.add(new Paragraph(""));
         Table tadd = new Table(new float[]{1, 1, 1});
         tadd.setWidthPercent(100);
@@ -142,15 +163,10 @@ public class pdfPurchaseOrder {
 //                + "Northstar@AMK,\n"
 //                + "Singapore - 569880\n";
         String sadd = hm.get("toAddress").toString();
-        String cadd = "Awin Engineering Pte. Ltd.\n"
-                + "Regd. office: No. 12, Tuas View Place, Singapore. 637864\n"
-                + "Works: No. 109, Tuas South Avenue 8,\n"
-                + "Singapore. 637037\n"
-                + "Co. Regd. No. 201012187G\n"
-                + "GST Regd. No. 201012187G\n";
+
         Paragraph padd = new Paragraph(sadd).setFontSize(9.0f).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA));
         padd.setTextAlignment(TextAlignment.LEFT);
-        Paragraph padd1 = new Paragraph(cadd).setFontSize(9.0f).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA));
+        Paragraph padd1 = new Paragraph(adds).setFontSize(9.0f).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA));
         padd1.setTextAlignment(TextAlignment.LEFT);
 
         String details = "Issue date\n"
@@ -177,7 +193,7 @@ public class pdfPurchaseOrder {
         document.add(new Paragraph(""));
         Table destab = new Table(new float[]{3, 2, 1, 1, 1, 1});
         DecimalFormat df = new DecimalFormat("#.00");
-        destab.addHeaderCell(new Cell().setPaddings(8f, 0, 8f, 0).add(new Paragraph("Description").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)).setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
+        destab.addHeaderCell(new Cell().setWidth(250f).setPaddings(8f, 0, 8f, 0).add(new Paragraph("Description").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)).setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
         destab.addHeaderCell(new Cell().setPaddings(8f, 0, 8f, 0).add(new Paragraph("UOM").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)).setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
         destab.addHeaderCell(new Cell().setPaddings(8f, 0, 8f, 0).add(new Paragraph("Qty").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)).setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
         destab.addHeaderCell(new Cell().setPaddings(8f, 0, 8f, 0).add(new Paragraph("Unit Price").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)).setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
@@ -194,15 +210,15 @@ public class pdfPurchaseOrder {
             Person4 pe1 = li.next();
             if (pe1.getDes().getText().isEmpty()) {
                 // pe contains final row
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getDes().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getUOM().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph(pe.getQty().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph("$" +df.format(Double.valueOf(pe.getUnitPrice().getText()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph(pe.getDiscount().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph("$" + df.format(Double.valueOf(pe.getTotal().getText()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
+                destab.addCell(new Cell().setWidth(250f).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getDes().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
+                destab.addCell(new Cell().setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getUOM().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
+                destab.addCell(new Cell().setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph(pe.getQty().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
+                destab.addCell(new Cell().setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph("$" + df.format(Double.valueOf(pe.getUnitPrice().getText()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
+                destab.addCell(new Cell().setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph(pe.getDiscount().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
+                destab.addCell(new Cell().setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph("$" + df.format(Double.valueOf(pe.getTotal().getText()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
             } else {
-
-                destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getDes().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
+                li.previous();
+                destab.addCell(new Cell().setWidth(250f).setBorderBottom(Border.NO_BORDER).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getDes().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
                 destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 5f).add(new Paragraph(pe.getUOM().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT)));
                 destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph(pe.getQty().getText()).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
                 destab.addCell(new Cell().setBorderBottom(Border.NO_BORDER).setBorderTop(Border.NO_BORDER).setPaddings(5f, 0, 5f, 0).add(new Paragraph("$" + df.format(Double.valueOf(pe.getUnitPrice().getText()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
@@ -221,7 +237,7 @@ public class pdfPurchaseOrder {
         destab.addCell(new Cell()
                 .setPaddings(5f, 0, 5f, 0)
                 .add(new Paragraph("$" + df.format(Double.valueOf(hm.get("Sub Total").toString()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             destab.addCell(new Cell().setPaddings(5f, 0, 5f, 5f).add(new Paragraph("")).setBorder(Border.NO_BORDER));
         }
 
@@ -232,7 +248,7 @@ public class pdfPurchaseOrder {
         destab.addCell(new Cell()
                 .setPaddings(5f, 0, 5f, 0)
                 .add(new Paragraph("$" + df.format(Double.valueOf(hm.get("GST Amount").toString()))).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.CENTER)));
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             destab.addCell(new Cell().setPaddings(5f, 0, 5f, 5f).add(new Paragraph("")).setBorder(Border.NO_BORDER));
         }
 

@@ -12,7 +12,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -143,7 +142,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
+      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false" vvalue="1.0">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="985.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
@@ -166,12 +165,7 @@
                   <JFXTextField fx:id="POnumber" editable="false" labelFloat="true" layoutX="21.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Purchase Order Number" />
                   <JFXTextField fx:id="Pjnumber" editable="false" labelFloat="true" layoutX="257.0" layoutY="141.0" prefHeight="27.0" prefWidth="195.0" promptText="Project Number" />
                   <JFXTextField fx:id="paymentTerms" labelFloat="true" layoutX="490.0" layoutY="141.0" prefHeight="31.0" prefWidth="414.0" promptText="Payment Terms" />
-                  <TableView fx:id="Table2" layoutX="21.0" layoutY="514.0" prefHeight="436.0" prefWidth="876.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
+                  <TableView fx:id="Table2" layoutX="21.0" layoutY="514.0" prefHeight="436.0" prefWidth="876.0" />
                   <JFXTextArea fx:id="Header" labelFloat="true" layoutX="23.0" layoutY="432.0" prefHeight="54.0" prefWidth="875.0" promptText="Header" />
                   <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1034.0" layoutY="789.0" onMouseClicked="#SaveNewPO" text="Label">
                      <graphic>
@@ -179,7 +173,7 @@
                      </graphic>
                   </Label>
                   <JFXTextField fx:id="PoTotal" labelFloat="true" layoutX="927.0" layoutY="548.0" prefHeight="27.0" prefWidth="230.0" promptText="Sub-Total" />
-                  <Label layoutX="1091.0" layoutY="789.0" onMouseClicked="#Gen_PO">
+                  <Label fx:id="pdfGen" layoutX="1091.0" layoutY="789.0" onMouseClicked="#Gen_PO">
                      <graphic>
                         <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />
                      </graphic>
@@ -227,11 +221,11 @@
                   <JFXTextField fx:id="inv_loc" labelFloat="true" layoutX="12.0" layoutY="416.0" prefHeight="31.0" prefWidth="229.0" promptText="File Location" />
                   <JFXDatePicker fx:id="inv_date_recv" defaultColor="#3f51b5" layoutX="17.0" layoutY="250.0" prefHeight="31.0" prefWidth="233.0" promptText="Date Received" />
                   <JFXDatePicker fx:id="inv_date_due" defaultColor="#3f51b5" layoutX="293.0" layoutY="250.0" prefHeight="31.0" prefWidth="225.0" promptText="Payment Due Date" />
-                  <JFXTextField fx:id="inv_amt" labelFloat="true" layoutX="293.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="Amount to be paid" />
+                  <JFXTextField fx:id="inv_amt" labelFloat="true" layoutX="293.0" layoutY="335.0" prefHeight="31.0" prefWidth="218.0" promptText="Amount to be paid" />
                   <JFXTextField fx:id="inv_amt1" labelFloat="true" layoutX="17.0" layoutY="335.0" prefHeight="31.0" prefWidth="224.0" promptText="GST Amount" />
                   <JFXToggleButton fx:id="TogglePaid" layoutX="291.0" layoutY="402.0" text="Paid ?" toggleColor="#3f51b5" toggleLineColor="#718ae8" />
-                  <JFXTreeTableView fx:id="table3" layoutX="600.0" layoutY="57.0" prefHeight="573.0" prefWidth="548.0" />
-                  <JFXTextField fx:id="filter_inv" layoutX="600.0" layoutY="20.0" prefHeight="31.0" prefWidth="219.0" promptText="Filter" />
+                  <JFXTreeTableView fx:id="table3" layoutX="537.0" layoutY="57.0" prefHeight="573.0" prefWidth="642.0" />
+                  <JFXTextField fx:id="filter_inv" layoutX="537.0" layoutY="20.0" prefHeight="31.0" prefWidth="219.0" promptText="Filter" />
                   <JFXButton buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" layoutX="82.0" layoutY="522.0" onMouseClicked="#Invoice_Save_Button_Clicked_in_Invoice_Pane" text="Save">
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
@@ -242,17 +236,17 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="MONEY" size="30" />
                      </graphic>
                   </Label>
-                  <Label fx:id="Inv_pen" contentDisplay="GRAPHIC_ONLY" layoutX="552.0" layoutY="81.0" onMouseClicked="#Edit_An_Existing_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
+                  <Label fx:id="Inv_pen" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="81.0" onMouseClicked="#Edit_An_Existing_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
                      </graphic>
                   </Label>
-                  <Label fx:id="inv_plus" contentDisplay="GRAPHIC_ONLY" layoutX="486.0" layoutY="81.0" onMouseClicked="#Add_a_New_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
+                  <Label fx:id="inv_plus" contentDisplay="GRAPHIC_ONLY" layoutX="391.0" layoutY="81.0" onMouseClicked="#Add_a_New_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PLUS" size="30" />
                      </graphic>
                   </Label>
-                  <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="276.0" layoutY="527.0" onMouseClicked="#Delete_Invoice_Selected_By_ComboBox" text="Label" textFill="RED">
+                  <Label fx:id="inv_del" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="276.0" layoutY="527.0" onMouseClicked="#Delete_Invoice_Selected_By_ComboBox" text="Label" textFill="RED">
                      <graphic>
                         <MaterialDesignIconView fill="RED" glyphName="DELETE" size="30" />
                      </graphic>
