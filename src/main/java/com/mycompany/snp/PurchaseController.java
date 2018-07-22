@@ -450,8 +450,10 @@ public class PurchaseController implements Initializable {
         Inv_pen.setDisable(false);
         inv_plus.setVisible(false);
         inv_plus.setDisable(true);
-         inv_del.setVisible(false);
+        inv_del.setVisible(false);
         inv_del.setDisable(true);
+        edit_btn_hit = false;
+        table3.getColumns().clear();
     }
 
     void show_showpos_threads() {
@@ -1437,6 +1439,7 @@ public class PurchaseController implements Initializable {
         });
 
     }
+    static String loc = "UNKNOWN";
 
     @FXML
     private void Selection_of_PO_for_Invoice_Entry(MouseEvent event) {
@@ -1445,14 +1448,57 @@ public class PurchaseController implements Initializable {
         inv_date_due.setValue(null);
         inv_amt1.clear();
         inv_amt.clear();
-         inv_del.setVisible(false);
-        inv_del.setDisable(true);
 
         inv_loc.clear();
         TogglePaid.setSelected(false);
-        Generate_Invoice_Table();
+
+        inv_loc.setText(loc);
+        if (edit_btn_hit == false) {
+            Generate_Invoice_Table();
+            inv_del.setVisible(false);
+            inv_del.setDisable(true);
+
+        } else {
+            Fill_invoice_details_in_edit_mode();
+            System.out.print("me im printy boi");
+
+        }
     }
-    static String loc = "UNKNOWN";
+
+    public void Fill_invoice_details_in_edit_mode() {
+//        /Select date_recv,PayDueDate,AmtwithGST,AmtwoGST from `purchase_invoice` where Ino=?
+        System.out.print("me im printy boi2");
+        try {
+            Double gstamtt;
+            String invno = PO_inv.getValue();
+            int indexreq = invno.indexOf(':');
+            String actinvno = invno.substring(0, indexreq);
+            System.out.println(invno);
+            String sql = "Select date_recv,PayDueDate,AmtwithGST,AmtwoGST,Location,paid from `purchase_invoice` where Ino=?";
+            PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+            stmt.setString(1, actinvno);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                System.out.print("me im printy boi3");
+                gstamtt = Double.valueOf(rs.getString(3)) - Double.valueOf(rs.getString(4));
+                inv_amt1.setText(String.valueOf(gstamtt));
+                inv_amt.setText(rs.getString(3));
+                Inv_no.setText(invno);
+                inv_date_due.setValue(LocalDate.parse(rs.getString(2)));
+                inv_date_recv.setValue(LocalDate.parse(rs.getString(1)));
+                inv_loc.setText(rs.getString(5));
+                if (rs.getString(6).equals("0")) {
+                    TogglePaid.setSelected(false);
+                } else {
+                    TogglePaid.setSelected(!false);
+                }
+
+            }
+        } catch (SQLException ex) {
+            Utilities.AlertBox.showErrorMessage(ex);
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @FXML
     private void Attach_Invoice_Button_Clicked(MouseEvent event) {
@@ -2131,8 +2177,8 @@ public class PurchaseController implements Initializable {
                         if (POnumber.getText()
                                 .substring(POnumber.getText().indexOf("-") + 1,
                                         POnumber.getText().indexOf("-") + 3).trim() == "SC");
-                        
-                        if(POnumber.getText().contains("SC")){
+
+                        if (POnumber.getText().contains("SC")) {
                             hm.put("Company", "Steel");
                             System.out.println("Company is Steel: "
                                     + POnumber.getText()
@@ -2193,17 +2239,88 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void Add_a_New_Invoice_for_PO(MouseEvent event) {
+          Runnable task3 = new Runnable() {
+            public void run() {
+                show_showpos_threads();
 
+            }
+        };
+
+        Thread backgroundThread3 = new Thread(task3);
+        backgroundThread3.setDaemon(true);
+        backgroundThread3.start();
+        edit_btn_hit = false;
+        inv_plus.setVisible(!true);
+        inv_plus.setDisable(!false);
+        Inv_pen.setVisible(!false);
+        Inv_pen.setDisable(!true);
+        PO_inv.setPromptText("Purchase Order Number");
+        Inv_no.clear();
+        inv_date_recv.setValue(null);
+        inv_date_due.setValue(null);
+        inv_amt1.clear();
+        inv_amt.clear();
+        inv_loc.clear();
+        TogglePaid.setSelected(false);
+        inv_del.setVisible(!true);
+        inv_del.setDisable(!false);
+        Money_Paid.setVisible(false);
+        Money_Paid.setDisable(true);
+        
     }
 
     @FXML
     void Delete_Invoice_Selected_By_ComboBox(MouseEvent event) {
 
     }
+    static boolean edit_btn_hit = false;
 
     @FXML
     void Edit_An_Existing_Invoice_for_PO(MouseEvent event) {
+        inv_plus.setVisible(true);
+        inv_plus.setDisable(false);
+        Inv_pen.setVisible(false);
+        Inv_pen.setDisable(true);
+        edit_btn_hit = true;
+        PO_inv.setPromptText("Invoice Number");
+        Inv_no.clear();
+        inv_date_recv.setValue(null);
+        inv_date_due.setValue(null);
+        inv_amt1.clear();
+        inv_amt.clear();
+        inv_loc.clear();
+        TogglePaid.setSelected(false);
+        invoice_Combo();
+        inv_del.setVisible(true);
+        inv_del.setDisable(false);
+        Money_Paid.setVisible(!false);
+        Money_Paid.setDisable(!true);
+    }
 
+    void invoice_Combo() {
+
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            String sql = "Select  CONCAT(pi.Ino,' : ',c.`Name`) AS np  FROM\n"
+                    + "`purchase_invoice` pi JOIN `purchase_pirel` pp \n"
+                    + "on pi.Ino=pp.Ino  \n"
+                    + "JOiN `purchase_qprel` qp \n"
+                    + "ON pp.`Po_NO`=qp.`Po_NO` \n"
+                    + "Join `purchase_enquiry` ep \n"
+                    + "ON ep.`Eqno`=qp.`Eqno` \n"
+                    + "JOin `customer` c \n"
+                    + "on c.`CID`=ep.`SID` \n"
+                    + "where 1;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            PO_inv.getItems().clear();
+            while (rs.next()) {
+                PO_inv.getItems().add(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     @FXML
