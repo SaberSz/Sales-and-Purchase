@@ -25,6 +25,7 @@ com\mycompany\snp\PurchaseController$AnalysisDT1.class
 Utilities\NumUtil.class
 PdfGeneration\awinqtepdf$Header.class
 com\mycompany\snp\SalesController$12.class
+PdfGeneration\pdfPurchaseOrder$PageXofY.class
 com\mycompany\snp\Person3.class
 com\mycompany\snp\PurchaseController$4.class
 com\mycompany\snp\SalesController$2.class
@@ -43,8 +44,10 @@ com\mycompany\snp\FXMLController.class
 com\mycompany\snp\PurchaseController$21.class
 PdfGeneration\pdfQuotation$PageXofY.class
 com\mycompany\snp\PurchaseController$11.class
+PdfGeneration\pdfPurchaseOrder.class
 com\mycompany\snp\SalesController$13.class
 com\mycompany\snp\SalesController$8.class
+PdfGeneration\pdfPurchaseOrder$Header.class
 com\mycompany\snp\PurchaseController$18.class
 PdfGeneration\pdfInvoice$PageXofY.class
 PdfGeneration\awinpd$Header.class

@@ -620,7 +620,7 @@ public class SalesController implements Initializable {
                         hm.put("TableItems", trc);
                         new PdfGeneration.pdfInvoice(hm);
                         //Update database that invoice has been generated
-                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=?";
+                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=? AND `invgen`=0";
                         PreparedStatement ps;
                         ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                         ps.setString(4, inv_no.getText());
@@ -651,7 +651,7 @@ public class SalesController implements Initializable {
                         trc = FXCollections.observableArrayList(inv_newtable.getItems());
                         ha.put("TableItems", trc);
                         new PdfGeneration.awinpd(ha);
-                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=?";
+                        String sql = "UPDATE `invoice` SET `Date`=?,`Duedate`=?, `invgen`=? WHERE `INo`=? AND `invgen`=0";
                         PreparedStatement ps;
                         ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
                         ps.setString(4, inv_no.getText());
