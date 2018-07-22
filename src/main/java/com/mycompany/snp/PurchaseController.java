@@ -450,7 +450,7 @@ public class PurchaseController implements Initializable {
         Inv_pen.setDisable(false);
         inv_plus.setVisible(false);
         inv_plus.setDisable(true);
-         inv_del.setVisible(false);
+        inv_del.setVisible(false);
         inv_del.setDisable(true);
     }
 
@@ -1407,7 +1407,6 @@ public class PurchaseController implements Initializable {
             ResultSet rs = stmt.executeQuery();
             late = "NA";
             while (rs.next()) {
-
                 if (rs.getString(4).equals("0")) {
                     try {
                         late = Utilities.Date.beforeOrAfter(rs.getString(6)) == 0 ? "Not Late" : "Late";
@@ -1445,7 +1444,7 @@ public class PurchaseController implements Initializable {
         inv_date_due.setValue(null);
         inv_amt1.clear();
         inv_amt.clear();
-         inv_del.setVisible(false);
+        inv_del.setVisible(false);
         inv_del.setDisable(true);
 
         inv_loc.clear();
@@ -2131,8 +2130,8 @@ public class PurchaseController implements Initializable {
                         if (POnumber.getText()
                                 .substring(POnumber.getText().indexOf("-") + 1,
                                         POnumber.getText().indexOf("-") + 3).trim() == "SC");
-                        
-                        if(POnumber.getText().contains("SC")){
+
+                        if (POnumber.getText().contains("SC")) {
                             hm.put("Company", "Steel");
                             System.out.println("Company is Steel: "
                                     + POnumber.getText()
@@ -2198,23 +2197,44 @@ public class PurchaseController implements Initializable {
 
     @FXML
     void Delete_Invoice_Selected_By_ComboBox(MouseEvent event) {
+        if (Utilities.AlertBox.alertoption("Delete Invoice", "Delete Invoice " + Inv_no.getText(), "Are you are you want "
+                + "to delete this invoice? Note this acttion cannot be undone.")) {
 
+            try {
+                String sql = "DELETE FROM `purchase_invoice` WHERE `Ino`=?";
+                PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
+                stmt.setString(1, Inv_no.getText());
+                stmt.executeUpdate();
+                Utilities.AlertBox.notificationInfo("Success", "The Invoice has been deleted");
+                //update table
+                Generate_Table_Invoices_in_Invoice_Pane();
+                PO_inv.getItems().clear();
+                //update the box
+
+                Inv_no.clear();
+                inv_date_recv.setValue(null);
+                inv_date_due.setValue(null);
+                inv_amt1.clear();
+                inv_amt.clear();
+
+                inv_loc.clear();
+
+                TogglePaid.setSelected(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @FXML
     void Edit_An_Existing_Invoice_for_PO(MouseEvent event) {
-
-    }
-
-    @FXML
-    void Invoice_Amount_Paid(MouseEvent event) {
-
+        
     }
 
     @FXML
 
     void Invoice_Save_Button_Clicked_in_Invoice_Pane(MouseEvent event) {
-
+        
         boolean ef = false;
         if (Inv_no.getText().trim().isEmpty() || inv_amt.getText().trim().isEmpty() || inv_amt1.getText().trim().isEmpty()
                 || inv_date_recv.getValue().toString().isEmpty() || inv_date_due.getValue().toString().isEmpty() || inv_loc.getText().trim().isEmpty()) {
