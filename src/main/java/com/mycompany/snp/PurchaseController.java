@@ -1356,7 +1356,7 @@ class AnalysisDT2 extends RecursiveTreeObject<AnalysisDT2> {
     }
   void Generate_Invoice_Table(){
          JFXTreeTableColumn<AnalysisDT2, String> subjec = new JFXTreeTableColumn<>("Invoice Number");
-        subjec.setPrefWidth(200);
+        subjec.setPrefWidth(100);
         subjec.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().ino);
 
         JFXTreeTableColumn<AnalysisDT2, String> cod = new JFXTreeTableColumn<>("Date Received");
@@ -1364,40 +1364,77 @@ class AnalysisDT2 extends RecursiveTreeObject<AnalysisDT2> {
         cod.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().daterecv);
 
         JFXTreeTableColumn<AnalysisDT2, String> attende = new JFXTreeTableColumn<>("Total Amount");
-        attende.setPrefWidth(200);
+        attende.setPrefWidth(100);
         attende.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().totalamt);
         
          JFXTreeTableColumn<AnalysisDT2, String> atte = new JFXTreeTableColumn<>("Paid");
-        atte.setPrefWidth(200);
+        atte.setPrefWidth(100);
         atte.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().paid);
         
          JFXTreeTableColumn<AnalysisDT2, String> attender = new JFXTreeTableColumn<>("Amount Paid");
-        attender.setPrefWidth(200);
+        attender.setPrefWidth(100);
         attender.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().amtpaid);
         
          JFXTreeTableColumn<AnalysisDT2, String> attendety = new JFXTreeTableColumn<>("Pay DueDate");
-        attendety.setPrefWidth(200);
+        attendety.setPrefWidth(100);
         attendety.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().payduedate);
         
   JFXTreeTableColumn<AnalysisDT2, String> attendetyr = new JFXTreeTableColumn<>("LATE");
-        attendetyr.setPrefWidth(200);
+        attendetyr.setPrefWidth(100);
         attendetyr.setCellValueFactory((TreeTableColumn.CellDataFeatures<AnalysisDT2, String> param) -> param.getValue().getValue().latey);
-
+String paid,amtpaid,late;
         
         ObservableList<AnalysisDT2> users2 = FXCollections.observableArrayList();
-       /*  try {
+        try {
 
-                String sql = "Select QNo FROM `purchase_quotation` WHERE Eqno=?;";
+             String sql = "Select  pi.Ino,pi.date_recv,pi.AmtwithGST, pi.paid, pi.amtpaid,pi.PayDueDate FROM"
+                     + " `purchase_invoice` pi,`purchase_pirel` pp where pi.Ino=pp.Ino and pp.Po_NO=?";
                 PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-                stmt.setString(1, entered);
+                stmt.setString(1,PO_inv.getValue());
                 ResultSet rs = stmt.executeQuery();
-         }catch(SQLe)
-        users2.add(new AnalysisDT2());*/
+               late="NA";             
+               while(rs.next()){
+             
+                if(rs.getString(4)=="0"){
+                    try {
+                        late=Utilities.Date.beforeOrAfter(rs.getString(6))==0?"Yes":"No";
+                      users2.add(new AnalysisDT2(rs.getString(1),rs.getString(2),rs.getString(3),"NO",rs.getString(5),rs.getString(6),late));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+              
+               }else{
+                    users2.add(new AnalysisDT2(rs.getString(1),rs.getString(2),rs.getString(3),"YES",rs.getString(5),rs.getString(6),late));
+                }
+              }
+         }catch(SQLException e){
+             
+         }
+         table3.getColumns().clear();
+            final TreeItem<AnalysisDT2> root1 = new RecursiveTreeItem<AnalysisDT2>(users2, RecursiveTreeObject::getChildren);
+            table3.getColumns().setAll(subjec, cod, attende,atte,attender,attendety,attendetyr);
+            table3.setRoot(root1);
+            table3.setShowRoot(false);
+             filter_inv.textProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+                table3.setPredicate((TreeItem<AnalysisDT2> t) -> {
+                    Boolean flag = t.getValue().ino.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().latey.getValue().toUpperCase().contains(newValue.toUpperCase()) || t.getValue().paid.getValue().toUpperCase().contains(newValue.toUpperCase());
+                    
+                    return flag;
+                });
+            });
+                  
+      //  users2.add(new AnalysisDT2());
   }
     @FXML
     private void Selection_of_PO_for_Invoice_Entry(MouseEvent event) {
-         
-
+       Inv_no.clear();
+       inv_date_recv.setValue(null);
+       inv_date_due.setValue(null);
+       inv_amt1.clear();
+       inv_amt.clear();
+       inv_loc.clear();
+       TogglePaid.setSelected(false);
+       Generate_Invoice_Table();
     }
 static String loc="UNKNOWN";
     @FXML
@@ -2101,6 +2138,11 @@ static String loc="UNKNOWN";
                         stmt.setString(6,loc);
                         stmt.setString(7,inv_date_due.getValue().toString());
                         stmt.executeUpdate();
+                   String sqlll = "INSERT INTO `purchase_pirel`(`Po_NO`, `Ino`) VALUES (?,?)";
+                  PreparedStatement stmttt = com.mycompany.snp.MainApp.conn.prepareStatement(sqlll); 
+                  stmttt.setString(1,PO_inv.getValue());
+                  stmttt.setString(2,Inv_no.getText());
+                  stmttt.executeUpdate();
                      if(ef){  
                 try {
                      String ssql ="INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`,`Late`) VALUES (?,?,?,?)";
@@ -2113,6 +2155,7 @@ static String loc="UNKNOWN";
                     else
                         stmtql.setInt(4,0);
                     stmtql.executeUpdate();
+                 
                 } catch (ParseException ex) {
                     Logger.getLogger(PurchaseController.class.getName()).log(Level.SEVERE, null, ex);
                 }
