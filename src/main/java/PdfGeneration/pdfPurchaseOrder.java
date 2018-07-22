@@ -269,8 +269,11 @@ public class pdfPurchaseOrder {
         fin.setFont(PdfFontFactory.createFont(FontConstants.HELVETICA)).setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT);
         fin.add(extralogo3);
         fin.add("\n" + "Authorised Signatory\n"
-                + "Vijay (Director - Operations)" + "\n");
+                + "Vijay (Director - Operations)" + "\n\n");
         document.add(fin);
+        Paragraph finish=new Paragraph().add(new Text("PO Acknowledged and Accepted").setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD)))
+                .add("\n"+"Please Sign and Stamp").setFontSize(9.0f).setTextAlignment(TextAlignment.LEFT);
+         document.add(finish);       
         event.writeTotal(pdf);
         document.close();
 

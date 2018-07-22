@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 22, 2018 at 06:08 PM
+-- Generation Time: Jul 22, 2018 at 10:57 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -564,14 +564,21 @@ CREATE TABLE `purchase_invoice` (
 --
 
 INSERT INTO `purchase_invoice` (`Ino`, `AmtwoGST`, `PaymentTerm`, `AmtwithGST`, `date_recv`, `paid`, `amtpaid`, `Location`, `PayDueDate`) VALUES
+('1234123sdfasdf', 32390981, NULL, 32423423, '2018-07-04', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-16'),
 ('23452345', 2341898, NULL, 2344243, '2018-07-11', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-30'),
+('23454dfghd', 567111, NULL, 567567, '2018-07-17', 1, 567567, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-14'),
 ('235345', 2342889, NULL, 2345234, '2018-07-03', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Invoice\\Awin\\1802-AE-INV-002.pdf', '2018-07-31'),
-('313', 1300, NULL, 1600, '2018-07-17', 0, 0, 'C:\\Users\\Admin\\Desktop\\pdf files\\1cg.pdf', '2018-07-30'),
-('33341', 1000, NULL, 1233, '2018-07-23', 0, 0, 'C:\\Users\\Admin\\Desktop\\pdf files\\cns.pdf', '2018-07-26'),
 ('3425345', 234521107, NULL, 234523452, '2018-07-18', 0, 0, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-014 (Aquatic) - Copy.pdf', '2018-07-19'),
-('777', 34290, NULL, 34524, '2018-07-24', 1, 34524, 'C:\\Users\\Admin\\Downloads\\CG Lab Manual-1.pdf', '2018-07-17'),
-('890', 10000, NULL, 13321, '2018-07-21', 1, 13321, 'C:\\Users\\Admin\\Desktop\\6th sem files\\cssyll6.pdf', '2018-07-23'),
-('8989', 1000, NULL, 1035, '2018-07-10', 1, 1035, 'C:\\Users\\Admin\\Desktop\\pdf files\\hello_world.pdf', '2018-07-16');
+('56565', 548899, NULL, 555555, '2018-07-23', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-09-20'),
+('5656544', 548899, NULL, 555555, '2018-07-23', 1, 555555, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-08-01'),
+('6431', 345200, NULL, 345543, '2018-07-18', 1, 345543, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-24'),
+('754', 777212, NULL, 777777, '2018-07-23', 0, 777, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-013 (Menck) - Copy.pdf', '2018-08-15'),
+('76786', 782001, NULL, 789898, '2018-07-26', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-07-22'),
+('98797', 97108, NULL, 97897, '2018-07-25', 1, 97897, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-SC-QT-001 (Aquatic).pdf', '2018-07-25'),
+('Apples1999', 773213, NULL, 777777, '2018-07-02', 1, 777777, 'UNKNOWN', '2018-07-25'),
+('asdf1234', 121070, NULL, 123412, '2018-07-16', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-22'),
+('asdfdasd3245345', 121070, NULL, 123412, '2018-07-16', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-24'),
+('asdfsd7fasdfa', 23423189, NULL, 23423423, '2018-07-19', 1, 23423423, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-23');
 
 -- --------------------------------------------------------
 
@@ -593,9 +600,15 @@ CREATE TABLE `purchase_invoicepayments` (
 --
 
 INSERT INTO `purchase_invoicepayments` (`Ino`, `paidDate`, `amount`, `Timestmp`, `Late`) VALUES
-('777', '2018-07-22', 34524, '2018-07-21 22:41:40', 0),
-('8989', '2018-07-22', 1035, '2018-07-21 22:58:01', 1),
-('890', '2018-07-22', 13321, '2018-07-21 22:59:36', 0);
+('98797', '2018-07-23', 97897, '2018-07-22 19:19:14', 0),
+('6431', '2018-07-23', 345543, '2018-07-22 19:24:43', 0),
+('5656544', '2018-07-23', 555555, '2018-07-22 19:27:32', 0),
+('asdfsd7fasdfa', '2018-07-23', 23423423, '2018-07-22 21:27:04', 0),
+('23454dfghd', '2018-07-23', 567567, '2018-07-22 21:34:11', 0),
+('6431', '2018-07-23', 100000, '2018-07-22 22:31:31', 0),
+('Apples1999', '2018-07-23', 777777, '2018-07-22 22:38:03', 0),
+('Apples1999', '2018-07-23', 0, '2018-07-22 22:48:02', 0),
+('754', '2018-07-23', 777, '2018-07-22 22:49:53', 0);
 
 -- --------------------------------------------------------
 
@@ -614,9 +627,21 @@ CREATE TABLE `purchase_pirel` (
 --
 
 INSERT INTO `purchase_pirel` (`Po_NO`, `Ino`) VALUES
+('18CONS-AE-PO-001', '1234123sdfasdf'),
 ('18CONS-AE-PO-001', '23452345'),
+('18CONS-AE-PO-003', '23454dfghd'),
 ('18CONS-AE-PO-001', '235345'),
-('18CONS-AE-PO-001', '3425345');
+('18CONS-AE-PO-001', '3425345'),
+('18CONS-AE-PO-002', '56565'),
+('18CONS-AE-PO-002', '5656544'),
+('18CONS-AE-PO-003', '6431'),
+('18CONS-AE-PO-003', '754'),
+('4-SC-PO-001', '76786'),
+('4-SC-PO-001', '98797'),
+('4-SC-PO-001', 'Apples1999'),
+('18CONS-AE-PO-002', 'asdf1234'),
+('18CONS-AE-PO-002', 'asdfdasd3245345'),
+('18CONS-AE-PO-001', 'asdfsd7fasdfa');
 
 -- --------------------------------------------------------
 
