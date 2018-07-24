@@ -286,7 +286,7 @@ public class pdfPurchaseOrder {
         public Header(String header) {
             this.header = header;
         }
-
+        
         @Override
         public void handleEvent(Event event) {
             PdfDocumentEvent docEvent = (PdfDocumentEvent) event;

@@ -2395,14 +2395,14 @@ public class PurchaseController implements Initializable {
                             String sq = "Select sum(amount) from `purchase_invoicepayments` where `Ino`= ? ";
                             PreparedStatement stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(sq);
                             stmtql.setString(1, Inv_no.getText());
-                            ResultSet rs=stmtql.executeQuery();
+                            ResultSet rs = stmtql.executeQuery();
                             if (rs.next()) {
-                                
+
                                 String ssql = "INSERT INTO `purchase_invoicepayments`(`Ino`, `paidDate`, `amount`,`Late`) VALUES (?,?,?,?)";
                                 stmtql = com.mycompany.snp.MainApp.conn.prepareStatement(ssql);
                                 stmtql.setString(1, Inv_no.getText());
                                 stmtql.setString(2, String.valueOf(Utilities.Date.Date()));
-                                stmtql.setDouble(3, Double.valueOf(inv_amt.getText())-rs.getDouble(1));
+                                stmtql.setDouble(3, Double.valueOf(inv_amt.getText()) - rs.getDouble(1));
                                 if (Date.beforeOrAfter(inv_date_due.getValue().toString()) != 0) {
                                     stmtql.setInt(4, 1);
                                 } else {

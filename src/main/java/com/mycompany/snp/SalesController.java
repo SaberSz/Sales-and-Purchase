@@ -331,8 +331,6 @@ public class SalesController implements Initializable {
     @FXML
     private TableView<Person2> table111;
     @FXML
-    private TableView<Person3> table13;
-    @FXML
     private JFXComboBox<String> QnoBox1;
     @FXML
     private JFXTextField PjNo;
@@ -714,12 +712,7 @@ public class SalesController implements Initializable {
                             System.out.println("HelloOut");
                             break;
                         } else {
-                            /* System.out.print(p.getFirstName().getText()+"\t");
-                        System.out.print(p.getLastName().getText()+"\t");
-                        System.out.print(p.getEmail().getText()+"\t");
-                        System.out.print(p.getRemark().getText()+"\t");
-                        System.out.println(p.getTotal().getText()+"\t");
-                             */
+                 
 
                             String d = pe.getItemNo().getText();
                             String q = pe.getDes().getText();

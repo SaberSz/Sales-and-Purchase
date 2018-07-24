@@ -13,6 +13,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -29,13 +30,16 @@
                <graphic>
                   <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" onMouseClicked="#Power_Button_Clicked" size="28" />
                </graphic>
+               <tooltip>
+                  <Tooltip text="Logout" />
+               </tooltip>
             </Label>
             <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0" prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
             <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_RIGHT" layoutX="161.0" layoutY="32.0" size="30" />
             <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
          </children>
       </AnchorPane>
-      <ScrollPane fx:id="EnquiryPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
+      <ScrollPane fx:id="EnquiryPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 5%, rgb(255,255,255));">
                <children>
@@ -43,6 +47,9 @@
                      <font>
                         <Font name="Arial" size="20.0" />
                      </font>
+                     <tooltip>
+                        <Tooltip text="Generate new Enquiry" />
+                     </tooltip>
                   </JFXButton>
                   <JFXTextField fx:id="ENo" editable="false" labelFloat="true" layoutX="14.0" layoutY="96.0" prefHeight="27.0" prefWidth="236.0" promptText="Enquiry Number">
                      <font>
@@ -83,22 +90,34 @@
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save Current Enquiry" />
+                     </tooltip>
                   </Label>
                   <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="960.0" layoutY="569.0" onMouseClicked="#delNewEnq" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Delete an Enquiry" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="pencilinv" contentDisplay="GRAPHIC_ONLY" layoutX="1020.0" layoutY="36.0" onMouseClicked="#Enq_edit_hit" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Edit an Existing Enquiry" />
+                     </tooltip>
                   </Label>
                   <JFXComboBox fx:id="EnqSelect" layoutX="466.0" layoutY="39.0" prefHeight="27.0" prefWidth="232.0" promptText="Enquiry Number" />
                   <Label fx:id="inv_tick" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="742.0" layoutY="39.0" onMouseClicked="#Selection_of_Enquiry_for_edit" prefHeight="26.0" prefWidth="19.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Select an Existing Enquiry" />
+                     </tooltip>
                   </Label>
                </children>
             </AnchorPane>
@@ -118,6 +137,9 @@
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Select Enquiry for New Quotation Generation" />
+                     </tooltip>
                   </Label>
                   <JFXTreeTableView fx:id="Table1" layoutX="574.0" layoutY="74.0" prefHeight="569.0" prefWidth="593.0" />
                   <JFXTextField fx:id="QNo" layoutX="14.0" layoutY="163.0" prefHeight="27.0" prefWidth="231.0" promptText="Quotation Number" />
@@ -132,17 +154,23 @@
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save new Quotation" />
+                     </tooltip>
                   </Label>
                   <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="390.0" layoutY="477.0" onMouseClicked="#delQuotation" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="DELETE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Delete an Existing Quotation" />
+                     </tooltip>
                   </Label>
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false" vvalue="1.0">
+      <ScrollPane fx:id="PurchaseOrderPane" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="985.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));">
                <children>
@@ -156,6 +184,9 @@
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Select a Quotation Number for PO generation" />
+                     </tooltip>
                   </Label>
                   <JFXTextArea fx:id="supplierInfo" editable="false" focusColor="#3f51b5" labelFloat="true" layoutX="21.0" layoutY="212.0" prefHeight="188.0" prefWidth="547.0" promptText="To:">
                      <font>
@@ -171,12 +202,18 @@
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save current PO" />
+                     </tooltip>
                   </Label>
                   <JFXTextField fx:id="PoTotal" labelFloat="true" layoutX="927.0" layoutY="548.0" prefHeight="27.0" prefWidth="230.0" promptText="Sub-Total" />
                   <Label fx:id="pdfGen" layoutX="1091.0" layoutY="789.0" onMouseClicked="#Gen_PO">
                      <graphic>
                         <MaterialDesignIconView fill="#e45a5a" glyphName="FILE_PDF" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Generate Pdf for current PO" />
+                     </tooltip>
                   </Label>
                   <JFXDatePicker fx:id="OrderDate1" defaultColor="#3f51b5" layoutX="952.0" layoutY="141.0" promptText="Delivery by" />
                   <JFXTextField fx:id="PoTotal1" editable="false" labelFloat="true" layoutX="927.0" layoutY="603.0" prefHeight="27.0" prefWidth="230.0" promptText="GST" />
@@ -187,22 +224,31 @@
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Select PO for edit" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="editPO" contentDisplay="GRAPHIC_ONLY" layoutX="1106.0" layoutY="63.0" onMouseClicked="#Edit_An_Existing_Purchase_Order" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Edit existing PO" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="plusPO" contentDisplay="GRAPHIC_ONLY" layoutX="1064.0" layoutY="60.0" onMouseClicked="#Add_Purchase_Order" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PLUS" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Create a new PO" />
+                     </tooltip>
                   </Label>
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="InvoicePaymentsPane1" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0">
+      <ScrollPane fx:id="InvoicePaymentsPane1" disable="true" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" visible="false">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="681.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 0.3%, rgb(255,255,255));">
                <children>
@@ -216,6 +262,9 @@
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="CHECK" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Select Purchase Order/ Invoice Number" />
+                     </tooltip>
                   </Label>
                   <JFXTextField fx:id="Inv_no" labelFloat="true" layoutX="12.0" layoutY="163.0" prefHeight="31.0" prefWidth="225.0" promptText="Invoice Number" />
                   <JFXTextField fx:id="inv_loc" labelFloat="true" layoutX="12.0" layoutY="416.0" prefHeight="31.0" prefWidth="229.0" promptText="File Location" />
@@ -230,31 +279,49 @@
                      <graphic>
                         <MaterialDesignIconView fill="WHITE" glyphName="CONTENT_SAVE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Save the current Invoice" />
+                     </tooltip>
                   </JFXButton>
                   <Label fx:id="Money_Paid" layoutX="183.0" layoutY="527.0" onMouseClicked="#Invoice_Amount_Paid">
                      <graphic>
                         <FontAwesomeIconView fill="WHITE" glyphName="MONEY" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Make an Invoice Payment" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="Inv_pen" contentDisplay="GRAPHIC_ONLY" layoutX="435.0" layoutY="81.0" onMouseClicked="#Edit_An_Existing_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PENCIL" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Edit existing Invoice" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="inv_plus" contentDisplay="GRAPHIC_ONLY" layoutX="391.0" layoutY="81.0" onMouseClicked="#Add_a_New_Invoice_for_PO" prefHeight="20.0" prefWidth="24.0" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="PLUS" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Back to Non-Edit Mode" />
+                     </tooltip>
                   </Label>
                   <Label fx:id="inv_del" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="276.0" layoutY="527.0" onMouseClicked="#Delete_Invoice_Selected_By_ComboBox" text="Label" textFill="RED">
                      <graphic>
                         <MaterialDesignIconView fill="RED" glyphName="DELETE" size="30" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Delete an Invoice" />
+                     </tooltip>
                   </Label>
                   <Label contentDisplay="GRAPHIC_ONLY" layoutX="241.0" layoutY="419.0" onMouseClicked="#Attach_Invoice_Button_Clicked" text="Label">
                      <graphic>
                         <MaterialDesignIconView fill="#3f51b5" glyphName="ATTACHMENT" size="25" />
                      </graphic>
+                     <tooltip>
+                        <Tooltip text="Choose file location" />
+                     </tooltip>
                   </Label>
                </children>
             </AnchorPane>
