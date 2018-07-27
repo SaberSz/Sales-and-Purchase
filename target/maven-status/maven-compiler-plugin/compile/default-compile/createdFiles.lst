@@ -52,6 +52,7 @@ PdfGeneration\pdfPurchaseOrder$Header.class
 com\mycompany\snp\PurchaseController$18.class
 PdfGeneration\pdfInvoice$PageXofY.class
 PdfGeneration\awinpd$Header.class
+com\mycompany\snp\SalesController$17$1.class
 com\mycompany\snp\PurchaseController$AnalysisDT2.class
 PdfGeneration\awinpd.class
 com\mycompany\snp\PurchaseController$20.class

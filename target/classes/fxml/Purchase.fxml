@@ -26,17 +26,39 @@
                   <Font name="Arial" size="20.0" />
                </font>
             </Label>
-            <Label fx:id="Power" contentDisplay="GRAPHIC_ONLY" layoutX="1162.0" layoutY="7.0" text="Label" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="7.0">
+            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0" prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
+            <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_RIGHT" layoutX="161.0" layoutY="32.0" size="30" />
+            <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
+            <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1168.0" layoutY="7.0" onMouseClicked="#handleClose" prefHeight="17.0" prefWidth="11.0" textFill="WHITE">
+               <font>
+                  <Font name="AppleGothic Regular" size="20.0" />
+               </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="POWER_OFF" onMouseClicked="#Power_Button_Clicked" size="28" />
+                  <FontAwesomeIconView fill="#d63a3a" glyphName="CIRCLE" size="20" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Close Window" />
+               </tooltip>
+            </Label>
+            <Label fx:id="miniButton" accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="1142.0" layoutY="7.0" onMouseClicked="#handlemin" prefHeight="17.0" prefWidth="11.0" textFill="WHITE">
+               <font>
+                  <Font name="AppleGothic Regular" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fill="#3d3d40" glyphName="CIRCLE" size="20" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Minimize Window" />
+               </tooltip>
+            </Label>
+            <Label contentDisplay="GRAPHIC_ONLY" layoutX="1113.0" layoutY="10.0" onMouseClicked="#power_off" text="Label">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="CIRCLE" size="20" />
                </graphic>
                <tooltip>
                   <Tooltip text="Logout" />
                </tooltip>
             </Label>
-            <JFXComboBox fx:id="MainMenu" layoutX="189.0" layoutY="6.0" prefHeight="31.0" prefWidth="195.0" promptText="   Menu" style="-fx-background-color: #ffffff; -fx-background-radius: 0.75em;" />
-            <FontAwesomeIconView fill="WHITE" glyphName="ANGLE_RIGHT" layoutX="161.0" layoutY="32.0" size="30" />
-            <MaterialDesignIconView fill="WHITE" glyphName="BRIEFCASE" layoutX="14.0" layoutY="31.0" size="28" />
          </children>
       </AnchorPane>
       <ScrollPane fx:id="EnquiryPane" layoutY="43.0" prefHeight="681.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">

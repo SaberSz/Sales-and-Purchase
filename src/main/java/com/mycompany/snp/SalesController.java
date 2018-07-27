@@ -61,7 +61,10 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Timer;
+import java.util.TreeSet;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -78,6 +81,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import static javafx.scene.input.MouseEvent.MOUSE_PRESSED;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 
 /**
@@ -133,6 +137,8 @@ public class SalesController implements Initializable {
     private JFXToggleButton projcomp;
     @FXML
     private Label Money_Paid;
+    @FXML
+    private Label miniButton;
 
     public void enqpane() {
 
@@ -712,7 +718,6 @@ public class SalesController implements Initializable {
                             System.out.println("HelloOut");
                             break;
                         } else {
-                 
 
                             String d = pe.getItemNo().getText();
                             String q = pe.getDes().getText();
@@ -964,13 +969,28 @@ public class SalesController implements Initializable {
                         //Connection conn = com.mycompany.snp.MainApp.conn;
                         String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
                         PreparedStatement ps;
+                        Set<String> s = new HashSet<String>();
+                        ps = conn.prepareStatement(suql);
+                        rs = ps.executeQuery();
+                        while (rs.next()) {
+                            //enq_year.getItems().add(rs.getString(1));
+                            s.add(rs.getString(1));
+
+                        }
+                        suql = "select distinct Date_format (Date1, '%Y') FROM enquirybin where 1";
 
                         ps = conn.prepareStatement(suql);
                         rs = ps.executeQuery();
                         while (rs.next()) {
-                            enq_year.getItems().add(rs.getString(1));
+                            // enq_year.getItems().add(rs.getString(1));
+                            s.add(rs.getString(1));
 
                         }
+                        Set<String> tree_Set = new TreeSet<String>(s);
+                        for (String stock : tree_Set) {
+                            enq_year.getItems().add(stock);
+                        }
+
                         suql = "select distinct Date_format (Date, '%Y') FROM product where 1";
 
                         ps = conn.prepareStatement(suql);
@@ -985,16 +1005,16 @@ public class SalesController implements Initializable {
                         rs = ps.executeQuery();
                         while (rs.next()) {
                             enq_year21.getItems().add(rs.getString(1));
-
-                            suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
-                            PreparedStatement st;
-                            st = conn.prepareStatement(suql);
-                            rs = st.executeQuery();
-                            while (rs.next()) {
-                                enq_year1.getItems().add(rs.getString(1));
-                            }
-
                         }
+
+                        suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
+                        PreparedStatement st;
+                        st = conn.prepareStatement(suql);
+                        rs = st.executeQuery();
+                        while (rs.next()) {
+                            enq_year1.getItems().add(rs.getString(1));
+                        }
+
                         System.out.println("1 done");
                         conn.close();
                     } catch (SQLException ex) {
@@ -1007,6 +1027,19 @@ public class SalesController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleClose(MouseEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    private void handlemin(MouseEvent event) {
+        Stage stage;
+        stage = stage = (Stage) miniButton.getScene().getWindow();
+        stage.setIconified(true);
+
     }
 
     void runInitialSetUp3() {
@@ -1047,8 +1080,8 @@ public class SalesController implements Initializable {
                     insideINVPane.setEffect(new GaussianBlur(20));
                     tock = true;
                     action.getItems().add("Decline Enquiries");
-                    action.getItems().add("Enquiries for which Quotations are not generated");
-                    action.getItems().add("Enquires for which Quotations are generated");
+                    action.getItems().add("Enquiries for which Quotations are not prepared");
+                    action.getItems().add("Enquires for which Quotations are prepared");
                     action11.getItems().add("Completed Projects");
                     action11.getItems().add("Projects yet to be completed");
                     action11.getItems().add("Projects that have exceeded the estimated deadline");
@@ -2808,7 +2841,15 @@ public class SalesController implements Initializable {
 
                                 SD[3] = false;
                             } else if (SD[4]) {
+                                Runnable task2 = new Runnable() {
+                                    public void run() {
 
+                                        runInitialSetUp2();
+                                    }
+                                };
+                                Thread backgroundThread2 = new Thread(task2);
+                                backgroundThread2.setDaemon(true);
+                                backgroundThread2.start();
                                 QoutPane.setDisable(true);
                                 QoutPane.setVisible(false);
                                 oldPOPane.setDisable(false);
@@ -2864,7 +2905,7 @@ public class SalesController implements Initializable {
                     }
                 }
             });
-            Thread.sleep(500);
+            Thread.sleep(50);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -3818,6 +3859,8 @@ public class SalesController implements Initializable {
         table12.setEffect(new GaussianBlur(20));
     }
 
+    private double xOffset = 0;
+    private double yOffset = 0;
     @FXML
     private void power_off(MouseEvent event) {
         try {
@@ -3827,7 +3870,17 @@ public class SalesController implements Initializable {
             stage = (Stage) table1.getScene().getWindow();
             //load up OTHER FXML document
             root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-            Scene scene = new Scene(root);
+              BorderPane root1 = new BorderPane(root);
+            root1.setOnMousePressed((MouseEvent event1) -> {
+                xOffset = event1.getSceneX();
+                yOffset = event1.getSceneY();
+            });
+            root1.setOnMouseDragged((MouseEvent event1) -> {
+                stage.setX(event1.getScreenX() - xOffset);
+                stage.setY(event1.getScreenY() - yOffset);
+            });
+            
+            Scene scene = new Scene(root1);
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {

@@ -6,23 +6,43 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class MainApp extends Application {
 
     public static Connection conn = null;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     @Override
     public void start(Stage stage) throws Exception {
         ConnectToDb();
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+        stage.initStyle(StageStyle.UNDECORATED);
+       
+        BorderPane root1 = new BorderPane(root);
 
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
-
-        stage.setTitle("JavaFX and Maven");
+        root1.setOnMousePressed((MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        root1.setOnMouseDragged((MouseEvent event) -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
+//        Extras.ResizeHelper.addResizeListener(stage);
+         Scene scene = new Scene(root1);
         stage.setScene(scene);
         stage.show();
+//        Scene scene = new Scene(root);
+        scene.getStylesheets().add("/styles/Styles.css");
+
+//        stage.setTitle("JavaFX and Maven");
+//        stage.setScene(scene);
+//        stage.show();
     }
 
     public void ConnectToDb() {

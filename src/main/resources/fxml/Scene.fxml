@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tooltip?>
@@ -23,6 +24,25 @@
                <font>
                   <Font name="Arial" size="20.0" />
                </font>
+            </Label>
+            <Label accessibleRole="BUTTON" contentDisplay="GRAPHIC_ONLY" layoutX="482.0" layoutY="7.0" onMouseClicked="#handleClose" prefHeight="17.0" prefWidth="11.0" textFill="WHITE">
+               <font>
+                  <Font name="AppleGothic Regular" size="20.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fill="#d63a3a" glyphName="CIRCLE" size="20" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Close Window" />
+               </tooltip>
+            </Label>
+            <Label contentDisplay="GRAPHIC_ONLY" layoutX="451.0" layoutY="10.0" onMouseClicked="#handlemin" text="Label">
+               <graphic>
+                  <FontAwesomeIconView fill="#3d3d40" glyphName="CIRCLE" size="20" />
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Minimise Window" />
+               </tooltip>
             </Label>
          </children>
       </AnchorPane>

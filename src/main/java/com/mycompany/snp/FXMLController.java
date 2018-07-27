@@ -31,6 +31,9 @@ public class FXMLController implements Initializable {
     @FXML
     private JFXButton LoginButton;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -51,7 +54,17 @@ public class FXMLController implements Initializable {
                     stage = (Stage) LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Sales.fxml"));
-                    Scene scene = new Scene(root);
+                    BorderPane root1 = new BorderPane(root);
+
+                    root1.setOnMousePressed((MouseEvent event1) -> {
+                        xOffset = event1.getSceneX();
+                        yOffset = event1.getSceneY();
+                    });
+                    root1.setOnMouseDragged((MouseEvent event1) -> {
+                        stage.setX(event1.getScreenX() - xOffset);
+                        stage.setY(event1.getScreenY() - yOffset);
+                    });
+                    Scene scene = new Scene(root1);
                     stage.setScene(scene);
                     stage.show();
                 } else if (category.equals("Purchase")) {
@@ -62,7 +75,17 @@ public class FXMLController implements Initializable {
                     stage = (Stage) LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Purchase.fxml"));
-                    Scene scene = new Scene(root);
+                    BorderPane root1 = new BorderPane(root);
+
+                    root1.setOnMousePressed((MouseEvent event1) -> {
+                        xOffset = event1.getSceneX();
+                        yOffset = event1.getSceneY();
+                    });
+                    root1.setOnMouseDragged((MouseEvent event1) -> {
+                        stage.setX(event1.getScreenX() - xOffset);
+                        stage.setY(event1.getScreenY() - yOffset);
+                    });
+                    Scene scene = new Scene(root1);
                     stage.setScene(scene);
                     stage.show();
                     System.out.println("Hello2");
@@ -76,6 +99,18 @@ public class FXMLController implements Initializable {
         } else {
             Utilities.AlertBox.notificationWarn("Error", "Incorrect login credentials.");
         }
+    }
+
+    @FXML
+    private void handlemin(MouseEvent event) {
+        Stage stage;
+        stage = stage = (Stage) LoginButton.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void handleClose(MouseEvent event) {
+        System.exit(0);
     }
 
 }

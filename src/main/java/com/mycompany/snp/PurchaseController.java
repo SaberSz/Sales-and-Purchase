@@ -61,6 +61,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
@@ -68,7 +69,6 @@ import javax.swing.JFileChooser;
 
 public class PurchaseController implements Initializable {
 
-    @FXML
     private Label Power;
     @FXML
     private JFXComboBox<String> MainMenu;
@@ -190,6 +190,8 @@ public class PurchaseController implements Initializable {
     private Label pdfGen;
     @FXML
     private Label inv_del;
+    @FXML
+    private Label miniButton;
 
     /**
      * Initializes the controller class.
@@ -528,8 +530,8 @@ public class PurchaseController implements Initializable {
         }
 
     }
-
-    @FXML
+    private double xOffset = 0;
+    private double yOffset = 0;
     private void Power_Button_Clicked(MouseEvent event) {
         try {
             Stage stage;
@@ -537,6 +539,15 @@ public class PurchaseController implements Initializable {
             stage = (Stage) Power.getScene().getWindow();
             //load up OTHER FXML document
             root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+             BorderPane root1 = new BorderPane(root);
+            root1.setOnMousePressed((MouseEvent event1) -> {
+                xOffset = event1.getSceneX();
+                yOffset = event1.getSceneY();
+            });
+            root1.setOnMouseDragged((MouseEvent event1) -> {
+                stage.setX(event1.getScreenX() - xOffset);
+                stage.setY(event1.getScreenY() - yOffset);
+            });
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -1343,6 +1354,44 @@ public class PurchaseController implements Initializable {
         GSTRate.clear();
         comp_inv_gst = "0";
         edit_bttn = false;
+    }
+
+    @FXML
+    private void handleClose(MouseEvent event) {
+        System.exit(0);
+    }
+
+    @FXML
+    private void handlemin(MouseEvent event) {
+        Stage stage;
+        stage = stage = (Stage) miniButton.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void power_off(MouseEvent event) {
+          try {
+            Stage stage;
+            Parent root;
+            stage = (Stage) Table1.getScene().getWindow();
+            //load up OTHER FXML document
+            root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
+              BorderPane root1 = new BorderPane(root);
+            root1.setOnMousePressed((MouseEvent event1) -> {
+                xOffset = event1.getSceneX();
+                yOffset = event1.getSceneY();
+            });
+            root1.setOnMouseDragged((MouseEvent event1) -> {
+                stage.setX(event1.getScreenX() - xOffset);
+                stage.setY(event1.getScreenY() - yOffset);
+            });
+            
+            Scene scene = new Scene(root1);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException ex) {
+            Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     class AnalysisDT2 extends RecursiveTreeObject<AnalysisDT2> {
