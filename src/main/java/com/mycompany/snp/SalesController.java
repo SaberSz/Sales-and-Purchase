@@ -139,6 +139,10 @@ public class SalesController implements Initializable {
     private Label Money_Paid;
     @FXML
     private Label miniButton;
+    @FXML
+    private JFXTextField DeliveryQ;
+    @FXML
+    private JFXTextField TermsQ;
 
     public void enqpane() {
 
@@ -3588,7 +3592,7 @@ public class SalesController implements Initializable {
         try {
             System.out.println("sdfsdfsfddsfsdfsdfsdfsdfs");
             String qno = QnoBox.getValue();
-            String sql = "SELECT e.Date1,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address  FROM eqrel er join enquiry e on er.eno=e.eqno "
+            String sql = "SELECT e.Date1,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address,c.cid  FROM eqrel er join enquiry e on er.eno=e.eqno "
                     + "and er.Date1=e.Date1 and er.cmpname=e.cmpname and er.cid=e.cid join customer c on e.cid=c.cid WHERE er.qno= ? ;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             stmt.setString(1, qno);
@@ -3605,7 +3609,7 @@ public class SalesController implements Initializable {
                 Cadd1.setText(rs.getString(8));
                 Qno1.setText(qno);
                 Edate1.setEditable(false);
-
+                cid=rs.getString(9);
             }
             if (ECom1.getText().equals("Awin")) {
                 //Generate the Awin Quotation Table 
@@ -3822,6 +3826,22 @@ public class SalesController implements Initializable {
                     revisedQno = x + String.valueOf(z);
                     // }
                     System.out.println(revisedQno);
+                    qno = revisedQno;
+                    suql = "INSERT INTO `qoutation`(`Qno`, `RevNo`"
+                            + " ) VALUES (?,?)";
+                    st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
+                    st.setString(1, qno);
+                    st.setString(2, String.valueOf(revisedno));
+                    st.executeUpdate();
+                    String suql1 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
+                    st = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
+                    st.setString(1, ENo1.getText());
+                    st.setString(2, qno);
+                    st.setString(3, Edate1.getValue().toString());
+                    st.setString(4, ECom1.getText());
+                    st.setString(5, cid);
+                    st.executeUpdate();
+                    Qno1.setText(qno);
                 }
 
                 if (ECom1.getText().equals("Awin")) {
@@ -3861,6 +3881,7 @@ public class SalesController implements Initializable {
 
     private double xOffset = 0;
     private double yOffset = 0;
+
     @FXML
     private void power_off(MouseEvent event) {
         try {
@@ -3870,7 +3891,7 @@ public class SalesController implements Initializable {
             stage = (Stage) table1.getScene().getWindow();
             //load up OTHER FXML document
             root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
-              BorderPane root1 = new BorderPane(root);
+            BorderPane root1 = new BorderPane(root);
             root1.setOnMousePressed((MouseEvent event1) -> {
                 xOffset = event1.getSceneX();
                 yOffset = event1.getSceneY();
@@ -3879,7 +3900,7 @@ public class SalesController implements Initializable {
                 stage.setX(event1.getScreenX() - xOffset);
                 stage.setY(event1.getScreenY() - yOffset);
             });
-            
+
             Scene scene = new Scene(root1);
             stage.setScene(scene);
             stage.show();
