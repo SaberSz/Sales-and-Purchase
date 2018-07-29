@@ -1083,7 +1083,7 @@ public class SalesController implements Initializable {
                     table111.setEffect(new GaussianBlur(20));
                     insideINVPane.setEffect(new GaussianBlur(20));
                     tock = true;
-                    action.getItems().add("Decline Enquiries");
+                    action.getItems().add("Declined Enquiries");
                     action.getItems().add("Enquiries for which Quotations are not prepared");
                     action.getItems().add("Enquires for which Quotations are prepared");
                     action11.getItems().add("Completed Projects");
@@ -1169,13 +1169,16 @@ public class SalesController implements Initializable {
             public void changed(ObservableValue ov, String oldValue, String newValue) {
 
                 if (newValue.equals("Declined Enquiries")) {
+                    System.out.println("newValue.equals(\"Declined Enquiries\")");
                     decline_enq();
                     enq_filter.clear();
 
-                } else if (newValue.equals("Enquiries for which Quotations are not generated")) {
+                } else if (newValue.equals("Enquiries for which Quotations are not prepared")) {
+                    System.out.println("newValue.equals(\"Enquiries for which Quotations are not prepared\")");
                     notquoted_enq();
                     enq_filter.clear();
-                } else if (newValue.equals("Enquires for which Quotations are generated")) {
+                } else if (newValue.equals("Enquires for which Quotations are prepared")) {
+                     System.out.println("newValue.equals(\"Enquiries for which Quotations are prepared\")");
                     quoted_enq();
                     enq_filter.clear();
                 }
@@ -2813,6 +2816,8 @@ public class SalesController implements Initializable {
                                         QnoBox.getItems().add(rs.getString(1));
                                         System.out.println(rs.getString(1));
                                     }
+                                    TermsQ.setEditable(!true);
+                                    DeliveryQ.setEditable(!true);
                                 } catch (Exception e) {
 
                                 }
@@ -3481,6 +3486,8 @@ public class SalesController implements Initializable {
             table11.setEditable(false);
             table11.getItems().clear();
             table11.getColumns().clear();
+            TermsQ.setEditable(true);
+            DeliveryQ.setEditable(true);
             //fill details of Awin table
             String sql1 = "SELECT * FROM `QuotationDetails_Awin` WHERE qno = ? ";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
@@ -3592,7 +3599,8 @@ public class SalesController implements Initializable {
         try {
             System.out.println("sdfsdfsfddsfsdfsdfsdfsdfs");
             String qno = QnoBox.getValue();
-            String sql = "SELECT e.Date1,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address,c.cid  FROM eqrel er join enquiry e on er.eno=e.eqno "
+            String sql = "SELECT e.Date1,e.Eqno,e.Cmpname,e.Subject,c.Name,c.phone,c.email,c.Address,c.cid,qw.Delivery,qw.Terms   "
+                    + "FROM eqrel er join qoutation qw on qw.qno=er.qno join enquiry e on er.eno=e.eqno "
                     + "and er.Date1=e.Date1 and er.cmpname=e.cmpname and er.cid=e.cid join customer c on e.cid=c.cid WHERE er.qno= ? ;";
             PreparedStatement stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
             stmt.setString(1, qno);
@@ -3609,8 +3617,12 @@ public class SalesController implements Initializable {
                 Cadd1.setText(rs.getString(8));
                 Qno1.setText(qno);
                 Edate1.setEditable(false);
-                cid=rs.getString(9);
+                cid = rs.getString(9);
+                DeliveryQ.setText(rs.getString(10));
+                TermsQ.setText(rs.getString(11));
+
             }
+
             if (ECom1.getText().equals("Awin")) {
                 //Generate the Awin Quotation Table 
                 generate_Awin_Table(false);
@@ -3652,20 +3664,35 @@ public class SalesController implements Initializable {
     @FXML
     private void Save_Quotation_in_QuotationPane(MouseEvent event) {
         String qno = Qno1.getText();
+        PreparedStatement stmt;
+
         if (edit_button_hit_in_QPane) {
-            if (ECom1.getText().equals("Awin")) {
-                Quotation_insert_into_awin_table(qno, table11);
-                generate_Awin_Table(false);
+            try {
+                String sqlab = "UPDATE `qoutation` SET "
+                        + "`Delivery`=?,`Terms`=? WHERE `Qno`=?";
+                stmt = com.mycompany.snp.MainApp.conn.prepareStatement(sqlab);
+                stmt.setString(1, DeliveryQ.getText());
+                stmt.setString(2, TermsQ.getText());
+                stmt.setString(3, qno);
+                stmt.executeUpdate();
+                if (ECom1.getText().equals("Awin")) {
+                    Quotation_insert_into_awin_table(qno, table11);
+                    generate_Awin_Table(false);
 
-            } else if (ECom1.getText().equals("Steels")) {
-                Quotation_insert_into_steel(qno, table111);
-                generate_Steels_Table(false);
+                } else if (ECom1.getText().equals("Steels")) {
+                    Quotation_insert_into_steel(qno, table111);
+                    generate_Steels_Table(false);
 
+                }
+            } catch (SQLException exe) {
+                Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
+                Utilities.AlertBox.notificationWarn("Error", "Oops something went wrong!");
+                Utilities.AlertBox.showErrorMessage(exe);
             }
 
         } else if (revisedQno != "") {
             String k = ENo1.getText();
-            PreparedStatement stmt;
+
             try {
 
                 String sql5 = "Select e.cid from eqrel e where e.qno=? ";//qnoforquery
@@ -3675,10 +3702,14 @@ public class SalesController implements Initializable {
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
                     Integer abc = rs.getInt(1);
-                    String suql1 = "INSERT INTO `qoutation`(`Qno`,`RevNo`) VALUES (?,?)";
+                    String suql1 = "INSERT INTO `qoutation`(`Qno`, `RevNo`, `Delivery`, `Terms`"
+                            + " ) VALUES (?,?,?,?)";
                     stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
                     stmt.setString(1, revisedQno);
                     stmt.setInt(2, revisedno);
+                    stmt.setString(3, DeliveryQ.getText());
+                    stmt.setString(4, TermsQ.getText());
+
                     stmt.executeUpdate();
                     String suql2 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                     stmt = com.mycompany.snp.MainApp.conn.prepareStatement(suql2);
@@ -3700,6 +3731,8 @@ public class SalesController implements Initializable {
                         generate_Steels_Table(false);
 
                     }
+                    TermsQ.setEditable(!true);
+                    DeliveryQ.setEditable(!true);
                 }
             } catch (SQLException exe) {
                 Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, exe);
@@ -3713,7 +3746,8 @@ public class SalesController implements Initializable {
     }//revision of quotation also handled here
 
     @FXML
-    private void Generate_Quotation_in_QuotationPane(MouseEvent event) {
+    private void Generate_Quotation_in_QuotationPane(MouseEvent event
+    ) {
         if (Utilities.AlertBox.alertoption("Quotation PDF Generation", "Are you sure you want to generate the PDF file for this Quotation?", "Note that once the pdf is generated we assume that the generated PDF"
                 + " file is sent to the customer")) {
             String qno = Qno1.getText();
@@ -3730,6 +3764,9 @@ public class SalesController implements Initializable {
                         hm.put("Customer Mail", Cmail1.getText().trim());
                         hm.put("toAddress", Cadd1.getText());
                         hm.put("Subject", EDes1.getText());
+                        hm.put("Delivery", DeliveryQ.getText());
+                        hm.put("Terms", TermsQ.getText());
+
                         ObservableList<Person2> trc;
                         trc = FXCollections.observableArrayList(table111.getItems());
                         hm.put("TableItems", trc);
@@ -3761,6 +3798,8 @@ public class SalesController implements Initializable {
                         hm.put("Customer Mail", Cmail1.getText().trim());
                         hm.put("toAddress", Cadd1.getText());
                         hm.put("Subject", EDes1.getText());
+                        hm.put("Delivery", DeliveryQ.getText());
+                        hm.put("Terms", TermsQ.getText());
                         ObservableList<Person> trc;
                         trc = FXCollections.observableArrayList(table11.getItems());
                         hm.put("TableItems", trc);
@@ -3791,6 +3830,11 @@ public class SalesController implements Initializable {
 
     @FXML
     private void Revise_Quotation_in_QuotationPane(MouseEvent event) {
+        /**
+         * This method just generates the revised qno number And then it when
+         * the save button is clicked the user's revised quotation is inserted
+         * into the table
+         */
         if (Utilities.AlertBox.alertoption("Revision", "You just clicked the Revise button!", " Are you sure you want to revise quotation number :" + Qno1.getText())) {
             revise_button_hit_in_QPane = true;
             edit_button_hit_in_QPane = false;
@@ -3826,12 +3870,14 @@ public class SalesController implements Initializable {
                     revisedQno = x + String.valueOf(z);
                     // }
                     System.out.println(revisedQno);
-                    qno = revisedQno;
-                    suql = "INSERT INTO `qoutation`(`Qno`, `RevNo`"
-                            + " ) VALUES (?,?)";
+                    //qno = revisedQno;
+                    /*suql = "INSERT INTO `qoutation`(`Qno`, `RevNo`, `Delivery`, `Terms`"
+                            + " ) VALUES (?,?,?,?)";
                     st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
                     st.setString(1, qno);
                     st.setString(2, String.valueOf(revisedno));
+                    st.setString(3, DeliveryQ.getText());
+                    st.setString(4, TermsQ.getText());
                     st.executeUpdate();
                     String suql1 = "INSERT INTO `eqrel`(`Eno`, `QNo`, `Date1`, `Cmpname`, `CID`) VALUES (?,?,?,?,?)";
                     st = com.mycompany.snp.MainApp.conn.prepareStatement(suql1);
@@ -3840,8 +3886,8 @@ public class SalesController implements Initializable {
                     st.setString(3, Edate1.getValue().toString());
                     st.setString(4, ECom1.getText());
                     st.setString(5, cid);
-                    st.executeUpdate();
-                    Qno1.setText(qno);
+                    st.executeUpdate();*/
+
                 }
 
                 if (ECom1.getText().equals("Awin")) {
@@ -3853,7 +3899,7 @@ public class SalesController implements Initializable {
                     generate_Steels_Table(true, true);
 
                 }
-
+                Qno1.setText(revisedQno);
             } catch (Exception e) {
                 Utilities.AlertBox.showErrorMessage(e);
             }

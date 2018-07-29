@@ -90,7 +90,7 @@
       <JFXDrawer fx:id="SalesDraw" defaultDrawerSize="210.0" disable="true" layoutY="43.0" prefHeight="678.0" prefWidth="210.0" visible="false" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="43.0" />
       <AnchorPane layoutX="5.0" layoutY="43.0" prefHeight="678.0" prefWidth="1195.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 25%, rgb(255,255,255));" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="43.0">
          <children>
-            <ScrollPane fx:id="QoutPane" hbarPolicy="NEVER" layoutX="-7.0" prefHeight="681.0" prefWidth="1209.0">
+            <ScrollPane fx:id="QoutPane" hbarPolicy="NEVER" layoutX="-7.0" prefHeight="681.0" prefWidth="1209.0" vvalue="0.42">
                <content>
                   <AnchorPane prefHeight="678.0" prefWidth="1200.0" style="-fx-background-color: linear-gradient(to top ,rgb(63, 81, 181) 15%, rgb(255,255,255));">
                      <children>
@@ -159,7 +159,7 @@
                                  </effect>
                               </Label>
                               <Separator layoutX="129.0" layoutY="519.0" prefHeight="8.0" prefWidth="793.0" />
-                              <JFXTextField fx:id="Qno1" editable="false" layoutX="15.0" layoutY="606.0" prefHeight="27.0" prefWidth="236.0" promptText="Quotation Number">
+                              <JFXTextField fx:id="Qno1" editable="false" labelFloat="true" layoutX="15.0" layoutY="606.0" prefHeight="27.0" prefWidth="236.0" promptText="Quotation Number">
                                  <font>
                                     <Font name="Arial" size="13.0" />
                                  </font>
@@ -198,12 +198,12 @@
                                     <Tooltip text="Revise current Quotation" />
                                  </tooltip>
                               </JFXButton>
-                              <JFXTextField fx:id="DeliveryQ" editable="false" layoutX="268.0" layoutY="607.0" prefHeight="27.0" prefWidth="236.0" promptText="Delivery">
+                              <JFXTextField fx:id="DeliveryQ" editable="false" labelFloat="true" layoutX="268.0" layoutY="607.0" prefHeight="27.0" prefWidth="236.0" promptText="Delivery">
                                  <font>
                                     <Font name="Arial" size="13.0" />
                                  </font>
                               </JFXTextField>
-                              <JFXTextField fx:id="TermsQ" editable="false" layoutX="526.0" layoutY="606.0" prefHeight="27.0" prefWidth="236.0" promptText="Terms">
+                              <JFXTextField fx:id="TermsQ" editable="false" labelFloat="true" layoutX="526.0" layoutY="606.0" prefHeight="27.0" prefWidth="236.0" promptText="Terms">
                                  <font>
                                     <Font name="Arial" size="13.0" />
                                  </font>

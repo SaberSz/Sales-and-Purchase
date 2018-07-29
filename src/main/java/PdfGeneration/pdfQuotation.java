@@ -450,7 +450,7 @@ public class pdfQuotation {
         Table t5 = new Table(new float[]{1, 1, 2});
         t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph("Thank you.\n\nYours faithfully,").addStyle(arialn).setFontSize(9.5f).setTextAlignment(TextAlignment.LEFT)));
         t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(extralogo4).setHorizontalAlignment(HorizontalAlignment.LEFT));
-        t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph().add(new Text("M/S : Aquatic Asia Pacific Pte Ltd".toUpperCase()).setFontSize(9.5f)
+        t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph().add(new Text(("M/S : "+(String) hm.get("Customer Name")).toUpperCase()).setFontSize(9.5f)
                 .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true)))
                 .add("\nWe accept the terms and conditions").addStyle(arialn).setFontSize(9.5f)));
         Image steelslogo1 = new Image(ImageDataFactory.create("images/SteelLogo.png"));

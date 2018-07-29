@@ -208,10 +208,18 @@ public class awinqtepdf {
         }
         Image extralogo12 = new Image(ImageDataFactory.create("InvoiceSC/Picture5.jpg"));
         document.add(table);
+        String a =(String) hm.get("Terms");
+        if(a.trim().equals("-")||a.trim().equals("")){
+            a="30 weeks";
+        }
+         String b =(String) hm.get("Delivery");
+        if(b.trim().equals("-")||b.trim().equals("")){
+            b="2 weeks";
+        }
         Paragraph x = new Paragraph()
-                .add("Exclusions\t:\t" + "Third Party fdsfsdfsfsfdsdfddf" + "\n")
-                .add("Terms\t:\t" + "30 weeks from the date of Invoice" + "\n")
-                .add("Delivery\t:\t" + "2 Week upon receipt of PO" + "\n")
+                .add("Exclusions\t:\t" + "Third Party" + "\n")
+                .add("Terms\t:\t" +a.trim()+" from the date of Invoice" + "\n")
+                .add("Delivery\t:\t" +b.trim()+" upon receipt of PO" + "\n")
                 .add("Unless and otherwise stated the price is states in S$ excluding 7% GST, merchandise packed and uninsured. This quote is subject to our"
                         + " general terms & conditions of sales and will apply as amended from time to time." + "\n")
                 .add("We hope that this offer meets your expectations and we are looking forward to receiving your order. You can rest assured that your"
