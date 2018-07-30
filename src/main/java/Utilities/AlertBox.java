@@ -62,17 +62,29 @@ public class AlertBox {
     }
 
     public static void notificationWarn(String title, String text) {
+        int tm = 3;
+        if (text.length() > 25) {
+            tm = 5;
+        } else if(text.length() > 50){
+             tm=7;
+        }
         Notifications n = Notifications.create()
                 .title(title)
                 .text(text)
                 .graphic(null)
-                .hideAfter(Duration.seconds(7))
+                .hideAfter(Duration.seconds(tm))
                 .position(Pos.CENTER);
-        //n.darkStyle();
+        n.darkStyle();
         n.showWarning();
     }
 
     public static void notificationInfo(String title, String text) {
+        int tm = 3;
+        if (text.length() > 25) {
+            tm = 5;
+        } else if(text.length() > 50){
+             tm=7;
+        }
         Notifications n = Notifications.create()
                 .title(title)
                 .text(text)
@@ -88,7 +100,7 @@ public class AlertBox {
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(content);
-        
+
         Optional<ButtonType> result = alert.showAndWait();
         return result.get() == ButtonType.OK;
     }

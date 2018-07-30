@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 29, 2018 at 08:12 AM
+-- Generation Time: Jul 30, 2018 at 06:52 PM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -267,6 +267,13 @@ CREATE TABLE `product` (
   `Compdate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp`, `Compdate`) VALUES
+('AWPO123', 1801, 345000, '2018-07-30', '2018-08-15', 'Fresh Steels, Pepsi or Coke, Sprite and Fanta', 0, '2018-07-31');
+
 -- --------------------------------------------------------
 
 --
@@ -443,6 +450,13 @@ CREATE TABLE `qprel` (
   `Qno` varchar(25) NOT NULL,
   `PjNo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `qprel`
+--
+
+INSERT INTO `qprel` (`Qno`, `PjNo`) VALUES
+('18-AE-QT-001.Rev.2', 1801);
 
 -- --------------------------------------------------------
 

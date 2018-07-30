@@ -10,6 +10,7 @@ import static DBMS.Connect.PASS;
 import static DBMS.Connect.USER;
 import java.util.TimerTask;
 import PdfGeneration.pdfInvoice;
+import animatefx.animation.FadeIn;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXDrawer;
@@ -288,7 +289,7 @@ public class SalesController implements Initializable {
     private ScrollPane InvoicePane;
 
     @FXML
-    private ScrollPane newPOPane;
+    private AnchorPane newPOPane;
 
     @FXML
     private ScrollPane newEqPane;
@@ -969,6 +970,11 @@ public class SalesController implements Initializable {
                 public void run() {
                     ResultSet rs;
                     try {
+                        enq_year.getItems().clear();
+                        enq_year1.getItems().clear();
+                        enq_year2.getItems().clear();
+                        enq_year21.getItems().clear();
+
                         Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
                         //Connection conn = com.mycompany.snp.MainApp.conn;
                         String suql = "select distinct Date_format (Date1, '%Y') FROM enquiry where 1";
@@ -976,6 +982,7 @@ public class SalesController implements Initializable {
                         Set<String> s = new HashSet<String>();
                         ps = conn.prepareStatement(suql);
                         rs = ps.executeQuery();
+                        s.add(String.valueOf(LocalDate.now().getYear()));
                         while (rs.next()) {
                             //enq_year.getItems().add(rs.getString(1));
                             s.add(rs.getString(1));
@@ -996,27 +1003,45 @@ public class SalesController implements Initializable {
                         }
 
                         suql = "select distinct Date_format (Date, '%Y') FROM product where 1";
-
+                        s.clear();
+                        s.add(String.valueOf(LocalDate.now().getYear()));
                         ps = conn.prepareStatement(suql);
                         rs = ps.executeQuery();
                         while (rs.next()) {
-                            enq_year2.getItems().add(rs.getString(1));
+                            s.add(rs.getString(1));
 
+                        }
+                        tree_Set = new TreeSet<String>(s);
+                        for (String stock : tree_Set) {
+                            enq_year2.getItems().add(stock);
                         }
                         suql = "select distinct Date_format (Date, '%Y') FROM invoice where Date IS NOT NULL";
 
                         ps = conn.prepareStatement(suql);
                         rs = ps.executeQuery();
+                        s.clear();
+                        s.add(String.valueOf(LocalDate.now().getYear()));
                         while (rs.next()) {
-                            enq_year21.getItems().add(rs.getString(1));
-                        }
+                            s.add(rs.getString(1));
 
+                        }
+                        tree_Set = new TreeSet<String>(s);
+                        for (String stock : tree_Set) {
+                            enq_year21.getItems().add(stock);
+                        }
                         suql = "SELECT DISTINCT Substring(Sentdate,1,4) FROM `qoutation` WHERE Sentdate is NOT null";
                         PreparedStatement st;
                         st = conn.prepareStatement(suql);
                         rs = st.executeQuery();
+                        s.clear();
+                        s.add(String.valueOf(LocalDate.now().getYear()));
                         while (rs.next()) {
-                            enq_year1.getItems().add(rs.getString(1));
+                            s.add(rs.getString(1));
+
+                        }
+                        tree_Set = new TreeSet<String>(s);
+                        for (String stock : tree_Set) {
+                            enq_year1.getItems().add(stock);
                         }
 
                         System.out.println("1 done");
@@ -1178,7 +1203,7 @@ public class SalesController implements Initializable {
                     notquoted_enq();
                     enq_filter.clear();
                 } else if (newValue.equals("Enquires for which Quotations are prepared")) {
-                     System.out.println("newValue.equals(\"Enquiries for which Quotations are prepared\")");
+                    System.out.println("newValue.equals(\"Enquiries for which Quotations are prepared\")");
                     quoted_enq();
                     enq_filter.clear();
                 }
@@ -1382,7 +1407,8 @@ public class SalesController implements Initializable {
                                        s.getData().add(new XYChart.Data(k.toString(),0));
                            s1.getData().add(new XYChart.Data(k.toString(),0));
                            }*/
-            String suql = "SELECT substring(Sentdate,6,2) as m,COUNT(*) FROM `qoutation` WHERE sent=1 and substring(Sentdate,1,4) LIKE '" + d + "%' GROUP BY m";
+            String suql = "SELECT substring(Sentdate,6,2) as m,COUNT(*) FROM `qoutation`"
+                    + " WHERE sent=1 and substring(Sentdate,1,4) LIKE '" + d + "%' GROUP BY m";
             PreparedStatement st;
             st = com.mycompany.snp.MainApp.conn.prepareStatement(suql);
 
@@ -2384,6 +2410,7 @@ public class SalesController implements Initializable {
             proj_bar.getData().add(new XYChart.Series(FXCollections.observableArrayList(new XYChart.Data("", 0))));
             proj_bar.getData().clear();
             xaxis_pjbc.getCategories().clear();
+
             xaxis_pjbc.getCategories().addAll("Awin", "Steels");
             XYChart.Series dataSeries1 = new XYChart.Series();
             XYChart.Series dataSeries2 = new XYChart.Series();
@@ -2401,7 +2428,7 @@ public class SalesController implements Initializable {
             proj_bar.setAnimated(true);
 
             String sql = "SELECT (CASE substring(m.qno,4,2) when \"AE\" then \"Awin\" when \"SC\" then \"Steels\" END) as k, count(*) FROM "
-                    + "(Select * from product p natural join qprel q where substring(Date,1,4)=\"" + d + "\" and CURDATE()>p.Date) m group by substring(m.qno,4,2) ;";
+                    + "(Select * from product p natural join qprel q where substring(Date,1,4)=\"" + d + "\" and CURDATE()>p.EstDate) m group by substring(m.qno,4,2) ;";
             Statement stmt = com.mycompany.snp.MainApp.conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
@@ -2793,6 +2820,7 @@ public class SalesController implements Initializable {
                                 newPOPane.setVisible(false);
                                 newEqPane.setDisable(false);
                                 newEqPane.setVisible(true);
+                                new FadeIn(newEqPane).play();
 
                                 SD[0] = false;
                             } else if (SD[2]) {
@@ -2821,7 +2849,7 @@ public class SalesController implements Initializable {
                                 } catch (Exception e) {
 
                                 }
-
+                                new FadeIn(QoutPane).play();
                                 SD[2] = false;
                             } else if (SD[3]) {
 
@@ -2847,7 +2875,7 @@ public class SalesController implements Initializable {
                                 } catch (Exception e) {
 
                                 }
-
+                                new FadeIn(newPOPane).play();
                                 SD[3] = false;
                             } else if (SD[4]) {
                                 Runnable task2 = new Runnable() {
@@ -2869,7 +2897,7 @@ public class SalesController implements Initializable {
                                 newPOPane.setVisible(false);
                                 newEqPane.setDisable(true);
                                 newEqPane.setVisible(false);
-
+                                new FadeIn(oldPOPane).play();
                                 SD[4] = false;
                             } else if (SD[5]) {
 
@@ -2907,6 +2935,7 @@ public class SalesController implements Initializable {
                                 } catch (SQLException ex) {
                                     Logger.getLogger(SalesController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
+                                new FadeIn(InvoicePane).play();
                             }
                         }
                     } catch (Exception e) {
@@ -3967,7 +3996,7 @@ public class SalesController implements Initializable {
             if (rs.next()) {
                 //fill datails
                 int PjNOs = rs.getInt(1);
-                String sql1 = "SELECT `PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des` FROM `product` WHERE PjNo=?";
+                String sql1 = "SELECT `PNo`, `PjNo`, `Value`, `Date`, `EstDate`, `Des`, `Comp` FROM `product` WHERE PjNo=?";
                 ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql1);
                 ps.setInt(1, PjNOs);
                 rs = ps.executeQuery();
@@ -3986,6 +4015,13 @@ public class SalesController implements Initializable {
                     DateRec.setEditable(false);
                     EstDate.setEditable(false);
                     ProDes.setEditable(false);
+                    if (rs.getString(7).equals("1")) {
+                        projcomp.setSelected(true);
+                    } else {
+                        projcomp.setSelected(false);
+                    }
+                    projcomp.setDisable(false);
+                    projcomp.setVisible(!false);
                 }
             } else {
                 //setEditable(true)
@@ -3996,20 +4032,25 @@ public class SalesController implements Initializable {
                 // ps.setInt(1,PjNOs);
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    String PjNOs = rs.getString(1);
-                    String d = Utilities.Date.Date();
-                    String k = d.substring(d.indexOf('-') - 2, d.indexOf('-'));
-                    if (Integer.valueOf(PjNOs) < 10) {
-                        k += "0";
-                    }
-                    k += PjNOs;
-                    PjNo.setText(k);
+//                    String PjNOs = rs.getString(1);
+//                    String d = Utilities.Date.Date();
+//                    String k = d.substring(d.indexOf('-') - 2, d.indexOf('-'));
+//                    if (Integer.valueOf(PjNOs) < 10) {
+//                        k += "0";
+//                    }
+//                    k += PjNOs;
+                    PjNo.setText(rs.getString(1));
                     PjNo.setEditable(false);
                     PrNo.setEditable(true);
+                    PrNo.clear();
                     EsVal.setEditable(true);
+                    EsVal.clear();
                     DateRec.setEditable(true);
+                    DateRec.setValue(null);
                     EstDate.setEditable(true);
+                    EstDate.setValue(null);
                     ProDes.setEditable(true);
+                    ProDes.clear();
                 }
             }
         } catch (SQLException ex) {
@@ -4020,7 +4061,7 @@ public class SalesController implements Initializable {
     void insert_into_proj_table() {
         try {
             int pjno = Integer.parseInt(PjNo.getText());
-            int prno = Integer.parseInt(PrNo.getText());
+            //int prno = Integer.parseInt(PrNo.getText());
             int esval = Integer.parseInt(EsVal.getText());
             String daterec = DateRec.getValue().toString();
             String estrec = EstDate.getValue().toString();
@@ -4029,7 +4070,7 @@ public class SalesController implements Initializable {
 
             String sql = "INSERT INTO `product`(`PNo`, `PjNo`, `Value`, `Date`, `EstDate`,`Des`) VALUES (?,?,?,?,?,?)";
             PreparedStatement ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            ps.setInt(1, prno);
+            ps.setString(1, PrNo.getText());
             ps.setInt(2, pjno);
             ps.setInt(3, esval);
             ps.setString(4, daterec);
@@ -4054,7 +4095,7 @@ public class SalesController implements Initializable {
     void insert_into_proj_table(boolean b) {
         try {
             int pjno = Integer.parseInt(PjNo.getText());
-            int prno = Integer.parseInt(PrNo.getText());
+            //int prno = Integer.parseInt(PrNo.getText());
             int esval = Integer.parseInt(EsVal.getText());
             String daterec = DateRec.getValue().toString();
             String estrec = EstDate.getValue().toString();
@@ -4063,7 +4104,7 @@ public class SalesController implements Initializable {
 
             String sql = "UPDATE `product` SET `PNo`=?,`Value`=?,`Date`=?,`EstDate`=?,`Des`=?,`Comp`=?,`Compdate`=? WHERE PJNO = ? ;";
             PreparedStatement ps = com.mycompany.snp.MainApp.conn.prepareStatement(sql);
-            ps.setInt(1, prno);
+            ps.setString(1, PrNo.getText());
 
             ps.setInt(2, esval);
             ps.setString(3, daterec);
@@ -4103,6 +4144,8 @@ public class SalesController implements Initializable {
         } else {
 
             insert_into_proj_table();
+            projcomp.setVisible(false);
+            projcomp.setDisable(true);
             Utilities.AlertBox.notificationInfo("Saved", "The project information has  been saved.");
         }
         PjNo.setEditable(false);
@@ -4112,8 +4155,6 @@ public class SalesController implements Initializable {
         EstDate.setEditable(false);
         ProDes.setEditable(false);
         edit_button_hit_in_PPane = false;
-        projcomp.setVisible(false);
-        projcomp.setDisable(true);
 
     }
     static boolean edit_button_hit_in_PPane = false;

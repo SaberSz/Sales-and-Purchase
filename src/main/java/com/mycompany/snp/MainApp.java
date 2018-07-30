@@ -1,5 +1,8 @@
 package com.mycompany.snp;
 
+import animatefx.animation.BounceIn;
+import animatefx.animation.FadeIn;
+import animatefx.animation.Flip;
 import java.sql.Connection;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
@@ -37,6 +40,7 @@ public class MainApp extends Application {
          Scene scene = new Scene(root1);
         stage.setScene(scene);
         stage.show();
+        new FadeIn(root).play();
 //        Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
 
