@@ -57,9 +57,17 @@ public class awinpd {
         DEST = "results/Invoice/Awin/";
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        DEST = DEST + hm.get("Invoice Number") + ".pdf";
+        DEST = DEST + hm.get("Invoice Number").toString().replace('.','-') + ".pdf";
         System.out.println(DEST);
         createPdf(DEST, hm);
+                if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(DEST);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+        }
     }
 
     public void createPdf(String dest, HashMap<String, Object> hm) throws IOException {
@@ -79,11 +87,11 @@ public class awinpd {
         cal.setFont(calibri).setFontSize(9.5f);
         // Initialize document
         Document document = new Document(pdf, PageSize.A4);
-        Image steelslogo = new Image(ImageDataFactory.create("images/Picturek.jpg"));//C:/Users/Admin/Desktop/Sales-and-Purchase/
+        Image steelslogo = new Image(ImageDataFactory.create("images/AwinLogo.png"));//C:/Users/Admin/Desktop/Sales-and-Purchase/
         Image extralogo1 = new Image(ImageDataFactory.create("images/yoyo.png"));//change path here
         Image extralogo2 = new Image(ImageDataFactory.create("images/bubbby.png"));//change path here
         Image extralogo3 = new Image(ImageDataFactory.create("images/Picture4.jpg"));//change path here
-        //  steelslogo.scaleAbsolute(63f,63f);
+        steelslogo.scaleAbsolute(73f, 53f);
         // steelslogo.setFixedPosition(100,760);
         extralogo1.scaleAbsolute(50f, 35f);
         extralogo2.scaleAbsolute(73f, 30f);
@@ -163,6 +171,7 @@ public class awinpd {
 
         //inv.setNextRenderer(new DottedLineCellRenderer(inv));
         inv.add(new Paragraph("Invoice No:\n" + (String) hm.get("Invoice Number")).setFont(f).setFontSize(8)).setBorderTop(Border.NO_BORDER);
+        inv.setWidth(98.9f);
         Cell d = new Cell(1, 1).setBorderTop(Border.NO_BORDER);
 
         d.add(new Paragraph("Date:")

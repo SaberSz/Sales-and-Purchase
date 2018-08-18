@@ -1,5 +1,7 @@
 package com.mycompany.snp;
 
+import animatefx.animation.FadeIn;
+import animatefx.animation.FadeOut;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
@@ -31,13 +33,17 @@ public class FXMLController implements Initializable {
     @FXML
     private JFXButton LoginButton;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         cate.getItems().add("Sales");
         cate.getItems().add("Purchase");
     }
-
+Parent root;
+BorderPane root1;
     @FXML
     private void LoginButtonHit(MouseEvent event) {
         if (username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("admin") || true) {
@@ -47,13 +53,25 @@ public class FXMLController implements Initializable {
                     //switch to sales controller
                     System.out.println("Hello");
                     Stage stage;
-                    Parent root;
+                    //Parent root;
                     stage = (Stage) LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Sales.fxml"));
-                    Scene scene = new Scene(root);
+                     root1 = new BorderPane(root);
+
+                    root1.setOnMousePressed((MouseEvent event1) -> {
+                        xOffset = event1.getSceneX();
+                        yOffset = event1.getSceneY();
+                    });
+                    root1.setOnMouseDragged((MouseEvent event1) -> {
+                        stage.setX(event1.getScreenX() - xOffset);
+                        stage.setY(event1.getScreenY() - yOffset);
+                    });
+                    // new FadeIn(root1).play(); 
+                    Scene scene = new Scene(root1);
                     stage.setScene(scene);
                     stage.show();
+                     new FadeIn(root1).play();
                 } else if (category.equals("Purchase")) {
                     //switch to production controller
                     System.out.println("Hello Purchase");
@@ -62,9 +80,20 @@ public class FXMLController implements Initializable {
                     stage = (Stage) LoginButton.getScene().getWindow();
                     //load up OTHER FXML document
                     root = FXMLLoader.load(getClass().getResource("/fxml/Purchase.fxml"));
-                    Scene scene = new Scene(root);
+                    BorderPane root1 = new BorderPane(root);
+
+                    root1.setOnMousePressed((MouseEvent event1) -> {
+                        xOffset = event1.getSceneX();
+                        yOffset = event1.getSceneY();
+                    });
+                    root1.setOnMouseDragged((MouseEvent event1) -> {
+                        stage.setX(event1.getScreenX() - xOffset);
+                        stage.setY(event1.getScreenY() - yOffset);
+                    });
+                    Scene scene = new Scene(root1);
                     stage.setScene(scene);
                     stage.show();
+                     new FadeIn(root1).play();
                     System.out.println("Hello2");
                 } else {
                     Utilities.AlertBox.notificationWarn("Error", "Category not chosen.");
@@ -76,6 +105,18 @@ public class FXMLController implements Initializable {
         } else {
             Utilities.AlertBox.notificationWarn("Error", "Incorrect login credentials.");
         }
+    }
+
+    @FXML
+    private void handlemin(MouseEvent event) {
+        Stage stage;
+        stage = stage = (Stage) LoginButton.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void handleClose(MouseEvent event) {
+        System.exit(0);
     }
 
 }

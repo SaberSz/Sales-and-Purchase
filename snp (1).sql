@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.7
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jul 14, 2018 at 08:59 PM
--- Server version: 5.6.38
+-- Host: localhost:3306
+-- Generation Time: Jul 22, 2018 at 10:57 PM
+-- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -39,7 +41,7 @@ WHERE eqno=eq and cid=@cd and cmpname=cmp and Date1=dates;
 END$$
 
 DROP PROCEDURE IF EXISTS `insertCustomer`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(20), IN `addr` VARCHAR(100), IN `mail` VARCHAR(30), IN `ph` BIGINT(20))  MODIFIES SQL DATA
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCustomer` (IN `name` VARCHAR(100), IN `addr` VARCHAR(200), IN `mail` VARCHAR(100), IN `ph` VARCHAR(100))  MODIFIES SQL DATA
     COMMENT 'Insert into Customer table'
 BEGIN
 select max(k.CID)+1 into @x
@@ -101,7 +103,7 @@ CREATE TABLE `customer` (
   `CID` int(15) NOT NULL,
   `Address` varchar(200) NOT NULL,
   `Name` varchar(100) NOT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `phone` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -163,7 +165,31 @@ INSERT INTO `customer` (`CID`, `Address`, `Name`, `email`, `phone`) VALUES
 (51, 'rebetbrsbgrswbe', 'rwgwgrwg', 'betbebedvsrbg', '2352424'),
 (52, 'dfgsdfgsdfgsdfg', 'sdfgsdfgs', 'dfgsfgsdfg', '34534534'),
 (53, 'gwgrgwgrwwrwgwgwrggrwrrw', 'gregwgwg', 'vswrfqefqefsaqf', '4312431415'),
-(54, 'banaglore', 'tom', 'tom@gmail.com', '123456789');
+(54, 'banaglore', 'tom', 'tom@gmail.com', '123456789'),
+(55, 'Alder Street, Compton\nHong Kong', 'Food Suppliers', 'food@big.com', '12343222'),
+(56, 'Apollo Pharma,\n221 B,\nBaker Street,\nLondon', 'Apollo  Pharmacy', 'apollo@gmail.com', '12321231'),
+(57, 'sjfhkjsdhf!@#$$%^&*\'select\"', 'awin', 'absdhs.vcc@ssd.com', '8989894'),
+(58, 'judkduyfuyfoiyfoiyfyutfdkfuyfuyf', 'fuykfuyfuy', 'cghjkhgfdkuyf', '58768976'),
+(59, 'Awin', 'Awin', 'Awin', '95858'),
+(60, 'Hallo Babi', 'Amon', 'amanda@gmail.com', '9874189658'),
+(61, 'baker street\nlondon', 'food boy', 'sdfdsfasd', '12312312'),
+(62, 'asdASDAEDEdeadE', 'aesfasefa', 'adasdasd', '2324234'),
+(63, 'Delhi Noida India', 'Ar India', 'abc.AirIndia@gmail.com', '123234233414'),
+(64, 'asdasdasdasd', 'awdawd', 'awdadwa', '12312312'),
+(65, 'waefawefawefawefa', 'awefawef', 'sfsfwsfawwsef', '2342342'),
+(66, 'dfgsdfgsdfgsdgsdgs', 'sdfgsdfgsfsdf', 'dfgsdfgs', '2344532452'),
+(67, 'dfgsdfgsdfgsdgsdgcvxbs', 'sdfgsdfgsfsddfgdff', 'dfgsdfgscvb', '2344532452435'),
+(68, 'dfgsdfgsdfgsdgsdgcvxbsasfd', 'sdfgsdfgsfsddfgdffsdfg', 'dfgsdfgscvbsdfa', '2344532452'),
+(69, 'sdasdasdadad', 'asdasda', 'adsdasdasda', '23423423'),
+(70, 'fsfdasdfasdfas', 'asefasef', 'safsadfasf', '234234'),
+(71, 'mats', 'mats', 'mats', '1231231'),
+(72, 'matter', 'matter', 'matter', '1231231'),
+(73, 'dxfg dxfgxdnf', 'fctymt', 'dxfgnxdffng', '345345'),
+(74, 'zsdfzsdfzdsfsdf', 'zxdfzf', 'zfszdfzsdf', '23123'),
+(75, 'mi a1 street', 'mr y', 'efeavqefqvqvqvqv', '235234344'),
+(76, 'feqfeqfeqfqe', 'mr z', 'feqfqefqemrz', '2341343'),
+(77, 'vadvdavadvad', 'dvavfsvfsbsb', 'rwvvvadva', '34324'),
+(78, 'vadvdavadvad', 'kabab', 'rwvvvadva', '34324dcacfea+');
 
 -- --------------------------------------------------------
 
@@ -343,8 +369,8 @@ CREATE TABLE `invoice` (
 
 INSERT INTO `invoice` (`INo`, `Total_amt`, `Date`, `Duedate`, `Salesperson`, `Acc No`, `Termofpay`, `addedgst`, `Amount_paid`, `invgen`) VALUES
 ('1801-AE-INV-001', 75, NULL, NULL, 'abc', '34534534', '30', 5.25, 0, 0),
-('1802-AE-INV-002', 20905700, '2018-07-15', '2018-08-24', 'Sri Vidya', '345345', '40', 1463.35, 0, 1),
-('1804-SC-INV-001', 26814, '2018-07-08', '2018-08-07', 'Voma ha', '234523454', '30', 2145.12, 5094, 1);
+('1802-AE-INV-002', 209057777, '2018-07-15', '2018-08-24', 'Sri Vidya', '345345', '40', 1463.35, 0, 1),
+('1804-SC-INV-001', 268147, '2018-07-15', '2018-08-14', 'Voma ha', '234523454', '30', 2145.12, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -460,6 +486,30 @@ CREATE TABLE `purchase_enquiry` (
   `Type` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `purchase_enquiry`
+--
+
+INSERT INTO `purchase_enquiry` (`Eqno`, `edate`, `SID`, `Subject`, `Cmpname`, `Type`) VALUES
+('18-AE-EQ-001', '2018-07-17', 55, 'Apples and Oranges for that daily Vitamuin A and Vitamin C', 'Awin', 'Project Related'),
+('18-AE-EQ-002', '2018-07-17', 66, 'sddrhsfdhbsdfgsdfgsdfg', 'Awin', 'Regular'),
+('18-AE-EQ-003', '2018-07-18', 68, 'sddrhsfdhbsdfgsdfgsdfgcbcgfdgdfgfdfg', 'Awin', 'Project Related'),
+('18-AE-EQ-005', '2018-07-18', 70, 'safasefasefaewf', 'Awin', 'Project Related'),
+('18-AE-EQ-006', '2018-07-18', 71, 'cSDcSCsdcSD', 'Awin', 'Project Related'),
+('18-AE-EQ-007', '2018-07-18', 72, 'sfgdfdgdsg', 'Awin', 'Regular'),
+('18-AE-EQ-008', '2018-07-18', 73, 'xftgyhxfymhfdt', 'Awin', 'Project Related'),
+('18-AE-EQ-009', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
+('18-AE-EQ-010', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Project Related'),
+('18-AE-EQ-011', '2018-07-18', 74, 'asdfzsdfzdsf', 'Awin', 'Regular'),
+('18-AE-EQ-012', '2018-07-06', 75, 'befbwbwb', 'Awin', 'Project Related'),
+('18-AE-EQ-013', '2018-07-12', 76, 'dcacadca', 'Awin', 'Project Related'),
+('18-AE-EQ-014', '2018-07-03', 77, 'dcadvdvvda', 'Awin', 'Project Related'),
+('18-SC-EQ-002', '2018-07-17', 62, 'wedawedawegawesefawefwaegwgfas', 'Steel', 'Regular'),
+('18-SC-EQ-003', '2018-07-17', 67, 'sddrhsfdhbsdfgsdfgsdfgcbc', 'Steel', 'Project Related'),
+('18-SC-EQ-004', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Project Related'),
+('18-SC-EQ-005', '2018-07-18', 74, 'asdfzsdfzdsf', 'Steel', 'Regular'),
+('18-SC-EQ-006', '2018-07-02', 78, 'dcadvdvvdavadvav', 'Steel', 'Regular');
+
 -- --------------------------------------------------------
 
 --
@@ -472,17 +522,23 @@ CREATE TABLE `purchase_eprel` (
   `Pjno` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `purchase_eqrel`
+-- Dumping data for table `purchase_eprel`
 --
 
-DROP TABLE IF EXISTS `purchase_eqrel`;
-CREATE TABLE `purchase_eqrel` (
-  `Eqno` varchar(25) NOT NULL,
-  `Qno` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `purchase_eprel` (`Eqno`, `Pjno`) VALUES
+('18-AE-EQ-005', 1),
+('18-AE-EQ-006', 1),
+('18-AE-EQ-013', 1),
+('18-AE-EQ-009', 2),
+('18-AE-EQ-010', 2),
+('18-AE-EQ-014', 2),
+('18-AE-EQ-001', 3),
+('18-AE-EQ-003', 3),
+('18-AE-EQ-008', 3),
+('18-AE-EQ-012', 3),
+('18-SC-EQ-003', 4),
+('18-SC-EQ-004', 4);
 
 -- --------------------------------------------------------
 
@@ -494,12 +550,35 @@ DROP TABLE IF EXISTS `purchase_invoice`;
 CREATE TABLE `purchase_invoice` (
   `Ino` varchar(100) NOT NULL,
   `AmtwoGST` double NOT NULL,
-  `PaymentTerm` int(11) NOT NULL,
+  `PaymentTerm` int(11) DEFAULT NULL,
   `AmtwithGST` double NOT NULL,
   `date_recv` date NOT NULL,
   `paid` tinyint(4) NOT NULL DEFAULT '0',
-  `amtpaid` double NOT NULL DEFAULT '0'
+  `amtpaid` double NOT NULL DEFAULT '0',
+  `Location` varchar(1000) DEFAULT NULL,
+  `PayDueDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_invoice`
+--
+
+INSERT INTO `purchase_invoice` (`Ino`, `AmtwoGST`, `PaymentTerm`, `AmtwithGST`, `date_recv`, `paid`, `amtpaid`, `Location`, `PayDueDate`) VALUES
+('1234123sdfasdf', 32390981, NULL, 32423423, '2018-07-04', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-16'),
+('23452345', 2341898, NULL, 2344243, '2018-07-11', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-30'),
+('23454dfghd', 567111, NULL, 567567, '2018-07-17', 1, 567567, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-14'),
+('235345', 2342889, NULL, 2345234, '2018-07-03', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Invoice\\Awin\\1802-AE-INV-002.pdf', '2018-07-31'),
+('3425345', 234521107, NULL, 234523452, '2018-07-18', 0, 0, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-014 (Aquatic) - Copy.pdf', '2018-07-19'),
+('56565', 548899, NULL, 555555, '2018-07-23', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-09-20'),
+('5656544', 548899, NULL, 555555, '2018-07-23', 1, 555555, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-08-01'),
+('6431', 345200, NULL, 345543, '2018-07-18', 1, 345543, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-24'),
+('754', 777212, NULL, 777777, '2018-07-23', 0, 777, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-013 (Menck) - Copy.pdf', '2018-08-15'),
+('76786', 782001, NULL, 789898, '2018-07-26', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-3.pdf', '2018-07-22'),
+('98797', 97108, NULL, 97897, '2018-07-25', 1, 97897, 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-SC-QT-001 (Aquatic).pdf', '2018-07-25'),
+('Apples1999', 773213, NULL, 777777, '2018-07-02', 1, 777777, 'UNKNOWN', '2018-07-25'),
+('asdf1234', 121070, NULL, 123412, '2018-07-16', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-22'),
+('asdfdasd3245345', 121070, NULL, 123412, '2018-07-16', 0, 0, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-08-24'),
+('asdfsd7fasdfa', 23423189, NULL, 23423423, '2018-07-19', 1, 23423423, 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '2018-07-23');
 
 -- --------------------------------------------------------
 
@@ -511,8 +590,25 @@ DROP TABLE IF EXISTS `purchase_invoicepayments`;
 CREATE TABLE `purchase_invoicepayments` (
   `Ino` varchar(100) NOT NULL,
   `paidDate` date NOT NULL,
-  `amount` double NOT NULL
+  `amount` double NOT NULL,
+  `Timestmp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Late` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_invoicepayments`
+--
+
+INSERT INTO `purchase_invoicepayments` (`Ino`, `paidDate`, `amount`, `Timestmp`, `Late`) VALUES
+('98797', '2018-07-23', 97897, '2018-07-22 19:19:14', 0),
+('6431', '2018-07-23', 345543, '2018-07-22 19:24:43', 0),
+('5656544', '2018-07-23', 555555, '2018-07-22 19:27:32', 0),
+('asdfsd7fasdfa', '2018-07-23', 23423423, '2018-07-22 21:27:04', 0),
+('23454dfghd', '2018-07-23', 567567, '2018-07-22 21:34:11', 0),
+('6431', '2018-07-23', 100000, '2018-07-22 22:31:31', 0),
+('Apples1999', '2018-07-23', 777777, '2018-07-22 22:38:03', 0),
+('Apples1999', '2018-07-23', 0, '2018-07-22 22:48:02', 0),
+('754', '2018-07-23', 777, '2018-07-22 22:49:53', 0);
 
 -- --------------------------------------------------------
 
@@ -526,6 +622,27 @@ CREATE TABLE `purchase_pirel` (
   `Ino` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `purchase_pirel`
+--
+
+INSERT INTO `purchase_pirel` (`Po_NO`, `Ino`) VALUES
+('18CONS-AE-PO-001', '1234123sdfasdf'),
+('18CONS-AE-PO-001', '23452345'),
+('18CONS-AE-PO-003', '23454dfghd'),
+('18CONS-AE-PO-001', '235345'),
+('18CONS-AE-PO-001', '3425345'),
+('18CONS-AE-PO-002', '56565'),
+('18CONS-AE-PO-002', '5656544'),
+('18CONS-AE-PO-003', '6431'),
+('18CONS-AE-PO-003', '754'),
+('4-SC-PO-001', '76786'),
+('4-SC-PO-001', '98797'),
+('4-SC-PO-001', 'Apples1999'),
+('18CONS-AE-PO-002', 'asdf1234'),
+('18CONS-AE-PO-002', 'asdfdasd3245345'),
+('18CONS-AE-PO-001', 'asdfsd7fasdfa');
+
 -- --------------------------------------------------------
 
 --
@@ -537,14 +654,24 @@ CREATE TABLE `purchase_po` (
   `Po_NO` varchar(25) NOT NULL,
   `Sentdate` date DEFAULT NULL,
   `Description` varchar(200) DEFAULT NULL,
-  `RefNO` varchar(50) DEFAULT NULL,
+  `DeliveryDate` date DEFAULT NULL,
   `Total` double DEFAULT NULL,
   `Sent` tinyint(4) NOT NULL DEFAULT '0',
-  `OrderNo` varchar(50) DEFAULT NULL,
+  `SubTotal` double DEFAULT NULL,
   `PaymentTerm` varchar(50) DEFAULT NULL,
-  `ShipmentMethod` varchar(10) DEFAULT NULL,
-  `ShipmentTerm` varchar(10) DEFAULT NULL
+  `GST` double DEFAULT NULL,
+  `Rate` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_po`
+--
+
+INSERT INTO `purchase_po` (`Po_NO`, `Sentdate`, `Description`, `DeliveryDate`, `Total`, `Sent`, `SubTotal`, `PaymentTerm`, `GST`, `Rate`) VALUES
+('18CONS-AE-PO-001', '2018-07-22', 'Apples and Oranges for me!!!!!', '2018-07-24', 251915.45, 1, 235435, 'Cash on Delivery', 16480.45, '7'),
+('18CONS-AE-PO-002', NULL, 'rtydrtydrty', '2018-07-16', 6619.25, 0, 4565, '45', 2054.25, '45'),
+('18CONS-AE-PO-003', '2018-07-22', 'ssrgsdrgsrgsrg', '2018-07-31', 44851.35, 1, 43545, '23', 1306.35, '3'),
+('4-SC-PO-001', '2018-07-22', 'fgfhdfghdfgh', '2018-07-31', 37307.52, 1, 34544, '345', 2763.52, '8');
 
 -- --------------------------------------------------------
 
@@ -554,15 +681,28 @@ CREATE TABLE `purchase_po` (
 
 DROP TABLE IF EXISTS `purchase_potabledetails`;
 CREATE TABLE `purchase_potabledetails` (
+  `RC` int(11) NOT NULL,
   `Po_NO` varchar(25) NOT NULL,
-  `No` int(11) NOT NULL,
-  `Description` varchar(100) DEFAULT NULL,
-  `Qty` varchar(10) DEFAULT NULL,
+  `UOM` varchar(100) DEFAULT NULL,
+  `Description` varchar(10000) DEFAULT NULL,
+  `Qty` varchar(100) DEFAULT NULL,
   `Price` varchar(10) DEFAULT NULL,
   `TotalAmt` varchar(10) DEFAULT NULL,
-  `Exclusion` varchar(500) DEFAULT NULL,
-  `Delivery` varchar(200) DEFAULT NULL
+  `Discount` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_potabledetails`
+--
+
+INSERT INTO `purchase_potabledetails` (`RC`, `Po_NO`, `UOM`, `Description`, `Qty`, `Price`, `TotalAmt`, `Discount`) VALUES
+(49, '18CONS-AE-PO-002', 'fgf', 'sdfgsfdgsdg\nsdfgsd\nfgsdfgsdfgs', '5', '345', '1138.5', '34'),
+(52, '18CONS-AE-PO-001', 'asdf', 'sdcsdca', '23', '23434', '415016.14', '23'),
+(53, '18CONS-AE-PO-001', 'asdfas', 'sdfsfafdas', '23', '34545', '611791.95', '23'),
+(70, '4-SC-PO-001', 'sdfasdfsdfa', 'dsfsfasdfasdfdasdfasfdasdfasdfasdfasdfasfasdfasddf\nasdfasdfasedfasdfasfasdfasdfasfa\nsdfasdfasdfasdgfasidufgagpsdifuaggspa\nsdfasdfasppdifuahpsdofouhahasdfasdflaiasdfasddfasdfasdfas\nasdfasdfasdfasd\ndfasdfasdfasdfa\nsdf\nasdfasdfadsfadsf', '2', '12323', '23413.7', '5'),
+(71, '4-SC-PO-001', 'awefwae', 'asadfasdfasdfsdfadsfasdfasdfasdfasdfsadgfdsaewsrfasefdewgarhresrhsrhgresga\nergesrgerhsregregaergawerfaewfawes\nfawefawefawefawesfaesfahetshhser\n', '1 lump', '2344', '2344.0', ''),
+(72, '18CONS-AE-PO-003', 'sdfgs', 'dfgsfgd\nsdfgsdfgsdfgs\ndfgsdfgsdfgsdfgfsdfgsdgsdfgs\nsdfgsdfgsdfgsdfg\nsdfgsdfgs', 'fgg 1', '344', '330.24', '4'),
+(73, '18CONS-AE-PO-003', 'sdfg', 'sdfggdsfgs\nsdfgsdfg\nsdfg\nsdfgs\ndgfgsdfgsd\ngsdfgsdf\ngsdfgsdfg', '1 lump', '34444', '33755.12', '2');
 
 -- --------------------------------------------------------
 
@@ -573,8 +713,19 @@ CREATE TABLE `purchase_potabledetails` (
 DROP TABLE IF EXISTS `purchase_qprel`;
 CREATE TABLE `purchase_qprel` (
   `Qno` varchar(100) NOT NULL,
-  `Po_NO` varchar(25) NOT NULL
+  `Po_NO` varchar(25) NOT NULL,
+  `Eqno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_qprel`
+--
+
+INSERT INTO `purchase_qprel` (`Qno`, `Po_NO`, `Eqno`) VALUES
+('213', '18CONS-AE-PO-001', '18-AE-EQ-011'),
+('23423', '18CONS-AE-PO-002', '18-AE-EQ-011'),
+('123123123', '18CONS-AE-PO-003', '18-AE-EQ-011'),
+('5421', '4-SC-PO-001', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
 
@@ -586,8 +737,19 @@ DROP TABLE IF EXISTS `purchase_quotation`;
 CREATE TABLE `purchase_quotation` (
   `Qno` varchar(100) NOT NULL,
   `date_recv` date NOT NULL,
-  `location` varchar(100) NOT NULL
+  `location` varchar(1000) NOT NULL,
+  `EQno` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `purchase_quotation`
+--
+
+INSERT INTO `purchase_quotation` (`Qno`, `date_recv`, `location`, `EQno`) VALUES
+('123123123', '2018-07-18', 'D:\\Github Repos\\Sales-and-Purchase\\results\\Quotation\\Steel\\18-SC-QT-028-Rev-4.pdf', '18-AE-EQ-011'),
+('213', '2018-07-17', 'C:\\Users\\Admin\\Desktop\\pdf files\\hello_world.pdf', '18-AE-EQ-011'),
+('23423', '2018-07-11', 'C:\\Users\\dylan\\Documents\\SNP Docs\\18-AE-QT-014 (Aquatic).pdf', '18-AE-EQ-011'),
+('5421', '2018-07-30', 'C:\\Users\\Admin\\Desktop\\pdf files\\cns.pdf', '18-SC-EQ-004');
 
 -- --------------------------------------------------------
 
@@ -629,7 +791,7 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-AE-QT-034', 0, '2018-03-01 19:09:54', 1, '2018-03-03'),
 ('18-AE-QT-035.Rev.0', 0, '2018-03-01 19:09:54', 0, NULL),
 ('18-AE-QT-035.Rev.1', 1, '2018-03-01 19:09:54', 1, '2018-03-03'),
-('18-AE-QT-035.Rev.2', 2, '2018-07-13 22:49:47', 0, NULL),
+('18-AE-QT-035.Rev.2', 2, '2018-07-13 22:49:47', 1, '2018-07-15'),
 ('18-AE-QT-036.Rev.0', 0, '2018-03-09 17:51:57', 0, NULL),
 ('18-AE-QT-037.Rev.0', 0, '2018-03-09 17:52:40', 0, NULL),
 ('18-AE-QT-038.Rev.0', 0, '2018-03-09 17:53:03', 0, NULL),
@@ -650,7 +812,7 @@ INSERT INTO `qoutation` (`Qno`, `RevNo`, `times`, `Sent`, `Sentdate`) VALUES
 ('18-SC-QT-028.Rev.1', 1, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.2', 2, '2018-03-01 19:09:54', 0, NULL),
 ('18-SC-QT-028.Rev.3', 3, '2018-03-01 19:09:54', 1, '2018-07-08'),
-('18-SC-QT-028.Rev.4', 4, '2018-07-13 22:33:57', 0, NULL),
+('18-SC-QT-028.Rev.4', 4, '2018-07-13 22:33:57', 1, '2018-07-15'),
 ('18-SC-QT-028.Rev.5', 5, '2018-07-13 22:40:22', 0, NULL);
 
 -- --------------------------------------------------------
@@ -685,7 +847,7 @@ DROP TABLE IF EXISTS `quotationdetails_awin`;
 CREATE TABLE `quotationdetails_awin` (
   `Sno` int(11) NOT NULL,
   `Des` varchar(1000) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
+  `quantity` varchar(20) DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
   `total` bigint(20) DEFAULT NULL,
   `qno` varchar(25) NOT NULL
@@ -696,39 +858,38 @@ CREATE TABLE `quotationdetails_awin` (
 --
 
 INSERT INTO `quotationdetails_awin` (`Sno`, `Des`, `quantity`, `unit`, `total`, `qno`) VALUES
-(0, 'dsfgsdfgsdfgsdfg', 34534, 34534, 345345, '18-AE-QT-025'),
-(1, 'sdfgsdsdfgsdsdfg', 345345, 345345, 345345, '18-AE-QT-025'),
-(1, 'bub send plssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029'),
-(1, 'bub send pussylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.1'),
-(1, 'bub send pucciylssdfsdfsd3', 3, 33, 342432, '18-AE-QT-029.Rev.2'),
-(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030'),
-(1, 'dfgdsfg', 3453, 345, 565, '18-AE-QT-030.Rev.1'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.0'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.1'),
-(1, 'ewrtwe', 345, 3453, 34, '18-AE-QT-035.Rev.2'),
-(1, 'qwertyuia', 45, 6, 78, '18-AE-QT-049.Rev.0'),
-(1, 'qwertyuia', 45, 6, 79, '18-AE-QT-049.Rev.1'),
-(2, 'dsfgdfgdfg', 345345345, 345345345, 345345345, '18-AE-QT-025'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.1'),
-(2, 'bebgfbdrb', 2, 4, 42523432, '18-AE-QT-029.Rev.2'),
-(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030'),
-(2, 'dfgsfdg', 43534, 345, 3245, '18-AE-QT-030.Rev.1'),
-(2, 'sdfgsdf', 4353, 34534, 435, '18-AE-QT-035.Rev.1'),
-(2, 'Helllo', 4353, 34534, 4356, '18-AE-QT-035.Rev.2'),
-(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.0'),
-(2, 'rtyu', 5, 67, 78, '18-AE-QT-049.Rev.1'),
-(3, 'sdfgsdfgsdfgsdf', 34534534, 34534534, 34534534, '18-AE-QT-025'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.1'),
-(3, 'grvrfrvbeverbmorreeeeee', 4, 13, 54322234, '18-AE-QT-029.Rev.2'),
-(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030'),
-(3, 'sdfas', 3454, 34534, 45634, '18-AE-QT-030.Rev.1'),
-(3, 'sdasdas', 23423, 2342342, 34, '18-AE-QT-035.Rev.1'),
-(3, 'sdasdas', 23423, 2342342, 34, '18-AE-QT-035.Rev.2'),
-(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.1'),
-(4, 'doog', 4, 535, 543255, '18-AE-QT-029.Rev.2'),
-(4, 'dsgfdf', 3456, 6543634, 45645, '18-AE-QT-030');
+(0, 'dsfgsdfgsdfgsdfg', '34534', 34534, 345345, '18-AE-QT-025'),
+(1, 'sdfgsdsdfgsdsdfg', '345345', 345345, 345345, '18-AE-QT-025'),
+(1, 'bub send plssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029'),
+(1, 'bub send pussylssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029.Rev.1'),
+(1, 'bub send pucciylssdfsdfsd3', '3', 33, 342432, '18-AE-QT-029.Rev.2'),
+(1, 'dfgdsfg', '3453', 345, 565, '18-AE-QT-030'),
+(1, 'dfgdsfg', '3453', 345, 565, '18-AE-QT-030.Rev.1'),
+(1, 'ewrtwe', '345', 3453, 34, '18-AE-QT-035.Rev.0'),
+(1, 'ewrtwe', '345', 3453, 34, '18-AE-QT-035.Rev.1'),
+(1, 'Chute - Blasting & Painting\n\nScope of Work:\nChute - Topside \"sliding part\" entire surface to be blast at SA2.5 and applictaion of two coat painiting system as per Aquatic painting spec.\nChute external - side wall and undesr side will be spot blast at SA2.5 and application of two caot painting system as per Aquatic painting spec.\n\n02 Nos of base frame will be blast at SA2.5 and application of two coat painting system as per Aquatic painiting spec', '01 Lots', 2760, 2670, '18-AE-QT-035.Rev.2'),
+(1, 'qwertyuia', '45', 6, 78, '18-AE-QT-049.Rev.0'),
+(1, 'qwertyuia', '45', 6, 79, '18-AE-QT-049.Rev.1'),
+(2, 'dsfgdfgdfg', '345345345', 345345345, 345345345, '18-AE-QT-025'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029.Rev.1'),
+(2, 'bebgfbdrb', '2', 4, 42523432, '18-AE-QT-029.Rev.2'),
+(2, 'dfgsfdg', '43534', 345, 3245, '18-AE-QT-030'),
+(2, 'dfgsfdg', '43534', 345, 3245, '18-AE-QT-030.Rev.1'),
+(2, 'sdfgsdf', '4353', 34534, 435, '18-AE-QT-035.Rev.1'),
+(2, 'Chute - Transportation\nTransportation to and from Loyang Crescent to Tuas \"40ft Trailer\".\nLoading / Unloading at Aquatic yard by client.\nloading / Unloading at Awin eEng yard by Awin Eng.', '2', 200, 400, '18-AE-QT-035.Rev.2'),
+(2, 'rtyu', '5', 67, 78, '18-AE-QT-049.Rev.0'),
+(2, 'rtyu', '5', 67, 78, '18-AE-QT-049.Rev.1'),
+(3, 'sdfgsdfgsdfgsdf', '34534534', 34534534, 34534534, '18-AE-QT-025'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029.Rev.1'),
+(3, 'grvrfrvbeverbmorreeeeee', '4', 13, 54322234, '18-AE-QT-029.Rev.2'),
+(3, 'sdfas', '3454', 34534, 45634, '18-AE-QT-030'),
+(3, 'sdfas', '3454', 34534, 45634, '18-AE-QT-030.Rev.1'),
+(3, 'sdasdas', '23423', 2342342, 34, '18-AE-QT-035.Rev.1'),
+(4, 'doog', '4', 535, 543255, '18-AE-QT-029.Rev.1'),
+(4, 'doog', '4', 535, 543255, '18-AE-QT-029.Rev.2'),
+(4, 'dsgfdf', '3456', 6543634, 45645, '18-AE-QT-030');
 
 -- --------------------------------------------------------
 
@@ -757,43 +918,43 @@ INSERT INTO `quotationdetails_steels` (`Sno`, `Pos`, `NormalRate`, `BeyondNormal
 ('1', 'dogg', 'asdfasdfssd', 'asdf324234dfgdfgdfg43563456', 'ddfgdfgdfgdfgdfg', 'hdfghdfgh', '18-SC-QT-028.Rev.2', 2),
 ('1', 'doggy style', 'asdfasdfssd', 'asdf324234', 'd', 'hdfghdfgh', '18-SC-QT-028', 3),
 ('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 291),
-('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 313),
+('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 335),
 ('1', 'Skilled / Certified Blaster', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 324),
 ('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 285),
-('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 307),
+('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 329),
 ('1', 'Skilled Fitter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 318),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd', 'dfghd23', 'dfg', 'dfghdfghdfgh', '18-SC-QT-028', 6),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.1', 7),
 ('2', 'dfghdfghdfghdfdfgsdfgsdfg34534534', 'dfghd34563456354', 'dfghd2334563456', 'dfg456456346534563sdfgdfgs', 'dfghdfghdfgh', '18-SC-QT-028.Rev.2', 8),
 ('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 292),
-('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 314),
+('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 336),
 ('2', 'Skilled / Certified Painter', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 325),
 ('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 286),
-('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 308),
+('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 330),
 ('2', 'Skilled /Certified Welder', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 319),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf', 'sdfgsd', 'sdfgsdfg345345345', '18-SC-QT-028', 11),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.1', 12),
 ('3', 'dsgsdfgsdfgsdfgsdfgs3453453453', 'sdfgsdfgssssdsfgdfgsdfgsdfg345345345', 'sdf546345634', 'sdfgsdgfhdfghfdgh', 'sdfgsdfg345345345sdfgs', '18-SC-QT-028.Rev.2', 13),
 ('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 293),
-('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 315),
+('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 337),
 ('3', 'Painting Helper', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 326),
 ('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 287),
-('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 309),
+('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 331),
 ('3', 'Skilled Grinder / General Workers', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 320),
 ('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 294),
-('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 316),
+('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 338),
 ('4', 'Power Tool Men', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', 'Power', '18-SC-QT-028.Rev.5', 327),
 ('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 288),
-('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 310),
+('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 332),
 ('4', 'Supervisor (Steel & Piping)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 321),
 ('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', '', '18-SC-QT-028.Rev.3', 295),
-('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.4', 317),
+('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.4', 339),
 ('5', 'Nace Inspector Level.2', '$18.00', '1.5 x Normal Rate', '5 x Normal Rate', 'Nace', '18-SC-QT-028.Rev.5', 328),
 ('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 289),
-('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 311),
+('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 333),
 ('5', 'QC Inspector / Engineer (AWS)', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 322),
 ('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.3', 290),
-('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 312),
+('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.4', 334),
 ('6', 'Safety Supervisor', '$18.00', '1.5 x Normal Rate', '2 x Normal Rate', '', '18-SC-QT-028.Rev.5', 323);
 
 --
@@ -849,7 +1010,7 @@ ALTER TABLE `invoice_details`
 -- Indexes for table `invoice_payments`
 --
 ALTER TABLE `invoice_payments`
-  ADD PRIMARY KEY (`DateEntry`,`INo`),
+  ADD PRIMARY KEY (`DateEntry`) USING BTREE,
   ADD KEY `INo` (`INo`);
 
 --
@@ -881,13 +1042,6 @@ ALTER TABLE `purchase_eprel`
   ADD KEY `Pjno` (`Pjno`);
 
 --
--- Indexes for table `purchase_eqrel`
---
-ALTER TABLE `purchase_eqrel`
-  ADD PRIMARY KEY (`Eqno`,`Qno`),
-  ADD KEY `Qno` (`Qno`);
-
---
 -- Indexes for table `purchase_invoice`
 --
 ALTER TABLE `purchase_invoice`
@@ -897,7 +1051,9 @@ ALTER TABLE `purchase_invoice`
 -- Indexes for table `purchase_invoicepayments`
 --
 ALTER TABLE `purchase_invoicepayments`
-  ADD PRIMARY KEY (`Ino`);
+  ADD PRIMARY KEY (`Timestmp`),
+  ADD KEY `Ino` (`Ino`),
+  ADD KEY `Ino_2` (`Ino`);
 
 --
 -- Indexes for table `purchase_pirel`
@@ -916,20 +1072,23 @@ ALTER TABLE `purchase_po`
 -- Indexes for table `purchase_potabledetails`
 --
 ALTER TABLE `purchase_potabledetails`
-  ADD PRIMARY KEY (`Po_NO`);
+  ADD PRIMARY KEY (`RC`,`Po_NO`),
+  ADD KEY `RC` (`RC`);
 
 --
 -- Indexes for table `purchase_qprel`
 --
 ALTER TABLE `purchase_qprel`
-  ADD PRIMARY KEY (`Qno`,`Po_NO`),
-  ADD KEY `Po_NO` (`Po_NO`);
+  ADD PRIMARY KEY (`Qno`,`Po_NO`,`Eqno`),
+  ADD KEY `Po_NO` (`Po_NO`),
+  ADD KEY `Eqno` (`Eqno`);
 
 --
 -- Indexes for table `purchase_quotation`
 --
 ALTER TABLE `purchase_quotation`
-  ADD PRIMARY KEY (`Qno`);
+  ADD PRIMARY KEY (`Qno`,`EQno`),
+  ADD KEY `rqef` (`EQno`);
 
 --
 -- Indexes for table `qoutation`
@@ -966,11 +1125,15 @@ ALTER TABLE `quotationdetails_steels`
 --
 
 --
+-- AUTO_INCREMENT for table `purchase_potabledetails`
+--
+ALTER TABLE `purchase_potabledetails`
+  MODIFY `RC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+--
 -- AUTO_INCREMENT for table `quotationdetails_steels`
 --
 ALTER TABLE `quotationdetails_steels`
-  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=329;
-
+  MODIFY `RowOrder` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=340;
 --
 -- Constraints for dumped tables
 --
@@ -987,12 +1150,6 @@ ALTER TABLE `eqrel`
 --
 ALTER TABLE `invoice_details`
   ADD CONSTRAINT `invoice_details_ibfk_1` FOREIGN KEY (`Invno`) REFERENCES `invoice` (`INo`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `invoice_payments`
---
-ALTER TABLE `invoice_payments`
-  ADD CONSTRAINT `invoice_payments_ibfk_1` FOREIGN KEY (`INo`) REFERENCES `invoice` (`INo`);
 
 --
 -- Constraints for table `pirel`
@@ -1015,11 +1172,10 @@ ALTER TABLE `purchase_eprel`
   ADD CONSTRAINT `purchase_eprel_ibfk_2` FOREIGN KEY (`Pjno`) REFERENCES `product` (`PjNo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `purchase_eqrel`
+-- Constraints for table `purchase_invoicepayments`
 --
-ALTER TABLE `purchase_eqrel`
-  ADD CONSTRAINT `purchase_eqrel_ibfk_1` FOREIGN KEY (`Eqno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `purchase_eqrel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `purchase_invoicepayments`
+  ADD CONSTRAINT `purchase_invoicepayments_ibfk_1` FOREIGN KEY (`Ino`) REFERENCES `purchase_invoice` (`Ino`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `purchase_pirel`
@@ -1033,7 +1189,14 @@ ALTER TABLE `purchase_pirel`
 --
 ALTER TABLE `purchase_qprel`
   ADD CONSTRAINT `purchase_qprel_ibfk_1` FOREIGN KEY (`Po_NO`) REFERENCES `purchase_po` (`Po_NO`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `purchase_qprel_ibfk_2` FOREIGN KEY (`Qno`) REFERENCES `purchase_quotation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `purchase_qprel_ibfk_3` FOREIGN KEY (`Eqno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `purchase_quotation`
+--
+ALTER TABLE `purchase_quotation`
+  ADD CONSTRAINT `rqef` FOREIGN KEY (`EQno`) REFERENCES `purchase_enquiry` (`Eqno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `qprel`
@@ -1053,6 +1216,7 @@ ALTER TABLE `quotationdetails_awin`
 --
 ALTER TABLE `quotationdetails_steels`
   ADD CONSTRAINT `quotationdetails_steels_ibfk_1` FOREIGN KEY (`qno`) REFERENCES `qoutation` (`Qno`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

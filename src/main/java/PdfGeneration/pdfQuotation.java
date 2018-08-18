@@ -48,6 +48,7 @@ import com.itextpdf.layout.renderer.TableRenderer;
 import com.itextpdf.test.annotations.WrapToTest;
 import com.mycompany.snp.Person2;
 import com.mycompany.snp.Person3;
+import java.awt.Desktop;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,15 +65,27 @@ public class pdfQuotation {
     protected PdfFormXObject template;
     public static String DEST = "results/Quotation/Steel/";
 
-    public  pdfQuotation(HashMap<String, Object> hm) throws IOException {
+    public pdfQuotation(HashMap<String, Object> hm) throws IOException {
 
         DEST = "results/Quotation/Steel/";
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        DEST = DEST + hm.get("Quotation Number") + ".pdf";
+        DEST = DEST + hm.get("Quotation Number").toString().replace('.', '-') + ".pdf";
         System.out.println(DEST);
         createPdf(DEST, hm);
+
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(DEST);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+
+        }
     }
+
+    
 
     public void createPdf(String dest, HashMap<String, Object> hm) throws IOException {
         //Initialize PDF writer
@@ -93,7 +106,7 @@ public class pdfQuotation {
 
         // HeaderHandler headerHandler = new HeaderHandler();
         // pdf.addEventHandler(PdfDocumentEvent.START_PAGE, headerHandler);
-        Image steelslogo = new Image(ImageDataFactory.create("InvoiceSC/Picture1.jpg"));
+        Image steelslogo = new Image(ImageDataFactory.create("images/SteelLogo.png"));
         Image extralogo1 = new Image(ImageDataFactory.create("InvoiceSC/Picture2.jpg"));
         Image extralogo2 = new Image(ImageDataFactory.create("InvoiceSC/Picture3.jpg"));
         Image extralogo3 = new Image(ImageDataFactory.create("InvoiceSC/Picture4.jpg"));
@@ -308,7 +321,7 @@ public class pdfQuotation {
                 + "Phone: +65 6778 8271 / +65 81899206\n"
                 + "Fax: +65 6265 7685\n"
                 + "email: vijay@steelcoat.com.sg\n"
-                + "Date:"+(String)hm.get("Date")+"\n").add(t)
+                + "Date:" + (String) hm.get("Date") + "\n").add(t)
                 .setTextAlignment(TextAlignment.RIGHT).addStyle(arial).setFixedLeading(13);
         t.setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true));
         Cell q21 = new Cell(1, 1).add(q12).setBorder(Border.NO_BORDER).setPadding(0);
@@ -334,7 +347,7 @@ public class pdfQuotation {
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Beyond Normal Hours and\n" + "Saturdays (S$)	").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Sundays and Public\n" + "Holidays (S$)").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
         t2.addHeaderCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("Remarks").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-        int roman_counter=0;
+        int roman_counter = 0;
         String arr[] = {"l",
             "ll",
             "lll",
@@ -353,38 +366,36 @@ public class pdfQuotation {
         roman_counter++;
         ObservableList<Person2> trc = (ObservableList) hm.get("TableItems");
         ListIterator<Person2> li = trc.listIterator();
-        int inti=-99;//inital SN value
-        boolean co=true;
+        int inti = -99;//inital SN value
+        boolean co = true;
         while (li.hasNext()) {
             Person2 pe = li.next();
             if (pe.getSN().getText().isEmpty()) {
                 break;
             }
-            if((inti+1==Integer.valueOf((String)pe.getSN().getText().trim()))||co){
-                inti=Integer.valueOf((String)pe.getSN().getText().trim());
+            if ((inti + 1 == Integer.valueOf((String) pe.getSN().getText().trim())) || co) {
+                inti = Integer.valueOf((String) pe.getSN().getText().trim());
                 //for(int l=0;l<2;l++){
                 t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph("").addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setWidth(50.0f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getSN().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getPosition().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.LEFT)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getNormalRate().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getBeyondNormalHours().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getHolidays().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
-                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String)pe.getRemarks().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setWidth(50.0f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getSN().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getPosition().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.LEFT)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getNormalRate().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getBeyondNormalHours().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getHolidays().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
+                t2.addCell(new Cell(1, 1).setPadding(0.1f).setBorder(Border.NO_BORDER).add(new Paragraph((String) pe.getRemarks().getText().trim()).addStyle(arialn).setTextAlignment(TextAlignment.CENTER)));
                 //}
-                co=false;
-            }
-            else
-            {
+                co = false;
+            } else {
                 t2.addCell(new Cell(1, 1).setPadding(0).setBorder(Border.NO_BORDER).add(new Paragraph(arr[roman_counter])
-                .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true))
-                .setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
-                 t2.startNewRow();
-                 roman_counter++;
-                 co=true;
+                        .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true))
+                        .setFontSize(9.5f).setTextAlignment(TextAlignment.CENTER)));
+                t2.startNewRow();
+                roman_counter++;
+                co = true;
             }
         }
-     
-       /* String arr1[] = {"Skilled / Certified Blaster",
+
+        /* String arr1[] = {"Skilled / Certified Blaster",
             "Skilled / Certified Painter",
             "Painting Helper",
             "Power Tool Men",
@@ -427,7 +438,7 @@ public class pdfQuotation {
         document.add(t2);
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(p);
-        
+
         document.add(row2);
 //          document.add(o2);
 
@@ -439,10 +450,10 @@ public class pdfQuotation {
         Table t5 = new Table(new float[]{1, 1, 2});
         t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph("Thank you.\n\nYours faithfully,").addStyle(arialn).setFontSize(9.5f).setTextAlignment(TextAlignment.LEFT)));
         t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(extralogo4).setHorizontalAlignment(HorizontalAlignment.LEFT));
-        t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph().add(new Text("M/S : Aquatic Asia Pacific Pte Ltd".toUpperCase()).setFontSize(9.5f)
+        t5.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph().add(new Text(("M/S : "+(String) hm.get("Customer Name")).toUpperCase()).setFontSize(9.5f)
                 .setFont(PdfFontFactory.createFont("arial-narrow/ARIALNB.TTF", PdfEncodings.IDENTITY_H, true)))
                 .add("\nWe accept the terms and conditions").addStyle(arialn).setFontSize(9.5f)));
-        Image steelslogo1 = new Image(ImageDataFactory.create("InvoiceSC/Picture1.jpg"));
+        Image steelslogo1 = new Image(ImageDataFactory.create("images/SteelLogo.png"));
         steelslogo1.scaleAbsolute(130f, 45f);
         t5.addCell(new Cell(1, 2).setBorder(Border.NO_BORDER).add(steelslogo1));
         t5.setWidthPercent(100);

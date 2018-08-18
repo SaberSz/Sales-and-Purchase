@@ -30,7 +30,9 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
+import com.mycompany.snp.Person;
 import com.mycompany.snp.Person3;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -56,14 +58,25 @@ public class awinqtepdf {
         DEST = DEST + hm.get("Quotation Number") + ".pdf";
         System.out.println(DEST);
         createPdf(DEST, hm);
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(DEST);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+        }
     }
 
     public void createPdf(String dest, HashMap<String, Object> hm) throws IOException {
-        //Initialize PDF writer
         PdfWriter writer = new PdfWriter(dest);
 
         //Initialize PDF document
         PdfDocument pdf = new PdfDocument(writer);
+        pdf.addEventHandler(PdfDocumentEvent.START_PAGE,
+                new Header(""));
+        PageXofY event = new PageXofY(pdf);
+        pdf.addEventHandler(PdfDocumentEvent.END_PAGE, event);
         Style normal = new Style();
         PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
         normal.setFont(font).setFontSize(8);
@@ -71,26 +84,28 @@ public class awinqtepdf {
         Color cuntz2 = new DeviceRgb(33, 28, 33);
         // Initialize document
         Document document = new Document(pdf, PageSize.A4);
-        Image steelslogo = new Image(ImageDataFactory.create("images/Picturek.jpg"));//C:/Users/Admin/Desktop/Sales-and-Purchase/
+        document.setMargins(18, 36, 36, 36);
+        Image steelslogo = new Image(ImageDataFactory.create("images/AwinLogo.png"));//C:/Users/Admin/Desktop/Sales-and-Purchase/
         Image extralogo1 = new Image(ImageDataFactory.create("images/yoyo.png"));//change path here
         Image extralogo2 = new Image(ImageDataFactory.create("images/bubbby.png"));//change path here
         Image extralogo3 = new Image(ImageDataFactory.create("images/Picture4.jpg"));//change path here
-        //  steelslogo.scaleAbsolute(63f,63f);
+        steelslogo.scaleAbsolute(93f, 73f);
         // steelslogo.setFixedPosition(100,760);
         extralogo1.scaleAbsolute(50f, 35f);
         extralogo2.scaleAbsolute(73f, 30f);
         extralogo3.scaleAbsolute(77f, 42f);
-        Paragraph address = new Paragraph().add(new Text(" AWIN ENGINEERING PTE LTD\n").setFont(PdfFontFactory.createFont("ttffiles/ARLRDBD.ttf")).setFontColor(cuntz).setFontSize(12)).add(new Text("Works: No. 109, Tuas South Ave. 8, Singapore 637 037.\n"
-                + "Regd. No. 12 Tuas View Place, Singapore 637 034.\n"
-                + "Tel: +65 6778 8271, Fax: +65 6265 7685.\n"
-                + " Email: vijay@awin.com.sg,  Web site: www.awin.com.sg").addStyle(normal)).setFont(PdfFontFactory.createFont("arial-unicode-ms/ARIALUNI.TTF")).setFontSize(9.5f);//change path here 
+        Paragraph address = new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text(" AWIN ENGINEERING PTE LTD\n").setUnderline().setFont(PdfFontFactory.createFont("ttffiles/ARLRDBD.ttf")).setFontColor(cuntz).setFontSize(14))
+                .add(new Text("Reg Office: No.12, Tuas View Place, Singapore - 637864\n"
+                        + "Workshop: No.109, Tuas South Ave.8, Singapore - 637037\n"
+                        + "Tel: +65 6778 8271, Fax: +65 6265 7685.\n"
+                        + " Email: enquiry@awin.com.sg,  Web site: www.awin.com.sg")).setFont(PdfFontFactory.createFont("arial-unicode-ms/ARIALUNI.TTF")).setFontSize(9.5f);//change path here 
         address.setFixedLeading(18);//line spacing
         address.setMarginLeft(15);//set text in paragraph a little to left
-        Paragraph dets = new Paragraph().add(steelslogo).add(new Text("\nCo.Reg No: 201012187G\n" + "GST.Reg No: 201012187G")).setTextAlignment(TextAlignment.JUSTIFIED_ALL).setFont(PdfFontFactory.createFont("calibri/Calibri.ttf")).setFontSize(9.5f);//change path here
+        Paragraph dets = new Paragraph().add(steelslogo).setTextAlignment(TextAlignment.JUSTIFIED_ALL).setFont(PdfFontFactory.createFont("calibri/Calibri.ttf")).setFontSize(9.5f);//change path here
         extralogo1.setMarginLeft(15);
-        extralogo1.setFixedPosition(365, 755);
-        extralogo2.setFixedPosition(455, 755);
-        extralogo3.setFixedPosition(450, 705);
+        extralogo1.setFixedPosition(395, 773);
+        extralogo2.setFixedPosition(485, 773);
+        extralogo3.setFixedPosition(480, 723);
         Paragraph p = new Paragraph().add(dets).add(new Text("\t")).add(address);
         document.add(p);
         //document.add(dets);
@@ -104,167 +119,117 @@ public class awinqtepdf {
 
         Paragraph p3 = new Paragraph();
         Paragraph row2 = new Paragraph().add(o1);
-        document.add(row2);
+        //document.add(row2);
 
         //Paragraph o2 = new Paragraph("\n");
         o1.setMarginLeft(17);//increase this value for increase in space
         //document.add(o2);
+        Paragraph r1 = new Paragraph("Offer").setTextAlignment(TextAlignment.RIGHT)
+                .setFont(PdfFontFactory.createFont("trebuchet-ms/trebucbd.ttf", PdfEncodings.IDENTITY_H, true))
+                .setFontSize(12);
+        Style arial = new Style();//arial-narrow/arial.ttf
+        PdfFont f1f = PdfFontFactory.createFont("arial-unicode-ms/ARIALUNI.TTF", PdfEncodings.IDENTITY_H, true);//espar-arial-classic/esparac.ttf
+        arial.setFont(f1f).setFontSize(9.5f);
+        Table q1 = new Table(new float[]{1, 1});
+        Text he = new Text((String) hm.get("Customer Name"));
+        //Paragraph q1=new Paragraph();
+        Paragraph q11 = new Paragraph().add(he).add("\n"
+                + (String) hm.get("toAddress") + "\n"
+        )
+                .setTextAlignment(TextAlignment.LEFT).setFont(f1f).setFontSize(9.5f).setFixedLeading(13);
+        Cell q2 = new Cell(1, 1).add(q11).setBorder(Border.NO_BORDER).setPadding(0);
+        Text t = new Text("Our Quote:  " + (String) hm.get("Quotation Number"));
+        he.setFontSize(11).setFont(PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD));
+        Paragraph q12 = new Paragraph(new Text("Offer").setTextAlignment(TextAlignment.RIGHT)
+                .setFont(PdfFontFactory.createFont("trebuchet-ms/trebucbd.ttf", PdfEncodings.IDENTITY_H, true))
+                .setFontSize(12)).add("\n\n"
+                + "Quoted By: Vijay\n"
+                + "Phone: +65 6778 8271 / +65 81899206\n"
+                + "Fax: +65 6265 7685\n"
+                + "email: vijay@steelcoat.com.sg\n"
+                + "Date:" + (String)hm.get("Date") + "\n").add(t)
+                .setTextAlignment(TextAlignment.RIGHT).addStyle(arial).setFixedLeading(13);
+        t.setFont(PdfFontFactory.createFont("trebuchet-ms/trebucbd.ttf", PdfEncodings.IDENTITY_H, true));
+        Cell q21 = new Cell(1, 1).add(q12).setBorder(Border.NO_BORDER).setPadding(0);
+        q1.addCell(q2).addCell(q21).setWidthPercent(100);
 
-        //table formation
-        float[] columnWidths = {1, 2, 1, 1, 1};
+        Style arialn = new Style();//arial-narrow/arial.ttf
+        PdfFont f1fn = PdfFontFactory.createFont("arial-narrow/Arialn.ttf", PdfEncodings.IDENTITY_H, true);//espar-arial-classic/esparac.ttf
+        arialn.setFont(f1fn).setFontSize(9.5f);
+        Paragraph q3 = new Paragraph();
+        q3.add(new Text("Attention to Project Manager,").setFont(PdfFontFactory.createFont("trebuchet-ms/trebucbd.ttf", PdfEncodings.IDENTITY_H, true)))
+                .add("\n\n"
+                        + "Your Enquiry: "+((String) hm.get("Subject")).trim()  + "\n"
+                        + "Thank you for inviting us to quote for the above mentioned job. We are pleased to submit our quotation for your\n"
+                        + "perusal and approval.\n").addStyle(arial);
+
+        document.add(q1).add(q3);
+        float[] columnWidths = {1, 3, 1, 1, 1};
         Table table = new Table(columnWidths);
-        table.setWidthPercent(100);
         PdfFont f = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
-        Cell cell1 = new Cell(1, 5)
-                .add(new Paragraph("TAX INVOICE").setFixedLeading(15))
-                .setFont(f)
-                .setFontSize(17)
-                //.setBackgroundColor(DeviceGray.BLACK)
-                .setTextAlignment(TextAlignment.CENTER);
-        table.addHeaderCell(cell1);
-
-        Cell celladd = new Cell(1, 2);
-
-        Paragraph p9 = new Paragraph();
-        PdfFont f1 = PdfFontFactory.createFont(FontConstants.HELVETICA);
-        p9.add(new Text("To :").setFont(f).setFontSize(8))
-                .add(new Paragraph(new Text("Menck Pte Ltd"))
-                        .setFont(f).setFontSize(8).setMarginLeft(50));
-        //p9.add(new Text("107, Tuas South Avenue 8, Acteon Singapore Operations Centre\n")
-        //       .setFont(f1).setFontSize(8));
-        Paragraph p10 = new Paragraph("Kind Attn. :").setFont(f).setFontSize(8);
-        p10.add(new Paragraph("Accounts Payable").setFont(f1).setFontSize(8).setMarginLeft(21));
-//"Tel: (65) 62622282").setFont(f1).setFontSize(8).setMarginLeft(44));
-
-        //p9.add(p10);
-        celladd.add(p9)
-                .add(new Paragraph("107, Tuas South Avenue 8, Acteon Singapore Operations Centre")
-                        .setFont(f1).setFontSize(8).setMarginLeft(64))
-                .add(new Paragraph("Singapore - 637036")
-                        .setFont(f1).setFontSize(8).setMarginLeft(64))
-                .add(p10)
-                .add(new Paragraph("Tel: (65) 62622282").setFont(f1).setFontSize(8).setMarginLeft(64))
-                .setBorderRight(Border.NO_BORDER);
-
-        Table in1 = new Table(new float[]{1, 1});
-
-        in1.setWidthPercent(100);
-        Cell inv = new Cell(1, 1);
-
-        //inv.setNextRenderer(new DottedLineCellRenderer(inv));
-        inv.add(new Paragraph("Invoice No:\n" + (String) hm.get("Invoice Number")).setFont(f).setFontSize(8)).setBorderTop(Border.NO_BORDER);
-        Cell d = new Cell(1, 1).setBorderTop(Border.NO_BORDER);
-
-        d.add(new Paragraph("Date:")
-                .setFont(f).setFontSize(8));
-        d.add(new Paragraph((String) hm.get("Date")).setFont(f1).setFontSize(8).setFontColor(Color.RED));
-        Cell so = new Cell(1, 1)
-                .add(new Paragraph("Our S/O No: N/A.").setFont(f).setFontSize(8));//.setBorder(Border.NO_BORDER);
-        //so.setNextRenderer(new DottedLineCellRenderer(so));
-        Cell sp = new Cell(2, 1);
-        sp.add(new Paragraph("Salesperson:\n").setFont(f).setFontSize(8)
-                .add(new Text((String) hm.get("Salesperson")).setFont(f1).setFontSize(8)));
-        Cell jo = new Cell(1, 1)
-                .add(new Paragraph("Our Job No:N/A.").setFont(f).setFontSize(8));
-        Cell pjo = new Cell(1, 1)
-                .add(new Paragraph("Your Order Ref No:\nProject No:").setFont(f).setFontSize(8));
-        Cell pjno1 = new Cell(1, 1)
-                .add(new Paragraph((String) hm.get("POno") + " \n" + (String) hm.get("ProjectNo")).setFont(f1).setFontSize(8));
-        Cell tem = new Cell(1, 1)
-                .add(new Paragraph("Terms of payment:").setFont(f).setFontSize(8));
-        Cell jo1 = new Cell(1, 1)
-                .add(new Paragraph((String) hm.get("Termofpay") + " days").setFont(f1).setFontSize(8));
-        Cell kp = new Cell(1, 2).add(new Paragraph("Page No 1 of 1").setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8));
-        in1.addCell(inv).addCell(d).addCell(so).addCell(sp).addCell(jo).addCell(pjo).addCell(pjno1)
-                .addCell(tem).addCell(jo1).addCell(kp);
-
-        Cell a = new Cell(1, 3).add(in1).setPadding(0).setBorder(Border.NO_BORDER);
-
-        table.addCell(celladd)
-                .addCell(a);
-
-        //Invoice Table
-        //Table ti =new Table(new float[]{1,4,1,1,1});
-        //ti.setWidthPercent(100);
-        table.addCell(new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Item/No:").setFont(f).setFontSize(8))));
-        Cell b = new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Description").setFont(f)).setFontSize(8));
-        b.setWidthPercent(100);
-
-        table.addCell(b);
-        table.addCell(new Cell(1, 1).setPadding(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Qty(Hrs)").setFont(f).setFontSize(8))));
-
-        table.addCell(new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Unit Price (SGD)").setFont(f).setFontSize(8))));
-        table.addCell(new Cell(1, 1).setPaddingTop(10).setPaddingBottom(10).add(new Paragraph().setTextAlignment(TextAlignment.CENTER).add(new Text("Total Price (SGD)").setFont(f).setFontSize(8))));
-
-        //---------------------
-        DecimalFormat df = new DecimalFormat("#.00");
-        ObservableList<Person3> trc = (ObservableList) hm.get("TableItems");
-        ListIterator<Person3> li = trc.listIterator();
-        int draw_constant = 28;
-        int draw_counter = -1;
-        while (li.hasNext()) {
-            Person3 pe = li.next();
-            if (pe.getItemNo().getText().isEmpty()) {
+        table.setWidthPercent(100);
+        Style cellHeads = new Style().setFont(f).setFontSize(11);
+        Cell c1 = new Cell(1, 1).add(new Paragraph("S. No")
+                .addStyle(cellHeads)).setWidth(35f).setTextAlignment(TextAlignment.CENTER);
+        Cell c2 = new Cell(1, 1).add(new Paragraph("Description")
+                .addStyle(cellHeads)).setTextAlignment(TextAlignment.CENTER);
+        Cell c3 = new Cell(1, 1).add(new Paragraph("Quantity")
+                .addStyle(cellHeads)).setTextAlignment(TextAlignment.CENTER);
+        Cell c4 = new Cell(1, 1).add(new Paragraph("Unit/(SGD)")
+                .addStyle(cellHeads)).setTextAlignment(TextAlignment.CENTER);
+        Cell c5 = new Cell(1, 1).add(new Paragraph("Total(SGD)")
+                .addStyle(cellHeads)).setTextAlignment(TextAlignment.CENTER);
+        table.addHeaderCell(c1).addHeaderCell(c2).addHeaderCell(c3).addHeaderCell(c4).addHeaderCell(c5);
+        String[] Des1 = {"Chute - Blasting & Painting\n"
+            + "\n"
+            + "Scope of Work:\n"
+            + "Chute - Topside \"sliding part\" entire surface to be blast at SA2.5 and applictaion of two coat painiting system as per Aquatic painting spec.\n"
+            + "Chute external - side wall and undesr side will be spot blast at SA2.5 and application of two caot painting system as per Aquatic painting spec.\n"
+            + "\n"
+            + "02 Nos of base frame will be blast at SA2.5 and application of two coat painting system as per Aquatic painiting spec",
+             "Chute - Transportation\n"
+            + "Transportation to and from Loyang Crescent to Tuas \"40ft Trailer\".\n"
+            + "Loading / Unloading at Aquatic yard by client.\n"
+            + "loading / Unloading at Awin eEng yard by Awin Eng."};
+        int n = 2;
+        ObservableList<Person> trc = (ObservableList) hm.get("TableItems");
+        ListIterator<Person> li = trc.listIterator();
+       while(li.hasNext()) {
+            Person pe = li.next();
+            if (pe.getLastName().getText().isEmpty()) {
                 break;
             }
-            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getItemNo().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
-            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getDes().getText()).setTextAlignment(TextAlignment.CENTER).setFont(f1).setFontSize(8)));
-            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph(pe.getQty().getText()).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
-            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$" + df.format(Double.valueOf(pe.getUnitPrice().getText()))).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
-            table.addCell(new Cell(1, 1).setPadding(8).add(new Paragraph("$" + df.format(Double.valueOf(pe.getTotal().getText()))).setFont(f).setFontSize(8).setTextAlignment(TextAlignment.CENTER)));
-            draw_counter++;
+            table.addCell(new Cell(1, 1).setWidth(35f).add(new Paragraph((String)pe.getFirstName().getText().trim())).addStyle(cellHeads).setTextAlignment(TextAlignment.CENTER))
+                    .addCell(new Cell(1, 1).add(new Paragraph((String)pe.getLastName().getText().trim())).setTextAlignment(TextAlignment.LEFT).addStyle(arial))
+                    .addCell(new Cell(1, 1).add(new Paragraph((String)pe.getEmail().getText().trim())).setTextAlignment(TextAlignment.CENTER).addStyle(arial))
+                    .addCell(new Cell(1, 1).add(new Paragraph("$"+(String)pe.getRemark().getText().trim())).setTextAlignment(TextAlignment.CENTER).addStyle(arial))
+                    .addCell(new Cell(1, 1).add(new Paragraph("$"+(String)pe.getTotal().getText().trim())).setTextAlignment(TextAlignment.CENTER).addStyle(arial));
+
         }
-        for (int j = 0; j < (4 - draw_counter); j++) {
-            for (int i = 0; i < 5; i++) {
-                table.addCell(new Cell(1, 1).setPadding(12).add(new Paragraph().add(new Text("\t")).setTextAlignment(TextAlignment.CENTER).setFont(f1).setFontSize(8)));
-            }
-        }
-
-        Color magentaColor = new DeviceCmyk(0.f, 0.f, 0.f, 1.f);
-
-        //table.addCell(new Cell(1,3).add(ti).setBorder(Border.NO_BORDER).setPadding(0));
-        Double s1 = Utilities.NumUtil.round(Double.valueOf((Double) hm.get("Total")), 2);
-        Float s12 = Utilities.NumUtil.round(Float.valueOf((Float) hm.get("GST")), 2);
-        Double s123 = Utilities.NumUtil.round(Double.valueOf((Double) hm.get("Total") + (Float) hm.get("GST")), 2);
-
-        Table t1 = new Table(new float[]{3, 2, 1});
-        t1.setWidthPercent(100);
-        PdfFont f2 = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLDOBLIQUE);
-        t1.addCell(new Cell(3, 1).setWidth(250).add(new Paragraph("Note. Any discrepancy in the invoice or the time sheet shall be "
-                + "brought to our notice within 48 hours of submission of the invoice.").setFont(f2).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).setWidth(202.2f).add(new Paragraph("Total").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s1)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).setWidth(202.2f).add(new Paragraph("Add GST 7%").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s12)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).setWidth(202.2f).add(new Paragraph("Amount Due").setTextAlignment(TextAlignment.RIGHT).setMarginRight(7).setFont(f).setFontSize(8)));
-        t1.addCell(new Cell(1, 1).add(new Paragraph("$" + df.format(s123)).setTextAlignment(TextAlignment.CENTER).setFont(f).setFontSize(8)));
-
-        Cell c = new Cell(1, 5).add(t1).setBorder(Border.NO_BORDER).setPadding(0);
-
-        table.addCell(c);
-        Table t2 = new Table(2);
-
-        Cell fin = new Cell(1, 1)
-                .add(new Paragraph("All cheques should be crossed and made payable to \"Awin Engineering Pte. Ltd\".").setFont(f1).setFontSize(8))
-                .add(new Paragraph("\n"))
-                .add(new Paragraph("OCBC A/c No: 686515487001").setFont(f1).setFontSize(8))
-                .add(new Paragraph("All cheques accounts will accrue interest at a rate of 1.5% for each 60days or part thereof beyond due date.")
-                        .setFont(f1).setFontSize(8)).add(new Paragraph("\n ")).setBorder(Border.NO_BORDER);
-        //fin.setWidth(350);
-        t2.addCell(fin);
-        t2.addCell(new Cell(1, 1).setBorder(Border.NO_BORDER).add(new Paragraph("\n\n\n\n\n\n\n\tFor and on behalf of Awin Engineering Pte. Ltd\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
-                + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t").setFont(f1).setFontSize(8).setUnderline(1.0f, 7.5f)));
-        table.addCell(new Cell(1, 5).add(t2).setPadding(0));
+        Image extralogo12 = new Image(ImageDataFactory.create("InvoiceSC/Picture5.jpg"));
         document.add(table);
-
-        System.out.println();
-        System.out.println(pdf.getNumberOfPages());
-        if (draw_counter < 4) {
-            PdfCanvas canvas = new PdfCanvas(pdf.getFirstPage());
-            int yaxis = 413 - draw_constant * draw_counter;
-            canvas.setStrokeColor(magentaColor)
-                    .moveTo(55, yaxis).lineTo(546, 329).closePathStroke();//moveTo(55, 413).lineTo(546, 329).closePathStroke();//419-395
+        String a =(String) hm.get("Terms");
+        if(a.trim().equals("-")||a.trim().equals("")){
+            a="30 weeks";
         }
+         String b =(String) hm.get("Delivery");
+        if(b.trim().equals("-")||b.trim().equals("")){
+            b="2 weeks";
+        }
+        Paragraph x = new Paragraph()
+                .add("Exclusions\t:\t" + "Third Party" + "\n")
+                .add("Terms\t:\t" +a.trim()+" from the date of Invoice" + "\n")
+                .add("Delivery\t:\t" +b.trim()+" upon receipt of PO" + "\n")
+                .add("Unless and otherwise stated the price is states in S$ excluding 7% GST, merchandise packed and uninsured. This quote is subject to our"
+                        + " general terms & conditions of sales and will apply as amended from time to time." + "\n")
+                .add("We hope that this offer meets your expectations and we are looking forward to receiving your order. You can rest assured that your"
+                        + " order will be carried out to your entire satisfaction" + "\n")
+                .add(new Text("AWIN ENGINEERING PTE LTD\n").addStyle(arial).setFontColor(cuntz))
+                .addStyle(arial).setTextAlignment(TextAlignment.LEFT)
+                .add(extralogo12);
+        extralogo12.scaleAbsolute(100f, 55f);
+        document.add(x);
+        event.writeTotal(pdf);
         document.close();
 
     }

@@ -45,6 +45,7 @@ import com.itextpdf.layout.renderer.DrawContext;
 import com.itextpdf.layout.renderer.TableRenderer;
 import com.itextpdf.test.annotations.WrapToTest;
 import com.mycompany.snp.Person3;
+import java.awt.Desktop;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,9 +82,18 @@ public class pdfInvoice {
         DEST = "results/Invoice/Steel/";
         File file = new File(DEST);
         file.getParentFile().mkdirs();
-        DEST = DEST + hm.get("Invoice Number") + ".pdf";
+        DEST = DEST + hm.get("Invoice Number").toString().replace('.', '-') + ".pdf";
         System.out.println(DEST);
         createPdf(DEST, hm);
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(DEST);
+                Desktop.getDesktop().open(myFile);
+            } catch (IOException ex) {
+                Utilities.AlertBox.showErrorMessage(ex);
+            }
+
+        }
     }
 
     public void createPdf(String dest, HashMap<String, Object> hm) throws IOException {
@@ -106,13 +116,13 @@ public class pdfInvoice {
 
         // HeaderHandler headerHandler = new HeaderHandler();
         // pdf.addEventHandler(PdfDocumentEvent.START_PAGE, headerHandler);
-        Image steelslogo = new Image(ImageDataFactory.create("InvoiceSC/Picture1.jpg"));
+        Image steelslogo = new Image(ImageDataFactory.create("images/SteelLogo.png"));
         Image extralogo1 = new Image(ImageDataFactory.create("InvoiceSC/Picture2.jpg"));
         Image extralogo2 = new Image(ImageDataFactory.create("InvoiceSC/Picture3.jpg"));
         Image extralogo3 = new Image(ImageDataFactory.create("InvoiceSC/Picture4.jpg"));
 
         //row 1 in pdf
-        steelslogo.scaleAbsolute(215f, 50f);
+        steelslogo.scaleAbsolute(190f, 60f);
         extralogo1.scaleAbsolute(130f, 55f);
         extralogo2.scaleAbsolute(130f, 55f);
         extralogo3.scaleAbsolute(90f, 55f);
